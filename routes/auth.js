@@ -57,7 +57,11 @@ passport.deserializeUser(function (id, done) {
 module.exports = function (io) {
     var router = express.Router();
 
-    /* GET registration page */
+    /**
+     * @api {GET} /register Get registration page based on current server configuration
+     * @apiName Register
+     * @apiGroup Auth
+     */
     router.get('/register', middle.requireRegistrationOpen, function (req, res) {
         res.render("register_general",
             {title: "Register", enums: enums, error: req.flash('error')});
@@ -142,7 +146,11 @@ module.exports = function (io) {
     }
 
 
-    /* POST register a new user */
+    /**
+     * @api {PUT} /register Register a new user
+     * @apiName Register
+     * @apiGroup Auth
+     */
     router.post('/register', middle.requireRegistrationOpen, function (req, res) {
         var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
         form.parse(req, function (err, fields, files) {
@@ -285,7 +293,13 @@ module.exports = function (io) {
         });
     });
 
-    /* GET registration page for Cornell (University and Tech) Students */
+    /**
+     * @api {GET} /register/:name GET registration page for Cornell (University and Tech) Students.
+     * @apiName Register
+     * @apiGroup Auth
+     *
+     * @apiParam name The name of the school being used for registration.
+     */
     router.get('/register/:name', middle.requireCornellRegistrationOpen, function (req, res) {
         //get full college object
         _findCollegeFromFilteredParam(req.params.name, function (err, college) {
@@ -331,8 +345,15 @@ module.exports = function (io) {
         College.findOne({name: collegeName}, callback);
     }
 
-    /* POST register a new user from a specific school*/
-//todo cleanup with async waterfall
+
+    /**
+     * @api {POST} /register/:name register a new user from a specific school
+     * @apiName Register
+     * @apiGroup Auth
+     *
+     * @apiParam name The name of the school being used for registration.
+     * todo cleanup with async waterfall
+     */
     router.post('/register/:name', middle.requireCornellRegistrationOpen, function (req, res) {
         //get full college object
         _findCollegeFromFilteredParam(req.params.name, function (err, college) {
@@ -483,7 +504,7 @@ module.exports = function (io) {
                                                 var template_content =
                                                     "<p>Hi " + newUser.name.first + " " + newUser.name.last + ",</p><p>" +
                                                     "Thank you for your interest in BigRed//Hacks!  This email is a confirmation " +
-                                                    "that you're registered for BigRed//Hacks 2015! " +
+                                                    "that you're registered for BigRed//Hacks 2016! " +
                                                     "We'll be sending a lot more logistical information soon." + "</p><p>" +
                                                     "You can log in to our website any time to update your resume " +
                                                     "and view logistic information as we post it." + "</p><p>" +
@@ -525,7 +546,11 @@ module.exports = function (io) {
         });
     });
 
-    /* GET render the login page */
+    /**
+     * @api {GET} /login Render the login page.
+     * @apiName Login
+     * @apiGroup Auth
+     */
     router.get('/login', function (req, res, next) {
         res.render('login', {
             title: 'Login',
@@ -533,7 +558,14 @@ module.exports = function (io) {
         });
     });
 
-    /* POST login a user */
+    /**
+     * @api {POST} /login Login a user
+     * @apiName Login
+     * @apiGroup Auth
+     *
+     * @apiParam user.role 'admin' if user is trying to login as admin
+     * @apiParam user.email Email for login
+     */
     router.post('/login',
         passport.authenticate('local', {
             failureRedirect: '/login',
@@ -553,13 +585,21 @@ module.exports = function (io) {
         }
     );
 
-    /* GET mentor regsitration */
+    /**
+     * @api {GET} /mentorregistration mentor registration (TODO: Fix)
+     * @apiName MentorRegistration
+     * @apiGroup Auth
+     */
     router.get('/mentorregistration', function (req, res) {
         res.render("register_mentor",
             {title: "Mentor Registration", enums: enums, error: req.flash('error')});
     });
 
-    /* POST mentor registration */
+    /**
+     * @api {POST} /mentorregistration mentor registration (TODO: Fix)
+     * @apiName MentorRegistration
+     * @apiGroup Auth
+     */
     router.post('/mentorregistration', function (req, res) {
         var skillList = req.body.skills.split(",");
         for (var i = 0; i < skillList.length; i++) {
@@ -658,7 +698,11 @@ module.exports = function (io) {
         return false;
     }
 
-    /* GET reset password */
+    /**
+     * @api {GET} /resetpassword Returns page for resetting password.
+     * @apiName ResetPassword
+     * @apiGroup Auth
+     */
     router.get('/resetpassword', function (req, res) {
         if (req.query.token == undefined || req.query.token == "") {
             return res.redirect('/forgotpassword');
@@ -676,7 +720,11 @@ module.exports = function (io) {
         });
     });
 
-    /* POST reset password */
+    /**
+     * @api {POST} /resetpassword Updates a password, if query.token is valid
+     * @apiName ResetPassword
+     * @apiGroup Auth
+     */
     router.post('/resetpassword', function (req, res) {
         User.findOne({passwordtoken: req.query.token}, function (err, user) {
             if (user == null || req.query.token == "" || req.query.token == undefined) {
@@ -714,6 +762,11 @@ module.exports = function (io) {
     });
 
 
+    /**
+     * @api {GET} /forgotpassword Returns page for resetting password.
+     * @apiName Register
+     * @apiGroup Auth
+     */
     router.get('/forgotpassword', function (req, res) {
         res.render('forgotpassword/forgotpass_prompt', {
             title: 'Reset Password',
@@ -722,7 +775,11 @@ module.exports = function (io) {
         });
     });
 
-
+    /**
+     * @api {POST} /forgotpassword Sends a forgotpassword email, if the email is valid.
+     * @apiName ForgotPassword
+     * @apiGroup Auth
+     */
     router.post('/forgotpassword', function (req, res) {
         User.findOne({email: req.body.email}, function (err, user) {
             if (user == null) {

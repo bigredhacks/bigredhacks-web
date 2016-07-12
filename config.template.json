@@ -21,8 +21,8 @@
     "reg_open": true,
     "cornell_reg_open": true,
     "cornell_auto_accept": 150,
-    "results_released": true,
-    "dayof": true
+    "dayof": true,
+    "days_to_rsvp": 14
   },
   "sendgrid": {
     "_comment": "Sendgrid template ids",

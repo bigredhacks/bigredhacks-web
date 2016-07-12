@@ -8,12 +8,20 @@ var MentorRequest = require('../models/mentor_request');
 module.exports = function (io) {
     var router = express.Router();
 
-    /* GET dashboard index page */
+    /**
+     * @api {GET} /mentor Mentor dashboard.
+     * @apiName Mentor
+     * @apiGroup Mentor
+     */
     router.get('/', function (req, res, next) {
         return res.redirect('/mentor/dashboard');
     });
 
-    /* GET dashboard home of logged in mentor */
+    /**
+     * @api {GET} /mentor/dashboard Dashboard of logged in mentor.
+     * @apiName Mentor
+     * @apiGroup Mentor
+     */
     router.get('/dashboard', function (req, res, next) {
         res.render('mentor/index', {
             user: req.user,
@@ -23,7 +31,11 @@ module.exports = function (io) {
         });
     });
 
-    /* POST update mentor information */
+    /**
+     * @api {POST} /mentor/updateinformation Update mentor's info
+     * @apiName UpdateInformation
+     * @apiGroup Mentor
+     */
     router.post('/updateinformation', function (req, res) {
         var user = req.user;
 
@@ -85,7 +97,11 @@ module.exports = function (io) {
         });
     });
 
-    /* GET see requests queue of mentor */
+    /**
+     * @api {GET} /mentor/requestsqueue See requests queue of mentor.
+     * @apiName RequestQueue
+     * @apiGroup Mentor
+     */
     router.get('/dashboard/requestsqueue', function (req, res) {
         var user = req.user;
         MentorRequest.find({}).exec(function(err, mentorRequests) {
@@ -205,11 +221,15 @@ module.exports = function (io) {
         }
     }
 
-    /* GET logout the current mentor */
+    /**
+     * @api {GET} /mentor/logout Logout the current mentor
+     * @apiName Logout
+     * @apiGroup Mentor
+     */
     router.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });
 
     return router;
-}
+};

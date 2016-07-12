@@ -54,7 +54,7 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
         a.btn.btn-default(type="button",href=lk_url,target="_blank",disabled=lk_disabled) #[i.fa.my-fa-linkedin-square] Linkedin
         br
         br
-        div: embed.center-block(src="http://files.bigredhacks.com/resume/"+user.app.resume, width="75%", height="400",type='application/pdf')
+        div: embed.center-block(src="//files.bigredhacks.com/resume/"+user.app.resume, width="75%", height="400",type='application/pdf')
         br
         br
         div First hackathon?
@@ -72,16 +72,23 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
 
         h4 Admin
         .form-inline
-            .form-group.np-enabledd
+            .form-group.np-enabled
                 label(for="setRSVP") Going:&nbsp;
                 select#setRSVP.form-control(name="setRSVP")
                     option(value="") select
                     +generateOptions("true false".split(" "), {selected: (user.internal.going+"")})
+        if middlehelp.isDayof()
+            .form-inline
+                .form-group.np-enabled
+                    label(for="setCheckedIn") Checked In
+                    select#setCheckedIn.form-control(name="setCheckedIn")
+                        option(value="") select
+                        +generateOptions("true false".split(" "), {selected: (user.internal.checkedin + "")})
         .text-center
             | Update user application decision:
             form.decision-radio.user.np-enabled
-                +generateInlineRadio(enums.virtual.status.long, {
+                +generateInlineRadio(enums.virtual.status.longWithPending, {
                 checked: user.internal.status, //set default value
                 name: "individualstatus", //name attr of each input
-                label: enums.virtual.status.long //label of the input different from actual input
+                label: enums.virtual.status.longWithPending //label of the input different from actual input
                 })

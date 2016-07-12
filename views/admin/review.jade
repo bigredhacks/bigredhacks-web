@@ -1,12 +1,14 @@
 //-
     Review applications
 
+
 extends _layout-admin
 
 block vars
     - user = currentUser || {}
 
 block admin_content
+    - function roundPercentage(x) { return Math.round(x*100)/100;}
     +contentHeading("Review Apps")
     .row.review-header
         .col-md-3
@@ -16,8 +18,8 @@ block admin_content
                 li Waitlisted #{stats.overall.waitlisted}
                 li Rejected #{stats.overall.rejected}
                 li Pending #{stats.overall.pending}
-                li Male Accepted % #{stats.gender.male}
-                li Female Accepted % #{stats.gender.female}
+                li Male Accepted #{roundPercentage(stats.gender.male)}%
+                li Female Accepted #{roundPercentage(stats.gender.female)}%
         .col-md-3
             h4 From School:
             ul

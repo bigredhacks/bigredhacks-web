@@ -3,6 +3,9 @@
 
 extends ../_layout-admin
 
+block prepend header
+    link(href='/css/registration.css', rel='stylesheet')
+
 block vars
     //initialize variables
     unless render
@@ -78,6 +81,6 @@ block admin_content
             p No results found.
 
 
-block append footer
+block prepend footer
     script(src="/js/vendor/typeahead.bundle.min.js")
     script(src="/js/typeahead_college.js")

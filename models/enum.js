@@ -21,7 +21,9 @@ var en = {
     virtual: { //virtual params are used in front end display only - these should always correspond to above
         status: {
             long: "Accepted Waitlisted Rejected".split(" "), //longhand array
-            short: "A W R".split(" ") //shorthand array
+            short: "A W R".split(" "), //shorthand array
+            longWithPending: "Accepted Waitlisted Rejected Pending".split(" "),
+            shortWithPending: "A W R P".split(" ")
         },
         role: {
             long: "test/bus captain/admin/mentor".split("/")//remove "user item"

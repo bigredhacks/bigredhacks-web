@@ -8,6 +8,12 @@ mixin contentHeading(name)
     .header-wrapper-leaf
         h1.leaf #{name}
 
+mixin showMessages(messages)
+    if messages.error
+        .alert.alert-danger(role="alert") #{messages.error[0].toLowerCase()}
+    if messages.success
+        .alert.alert-success(role="alert") #{messages.success[0].toLowerCase()}
+
 block header
     link(href="/css/dashboard.css", rel="stylesheet")
     link(href="/css/admin.css", rel="stylesheet")

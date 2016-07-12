@@ -31,6 +31,7 @@
     "jade": "^1.11.0",
     "less-middleware": "2.0.x",
     "mailchimp-api": "^2.0.7",
+    "moment": "^2.14.1",
     "mongoose": "^4.1.0",
     "morgan": "~1.6.1",
     "multiparty": "^4.1.2",
@@ -50,5 +51,12 @@
   },
   "devDependencies": {
     "should": "^8.4.0"
+  },
+  "apidoc": {
+    "name": "BigRedHacks",
+    "version": "1.0.0",
+    "description": "Confidential API for BigRed//Hacks developers only. Do not distribute.",
+    "title": "BRH | API",
+    "url": ""
   }
 }

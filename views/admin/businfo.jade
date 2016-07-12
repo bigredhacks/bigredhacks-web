@@ -3,6 +3,11 @@
 
 extends _layout-admin
 
+block prepend header
+    // Including index is bulky, but it makes the typeahead style correctly.
+    link(href='/css/index.css', rel='stylesheet')
+    link(href='/css/registration.css', rel='stylesheet')
+
 block admin_content
     +contentHeading("Bus Information")
     if buses.length == 0
@@ -81,6 +86,6 @@ block admin_content
                     input#buscapacity.form-control(type='text', name='buscapacity', value='', placeholder='Enter Capacity Number')
                 #createbus
                     input.btn.btn-primary(type='submit', value='create bus', name='createbus')
-block append footer
+block prepend footer
     script(src="/js/vendor/typeahead.bundle.min.js")
     script(src="/js/typeahead_college.js")

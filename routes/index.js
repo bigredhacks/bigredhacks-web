@@ -7,7 +7,11 @@ var middle = require('./middleware.js');
 
 var config = require('../config.js');
 
-/* GET home page. */
+/**
+ * @api {GET} /index Home page.
+ * @apiName Index
+ * @apiGroup Index
+ */
 router.get('/', function (req, res, next) {
     res.render('index', {
         title: 'Cornell\'s Ultimate Hackathon'
@@ -15,7 +19,11 @@ router.get('/', function (req, res, next) {
 });
 
 
-/* POST subscribe a cornell student to the mailing list */
+/**
+ * @api {POST} /cornell/subscribe subscribe a cornell student to the mailing list
+ * @apiName Subscribe
+ * @apiGroup Index
+ */
 router.post('/cornell/subscribe', function (req, res, next) {
     req = validator.validate(req, ['cornellEmail']);
     var email = req.body.cornellEmail;
@@ -44,5 +52,17 @@ router.post('/cornell/subscribe', function (req, res, next) {
         })
     }
 });
+
+/**
+ * @api {GET} /live Day-of information page.
+ * @apiName DayOf
+ * @apiGroup Index
+ */
+router.get('/live', middle.requireDayof,function (req, res, next) {
+    res.render('live', {
+        title: 'BigRed//Hacks | Live'
+    });
+});
+
 
 module.exports = router;

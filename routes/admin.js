@@ -6,13 +6,15 @@ var async = require('async');
 
 var validator = require('../library/validations.js');
 var helper = require('../util/routes_helper');
+var enums = require('../models/enum.js');
+var config = require('../config.js');
+var queryBuilder = require('../util/search_query_builder.js');
+
 var User = require('../models/user.js');
 var Team = require('../models/team.js');
 var Bus = require('../models/bus.js');
 var Reimbursements = require('../models/reimbursements.js');
-var enums = require('../models/enum.js');
-var config = require('../config.js');
-var queryBuilder = require('../util/search_query_builder.js');
+var TimeAnnotation = require('../models/time_annotation.js');
 
 //filter out admin users in aggregate queries.
 var USER_FILTER = { role: "user" };
@@ -36,6 +38,7 @@ function objectAndDefault (data, defaults) {
     //remap values to key,value pairs and fill defaults
     return _.defaults(_.object(_.map(data, _.values)), defaults);
 }
+
 var aggregate = {
     applicants: {
         //runs simple aggregation for applicants over a match criteria
@@ -83,14 +86,7 @@ var aggregate = {
         },
         gender: function () {
             return function (done) {
-                User.aggregate(
-                    [
-                        {$match: USER_FILTER},
-                        {$group: {
-                            _id: "$gender",
-                            total: {$sum: 1}
-                        }}
-                    ]
+                User.count( {$and: [{"internal.status" : "Accepted"}, USER_FILTER]}
                 , function (err, totalRes) {
                     if (err) {
                         done(err);
@@ -107,11 +103,6 @@ var aggregate = {
                                     done(err);
                                 } else {
 
-                                    totalRes = objectAndDefault(totalRes, {
-                                        male: 0,
-                                        female: 0
-                                    });
-
                                     acceptedRes = objectAndDefault(acceptedRes, {
                                         male: 0,
                                         female: 0
@@ -119,8 +110,8 @@ var aggregate = {
 
 
                                     const res = {
-                                        male: 100.0 * acceptedRes.male / totalRes.male,
-                                        female: 100.0 * acceptedRes.female / totalRes.female,
+                                        male: 100.0 * acceptedRes.male / totalRes,
+                                        female: 100.0 * acceptedRes.female / totalRes,
                                     };
 
                                     done(null, res);
@@ -134,13 +125,21 @@ var aggregate = {
     }
 };
 
-/* GET home page. */
+/**
+ * @api {GET} /admin Get home page.
+ * @apiName Index
+ * @apiGroup AdminAuth
+ */
 router.get('/', function (req, res, next) {
     res.redirect('/admin/dashboard');
 });
 
 
-/* GET admin dashboard */
+/**
+ * @api {GET} /admin/dashboard Get dashboard page.
+ * @apiName Dashboard
+ * @apiGroup AdminAuth
+ */
 router.get('/dashboard', function (req, res, next) {
 
     async.parallel({
@@ -185,6 +184,30 @@ router.get('/dashboard', function (req, res, next) {
             ], function (err, res) {
                 return done(err, res);
             })
+        },
+        rsvps: function(done) {
+            User.aggregate([
+                { $match: { $and: [USER_FILTER, {"internal.status" : "Accepted"}] } },
+                {$group: {
+                    _id: "$internal.going",
+                    count: {$sum: 1}
+                }}
+            ], function (err, res) {
+                res = objectAndDefault(res, {
+                    true: 0,
+                    false: 0,
+                    null: 0
+                });
+                return done(err, res);
+            })
+        },
+        decisionAnnounces: function(done) {
+            User.count( {$and : [ { $where: "this.internal.notificationStatus != this.internal.status" }, {"internal.status": { $ne: "Pending"}}]} , function (err, resu) {
+                if (err) console.log(err);
+                else {
+                    return done(err, resu);
+                }
+            });
         }
     }, function (err, result) {
         if (err) {
@@ -194,13 +217,19 @@ router.get('/dashboard', function (req, res, next) {
         res.render('admin/index', {
             title: 'Admin Dashboard',
             applicants: result.applicants,
-            schools: result.schools
+            schools: result.schools,
+            rsvps: result.rsvps,
+            decisionAnnounces: result.decisionAnnounces
         })
     });
 
 });
 
-/* GET Detail view of an applicant */
+/**
+ * @api {GET} /admin/user/:pubid Get detailed view of applicant.
+ * @apiName UserInfo
+ * @apiGroup AdminAuth
+ */
 router.get('/user/:pubid', function (req, res, next) {
     var pubid = req.params.pubid;
     User.where({pubid: pubid}).findOne(function (err, user) {
@@ -222,6 +251,11 @@ router.get('/user/:pubid', function (req, res, next) {
     });
 });
 
+/**
+ * @api {GET} /admin/team/:teamid Review entire team
+ * @apiName TeamInfo
+ * @apiGroup AdminAuth
+ */
 router.get('/team/:teamid', function (req, res, next) {
     var teamid = req.params.teamid;
     User.find({'internal.teamid': teamid}).exec(function (err, teamMembers) {
@@ -232,7 +266,11 @@ router.get('/team/:teamid', function (req, res, next) {
     });
 });
 
-/* GET Settings page to set user roles */
+/**
+ * @api {GET} /admin/settings Settings page to set user roles.
+ * @apiName UserRoles
+ * @apiGroup AdminAuth
+ */
 router.get('/settings', function (req, res, next) {
 
     //todo change to {role: {$ne: "user"}} in 2016 deployment
@@ -252,7 +290,11 @@ router.get('/settings', function (req, res, next) {
     });
 });
 
-/* GET Search page to find applicants */
+/**
+ * @api {GET} /admin/user/:pubid Search page to find applicants.
+ * @apiName Search
+ * @apiGroup AdminAuth
+ */
 router.get('/search', function (req, res, next) {
     var queryKeys = Object.keys(req.query);
     if (queryKeys.length == 0 || (queryKeys.length == 1 && queryKeys[0] == "render")) {
@@ -287,7 +329,11 @@ router.get('/search', function (req, res, next) {
     }
 });
 
-/* GET Review page to review a random applicant who hasn't been reviewed yet */
+/**
+ * @api {GET} /admin/review Review page to review a random applicant who hasn't been reviewed yet
+ * @apiName Review
+ * @apiGroup AdminAuth
+ */
 router.get('/review', function (req, res, next) {
     var query = { 'internal.status': "Pending" };
     query = {$and: [query, USER_FILTER]};
@@ -326,7 +372,11 @@ router.get('/review', function (req, res, next) {
 });
 
 
-/* GET page to see bus information */
+/**
+ * @api {GET} /admin/businfo page to see bus information
+ * @apiName BusInfo
+ * @apiGroup AdminAuth
+ */
 router.get('/businfo', function (req, res, next) {
     Bus.find().exec(function (err, buses) {
         if (err) {
@@ -357,7 +407,11 @@ router.get('/businfo', function (req, res, next) {
     });
 });
 
-/* POST new bus to list of buses */
+/**
+ * @api {POST} /admin/businfo add new bus to list of buses
+ * @apiName BusInfo
+ * @apiGroup AdminAuth
+ */
 router.post('/businfo', function (req, res, next) {
     //todo clean this up so that college ids and names enter coupled
     var collegeidlist = req.body.collegeidlist.split(",");
@@ -386,7 +440,11 @@ router.post('/businfo', function (req, res, next) {
     });
 });
 
-/* GET reimbursement page */
+/**
+ * @api {GET} /admin/reimbursements Reimbursements page.
+ * @apiName Reimbursements
+ * @apiGroup AdminAuth
+ */
 router.get('/reimbursements', function (req, res, next) {
     Reimbursements.find({}, function (err, reimbursements) {
         if (err) {
@@ -398,9 +456,51 @@ router.get('/reimbursements', function (req, res, next) {
     })
 });
 
-/* GET signin page */
+/**
+ * @api {GET} /admin/reimbursements Sign in page for checking in people.
+ * @apiName CheckIn
+ * @apiGroup AdminAuth
+ */
 router.get('/checkin', function(req, res, next) {
     res.render('admin/checkin');
+});
+
+/**
+ * @api {GET} /admin/stats Stats page.
+ * @apiName Stats
+ * @apiGroup AdminAuth
+ */
+router.get('/stats', function (req, res, next) {
+    async.parallel([
+        function(callback) {
+            TimeAnnotation.find({}, function (err, ann) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    callback(null, ann);
+                }
+            });
+        },
+        function(callback) {
+            const projection = 'created_at';
+            User.find({}, projection, function (err,users) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    callback(null, users);
+                }
+            });
+        }
+
+    ], function(err, results) {
+            res.render('admin/stats', {
+                annotations: results[0],
+                users: results[1],
+            });
+    }
+
+    );
+
 });
 
 /**

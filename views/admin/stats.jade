@@ -1,0 +1,27 @@
+//-
+   detailed user view
+
+extends _layout-admin
+block prepend header
+    link(href="/css/vendor/c3.css", rel="stylesheet")
+
+block append admin_content
+    if !input
+        - input = {}
+    +contentHeading("Stats")
+    div#chart
+    form#annotate(method='post', action='/api/admin/annotate')
+        label Add an annotation (just the message, will use current time as annotation)
+        .form-group
+            input#annotation.form-control(type='text', name='annotation', placeholder='ex: Placed a message in a bottle.', value = input.info || '', required=true)
+        .form-group
+            button#resume-save.btn.btn-blue(type='submit') Add
+    div#annotationlist
+
+block append footer
+    script(src='//d3js.org/d3.v3.min.js')
+    script(src='/js/vendor/c3.min.js')
+    script(type='text/javascript').
+        var users =!{JSON.stringify(users)}
+        var annotations =!{JSON.stringify(annotations)}
+    script(src="/js/stats.js")

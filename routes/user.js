@@ -4,6 +4,7 @@ var AWS = require('aws-sdk');
 var async = require('async');
 var _ = require('underscore');
 var multiparty = require('multiparty');
+var moment = require("moment");
 
 var enums = require('../models/enum.js');
 var helper = require('../util/routes_helper.js');
@@ -26,11 +27,20 @@ module.exports = function (io) {
 
     var router = express.Router();
 
-    /* GET user panel of logged in user */
+    /**
+     * @api {GET} /user Redirects to /user/dashboard
+     * @apiName User
+     * @apiGroup User
+     */
     router.get('/', function(req,res,next) {
         res.redirect('user/dashboard');
     });
 
+    /**
+     * @api {GET} /user/dashboard Dashboard for a user
+     * @apiName Dashboard
+     * @apiGroup User
+     */
     router.get('/dashboard', function (req, res, next) {
 
         var params = {Bucket: config.setup.AWS_S3_bucket, Key: 'resume/' + req.user.app.resume};
@@ -70,6 +80,22 @@ module.exports = function (io) {
             },
             bus: function (done) {
                 _findAssignedOrNearestBus(req, done)
+            },
+            deadline: function(done) {
+                var notified = req.user.internal.lastNotifiedAt;
+                const rsvpTime = moment.duration(config.admin.days_to_rsvp, 'days');
+
+
+                if (notified) {
+                    const mNotified = moment(notified).add(rsvpTime);
+                    return done(null, {
+                        active: !mNotified.isBefore(),
+                        message: mNotified.fromNow(true),
+                        interval: rsvpTime.humanize()
+                    });
+                }
+
+                return done(null, null);
             }
         }, function (err, results) {
             if (err) {
@@ -82,31 +108,19 @@ module.exports = function (io) {
                 team: results.members,
                 bus: results.bus,
                 reimbursement: results.reimbursement,
+                deadline: results.deadline,
                 title: "Dashboard"
             };
 
-
-            if (req.user.internal.cornell_applicant) {
-                return res.render('dashboard/results_released/index_cornell', {
-                    user: req.user,
-                    resumeLink: results.resumeLink,
-                    title: "Dashboard"
-                })
-            }
-
-            if (middle.helper.isDayof()) {
-                return res.render('dashboard/index_dayof', render_data);
-            } else if (middle.helper.isResultsReleased()) {
-                return res.render('dashboard/results_released/index_general', render_data);
-            }
-            else {
-                return res.render('dashboard/index', render_data);
-            }
-
+            return res.render('dashboard/index', render_data);
         })
     });
 
-    /* GET edit registration page of logged in user */
+    /**
+     * @api {GET} /user/dashboard/edit Edit registration page of logged in user.
+     * @apiName Edit
+     * @apiGroup User
+     */
     router.get('/dashboard/edit', function (req, res, next) {
         var user = _.omit(req.user, 'password'.split(' '));
         res.render('dashboard/edit_app', {
@@ -117,7 +131,11 @@ module.exports = function (io) {
     });
 
 
-    /* POST submit edited user data */
+    /**
+     * @api {POST} /dashboard/edit Submit edited user data.
+     * @apiName Edit
+     * @apiGroup User
+     */
     router.post('/dashboard/edit', middle.requireRegistrationOpen, function (req, res, next) {
 
         var user = req.user;
@@ -163,11 +181,14 @@ module.exports = function (io) {
                     res.redirect('/user/dashboard');
                 }
             });
-            //console.log(user);
         }
     });
 
-    /* POST add a user to team */
+    /**
+     * @api {POST} /user/team/add Add a user to team.
+     * @apiName Add
+     * @apiGroup User
+     */
     router.post('/team/add', middle.requireRegistrationOpen, function (req, res, next) {
         var pubid = req.body.userid;
         var user = req.user;
@@ -190,7 +211,11 @@ module.exports = function (io) {
 
     });
 
-    /* GET leave current team */
+    /**
+     * @api {GET} /user/team/leave Leave current team.
+     * @apiName Leave
+     * @apiGroup User
+     */
     router.get('/team/leave', middle.requireRegistrationOpen, function (req, res, next) {
         req.user.leaveTeam(function (err, resMsg) {
             if (err) {
@@ -210,7 +235,11 @@ module.exports = function (io) {
     });
 //fixme both add and leave share similar callback function
 
-    /* POST toggle state of team with cornell students */
+    /**
+     * @api {POST} /user/team/cornell Toggle whether the team includes cornell students.
+     * @apiName TeamWithCornell
+     * @apiGroup User
+     */
     router.post('/team/cornell', function (req, res, next) {
         var checked = (req.body.checked === "true");
         var user = req.user;
@@ -224,7 +253,11 @@ module.exports = function (io) {
     });
 
 
-    /* POST upload a new resume*/
+    /**
+     * @api {POST} /user/updateresume Upload a new resume.
+     * @apiName UpdateResume
+     * @apiGroup User
+     */
     router.post('/updateresume', function (req, res, next) {
 
         var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
@@ -273,7 +306,11 @@ module.exports = function (io) {
         })
     });
 
-    /* POST user bus decision */
+    /**
+     * @api {POST} /user/busdecision Riding bus signup
+     * @apiName BusDecision
+     * @apiGroup User
+     */
     router.post('/busdecision', middle.requireResultsReleased, function (req, res) {
         var user = req.user;
         if (req.body.decision == "signup") {
@@ -357,8 +394,12 @@ module.exports = function (io) {
         }
     });
 
-    /* POST user rsvp */
-    router.post('/rsvp', middle.requireResultsReleased, function (req, res) {
+    /**
+     * @api {POST} /user/rsvp Provide decision to RSVP
+     * @apiName RSVP
+     * @apiGroup User
+     */
+    router.post('/rsvp', middle.requireAccepted,function (req, res) {
         var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
 
         form.parse(req, function (err, fields, files) {
@@ -418,23 +459,6 @@ module.exports = function (io) {
                     })
                 }
                 else {
-                    /*
-                     //remove user from bus
-                     //bus.members = _.without(bus.members, _.findWhere(bus.members, {id: req.user.id}));
-                     _.omit(bus, 'message');
-                     /*bus.save(function (err, res) {
-                     if (err) {
-                     console.log(err);
-                     }
-                     req.flash('success', 'We have received your response!');
-                     req.user.save(function (err) {
-                     if (err) {
-                     console.log(err);
-                     }
-                     return res.redirect('/user/dashboard');
-                     });
-                     }) */
-
                     req.flash('success', 'We have received your response!');
                     req.user.save(function (err) {
                         if (err) {
@@ -447,13 +471,22 @@ module.exports = function (io) {
         })
     });
 
-    router.get('/travel', middle.requireResultsReleased, function (req, res, next) {
+    /**
+     * @api {GET} /user/travel Provides travel information for the user
+     * @apiName Travel
+     * @apiGroup User
+     */
+    router.get('/travel', middle.requireAccepted, function (req, res, next) {
         res.render('dashboard/travel', {
             title: "Travel Information"
         });
     });
 
-    /* GET mentor request page */
+    /**
+     * @api {GET} /user/dashboard/requestmentor Page to request for mentorship
+     * @apiName RequestMentor
+     * @apiGroup User
+     */
     router.get('/dashboard/requestmentor', function (req, res) {
         MentorRequest.find({'user.id': req.user.id}).exec(function (err, mentorRequests) {
             res.render('dashboard/request_mentor', {
@@ -566,7 +599,11 @@ module.exports = function (io) {
 
     });
 
-    /* GET static travel page information */
+    /**
+     * @api {GET} /user/travel A static travel page.
+     * @apiName Travel
+     * @apiGroup User
+     */
     router.get('/travel', middle.requireResultsReleased, function (req, res, next) {
         res.render('dashboard/travel', {
             user: req.user,
@@ -575,6 +612,11 @@ module.exports = function (io) {
     });
 
     /* GET mentor list page */
+    /**
+     * @api {GET} /user/dashboard/mentorlist Returns a list of mentors page.
+     * @apiName MentorList
+     * @apiGroup User
+     */
     router.get('/dashboard/mentorlist', function (req, res) {
         User.find({role: "mentor"}).sort("mentorinfo.company").exec(function (err, mentors) {
             _getSortedCompanyImages(req, function (sortedCompanyList, sortedCompanyImageList) {
@@ -611,7 +653,11 @@ module.exports = function (io) {
         });
     });
 
-    /* GET schedule page */
+    /**
+     * @api {GET} /user/dashboard/schedule Gets a page displaying the schedule.
+     * @apiName Schedule
+     * @apiGroup User
+     */
     router.get('/dashboard/schedule', middle.requireDayof, function (req, res) {
         res.render('dashboard/schedule', {
             title: "Schedule",
@@ -619,41 +665,11 @@ module.exports = function (io) {
         });
     });
 
-    /* GET all events on the schedule */
-    /*
-    router.get('/allevents', function (req, res) {
-        Event.find({}).sort({startday: 1, starttimeminutes: 1}).exec(function (err, events) {
-            var dayCount = []; //will contain the number of events for each day
-            async.eachSeries(enums.schedule.days, function (currentDay, callback) {
-                Event.aggregate([
-                    {$match: {startday: currentDay}},
-                    {$group: {_id: null, count: {$sum: 1}}}
-                ], function (err, result) {
-                    if (err) {
-                        console.error(err);
-                    }
-                    if (result.length == 0) {
-                        dayCount.push(0);
-                    } else {
-                        dayCount.push(result[0].count);
-                    }
-                    callback(null);
-                });
-            }, function (err) {
-                if (err) {
-                    console.error(err);
-                }
-                var schedule = {
-                    events: events,
-                    dayCount: dayCount,
-                    days: enums.schedule.days
-                }
-                res.json(schedule);
-            });
-        });
-    });
-*/
-    /* POST that an event's notification has been shown */
+    /**
+     * @api {POST} /user/notificationshown Acknowledge receipt of a notification.
+     * @apiName NotificationShown
+     * @apiGroup User
+     */
     router.post('/notificationshown', function (req, res) {
         Event.findOne({_id: req.body.eventId}, function (err, event) {
             event.notificationShown = true;
@@ -666,9 +682,13 @@ module.exports = function (io) {
                 }
             })
         })
-    })
+    });
 
-    /* GET logout the current user */
+    /**
+     * @api {GET} /user/logout Logout the current user and redirect to index.
+     * @apiName Logout
+     * @apiGroup User
+     */
     router.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');

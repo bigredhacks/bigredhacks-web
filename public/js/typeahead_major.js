@@ -1,9 +1,21 @@
+/**
+ * Tokenize on whitespace ignoring parenthesis
+ * @param d
+ * @returns {Array}
+ */
+function tokenizerWhitespaceIgnoreParen(d) {
+    var tokenized = Bloodhound.tokenizers.whitespace(d);
+    return tokenized.map(function (x) {
+        return x.replace(/\(|\)|&|-/gi, '');
+    });
+}
+
 /*
  * Typeahead
  */
 var engine3 = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.whitespace,
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    datumTokenizer: tokenizerWhitespaceIgnoreParen,
+    queryTokenizer: tokenizerWhitespaceIgnoreParen,
     prefetch: {
         url: '/majors.json',
         filter: function (data) {
@@ -12,13 +24,14 @@ var engine3 = new Bloodhound({
             });
         }
     },
-    limit: 3,
     sorter: function (a, b) {
-        if (a.indexOf('CS') > -1 && b.indexOf('CS' > -1)) {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        if (a.indexOf('cs') > -1 && b.indexOf('cs') > -1) {
             return a.localeCompare(b);
-        } else if (b.indexOf('CS') > -1) {
+        } else if (b.indexOf('cs') > -1) {
             return 1;
-        } else if (a.indexOf('CS') > -1) {
+        } else if (a.indexOf('cs') > -1) {
             return -1;
         } else {
             return a.localeCompare(b);
@@ -32,13 +45,15 @@ var $major = $('#major');
 
 //general typeahead
 $major.typeahead({
-        minLength: 1,
+        minLength: 1
     },
     {
-    displayKey: '',
-    source: ttadapt,
-    limit: 4
-}).on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
+        displayKey: '',
+        source: ttadapt,
+        limit: 4,
+        highlight: true,
+        hint: true
+    }).on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
 });
 
 

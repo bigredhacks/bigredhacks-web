@@ -48,6 +48,8 @@ var userSchema = new mongoose.Schema({
         teamwithcornell: {type: Boolean, default: false},
         busid: {type: mongoose.Schema.Types.ObjectId, ref: "Bus", default: null},
         status: {type: String, enum: en.user.status, default: "Pending"},
+        notificationStatus: {type: String, enum: en.user.status, default: "Pending"}, // The status that we've last informed them of
+        lastNotifiedAt: {type: Date, default: null},
         going: {type: Boolean, default: null},
         travel_receipt: {type: String, default: null},
         not_interested: {type: Boolean, default: null}, //waitlisted - if true, they forfeit their spot

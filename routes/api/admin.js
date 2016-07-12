@@ -3,18 +3,23 @@ var express = require('express');
 var router = express.Router();
 var async = require('async');
 var mongoose = require('mongoose');
+var app = require('../../app');
 
+// Mongoose Models
 var Colleges = require('../../models/college.js');
 var Bus = require('../../models/bus.js');
 var Team = require('../../models/team.js');
 var User = require('../../models/user.js');
 var Reimbursements = require('../../models/reimbursements.js');
+var TimeAnnotation = require('../../models/time_annotation.js');
+var Announcement = require('../../models/announcement.js');
+
 var config = require('../../config.js');
 var helper = require('../../util/routes_helper.js');
 var middle = require('../middleware');
 var email = require('../../util/email');
 
-//All routers
+// All routes
 router.patch('/user/:pubid/setStatus', setUserStatus);
 router.patch('/team/:teamid/setStatus', setTeamStatus);
 router.patch('/user/:email/setRole', setUserRole);
@@ -31,87 +36,56 @@ router.delete('/reimbursements/school', schoolReimbursementsDelete);
 
 router.patch('/user/:pubid/setRSVP', setRSVP);
 
-router.patch('/user/:pubid/checkin', checkInUser);
+router.patch('/user/:pubid/checkin', middle.requireDayof, checkInUser);
 router.get('/users/checkin', getUsersPlanningToAttend);
+
+router.post('/annotate', annotate);
+
+router.post('/announcements', postAnnouncement);
+router.delete('/announcements', deleteAnnouncement);
+
+router.post('/rollingDecision', makeRollingAnnouncement);
+router.get('/rollingDecision', getRollingAnnouncement);
 
 
 /**
- * @api PATCH /user/:pubid/setStatus Set status of a single user. Will also send an email to the user if their status changes from "Waitlisted" to "Accepted" and releaseDecisions is true
- * @apiname setstatus
- * @apigroup User
+ * @api {PATCH} /api/admin/user/:pubid/setStatus Set status of a single user. Will also send an email to the user if their status changes from "Waitlisted" to "Accepted" and releaseDecisions is true
+ * @apiname SetStatus
+ * @apigroup Admin
  *
  * @apiParam {string="Rejected","Waitlisted","Accepted"} status New status to set
- *
- * @apiSuccess (200)
- * @apiError (500)
  * */
-function setUserStatus (req, res, next) {
+function setUserStatus(req, res, next) {
     User.findOne({pubid: req.params.pubid}, function (err, user) {
         if (err || !user) {
-            console.log('Error: ' + err)
+            console.log('Error: ' + err);
             return res.sendStatus(500);
         }
         else {
-            var oldStatus = user.internal.status;
-            var newStatus = req.body.status;
-            user.internal.status = newStatus;
-            //send email and redirect to home page
+            user.internal.status =  req.body.status;
 
+            // Redirect to home page
             user.save(function (err) {
                 if (err) {
                     console.log(err);
                     return res.sendStatus(500);
                 } else {
-                    if (oldStatus == "Waitlisted" && newStatus == "Accepted" && middle.helper.isResultsReleased()) {
-                        console.log('Sending an "off the waitlist" email');
-                        var template_content =
-                            "<p>Hey " + user.name.first + ",</p><p>" +
-                            "<p>Congratulations, you've survived the wait list and have been accepted to BigRed//Hacks 2015! " +
-                            "Take a deep breath, all of your hard work has finally paid off.  We know the suspense was killing you.</p>" +
-                            "<p>Please be at Call Auditorium in Kennedy Hall at 5pm to sign in.  The opening ceremony starts at 6pm, with hacking starting at 8pm.  " +
-                            "A more updated schedule will be posted soon.  We hope to see you there!</p>" +
-                            "<p>BigRed//Hacks Team</p>";
-
-                        var config = {
-                            "subject": "You've been accepted to BigRed//Hacks 2015!",
-                            "from_email": "info@bigredhacks.com",
-                            "from_name": "BigRed//Hacks",
-                            "to": {
-                                "email": user.email,
-                                "name": user.name.first + " " + user.name.last,
-                            }
-                        };
-                        email.sendEmail(template_content, config, function(err,json){
-                            if (err){
-                                console.log('An error occurred: ' + err.name + ' - ' + err.message);
-                                return res.sendStatus(500);
-                            } else {
-                                console.log(json);
-                                return res.sendStatus(200);
-                            }
-                        });
-                    }
-                    else {
-                        return res.sendStatus(200);
-                    }
+                    return res.sendStatus(200);
                 }
             });
 
         }
     });
-};
+}
 
 /**
- * @api PATCH /team/:teamid/setStatus Set status of entire team
- * @apiname setstatus
- * @apigroup Team
+ * @api {PATCH} /api/admin/team/:teamid/setStatus Set status of entire team
+ * @apiname SetStatus
+ * @apigroup Admin
  *
  * @apiParam {string="Rejected","Waitlisted","Accepted"} status New status to set
- *
- * @apiSuccess (200)
- * @apiError (500)
  * */
-function setTeamStatus (req, res, next) {
+function setTeamStatus(req, res, next) {
     var id = mongoose.Types.ObjectId(req.params.teamid);
     Team.findById(id, function (err, team) {
         if (err) {
@@ -147,19 +121,16 @@ function setTeamStatus (req, res, next) {
             })
         }
     });
-};
+}
 
 /**
- * @api PATCH /user/:email/setRole Set role of a single user
+ * @api {POST} /api/admin/user/:email/setRole Set role of a single user
  * @apiname setrole
- * @apigroup User
+ * @apigroup Admin
  *
  * @apiParam {string="user","admin"} role New role to set
- *
- * @apiSuccess (200)
- * @apiError (500)
  * */
-function setUserRole (req, res, next) {
+function setUserRole(req, res, next) {
     User.findOne({email: req.params.email}, function (err, user) {
         if (err || !user) {
             return res.sendStatus(500);
@@ -172,36 +143,90 @@ function setUserRole (req, res, next) {
             });
         }
     });
-};
+}
 
 /**
- * @api GET /np Checks whether a user is in no-participation mode
- * @apiname checknp
- *
- * @apiSuccess (200) true
- * @apiError (200) false
+ * @api {PATCH} /api/admin/rollingDecision Publish decisions to all who have had one made and not received it yet.
  */
-function getNoParticipation (req, res, next) {
-    res.send(req.session.np);
-};
+function makeRollingAnnouncement(req, res, next) {
+    User.find( {$and : [ { $where: "this.internal.notificationStatus != this.internal.status" }, {"internal.status": { $ne: "Pending"}}]} , function (err, recipient) {
+        if (err) console.log(err);
+        else {
+            async.each(recipient, function(recip, callback) {
+                var config = {
+                    "from_email": "info@bigredhacks.com",
+                    "from_name": "BigRed//Hacks",
+                    "to": {
+                        "email": recip.email,
+                        "name": recip.name.first + " " + recip.name.last
+                    }
+                };
+
+                email.sendDecisionEmail(recip.name.first, recip.internal.notificationStatus, recip.internal.status, config, function(err) {
+                    if (err)  {
+                        console.log(err);
+                        callback(err);
+                    } else {
+                        recip.internal.notificationStatus = recip.internal.status;
+                        recip.internal.lastNotifiedAt = Date.now();
+                        recip.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                console.log("ERROR: User with email " + recip.email + " has been informed of their new status, but that was not saved in the database!");
+                            } else {
+                                console.log('sent and saved');
+                            }
+                        });
+                        callback();
+                    }
+                })
+            }, function(err) {
+                if (err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                } else {
+                    console.log('All transactional decision emails successfully sent!');
+                    req.flash('success', 'All transactional decision emails successfully sent!');
+                    return res.redirect('/admin/dashboard');
+                }
+            });
+        }
+    });
+}
 
 /**
- * @api POST /np/set Enable/disable no participation mode
- * @apiname setnp
+ * @api {GET} /api/np Checks whether a user is in no-participation mode
+ * @apiName CheckNP
+ * @apiGroup Admin
+ *
+ * @apiSuccess (200) {Boolean} true
+ * @apiError (200) {Boolean} false
+ */
+function getNoParticipation(req, res, next) {
+    res.send(req.session.np);
+}
+
+/**
+ * @api {POST} /api/admin/np/set Enable/disable no participation mode
+ * @apiName SetNP
+ * @apiGroup Admin
  *
  * @apiParam {boolean} state New np state to set
  *
- * @apiSuccess (200)
- * @apiError (500)
  */
-function setNoParticipation (req, res, next) {
+function setNoParticipation(req, res, next) {
     req.session.np = req.body.state;
     res.sendStatus(200);
-};
+}
 
-//todo documentation
-/* POST remove bus from list of buses */
-function removeBus (req, res, next) {
+/**
+ * @api {DELETE} /api/admin/removeBus Remove bus from list of buses.
+ * @apiName RemoveBus
+ * @apiGroup Admin
+ *
+ * @apiError (500) BusDoesntExist
+ */
+function removeBus(req, res, next) {
     Bus.remove({_id: req.body.busid}, function (err) {
         if (err) {
             console.error(err);
@@ -209,11 +234,17 @@ function removeBus (req, res, next) {
         }
         else return res.sendStatus(200);
     });
-};
+}
 
-//todo documentation
-/* POST update bus in list of buses */
-function updateBus (req, res, next) {
+/**
+ * @api {POST} /api/admin/updateBus update bus in list of buses.
+ * @apiName UpdateBus
+ * @apiGroup Admin
+ *
+ * @apiError DBError
+ * @apiError BusNotFound
+ */
+function updateBus(req, res, next) {
     Bus.findOne({_id: req.body.busid}, function (err, bus) {
         if (err) {
             console.error(err);
@@ -231,13 +262,22 @@ function updateBus (req, res, next) {
             else return res.sendStatus(200);
         });
     });
-};
+}
 
-//todo documentation
 /**
- * Sets a reimbursement for a school
+ * @api {POST} /api/admin/reimbursements/school Sets a reimbursement for the school.
+ * @apiName ReimbursementSchool
+ * @apiGroup Admin
+ *
+ * @apiParam {Number} collegeid A number matching our internal collegeId mappings.
+ * @apiParam {Number} amount How much to reimburse.
+ * @apiParam {String} college Name of the college.
+ * @apiParam travel Medium of travel.
+ *
+ * @apiError (500) EntryAlreadyExists
+ * @apiError (500) FailureToSave
  */
-function schoolReimbursementsPost (req, res) {
+function schoolReimbursementsPost(req, res) {
     Reimbursements.findOne({'college.id': req.body.collegeid}, function (err, rem) {
         console.log(req.body);
         if (err) {
@@ -268,12 +308,21 @@ function schoolReimbursementsPost (req, res) {
             })
         }
     })
-};
+}
 
 /**
- * Updates the reimbursement for a school
+ * @api {PATCH} /api/admin/reimbursements/school Sets a reimbursement for the school.
+ * @apiName ReimbursementSchool
+ * @apiGroup Admin
+ *
+ * @apiParam {Number} collegeid A number matching our internal collegeId mappings.
+ * @apiParam {Number} amount How much to reimburse.
+ * @apiParam travel Medium of travel.
+ *
+ * @apiError (500) EntryAlreadyExists
+ * @apiError (404) NoInfoInRequestBody
  */
-function schoolReimbursementsPatch (req, res) {
+function schoolReimbursementsPatch(req, res) {
     Reimbursements.findOne({"college.id": req.body.collegeid}, function (err, rem) {
         if (err) {
             console.error(err);
@@ -295,12 +344,18 @@ function schoolReimbursementsPatch (req, res) {
         });
 
     })
-};
+}
 
 /**
- * Deletes a reimbursement for a school
+ * @api {DELETE} /api/admin/reimbursements/school Delete reimbursements for a school
+ * @apiName ReimbursementSchool
+ * @apiGroup Admin
+ *
+ * @apiParam {Number} collegeid A number matching our internal collegeId mappings.
+ *
+ * @apiError (500) CouldNotFind
  */
-function schoolReimbursementsDelete (req, res) {
+function schoolReimbursementsDelete(req, res) {
     Reimbursements.remove({'college.id': req.body.collegeid}, function (err, rem) {
         if (err) {
             console.error(err);
@@ -308,12 +363,16 @@ function schoolReimbursementsDelete (req, res) {
         }
         return res.sendStatus(200);
     })
-};
+}
 
 /**
- * Sets the RSVP status of the user in params.pubid to body.going
+ * @api {PATCH} /api/admin/user/:pubid/setRSVP Sets the RSVP status of the user in params.pubid to body.going.
+ * @apiName SetRSVP
+ * @apiGroup Admin
+ *
+ * @apiParam {Boolean} going Decision of user.
  */
-function setRSVP (req, res) {
+function setRSVP(req, res) {
     var going = normalize_bool(req.body.going);
     if (going === "") {
         going = null;
@@ -332,13 +391,16 @@ function setRSVP (req, res) {
             });
         }
     });
-};
+}
 
 /**
- * Sets params.pubid as to body.checkedin
- * Can be used to check a user out (for 2016 TODO)
+ * @api {PATCH} /api/admin/user/:pubid/checkin Sets params.pubid as to body.checkedin. Can be used to check a user in (for 2016 TODO).
+ * @apiName CheckInUser
+ * @apiGroup Admin
+ *
+ * @apiParam checkedIn True if user has checked into the hackathon.
  */
-function checkInUser (req, res, next) {
+function checkInUser(req, res, next) {
     User.findOne({pubid: req.params.pubid}, function (err, user) {
         if (err || !user) {
             return res.sendStatus(500);
@@ -353,12 +415,16 @@ function checkInUser (req, res, next) {
             });
         }
     });
-};
+}
 
 /**
- * Finds all users who are eligible to be checked in (either planned on going or are from Cornell)
+ * @api {GET} /api/admin/users/checkin Finds all users who are eligible to be checked in (either planned on going or are from Cornell)
+ * @apiName GetUsersPlanningToAttend
+ * @apiGroup Admin
+ *
+ * @apiSuccess Users All users who match the criteria with name, pubid, email, school, and internal.checkedin
  */
-function getUsersPlanningToAttend (req, res, next) {
+function getUsersPlanningToAttend(req, res, next) {
     var project = "name pubid email school internal.checkedin";
     User.find({$or: [{"internal.going": true}, {"internal.cornell_applicant": true}]}).select(project).exec(function (err, users) {
         if (err) {
@@ -368,7 +434,81 @@ function getUsersPlanningToAttend (req, res, next) {
             res.send(users);
         }
     })
-};
+}
+
+
+/**
+ * @api {POST} /api/admin/announcements Create a new announcement and posts it to (TODO) website, mobile, facebook, and twitter
+ * @apiName POSTAnnouncements
+ * @apiGroup Announcements
+ *
+ * @apiParam {String} message Body of the message
+ */
+function postAnnouncement(req, res, next) {
+    console.log(req.body);
+    var newAnnouncement = new Announcement({
+        message: req.body.message
+    });
+    newAnnouncement.save(function (err, doc) {
+        if (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
+        else {
+            // Broadcast announcement
+            var io = require('../../app').io;
+            io.emit('announcement', req.body.message);
+            req.flash('success','Announcement made!');
+            return res.redirect('/admin/dashboard');
+        }
+    });
+}
+
+
+/**
+ * @api {DELETE} /api/admin/announcements Delete an announcement
+ * @apiName DELETEAnnouncements
+ * @apiGroup Announcements
+ *
+ * @apiParam {String} _id The unique mongo id for the announcement
+ */
+function deleteAnnouncement(req, res, next) {
+    Announcement.remove({_id: req.body._id}, function (err) {
+        if (err) {
+            console.error(err);
+            return res.sendStatus(500);
+        }
+        else return res.sendStatus(200);
+    });
+}
+
+
+/**
+ * @api {POST} /api/admin/annotate Add an annotation to the timeline
+ * @apiName Annotate
+ * @apiGroup Admin
+ *
+ * @apiParam {String} annotation The message for the annotation
+ * @apiParam {Date} time (Optional) time of annotation
+ *
+ */
+function annotate(req, res, next) {
+    var newAnnotation = new TimeAnnotation({
+        time: (req.body.time) ? req.body.time : Date.now(),
+        info: req.body.annotation
+    });
+
+    newAnnotation.save(function (err, doc) {
+        if (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
+        else {
+            return res.redirect('/admin/stats');
+        }
+    });
+}
+
 
 /**
  * Converts a bool/string to a bool. Otherwise returns the original var.

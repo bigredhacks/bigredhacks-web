@@ -1,0 +1,21 @@
+extends _layout-unsecured
+
+
+block header
+    link(href="/css/index.css", rel="stylesheet")
+    link(rel="stylesheet", href="/css/login.css")
+
+block append main_content
+    .container
+        .announcements
+            h1 Announcements
+                ul.announcementList
+        .schedule
+            h1 Schedule
+                .agenda
+                    <iframe src="https://calendar.google.com/calendar/embed?title=BigRed%2F%2FHacks%202016%20Schedule&amp;showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showTz=0&amp;mode=AGENDA&amp;height=400&amp;wkst=1&amp;bgcolor=%2300cccc&amp;src=cornell.edu_9dauk4h1ovouehcm2g70a7nb5o%40group.calendar.google.com&amp;color=%23182C57&amp;ctz=America%2FNew_York" style="border:solid 1px #777" width="800" height="400" frameborder="0" scrolling="no"></iframe>
+
+block footer
+    script(src="https://code.jquery.com/jquery-1.10.2.min.js")
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/live.js")

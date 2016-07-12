@@ -2,8 +2,14 @@
    User dashboard
 
 extends _layout-dashboard
+block vars
+    - status = user.internal.notificationStatus.toLowerCase();
+    - cornellian = user.internal.cornell_applicant;
 
 block dashboard_content
+    unless input
+        - input = {}
+
     +contentHeading("Dashboard")
 
     +showMessages(messages)
@@ -16,6 +22,165 @@ block dashboard_content
         p registration process is still open.
     else
         p registration process is closed.
+
+    if status == "rejected"
+        p.long-text
+            | Thank you for applying for BigRed//Hacks! With so many hackathons happening this year,
+            |  we're honored that we were on your list.
+        p.long-text
+            | Unfortunately, we aren't able to offer you a spot at BigRed//Hacks #{new Date().getFullYear()}. We had a
+            |  record number of applications, and a very limited amount of space. But know that we still think you're
+            |  awesome, and would love for you to apply again for BigRed//Hacks #{new Date().getFullYear() + 1}!
+        p.long-text All the best for the future, and keep on hacking!
+        p BigRed//Hacks Team
+
+    else if status == "waitlisted"
+        p.long-text
+            | Thank you for applying for BigRed//Hacks! With so many hackathons
+            |  happening this year, we're honored that we were on your list.
+        p.long-text
+            | We had a record number of applications, and a very limited amount of space. While we
+            |  aren't able to offer you a spot immediately, you are on our waitlist and we'll reach out to you as soon
+            |  as one becomes available. Last year, we were able to accept a lot of hackers from our waitlist, so check
+            |  your email often!
+        p.long-text
+            | If you aren't interested in coming to BigRed//Hacks at all anymore, then please check
+            |  the box below. We'll be sad, but it'll be super helpful.
+        p.long-text All the best for the future, and keep on hacking!
+        p BigRed//Hacks Team
+        .form-group
+            .checkbox
+                label
+                    input#notinterested.checkbox(type='checkbox', value='', checked=user.internal.not_interested)
+                    | I'm not interested in going anymore.
+
+    else if status == "accepted"
+        p.long-text
+            | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks #{new Date().getFullYear()},
+            |  taking place on September 18-20 at Cornell University. You'll be one of 400 hackers from universities
+            |  all across the U.S. coming together to hack, build, and learn.
+        if !user.internal.cornell_applicant
+            if (user.internal.going == null)
+                if (deadline.active)
+                    p <b>You have #{deadline.message} left to RSVP before you risk losing your spot.</b>
+                else
+                    p
+                        | You have not responded within the window of #{deadline.interval} we requested. We may change your application
+                        |  status to rejected at any moment to make room for another applicant, but you may still RSVP
+                        |  until we do that if you still wish to attend.
+                p.long-text
+                    | Because the event is fast approaching, <b>you'll need to RSVP as soon as possible,</b>
+                    |  or you risk losing your spot. RSVPing involves two steps: confirming your mode of transportation
+                    |  (including providing a receipt if requesting a reimbursement), and agreeing to the BigRed//Hacks and
+                    |  Major League Hacking's code of conduct.
+        p.long-text
+            | We'll be sending lots more information as we get closer to the event, so stay tuned!
+        p.long-text
+            | Please join our
+            a(href='https://www.facebook.com/groups/397005627168999/') BigRed//Hacks #{new Date().getFullYear()} Hackers
+            |  Facebook group to find partners and plan travel with other students.
+        p.long-text Looking forward to seeing you in Ithaca,
+        p BigRed//Hacks Team
+        br
+
+
+        if (user.internal.going && !cornellian)
+            +sectionHeading("Transportation")
+
+            if bus == null
+                p Allowance: $#{reimbursement.amount}
+                p.long-text
+                    | Allowances are based on the general cost of inexpensive transportation in your area. You may select any method
+                    |  of transportation, but we will only reimburse you up to the amount above. If you believe that this amount is unfair,
+                    |  then please reach out to us and we'll make adjustements as necessary.
+                p.long-text
+                    | Notes for drivers: We ask that you make every effort to carpool with as many students
+                    |  as possible in your school. We will provide a Facebook page for you to find others in your area. Parking
+                    |  is free at Cornell after 5pm on Friday through Sunday. We are not responsible for any fines for parking
+                    |  violations.
+                p
+                    | Please send any questions or concerns to
+                    a(href='mailto:info@bigredhacks.com?Subject=Transportation') info@bigredhacks.com
+                    | .
+            else
+                p= bus.message
+                .businfobox(data-busid=bus.id)
+                    .busname
+                    ul.businfo
+                        li.busstopslist
+                            b Bus Stops:
+                            ul.busstops
+                                for stop in bus.stops
+                                    li(data-collegeid=stop.collegeid)
+                                        span.collegename= stop.collegename
+                        li.currentnumber(data-currentnumber=bus.members.length)
+                            b Current Number on Bus:
+                            | #{bus.members.length}
+                        li.maxcapacity
+                            b Max Capacity:
+                            span.maxcapacitynumber= bus.capacity
+                        if user.internal.busid == bus.id
+                            li.userbusdecision <b>Your Current Bus Decision:</b> Signed Up
+                        else
+                            li.userbusdecision <b>Your Current Bus Decision:</b> Opt Out</li>
+                        if (buscaptain != null)
+                            li.buscaptain
+                                b Bus Captain
+                                |  #{bus.buscaptain.name.last}, #{bus.buscaptain.name.first} (#{bus.buscaptain.email})
+                    .busselection
+                        input#signup.btn.btn-success(type='button', value='sign up', name='signup')
+                        input#optout.btn.btn-danger(type='button', value='opt out', name='optout')
+
+        +sectionHeading("RSVP")
+        if (user.internal.going == null)
+            form#rsvpForm(method='post', action='/user/rsvp', enctype='multipart/form-data')
+                .form-group
+                    label(for='rsvpDropdown') Are you coming? *
+                    select#rsvpDropdown.form-control(name='rsvpDropdown', required='')
+                        option(value='') select
+                        +generateOptions("yes no".split(" "), {selected: (input.rsvp || "")})
+                #coming-only(style='display:none')
+                    if bus == null
+                        .form-group
+                            label(for='receipt') Travel Receipt (.pdf, max: 10MB) *
+                            p
+                                | Upload a copy of receipt for a roundtrip ticket. If you
+                                |  are driving, then include a screenshot of your route on Google Maps.
+                            .wrapper
+                                input#receipt.form-control.filepicker-bootstrap(data-label='upload', type='file', name='receipt', accept='.pdf')
+                    p
+                        | Please click the two following links and read the
+                        | documents carefully.
+                    .form-group
+                        a.btn.btn-red(type='button', href='http://www.bigredhacks.com/docs/waiver2015.pdf', target='_blank') liability waiver & release
+                        a.btn.btn-red(type='button', href='http://static.mlh.io/docs/mlh-code-of-conduct.pdf', target='_blank') code of conduct
+                        br
+                        .checkbox
+                            label
+                                input#legal.checkbox(type='checkbox', name='legal', value='true')
+                                | I affirm that I have read and agree in full to the BigRed//Hacks Accident Waiver and
+                                |  Release of Liability, and agree to comply with the Major League Hacking Code of Conduct. I
+                                |  understand that if I do not agree with any component of these agreements, I should not RSVP for the event.
+                    .form-group
+                        button#rsvp.btn.btn-red(type='submit', name='rsvpsubmit') submit
+        else
+            if user.internal.going
+                p You told us that you are going to BigRed//Hacks.
+                p
+                    | If you can't make it, please let us know at
+                    a(href='mailto:info@bigredhacks.com?Subject=Transportation') info@bigredhacks.com
+                    | .
+            else
+                p
+                    | You told us that you weren't going to BigRed//Hacks.  If your
+                    | plans have changed, please let us know as know at
+                    a(href='mailto:info@bigredhacks.com?subject=Transportation') info@bigredhacks.com
+                    | .
+            br
+    else
+        p.long-text
+            | We're doing applications on a rolling basis this year for students outside of Cornell.
+            | Keep an eye on this page and your email for a decision!
 
     +sectionHeading("my team")
     div
