@@ -213,7 +213,7 @@ section {
   }
   .sustainable {
     .container {
-      width: 32.5%
+      width: 50%
     }
   }
 }
@@ -422,18 +422,22 @@ section {
 // ===========================
 //--- About
 //============================
-/*.about {
-  background-color: @white;
-  z-index: -2;
-  position: relative;
+.about {
+  //z-index: -2;
+  //position: relative;
+  //width: 10%;
   p, h2 {
-    position: relative;
+    //position: relative;
     //padding-left: @content-padding-left;
     //width: @content-width;
     color: @black;
     z-index: 999;
   }
-}*/
+  .container p, h2{
+    //background-color: blue;
+    z-index: 9999999;
+  }
+}
 
 .sponsors {
   background-color: @white;
@@ -454,10 +458,16 @@ section {
   p, h2 {
     z-index: 50;
     color: #3c3c3c;
+    //width: 50%;
   }
   background: @white;
   .content {
     padding-top: 100px;
+
+  }
+  .container p, h2{
+    //z-index: 99999;
+    width: 600px;
   }
 }
 
@@ -478,9 +488,9 @@ section {
   h2, dd, dt {
     color: @off-white;
   }
-  .container {
-    color: @off-white;
-  }
+  //.container {
+  //  color: @off-white;
+  //}
   background: @ocean-blue;
   dt {
     font-size: 20px;
@@ -1105,4 +1115,23 @@ footer p {
 
 .landing-container {
   margin-top: 200px;
+}
+
+
+//404 error
+.landing-header{
+  font-size:30px;
+  text-align: center;
+}
+.landing-subheader{
+  font-size: 14px;
+  text-align: center;
+}
+.landing-icon.fa.fa-exclamation-triangle{
+  font-size: 70px;
+  color: @redish;
+  text-align: center;
+}
+.landing-container{
+  text-align: center;
 }
