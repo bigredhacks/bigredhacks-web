@@ -983,31 +983,7 @@ footer p {
     height: 16%;
   }
 
-  @media (min-width: 1500px) {
-    .whale {
-      background-image: url(/img/whale.svg);
-      background-size: contain;
-      background-repeat: no-repeat;
-      z-index: 500;
-      position: absolute;
-      height: 300px;
-      width: 700px;
-      top: -220px;
-      left: 35%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    // Whale
-    #whaleDiv {
-      position: relative;
-    }
-
-    .whale:hover {
-      background-image: url(/img/whale_happy.svg);
-    }
-  }
-
+  @media (min-width: 768px) {
     .whale {
       background-image: url(/img/whale.svg);
       background-size: contain;
@@ -1028,9 +1004,24 @@ footer p {
     }
 
     .whale:hover {
-      background-image: url(/img/whale_happy.svg);
+      opacity: 0;
     }
-
+    
+    .whale-happy {
+      background-image: url(/img/whale_happy.svg);
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 499;
+      position: absolute;
+      height: 150px;
+      width: 350px;
+      top: -110px;
+      left: 35%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
 
   .wave {
     background-size:contain;
