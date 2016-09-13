@@ -1,0 +1,84 @@
+[1mdiff --cc routes/admin.js[m
+[1mindex 5e52458,4b77dec..0000000[m
+[1m--- a/routes/admin.js[m
+[1m+++ b/routes/admin.js[m
+[36m@@@ -581,8 -581,8 +581,13 @@@[m [mrouter.get('/checkin', function (req, r[m
+   * @apiGroup AdminAuth[m
+   */[m
+  router.get('/stats', function (req, res, next) {[m
+[32m++<<<<<<< Updated upstream[m
+[32m +    async.parallel([[m
+[32m +            function timeAnnotations(callback) {[m
+[32m++=======[m
+[32m+     async.parallel({[m
+[32m+             annotations: function annotations(callback) {[m
+[32m++>>>>>>> Stashed changes[m
+                  TimeAnnotation.find({}, function (err, ann) {[m
+                      if (err) {[m
+                          console.error(err);[m
+[36m@@@ -591,7 -591,7 +596,11 @@@[m
+                      }[m
+                  });[m
+              },[m
+[32m++<<<<<<< Updated upstream[m
+[32m +            function userRegistrationDates(callback) {[m
+[32m++=======[m
+[32m+             users: function users(callback) {[m
+[32m++>>>>>>> Stashed changes[m
+                  const projection = 'created_at';[m
+                  User.find({}, projection, function (err, users) {[m
+                      if (err) {[m
+[36m@@@ -601,36 -601,20 +610,53 @@@[m
+                      }[m
+                  });[m
+              },[m
+[32m++<<<<<<< Updated upstream[m
+[32m +            function majorDistribution(callback) {[m
+[32m +                User.aggregate([m
+[32m +                    [[m
+[32m +                        {[m
+[32m +                            $match:[m
+[32m +                            { "internal.going" : true }[m
+[32m +                        },[m
+[32m +                        {[m
+[32m +                            $group: {[m
+[32m +                                _id: "$school.major",[m
+[32m +                                count: {$sum: 1}[m
+[32m +                            }[m
+[32m +                        },[m
+[32m +                        {[m
+[32m +                            $sort: {"count" : -1}[m
+[32m +                        },[m
+[32m +                        {[m
+[32m +                            $project: {[m
+[32m +                                "_id" : 0,[m
+[32m +                                "major" : "$_id",[m
+[32m +                                "count" : "$count"[m
+[32m +                            }[m
+[32m +                        }[m
+[32m +                    ], callback);[m
+[32m +            }[m
+[32m +        ], function (err, results) {[m
+[32m +            res.render('admin/stats', {[m
+[32m +                annotations: results[0],[m
+[32m +                users: results[1],[m
+[32m +                majors: results[2][m
+[32m++=======[m
+[32m+             majors: function majors(callback) {[m
+[32m+                 User.aggregate([[m
+[32m+                 {[m
+[32m+                     $group: {[m
+[32m+                         _id: '$school.major', [m
+[32m+                         count: {$sum: 1}[m
+[32m+                     }[m
+[32m+                 }[m
+[32m+                     ], callback );[m
+[32m+             }}, function (err, results) {[m
+[32m+             res.render('admin/stats', {[m
+[32m+                 annotations: results.annotations,[m
+[32m+                 users: results.users,[m
+[32m+                 majors: results.majors[m
+[32m++>>>>>>> Stashed changes[m
+              });[m
+          }[m
+      );[m
