@@ -22,6 +22,7 @@
   "admin": {
     "email": {"type": "String"},
     "reg_open": {"type": "Boolean"},
+    "results_released": {"type": "Boolean"},
     "cornell_reg_open": {"type": "Boolean"},
     "cornell_auto_accept": {"type": "Number"},
     "dayof": {"type": "Boolean"},

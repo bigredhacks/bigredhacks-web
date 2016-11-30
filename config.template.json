@@ -23,6 +23,7 @@
     "email": "",
     "reg_open": true,
     "cornell_reg_open": true,
+    "results_released": true,
     "cornell_auto_accept": 150,
     "dayof": true,
     "days_to_rsvp": 14,
