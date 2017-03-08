@@ -280,34 +280,31 @@ block dashboard_content
 
     +sectionHeading("Team")
     div
-        if middlehelp.isCornellRegistrationOpen()
-            p You may add up to 4 team members.
-            form.form-inline(action='/user/team/add', method='POST')
-                label Enter teammate id
-                span.label-helper me: #{user.pubid}
-                br
-                .form-group
-                    label.sr-only(for='addteamid') enter teammate id
-                    input#addteamid.form-control(type='text', name='userid', placeholder='user id')
-                button#addteamid-submit.btn.btn-default(type='submit', disabled='') add a teammate
-            if team.length == 0
-                if middlehelp.isCornellRegistrationOpen()
-                    p You are not in a team.
-            else
-                p Your team members:
-                ul.team-list
-                    for member in team
-                        li= member.name
-            if middlehelp.isCornellRegistrationOpen()
-            if team.length > 0
-                a.btn.btn-default(href="/user/team/leave") Remove yourself from this team.
-        //-
-            if middlehelp.isRegistrationOpen()
-                .form-group
-                    .checkbox
-                        label
-                            input#cornellteamcheck.checkbox(type="checkbox",value="",checked=user.internal.teamwithcornell)
-                            | I plan to work with (a) Cornell student(s).
+        p You may add up to 4 team members.
+        form(action='/user/team/add', method='POST')
+            label Enter teammate id
+            span.label-helper me: #{user.pubid}
+            br
+            .form-group.form-inline
+                label.sr-only(for='addteamid') enter teammate id
+                input#addteamid.form-control(type='text', name='userid', placeholder='user id')
+            button#addteamid-submit.btn.btn-default(type='submit', disabled='') add a teammate
+        if team.length == 0
+                p You are not in a team.
+        else
+            p Your team members:
+            ul.team-list
+                for member in team
+                    li= member.name
+        if team.length > 0
+            a.btn.btn-default(href="/user/team/leave") Remove yourself from this team.
+    //-
+        if middlehelp.isRegistrationOpen()
+            .form-group
+                .checkbox
+                    label
+                        input#cornellteamcheck.checkbox(type="checkbox",value="",checked=user.internal.teamwithcornell)
+                        | I plan to work with (a) Cornell student(s).
 
     +sectionHeading("Resume")
     a.btn.btn-default(href=resumeLink, target='_blank') View My Resume
