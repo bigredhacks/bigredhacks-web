@@ -1,10 +1,11 @@
 extends _global/_layout
 //-Generates full section header
 mixin sectionHeading(name)
+
     .section-heading.container
-        img(src='/img/fade.png', width= 800, height= 85)
+        img.fade-img(src='/img/fade.png')
         br
-        h2 #{name}
+        h2.fade-heading #{name}
 
 mixin generateFAQs(text, count)
     - for (var i=0; i<count; i++)
@@ -31,7 +32,7 @@ mixin message(content, type)
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
-    nav.navbar.navbar-default
+    nav.navbar.navbar-default.navbar-fixed-top
         .container-fluid
             .navbar-header
                 a.navbar-brand(href='/')
@@ -41,11 +42,13 @@ block append content
             .navbar-header
                 a.navbar-text(href='#faq') FAQ
             .navbar-header
-                a.navbar-text(href='#microsoft') Sponsors
+                a.navbar-text(href='#sponsors') Sponsors
 
     section.intro#intro
         .slogan
-            img.center-block(src='/img/sp17_brh_title_2.png', width= 800, height= 85)
+            img#title-logo.center-block.wide-img(src='/img/sp17_brh_title_2.png')
+            div#wrapper
+                img#title-v2(src="/img/sp17_pro_pic.png")
             .intro-contents
               .headerbox
                 .redbox
@@ -56,20 +59,27 @@ block append content
                   .big-heading2
                     h2#date March 24-25, 2017
                     h2#caption Powered by Cortana Intelligence Suite
-
-                btn-group.group
-                  a.button.btn.btn-default(href="/register/cornelluniversity") Apply Now
-                  a.button.btn.btn-default(href="/login") Log In
+                  btn-group.group.user-action-group#sponsors
+                    if isUser
+                        case userRole
+                            when "admin": a.btn.btn-default(href="/admin/dashboard") admin dashboard
+                            when "mentor": a.btn.btn-default(href="/admin/dashboard") my dashboard
+                            default: a.btn.btn-default(href="/user/dashboard") my dashboard
+                        //- a.btn.btn-light-blue(href="/live") live
+                    else
+                        if middlehelp.isCornellRegistrationOpen()
+                            a.button.btn.btn-default(href="/register/cornelluniversity") Apply Now
+                        a.button.btn.btn-default(href="/login") Log In
 
               .banner
                   .logos
                       img(src='/img/logos/blackstone.png')
-                      img(src='/img/logos/microsoft.png')
-                      img(src='/img/logos/cis.jpg')
-                      img(src='/img/logos/eac.jpg')
+                      img#microsft(src='/img/logos/microsoft.png')
+                      img#cis_corn(src='/img/logos/cis.jpg')
+                      img#entrep(src='/img/logos/eac.jpg')
 
     section.faq#description
-        +sectionHeading("What is the Data Science Student Challenge?")
+        +sectionHeading("What's the Data Science Student Challenge?")
         .container
             p
                 | The Data Science Student Challenge is part of a global series of hackathons.

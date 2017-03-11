@@ -278,35 +278,33 @@ block dashboard_content
                     | .
             br
 
-        if (!cornellian)
-            +sectionHeading("my team")
-            div
-                if middlehelp.isRegistrationOpen()
-                    p you may add up to 4 team members. cornell students do not have a team id, click the checkbox instead.
-                    form.form-inline(action='/user/team/add', method='POST')
-                        label enter teammate id
-                        span.label-helper me: #{user.pubid}
-                        br
-                        .form-group
-                            label.sr-only(for='addteamid') enter teammate id
-                            input#addteamid.form-control(type='text', name='userid', placeholder='user id')
-                        button#addteamid-submit.btn.btn-blue(type='submit', disabled='') add a teammate
-                ul.team-list
-                    if team.length == 0
-                        if middlehelp.isRegistrationOpen()
-                            p You are not in a team.
-                    else
-                        for member in team
-                            li= member.name
-                if middlehelp.isRegistrationOpen()
-                    if team.length > 0
-                        a.btn.btn-blue(href="/user/team/leave") Remove yourself from this team.
-            if middlehelp.isRegistrationOpen()
-                .form-group
-                    .checkbox
-                        label
-                            input#cornellteamcheck.checkbox(type="checkbox",value="",checked=user.internal.teamwithcornell)
-                            | I plan to work with (a) Cornell student(s).
+    +sectionHeading("Team")
+    div
+        p You may add up to 4 team members.
+        form(action='/user/team/add', method='POST')
+            label Enter teammate id
+            span.label-helper me: #{user.pubid}
+            br
+            .form-group.form-inline
+                label.sr-only(for='addteamid') enter teammate id
+                input#addteamid.form-control(type='text', name='userid', placeholder='user id')
+            button#addteamid-submit.btn.btn-default(type='submit', disabled='') add a teammate
+        if team.length == 0
+                p You are not in a team.
+        else
+            p Your team members:
+            ul.team-list
+                for member in team
+                    li= member.name
+        if team.length > 0
+            a.btn.btn-default(href="/user/team/leave") Remove yourself from this team.
+    //- TODO #239 restore this feature
+        if middlehelp.isRegistrationOpen()
+            .form-group
+                .checkbox
+                    label
+                        input#cornellteamcheck.checkbox(type="checkbox",value="",checked=user.internal.teamwithcornell)
+                        | I plan to work with (a) Cornell student(s).
 
     +sectionHeading("Resume")
     a.btn.btn-default(href=resumeLink, target='_blank') View My Resume
@@ -319,4 +317,4 @@ block dashboard_content
         .form-group.has-error
             input#resumeinput.form-control.filepicker-bootstrap(data-label='upload', type='file', name='resumeinput', accept='.pdf', required='')
         .form-group
-            button#resume-save.btn.btn-blue(type='submit', disabled='') Save
+            button#resume-save.btn.btn-default(type='submit', disabled='') Save

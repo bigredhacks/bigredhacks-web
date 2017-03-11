@@ -26,9 +26,9 @@ numberpools.unshift('x');
 orderCounts.unshift('Users registered');
 
 // Converting annotations into xLines form for c3.js
-let xLines = annotations.reduce(function(acc, val, currentIndex){
+var xLines = annotations.reduce(function(acc, val, currentIndex){
     // Use the index as the value displayed on the line
-    let newVal = { "value": new Date(val.time), "text": currentIndex+1};
+    var newVal = { "value": new Date(val.time), "text": currentIndex+1};
     acc.push(newVal);
     return acc;
 }, []);

@@ -28,20 +28,10 @@ img {
   .noselect;
 }
 
-//disable horizontal scrolling
-//html, body {
-//    max-width: 100%;
-//    overflow-x: hidden;
-//}
-
-html {
-  width: 100%;
-  height: 100%;
-}
 
 body {
-  width: 100%;
-  height: 100%;
+  //width: 100%;
+  //height: 100%;
   font-family: 'Nunito Sans', sans-serif;
   font-weight: @weight-normal;
   color: @bg-light;
@@ -50,9 +40,6 @@ body {
   margin: 0;
 }
 @media (max-width: 768px){
-  body{
-    width: 800px;
-  }
   .navbar-fixed-top {
     position: relative;
     top: auto;
@@ -106,7 +93,7 @@ a {
 .navbar {
   margin-bottom: 0;
   border-bottom: 1px solid rgba(255, 255, 255, .3);
-
+  background: @bg-dark !important;
 }
 
 .navbar-brand {
@@ -123,6 +110,18 @@ a {
   &:focus {
     outline: 0;
   }
+}
+
+.fade-heading {
+  padding-top: 85px;
+}
+
+.fade-img {
+  display: inherit;
+  position: absolute;
+  left: 0%;
+  width: 800px;
+  height: 85px;
 }
 
 // ===========================
@@ -171,10 +170,18 @@ section {
 }
 .big-heading h2 {
   color: @white;
-  font-size: 28px;
+  font-size: 32px;
   padding-top: 25px;
   margin-bottom: 18px;
   font-family: 'Overpass Mono', sans-serif;
+}
+
+.user-action-group {
+  margin-left: 75px;
+  .btn-default {
+    margin-right: 100px;
+    margin-left: 0px;
+  }
 }
 
 .center-date {
@@ -209,9 +216,11 @@ section {
 
 .section-heading {
   h2 {
-    font-size: 40px;
-    color: #cd5257;
+
+    font-size: 26px;
+    color: @dark-red;
     display: inline-block;
+    word-spacing: -4px;
     margin-left: 0px;
   }
 }
@@ -250,8 +259,8 @@ section {
 //============================
 
 .intro {
-  width: 100%;
-  padding: 80px 0 0 0;
+  //width: 100%;
+  padding: 160px 0 0 0;
   //padding-top: 15%; //with announcement
   position: relative;
   background-color: #242C37;
@@ -274,15 +283,31 @@ section {
     }
     .logos{
       display: inline-block;
-
+    }
+    #microsft {
+      height: 60px;
+      margin-left: 40px;
+    }
+    #entrep {
+      height: 35px;
+      margin-left: 40px;
+    }
+    #cis_corn {
+      height: 50 px;
+      margin-left: 40px;
     }
 
   }
   @media (max-width: 768px){
-    .btn.btn-default{
-      margin-right: 70px;
+    .btn.btn-default.button-b2 {
       margin-left: 70px;
     }
+    .btn.btn-default{
+      margin-right: 0px;
+      margin-left: 0;
+      padding-top: 15px;
+    }
+
     .banner{
       display:none;
     }
@@ -445,11 +470,11 @@ section {
     color: @bg-light;
   }
   .container {
-    width: 80%;
+    width: 60%;
   }
   dt {
     font-size: 16px;
-    padding-top: 10px;
+    padding-top: 20px;
   }
   dd {
     font-size: 14px;
@@ -499,7 +524,6 @@ footer {
 footer p {
   color: #f8f8f8;
   text-align: left;
-
 }
 
 // ===========================
@@ -561,12 +585,96 @@ footer p {
 
 }
 
-@media (max-width: 768px) {
+.wide-img{
+  width: 80vw;
+  max-width: 800px;
+  height: 85px;
+}
 
+#wrapper{
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .faq {
+    .container {
+      width: 80%;
+    }
+  }
+    #intro{
+      padding-top: 5px;
+    }
+
+    #wrapper {
+        display: block;
+        max-width: 40vw; /* max-width doesn't behave correctly in legacy IE */
+        margin: 0 auto;
+    }
+    #wrapper img{
+        width:100%;       /* the image will now scale down as its parent gets smaller */
+    }
+    .wide-img{
+      display: none;
+    }
+
+    .redbox {
+      .container {
+        position: relative;
+        //left: -80px;
+        // width: 80%;
+      }
+    }
+
+  footer {
+    padding: 5px;
+    .container{
+      width: 100%;
+    }
+  }
+
+  footer p {
+    color: #f8f8f8;
+    text-align: left;
+  }
+
+  #title-logo {
+    width: 99%;
+    padding-right: 0.5%;
+    padding-left: 0.5%;
+  }
+
+  .intro {
+    width: 100%;
+  }
+
+  .headerbox {
+    width: 100%;
+    padding-right: 5%;
+  }
+
+  .fade-img {
+    display: none;
+  }
+
+  .slogan {
+    width: 100%;
+    text-align: left;
+    float: none;
+  }
+
+  .navbar-header {
+    display: inline-block;
+    width: 25%;
+    vertical-align: bottom;
+  }
   .navbar {
+    display: none;
     letter-spacing: 2px;
     background: 0 0;
     border-color: transparent;
+  }
+  .a.navbar-text {
+    display: inline;
   }
 
   .navbar-default
@@ -602,14 +710,18 @@ footer p {
     text-align: center;
     width: 100%;
   }
+
+  .s-icon {
+    margin-right: 15px;
+    width: 30px;
+    height: 30px;
+  }
 }
 
 @media (max-width: 496px) {
 
-
-  #sponsors {
-    display: none;
-    //position: relative;
+  body{
+    width: 100%;
   }
 
 }
