@@ -247,10 +247,9 @@ block dashboard_content
                                     .wrapper
                                         input#receipt.form-control.filepicker-bootstrap(data-label='upload', type='file', name='receipt', accept='.pdf,image/jpg,image/png')
                             br
-                        p We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share certain application/registration information for event administration, ranking, MLH administration, pre and post-event informational e-mails, and occasional messages about hackathons in line with the MLH Privacy Policy.
                         p
-                            | Please click the two following links and read the
-                            | documents carefully.
+                            | Please click the following link and read the
+                            | document carefully.
                         .form-group
                             label
                                 input#agreements-viewed(name='agreements-viewed', hidden=true)
@@ -261,8 +260,8 @@ block dashboard_content
                                 label
                                     input#legal.checkbox(type='checkbox', name='legal', value='true')
                                     | I affirm that I have read and agree in full to the BigRed//Hacks Accident Waiver and
-                                    |  Release of Liability, and agree to comply with the Major League Hacking Code of Conduct. I
-                                    |  understand that if I do not agree with any component of these agreements, I should not RSVP for the event.
+                                    |  Release of Liability. I understand that if I do not agree with any component of
+                                    | this agreement, I should not RSVP for the event.
                         .form-group
                             button#rsvp-yes-button.btn.btn-danger(type='submit', name='rsvpsubmit') submit
         else
