@@ -1536,11 +1536,11 @@ function makeEvent(req, res, next) {
     function(err){
       if(err){
         req.flash('error', 'An error occurred');
-        return res.redirect('/admin/dashboard');
+        return res.redirect('/admin/qrscan');
       }
 
       req.flash('success', 'Successfully made a new event');
-      return res.redirect('/admin/dashboard');
+      return res.redirect('/admin/qrscan');
     }
   );
 }

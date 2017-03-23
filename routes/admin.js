@@ -713,6 +713,24 @@ router.get('/stats', function (req, res, next) {
     });
 
 /**
+ * @api {GET} /admin/qrscan The scanEvent checkin page
+ * @apiName QRScan
+ * @apiGroup AdminAuth
+ */
+router.get('/qrscan', function (req, res, next) {
+  async.parallel({
+        // TODO: what we need?
+  }, function(err, result) {
+    if (err) {
+      console.error(err);
+    }
+
+    res.render('admin/qrscan');
+  });
+});
+
+
+/**
  * Helper function to fill team members in teammember prop
  * @param applicants Array|Object of applicants to obtain team members of
  * @param callback function that given teamMembers, renders the page

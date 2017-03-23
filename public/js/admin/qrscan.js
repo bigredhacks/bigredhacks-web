@@ -25,24 +25,26 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
         decoder: qr.decodeFromCamera
     }];
 
+    function _decodeCallback(err,result,e) {
+      if (err){
+        console.error(err);
+      }
+
+      //If decode works, then this will alert.
+      // TODO: Attach check-in logic to this
+      alert("Just decoded: " + result);
+
+      //Reload to kill the stream
+      //location.reload();
+    }
+
     //In case we have more than one stream
     elems.forEach(function(e) {
         e.activator.onclick = function(r) {
             //Stop any default behavior associated with buttons
             r && r.preventDefault();
             //Attempt to decode
-            e.decoder.call(qr, e.target, function(err, result) {
-                if (err){
-                    throw err;
-                }
-
-                //If decode works, then this will alert.
-                // TODO: Attach check-in logic to this
-                alert("Just decoded: " + result);
-
-                //Reload to kill the stream
-                location.reload();
-            }, false)
+            e.decoder.call(qr, e.target, _decodeCallback, false)
         };
 
         e.deactivator.onclick = function(r) {
