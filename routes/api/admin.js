@@ -19,6 +19,7 @@ var Inventory = require('../../models/hardware_item.js');
 var InventoryTransaction = require('../../models/hardware_item_checkout.js');
 var HardwareItemTransaction = require('../../models/hardware_item_transaction.js');
 var MentorAuthorizationKey = require('../../models/mentor_authorization_key');
+var ScanEvent = require('../../models/scan_event');
 
 var config = require('../../config.js');
 var helper = require('../../util/routes_helper.js');
@@ -81,6 +82,9 @@ router.post('/cornellLottery', cornellLottery);
 router.post('/cornellWaitlist', cornellWaitlist);
 
 router.post('/makeKey', makeKey);
+
+router.post('/qrScan', scanQR);
+router.post('/makeEvent', makeEvent);
 
 /**
  * @api {PATCH} /api/admin/user/:pubid/setStatus Set status of a single user. Will also send an email to the user if their status changes from "Waitlisted" to "Accepted" and releaseDecisions is true
@@ -1463,6 +1467,82 @@ function makeKey(req, res, next) {
             return res.redirect('/admin/dashboard');
         }
     );
+}
+
+/**
+ * A qr scan (or manual entry) for checkin-based events.
+ */
+function scanQR(req, res, next) {
+  let pubid = req.body.pubid;
+  let email = req.body.email;
+  let scanEventId = req.body.scanEventId;
+
+  if (!pubid && !email) {
+      return res.status(500).send('missing pubid or email');
+  }
+
+  if (!scanEventId) {
+    return res.status(500).send('missing scanEventId');
+  }
+
+  async.parallel({
+    user: function(cb) {
+        if (pubid) {
+          User.findOne({pubid:pubid},cb);
+        } else {
+          User.findOne({email:email},cb);
+        }
+    },
+    scanEvent: function(cb) {
+        ScanEvent.findOne({name: scanEventId}, cb);
+    }
+  }, function(err,data) {
+    if (!data.user) {
+      return res.status(500).send('No such user.');
+    }
+
+    if (!data.scanEvent) {
+      return res.status(500).send('No such event.');
+    }
+
+    if (user in scanEvent.attendees) {
+      req.flash('error', 'Sorry! ' + user.name.full + ' is already checked in for ' + scanEvent.name);
+      return res.redirect('/admin/qrscan');
+    } else {
+        scanEvent.attendess.push(user.id);
+        scanEvent.save(function(err) {
+            if (err) {
+              return res.status(500).send(err);
+            }
+
+            req.flash('success', user.name.full + ' is checked in for ' + scanEvent.name);
+            return res.redirect('/admin/qrscan');
+        });
+    }
+  });
+}
+
+/**
+ * Makes a scanEvent.
+ */
+function makeEvent(req, res, next) {
+  var name = req.body.name;
+
+  //Check whether the key already exists and save it
+  scanEvent.findOneAndUpdate(
+    {'name': name}, //queries to see if it exists
+    {'name': name, attendees: []}, //rewrites it if it does (does not make a new one)
+    {upsert: true}, //if it doesn't exist, it makes a creates a new one
+    function(err){
+      if(err){
+        req.flash('error', 'An error occurred');
+        return res.redirect('/admin/dashboard');
+      }
+
+      req.flash('success', 'Successfully made a new event');
+      return res.redirect('/admin/dashboard');
+    }
+  );
 }
 
 /**
