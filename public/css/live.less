@@ -12,6 +12,8 @@ body{
 }
 
 .announcements{
+  color: @bg-dark;
+  font-family: 'Overpass Mono', sans-serif;
   overflow-x: hidden;
   overflow-y: scroll;
   height: 250px;
@@ -99,22 +101,6 @@ body{
   margin: 5px;
 }
 
-.submit{
-  a {
-    color: white;
-    font-size: 18px;
-  }
-}
-.box {
-  background-color: @light-blue;
-  padding: 20px;
-  display: block;
-}
-
-.box:hover{
-  background: @bg-dark;
-}
-
 .calendar{
   height: 400px;
   overflow-x: hidden;
@@ -173,6 +159,13 @@ body{
   a {
     font-size: 18px;
   }
+}
+
+.submit{
+  padding: 20px;
+  a {
+    font-size: 18px;
+  }  
 }
 
 .not-display{
