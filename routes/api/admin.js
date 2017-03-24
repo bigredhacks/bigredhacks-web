@@ -1505,18 +1505,28 @@ function scanQR(req, res, next) {
       return res.status(500).send('No such event: ' + scanEventId);
     }
 
-    if (data.scanEvent.attendees.indexOf(data.user.id) > -1) {
-        return res.status(200).send('Sorry! ' + data.user.name.full + ' is already checked in for ' + data.scanEvent.name);
-    } else {
-        data.scanEvent.attendees.push(data.user.id);
-        data.scanEvent.save(function(err) {
-            if (err) {
-              return res.status(500).send(err);
-            }
-
-            return res.status(200).send(data.user.name.full + ' is checked in for ' + data.scanEvent.name);
-        });
+    for (let i = 0; i < data.scanEvent.attendees.length; i++) {
+        let person = data.scanEvent.attendees[i];
+        if ( (person.reference + "") == (data.user._id + "")) {
+            return res.status(200).send('Sorry! ' + data.user.name.full + ' is already checked in for ' + data.scanEvent.name);
+        }
     }
+
+    data.scanEvent.attendees.push({
+        name: {
+            first: data.user.name.first,
+            last: data.user.name.last
+        },
+        email: data.user.email,
+        reference: data.user.id
+    });
+    data.scanEvent.save(function(err) {
+        if (err) {
+          return res.status(500).send(err);
+        }
+
+        return res.status(200).send(data.user.name.full + ' is checked in for ' + data.scanEvent.name);
+    });
   });
 }
 
