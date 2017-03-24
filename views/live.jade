@@ -79,20 +79,20 @@ block append main_content
                         .calendar
                             .schedule-tab
                                 .heading
-                                        h3 fri, 9/16
+                                        h3 fri, 3/24
                                 for event in calendar
                                         if moment(event.start).format("ddd").toLowerCase() == "fri"
                                             +calendarEvents(event)
                                 .heading
-                                        h3 sat, 9/17
+                                        h3 sat, 3/25
                                 for event in calendar
                                         if moment(event.start).format("ddd").toLowerCase() == "sat"
                                             +calendarEvents(event)
-                                .heading
-                                        h3 sun, 9/18
-                                for event in calendar
-                                        if moment(event.start).format("ddd").toLowerCase() == "sun"
-                                            +calendarEvents(event)
+                                //- .heading
+                                //-         h3 sun, 9/18
+                                //- for event in calendar
+                                //-         if moment(event.start).format("ddd").toLowerCase() == "sun"
+                                //-             +calendarEvents(event)
             .col-md-3.col-md-offset-1
                 .row
                     .panel.panel-default
@@ -122,7 +122,7 @@ block append main_content
                         .panel-heading
                             h3.panel-title Devpost
                         .submit
-                            a.box(href="//brh-sp2017.devpost.com/") submit projects here
+                            a(href="//brh-sp2017.devpost.com/") submit projects here
                 .row
                     .panel.panel-default
                         .panel-heading
