@@ -34,7 +34,7 @@ function populateAttendeeTable() {
     var table = $('#attendee-append');
     table.empty();
     table.append('<tr><td>Name</td><td>Email</td></tr>')
-    for (var i of attendeeBlob.scanEvents) {
+    for (var i in attendeeBlob.scanEvents) {
         if (i.name === tableName) {
             for (var j of i.attendees) {
                 var appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
