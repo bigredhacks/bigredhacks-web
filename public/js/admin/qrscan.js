@@ -1,11 +1,11 @@
 "use strict";
 var app = angular.module('brh.controllers', []);
 
-let attendeeBlob = $('#data-init').data('init');
-let responseP = $('#response-message');
+var attendeeBlob = $('#data-init').data('init');
+var responseP = $('#response-message');
 
 function makeEventScan(email, pubid) {
-    let event = $('#active-event option:selected').text();
+    var event = $('#active-event option:selected').text();
     $.ajax({
         type: 'POST',
         url: '/api/admin/qrScan',
@@ -29,15 +29,15 @@ function makeEventScan(email, pubid) {
 }
 
 function populateAttendeeTable() {
-    let tableName = $('#active-event option:selected').text();
+    var tableName = $('#active-event option:selected').text();
     // Clear table
-    let table = $('#attendee-append');
+    var table = $('#attendee-append');
     table.empty();
     table.append('<tr><td>Name</td><td>Email</td></tr>')
-    for (let i of attendeeBlob.scanEvents) {
+    for (var i of attendeeBlob.scanEvents) {
         if (i.name === tableName) {
-            for (let j of i.attendees) {
-                let appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
+            for (var j of i.attendees) {
+                var appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
                 table.append(appendHtml);
             }
         }
@@ -141,7 +141,7 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
 
 // Non angular js:
 $('#attend-button').click(function() {
-    let email = $('#email-input').val();
+    var email = $('#email-input').val();
     makeEventScan(email,'');
 });
 
