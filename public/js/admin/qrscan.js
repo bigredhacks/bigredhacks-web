@@ -34,10 +34,12 @@ function populateAttendeeTable() {
     var table = $('#attendee-append');
     table.empty();
     table.append('<tr><td>Name</td><td>Email</td></tr>')
-    for (var i in attendeeBlob.scanEvents) {
-        if (i.name === tableName) {
-            for (var j in i.attendees) {
-                var appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
+    for (var i = 0; i < attendeeBlob.scanEvents.length; i++) {
+        var event = attendeeBlob.scanEvents[i];
+        if (event.name === tableName) {
+            for (var j = 0; j < event.attendees.length; j++) {
+                var person = event.attendees[j];
+                var appendHtml = '<tr><td>' + person.name.first + ' ' + person.name.last + '</td><td>' + person.email + '</td></tr>';
                 table.append(appendHtml);
             }
         }
@@ -148,20 +150,3 @@ $('#attend-button').click(function() {
 $('#active-event').change(function() {
     populateAttendeeTable();
 });
-
-// $('#new-event-button').click(function() {
-//     $.ajax({
-//         type: 'POST',
-//         url: '/api/admin/makeEvent',
-//         data: {
-//             name: $('#new-event-name').val()
-//         },
-//         dataType: 'json',
-//         success: function(data, status, jqXHR) {
-//             console.log(data);
-//             console.log(status);
-//             console.log(jqXHR);
-//             location.reload();
-//         }
-//     });
-// });
