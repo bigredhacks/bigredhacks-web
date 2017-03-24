@@ -36,7 +36,7 @@ function populateAttendeeTable() {
     table.append('<tr><td>Name</td><td>Email</td></tr>')
     for (var i in attendeeBlob.scanEvents) {
         if (i.name === tableName) {
-            for (var j of i.attendees) {
+            for (var j in i.attendees) {
                 var appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
                 table.append(appendHtml);
             }
