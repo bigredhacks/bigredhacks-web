@@ -1502,21 +1502,19 @@ function scanQR(req, res, next) {
     }
 
     if (!data.scanEvent) {
-      return res.status(500).send('No such event.');
+      return res.status(500).send('No such event: ' + scanEventId);
     }
 
-    if (user in scanEvent.attendees) {
-      req.flash('error', 'Sorry! ' + user.name.full + ' is already checked in for ' + scanEvent.name);
-      return res.redirect('/admin/qrscan');
+    if (data.scanEvent.attendees.indexOf(data.user.id) > -1) {
+        return res.status(200).send('Sorry! ' + data.user.name.full + ' is already checked in for ' + data.scanEvent.name);
     } else {
-        scanEvent.attendess.push(user.id);
-        scanEvent.save(function(err) {
+        data.scanEvent.attendees.push(data.user.id);
+        data.scanEvent.save(function(err) {
             if (err) {
               return res.status(500).send(err);
             }
 
-            req.flash('success', user.name.full + ' is checked in for ' + scanEvent.name);
-            return res.redirect('/admin/qrscan');
+            return res.status(200).send(data.user.name.full + ' is checked in for ' + data.scanEvent.name);
         });
     }
   });
@@ -1529,7 +1527,7 @@ function makeEvent(req, res, next) {
   var name = req.body.name;
 
   //Check whether the key already exists and save it
-  scanEvent.findOneAndUpdate(
+  ScanEvent.findOneAndUpdate(
     {'name': name}, //queries to see if it exists
     {'name': name, attendees: []}, //rewrites it if it does (does not make a new one)
     {upsert: true}, //if it doesn't exist, it makes a creates a new one

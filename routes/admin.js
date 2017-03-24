@@ -21,6 +21,7 @@ var HardwareItem = require('../models/hardware_item.js');
 var HardwareItemCheckout = require('../models/hardware_item_checkout.js');
 var HardwareItemTransaction = require('../models/hardware_item_transaction.js');
 var MentorAuthorizationKey = require('../models/mentor_authorization_key');
+var ScanEvent = require('../models/scan_event');
 
 //filter out admin users in aggregate queries.
 var USER_FILTER = {role: "user"};
@@ -719,13 +720,17 @@ router.get('/stats', function (req, res, next) {
  */
 router.get('/qrscan', function (req, res, next) {
   async.parallel({
-        // TODO: what we need?
+        scanEvents: function(cb) {
+            ScanEvent.find({}, cb);
+        }
   }, function(err, result) {
     if (err) {
       console.error(err);
     }
 
-    res.render('admin/qrscan');
+    res.render('admin/qrscan', {
+        scanEvents: result.scanEvents
+    });
   });
 });
 

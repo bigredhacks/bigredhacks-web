@@ -1,34 +1,6 @@
 "use strict";
 var app = angular.module('brh.controllers', []);
 
-let responseP = $('#response-message');
-
-function makeEventScan(email, pubid) {
-    let event = $('#active-event option:selected').text();
-    $.ajax({
-        type: 'POST',
-        url: '/api/admin/qrScan',
-        data: {
-            email: email,
-            pubid: pubid,
-            scanEventId: event
-        },
-        dataType: 'json',
-        success: function(data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR);
-        },
-        error: function(err) {
-            console.error(err);
-            responseP.html(err.responseText);
-        }
-    });
-}
-
-function populateAttendeeTable(data) {
-
-}
 
 app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
@@ -127,26 +99,3 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
     $scope.loadUsers();
 
 }]);
-
-// Non angular js:
-$('#attend-button').click(function() {
-    let email = $('#email-input').val();
-    makeEventScan(email,'');
-});
-
-// $('#new-event-button').click(function() {
-//     $.ajax({
-//         type: 'POST',
-//         url: '/api/admin/makeEvent',
-//         data: {
-//             name: $('#new-event-name').val()
-//         },
-//         dataType: 'json',
-//         success: function(data, status, jqXHR) {
-//             console.log(data);
-//             console.log(status);
-//             console.log(jqXHR);
-//             location.reload();
-//         }
-//     });
-// });
