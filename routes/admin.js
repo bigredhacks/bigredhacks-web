@@ -21,6 +21,7 @@ var HardwareItem = require('../models/hardware_item.js');
 var HardwareItemCheckout = require('../models/hardware_item_checkout.js');
 var HardwareItemTransaction = require('../models/hardware_item_transaction.js');
 var MentorAuthorizationKey = require('../models/mentor_authorization_key');
+var ScanEvent = require('../models/scan_event');
 
 //filter out admin users in aggregate queries.
 var USER_FILTER = {role: "user"};
@@ -711,6 +712,30 @@ router.get('/stats', function (req, res, next) {
             res.render('admin/hardware', result);
         });
     });
+
+/**
+ * @api {GET} /admin/qrscan The scanEvent checkin page
+ * @apiName QRScan
+ * @apiGroup AdminAuth
+ */
+router.get('/qrscan', function (req, res, next) {
+  async.parallel({
+        scanEvents: function(cb) {
+            ScanEvent.find({}, cb).populate('attendees');
+        }
+  }, function(err, result) {
+    if (err) {
+      console.error(err);
+    }
+
+    console.log(result.scanEvents);
+
+    res.render('admin/qrscan', {
+        scanEvents: result.scanEvents
+    });
+  });
+});
+
 
 /**
  * Helper function to fill team members in teammember prop

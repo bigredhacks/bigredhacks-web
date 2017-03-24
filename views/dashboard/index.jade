@@ -17,11 +17,17 @@ block dashboard_content
     p Welcome back, #{user.name.first} #{user.name.last}.
     br
 
+    //- Show QR code if the user has checked in, for quick access.
+    if user.internal.checkedin
+        +sectionHeading("QR Code")
+        #qr-holder(data-pubid=user.pubid)
+
     +sectionHeading("Status")
     if middlehelp.isCornellRegistrationOpen()
         p Cornell registration is still open.
     else
         p Registration process is closed.
+
 
     //-General (Non-Cornell) decision content
     if (!cornellian)
@@ -319,3 +325,8 @@ block dashboard_content
             input#resumeinput.form-control.filepicker-bootstrap(data-label='upload', type='file', name='resumeinput', accept='.pdf', required='')
         .form-group
             button#resume-save.btn.btn-default(type='submit', disabled='') Save
+
+block append footer
+    script(src="/js/vendor/qrcode.js")
+    script(src="/js/qrgen.js")
+
