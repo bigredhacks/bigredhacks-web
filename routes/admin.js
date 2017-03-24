@@ -728,8 +728,6 @@ router.get('/qrscan', function (req, res, next) {
       console.error(err);
     }
 
-    console.log(result.scanEvents);
-
     res.render('admin/qrscan', {
         scanEvents: result.scanEvents
     });

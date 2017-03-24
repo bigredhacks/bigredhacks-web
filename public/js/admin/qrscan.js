@@ -3,6 +3,8 @@ var app = angular.module('brh.controllers', []);
 
 var attendeeBlob = $('#data-init').data('init');
 var responseP = $('#response-message');
+var audioSuccess = new Audio('/sound/beep-success.wav');
+var audioFail = new Audio('/sound/beep-failure.wav');
 
 function makeEventScan(email, pubid) {
     var event = $('#active-event option:selected').text();
@@ -23,7 +25,11 @@ function makeEventScan(email, pubid) {
         error: function(err) {
             console.error(err);
             responseP.html(err.responseText);
-            alert(err.responseText);
+            if (err.responseText.includes('is checked in for')) {
+                audioSuccess.play();
+            } else {
+                audioFail.play();
+            }
         }
     });
 }
