@@ -65,7 +65,7 @@ block append content
                             when "admin": a.btn.btn-default(href="/admin/dashboard") admin dashboard
                             when "mentor": a.btn.btn-default(href="/admin/dashboard") my dashboard
                             default: a.btn.btn-default(href="/user/dashboard") my dashboard
-                        //- a.btn.btn-light-blue(href="/live") live
+                        a.button.btn.btn-default(href="/live") live
                     else
                         if middlehelp.isCornellRegistrationOpen()
                             a.button.btn.btn-default(href="/register/cornelluniversity") Apply Now
