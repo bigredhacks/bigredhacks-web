@@ -1,6 +1,7 @@
 "use strict";
 var app = angular.module('brh.controllers', []);
 
+let attendeeBlob = $('#data-init').data('init');
 let responseP = $('#response-message');
 
 function makeEventScan(email, pubid) {
@@ -22,12 +23,25 @@ function makeEventScan(email, pubid) {
         error: function(err) {
             console.error(err);
             responseP.html(err.responseText);
+            alert(err.responseText);
         }
     });
 }
 
-function populateAttendeeTable(data) {
-
+function populateAttendeeTable() {
+    let tableName = $('#active-event option:selected').text();
+    // Clear table
+    let table = $('#attendee-append');
+    table.empty();
+    table.append('<tr><td>Name</td><td>Email</td></tr>')
+    for (let i of attendeeBlob.scanEvents) {
+        if (i.name === tableName) {
+            for (let j of i.attendees) {
+                let appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
+                table.append(appendHtml);
+            }
+        }
+    }
 }
 
 app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
@@ -58,12 +72,9 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
         console.error(err);
       }
 
-      //If decode works, then this will alert.
-      // TODO: Attach check-in logic to this
-      alert("Just decoded: " + result);
+      if (!result) return;
 
-      //Reload to kill the stream
-      //location.reload();
+      makeEventScan('',result);
     }
 
     //In case we have more than one stream
@@ -132,6 +143,10 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
 $('#attend-button').click(function() {
     let email = $('#email-input').val();
     makeEventScan(email,'');
+});
+
+$('#active-event').change(function() {
+    populateAttendeeTable();
 });
 
 // $('#new-event-button').click(function() {

@@ -721,12 +721,14 @@ router.get('/stats', function (req, res, next) {
 router.get('/qrscan', function (req, res, next) {
   async.parallel({
         scanEvents: function(cb) {
-            ScanEvent.find({}, cb);
+            ScanEvent.find({}, cb).populate('attendees');
         }
   }, function(err, result) {
     if (err) {
       console.error(err);
     }
+
+    console.log(result.scanEvents);
 
     res.render('admin/qrscan', {
         scanEvents: result.scanEvents

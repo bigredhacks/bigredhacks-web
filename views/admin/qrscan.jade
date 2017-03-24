@@ -7,7 +7,8 @@ block append vars
     - bodyAttr = {"data-ng-app": "brh.controllers"}
 
 block append admin_content
-    div.message-section
+    #data-init(data-init={scanEvents})
+    .message-section
         p#response-message
     div(data-ng-controller='checkin.ctrl')
         +contentHeading("Event Scan")
@@ -33,11 +34,10 @@ block append admin_content
             for item in scanEvents
                 option(selected=false, value=item + "") #{item.name}
         +contentHeading("Attending")
-        table.table.table-striped
+        table#attendee-append.table.table-striped
             tr
                 th Name
                 th Email
-                th Checked In Time
         h2 New Event
         form(method='POST', action='/api/admin/makeEvent')
             .form-group
