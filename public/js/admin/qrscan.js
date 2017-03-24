@@ -50,7 +50,7 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
 
     //For QR scanning
     //Creates QRCodeDecoder Object
-    var qr = new QCodeDecoder;
+    var qr = new QCodeDecoder();
     var video = document.getElementById('camera');
 
     //Ensures that Canvas is supported in the browser
