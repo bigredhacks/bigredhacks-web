@@ -1,6 +1,48 @@
 "use strict";
 var app = angular.module('brh.controllers', []);
 
+let attendeeBlob = $('#data-init').data('init');
+let responseP = $('#response-message');
+
+function makeEventScan(email, pubid) {
+    let event = $('#active-event option:selected').text();
+    $.ajax({
+        type: 'POST',
+        url: '/api/admin/qrScan',
+        data: {
+            email: email,
+            pubid: pubid,
+            scanEventId: event
+        },
+        dataType: 'json',
+        success: function(data, status, jqXHR) {
+            console.log(data);
+            console.log(status);
+            console.log(jqXHR);
+        },
+        error: function(err) {
+            console.error(err);
+            responseP.html(err.responseText);
+            alert(err.responseText);
+        }
+    });
+}
+
+function populateAttendeeTable() {
+    let tableName = $('#active-event option:selected').text();
+    // Clear table
+    let table = $('#attendee-append');
+    table.empty();
+    table.append('<tr><td>Name</td><td>Email</td></tr>')
+    for (let i of attendeeBlob.scanEvents) {
+        if (i.name === tableName) {
+            for (let j of i.attendees) {
+                let appendHtml = '<tr><td>' + j.name.first + ' ' + j.name.last + '</td><td>' + j.email + '</td></tr>'
+                table.append(appendHtml);
+            }
+        }
+    }
+}
 
 app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
@@ -30,12 +72,9 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
         console.error(err);
       }
 
-      //If decode works, then this will alert.
-      // TODO: Attach check-in logic to this
-      alert("Just decoded: " + result);
+      if (!result) return;
 
-      //Reload to kill the stream
-      //location.reload();
+      makeEventScan('',result);
     }
 
     //In case we have more than one stream
@@ -99,3 +138,30 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
     $scope.loadUsers();
 
 }]);
+
+// Non angular js:
+$('#attend-button').click(function() {
+    let email = $('#email-input').val();
+    makeEventScan(email,'');
+});
+
+$('#active-event').change(function() {
+    populateAttendeeTable();
+});
+
+// $('#new-event-button').click(function() {
+//     $.ajax({
+//         type: 'POST',
+//         url: '/api/admin/makeEvent',
+//         data: {
+//             name: $('#new-event-name').val()
+//         },
+//         dataType: 'json',
+//         success: function(data, status, jqXHR) {
+//             console.log(data);
+//             console.log(status);
+//             console.log(jqXHR);
+//             location.reload();
+//         }
+//     });
+// });

@@ -242,12 +242,13 @@ $('#liability').click(function(){
     $(this)
         .removeClass('btn-danger')
         .addClass('btn-success');
-    if ($('#code-of-conduct').hasClass('btn-success')) {
+    //if ($('#code-of-conduct').hasClass('btn-success')) {
         $('#rsvp-yes-button')
             .removeClass('btn-danger')
             .addClass('btn-success');
-    }
+    //}
 });
+/*
 $('#code-of-conduct').click(function(){
     $(this)
         .removeClass('btn-danger')
@@ -258,3 +259,5 @@ $('#code-of-conduct').click(function(){
             .addClass('btn-success');
     }
 });
+
+   */

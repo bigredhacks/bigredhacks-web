@@ -21,6 +21,7 @@ var HardwareItem = require('../models/hardware_item.js');
 var HardwareItemCheckout = require('../models/hardware_item_checkout.js');
 var HardwareItemTransaction = require('../models/hardware_item_transaction.js');
 var MentorAuthorizationKey = require('../models/mentor_authorization_key');
+var ScanEvent = require('../models/scan_event');
 
 //filter out admin users in aggregate queries.
 var USER_FILTER = {role: "user"};
@@ -224,12 +225,52 @@ router.get('/dashboard', function (req, res, next) {
             })
         },
         decisionAnnounces: function (done) {
-            User.count({$and: [{$where: "this.internal.notificationStatus != this.internal.status"}, {"internal.status": {$ne: "Pending"}}]}, function (err, resu) {
-                if (err) console.log(err);
-                else {
-                    return done(err, resu);
-                }
-            });
+            User.aggregate([
+                {
+                    $project: {
+                        notified: {$strcasecmp: ["$internal.notificationStatus", "$internal.status"]},
+                        school: {
+                            name:1,
+                            id: 1
+                        },
+                        "internal.status": 1
+                    }
+                },
+                {$match: {$and: [{"notified": {$ne: 0}}, {"internal.status": {$ne: "Pending"}}]}},
+                {
+                    $group: {
+                        _id: {name: "$school.name", collegeid: "$school.id", status: "$internal.status"},
+                        total: {$sum: 1}
+                    }
+                },
+                {
+                    $project: {
+                        accepted: {$cond: [{$eq: ["$_id.status", "Accepted"]}, "$total", 0]},
+                        waitlisted: {$cond: [{$eq: ["$_id.status", "Waitlisted"]}, "$total", 0]},
+                        rejected: {$cond: [{$eq: ["$_id.status", "Rejected"]}, "$total", 0]}
+                    }
+                },
+                {
+                    $group: {
+                        _id: {name: "$_id.name", collegeid: "$_id.collegeid"},
+                        accepted: {$sum: "$accepted"},
+                        waitlisted: {$sum: "$waitlisted"},
+                        rejected: {$sum: "$rejected"},
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        name: "$_id.name",
+                        collegeid: "$_id.collegeid",
+                        accepted: "$accepted",
+                        waitlisted: "$waitlisted",
+                        rejected: "$rejected",
+                        total: {$add: ["$accepted", "$waitlisted", "$rejected"]}
+                    }
+                },
+                {$sort: {total: -1, name: 1}}
+            ], done);
         },
         reimbursements: function (done) {
             Reimbursements.find({}, done);
@@ -671,6 +712,30 @@ router.get('/stats', function (req, res, next) {
             res.render('admin/hardware', result);
         });
     });
+
+/**
+ * @api {GET} /admin/qrscan The scanEvent checkin page
+ * @apiName QRScan
+ * @apiGroup AdminAuth
+ */
+router.get('/qrscan', function (req, res, next) {
+  async.parallel({
+        scanEvents: function(cb) {
+            ScanEvent.find({}, cb).populate('attendees');
+        }
+  }, function(err, result) {
+    if (err) {
+      console.error(err);
+    }
+
+    console.log(result.scanEvents);
+
+    res.render('admin/qrscan', {
+        scanEvents: result.scanEvents
+    });
+  });
+});
+
 
 /**
  * Helper function to fill team members in teammember prop

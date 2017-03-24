@@ -5,7 +5,6 @@
 @sidebar-brand-font-size: 24pt;
 
 .page-title, h1, h2, h3, h4, h5, h6 {
-  text-transform: lowercase;
 }
 body {
   @media (max-width: 768px) {
@@ -17,9 +16,15 @@ body {
   margin-bottom: 50px;
 }
 
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: @weight-normal;
+  background-color: @bg-dark;
+  color: @bg-light;
+}
+
 p {
-  color: @jasonblue;
-  font-style: italic;
+  color: @bg-light;
 }
 
 .btn {
@@ -38,12 +43,11 @@ form#resume-form {
     content: " | ";
     font-style: normal;
   }
-  font-style: italic;
 }
 
 ul.team-list {
   margin-top: 10px;
-  color: @jasonblue;
+  color: @bg-light;
   list-style-type: none;
 
   li {
@@ -62,11 +66,10 @@ ul.team-list {
 ///////////////
 
 .sidebar {
-  background: @ocean-blue;
+  background: @bg-dark;
   top: 0;
   bottom: 0;
   left: 0;
-
 }
 
 .brand {
@@ -105,7 +108,7 @@ ul.team-list {
     display: block;
     overflow-x: hidden;
     overflow-y: auto;
-    border-right: 1px solid @purple;
+    border-right: 2px solid @bg-light;
   }
 }
 
@@ -118,12 +121,12 @@ ul.team-list {
     > a {
       padding: 10px 10px 10px 20px;
       font-size: @sidebar-font-size;
-      color: @white;
+      color: @spring-red;
 
       border-bottom: @divider-size @bg-light solid;
       border-top: @divider-size @bg-light solid;
       &:hover {
-        background-color: darken(@sky-blue, 40%);
+        background-color: darken(@spring-red, 40%);
       }
       //&::before {
       //  content: "[ ";
@@ -142,7 +145,7 @@ ul.team-list {
 
     > a.active {
       &, &:hover, &:focus {
-        background-color: darken(@sky-blue, 60%);
+        background-color: darken(@spring-red, 60%);
         //background-color: #428bca;
       }
     }
@@ -167,12 +170,10 @@ ul.team-list {
   }
 }
 
-.long-text {
-  //width: 80%;
-  color: #000;
-  font-style: normal;
-}
-
 #signup-message, #optout-message {
   display: none;
+}
+
+.panel {
+  background-color: @bg-dark;
 }

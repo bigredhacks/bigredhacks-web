@@ -81,13 +81,13 @@ describe('config.json variables', function() {
 describe('environment variables', function() {
 
     beforeEach(function() {
-        process.env['setup.key_bool'] = 'true';
-        process.env['setup.key_string'] = 'asdf';
-        process.env['setup.key_num'] = '2';
+        process.env['setup__key_bool'] = 'true';
+        process.env['setup__key_string'] = 'asdf';
+        process.env['setup__key_num'] = '2';
     });
 
     it('should throw missing var error', function () {
-        delete process.env['setup.key_string'];
+        delete process.env['setup__key_string'];
         (function() {
             configVars.from_environment(schema);
         }).should.throw(Error);
@@ -95,32 +95,32 @@ describe('environment variables', function() {
 
     it('should return with boolean', function(done) {
         expect(configVars.from_environment(schema).setup.key_bool).to.be.a('boolean').and.equal(true);
-        process.env['setup.key_bool'] = 'false';
+        process.env['setup__key_bool'] = 'false';
         expect(configVars.from_environment(schema).setup.key_bool).to.be.a('boolean').and.equal(false);
-        process.env['setup.key_bool'] = 'TruE';
+        process.env['setup__key_bool'] = 'TruE';
         expect(configVars.from_environment(schema).setup.key_bool).to.be.a('boolean').and.equal(true);
 
-        process.env['setup.key_bool'] = 'sdfaglkfad';
+        process.env['setup__key_bool'] = 'sdfaglkfad';
         expect(configVars.from_environment(schema).setup.key_bool).to.be.a('boolean').and.equal(false);
-        process.env['setup.key_bool'] = '5';
+        process.env['setup__key_bool'] = '5';
         expect(configVars.from_environment(schema).setup.key_bool).to.be.a('boolean').and.equal(false);
         done()
     });
 
     it('should return with string', function(done) {
         expect(configVars.from_environment(schema).setup.key_string).to.be.a('string').and.equal('asdf');
-        process.env['setup.key_string'] = 'faLse';
+        process.env['setup__key_string'] = 'faLse';
         expect(configVars.from_environment(schema).setup.key_string).to.be.a('string').and.equal('faLse');
-        process.env['setup.key_string'] = '5';
+        process.env['setup__key_string'] = '5';
         expect(configVars.from_environment(schema).setup.key_string).to.be.a('string').and.equal('5');
         done()
     });
 
     it('should return with number', function(done) {
         expect(configVars.from_environment(schema).setup.key_num).to.be.a('number').and.equal(2);
-        process.env['setup.key_num'] = 'faLse';
+        process.env['setup__key_num'] = 'faLse';
         expect(configVars.from_environment(schema).setup.key_num).to.be.a('number').and.NaN;
-        process.env['setup.key_num'] = 'hdsg';
+        process.env['setup__key_num'] = 'hdsg';
         expect(configVars.from_environment(schema).setup.key_num).to.be.a('number').and.NaN;
         done()
     });

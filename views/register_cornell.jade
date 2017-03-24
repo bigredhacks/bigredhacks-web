@@ -10,17 +10,19 @@ block vars
     - var cornell_tech_reg = (college.name == "Cornell Tech");
 
 block append description
-    if (cornell_reg)
-        h1 Cornell Registration
-        p This year, we're admitting Cornell students using a lottery system. Apply by <strong> September 6 </strong> to be entered!
-        p Any additional registrants will be put on an ordered waitlist. Based on last year, we anticipate that most waitlisted students will be offered a spot at the hackathon. Don't miss this amazing event, sign up now!
-        p If you are a Cornell Tech student, please register <a href="/register/cornelltech">here</a>.
-    else if (cornell_tech_reg)
-        h1 Cornell Tech Registration
-        p This is a registration form for Cornell Tech students. After registering, please give us some time to process your registration.
-    else
-        h1 #{college.name} Registration
-        p This is a special case late reigistration form. Registration is by permission only. After registering, you will be automatically waitlisted. If we have given you permission to attend, please leave us some time to unwaitlist you.
+    //-
+        if (cornell_reg)
+            h1 Cornell Registration
+            p This year, we're admitting Cornell students using a lottery system. Apply by <strong> September 6 </strong> to be entered!
+            p Any additional registrants will be put on an ordered waitlist. Based on last year, we anticipate that most waitlisted students will be offered a spot at the hackathon. Don't miss this amazing event, sign up now!
+            p If you are a Cornell Tech student, please register <a href="/register/cornelltech">here</a>.
+        else if (cornell_tech_reg)
+            //-
+                h1 Cornell Tech Registration
+                p This is a registration form for Cornell Tech students. After registering, please give us some time to process your registration.
+        else
+            h1 #{college.name} Registration
+            p This is a special case late registration form. Registration is by permission only. After registering, you will be automatically waitlisted. If we have given you permission to attend, please leave us some time to unwaitlist you.
 
 block append account-information
     .form-group
@@ -104,19 +106,25 @@ block append logistics
         select#tshirt.form-control(name='tshirt', required='')
             option(value='') select
             +generateOptions(en.tshirt, {selected: (input.tshirt || "")})
-    .form-group
-        label is there any kind of hardware that you want to hack on?
-        input#hardware.form-control.typeahead(type='text', name='hardware', placeholder='VR, Smart Home, etc...'  value=input.hardware || '', data-role="tagsinput")
+    //-
+        .form-group
+            label is there any kind of hardware that you want to hack on?
+            input#hardware.form-control.typeahead(type='text', name='hardware', placeholder='VR, Smart Home, etc...'  value=input.hardware || '', data-role="tagsinput")
     .form-group
         label is there anything else you'd like to tell us?
         textarea#anythingelse.form-control(name='anythingelse', rows='2') #{input.anythingelse || ""}
         
 block append terms
     br
-    label Please carefully read the two documents below:
+    label Please carefully read the liability waiver:
     .form-group
-        a#liability-cornell.btn.btn-danger(type='button', href='http://www.bigredhacks.com/docs/waiver2016.pdf', target='_blank') liability waiver & release
-        a#code-of-conduct-cornell.btn.btn-danger(type='button', href='http://static.mlh.io/docs/mlh-code-of-conduct.pdf', target='_blank') code of conduct
+        a.button.btn.btn-default.button-b2#liability-cornell(type='button', href='/docs/waiver.pdf', target='_blank') liability waiver & release
+    .form-group
+        .checkbox
+            label
+                input#liability-agree(type='checkbox', name='liability')
+                | I understand and agree to the liability waiver & release.
+        //-
+            a#code-of-conduct-cornell.btn.btn-danger(type='button', href='http://static.mlh.io/docs/mlh-code-of-conduct.pdf', target='_blank') code of conduct
 
 block no_terms
-

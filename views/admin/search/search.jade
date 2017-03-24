@@ -48,6 +48,15 @@ block admin_content
                     checked: input.status || "",
                     name: "status"
                 })
+            .form-group.category-input
+                br
+                label Narrow by Notification Status:
+                br
+                +generateInlineRadio(["", "Accepted", "Waitlisted", "Rejected", "Pending"], {
+                    label: "None Accepted Waitlisted Rejected Pending".split(" "),
+                    checked: input.notificationStatus || "",
+                    name: "notificationStatus"
+                })
             .form-group
                 .checkbox
                     label

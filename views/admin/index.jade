@@ -22,6 +22,8 @@ block append admin_content
         li(role='presentation')
             a(href='#decisions', aria-controls='decisions', role='tab', data-toggle='tab') Decisions
         li(role='presentation')
+            a(href='#rsvp-override', aria-controls='rsvp-override', role='tab', data-toggle='tab') RSVP Override
+        li(role='presentation')
             a(href='#mentors', aria-controls='mentors', role='tab', data-toggle='tab') Mentors
 
     //- Tab panes
@@ -103,7 +105,41 @@ block append admin_content
                 form#notify-form(method='post', action='/api/admin/rollingDecision')
                     .form-group.np-enabled
                         button#notifyMake.btn.btn-success(type='submit' onclick="return confirm('Are you sure? This will email new decisions!')") Make Rolling Decision
-                span Will affect #{decisionAnnounces} people.
+                br
+                span Breakdown of decisions to be announced:
+                br
+                -
+                    var totalAccept = 0;
+                    var totalWaitlist = 0;
+                    var totalReject = 0;
+
+                table.table.table-striped
+                    tr
+                        th.text-center School Name
+                        th.text-center Will Accept
+                        th.text-center Will Waitlist
+                        th.text-center Will Reject
+                        th.text-center School Total
+                    for school in decisionAnnounces
+                        -
+                            totalAccept = totalAccept + school.accepted;
+                            totalWaitlist = totalWaitlist + school.waitlisted;
+                            totalReject = totalReject + school.rejected;
+
+                        tr
+                            td: h: a.low-vis(href="/admin/search?collegeid=" + school.collegeid + "&college=" + school.name,target="_blank") #{school.name}
+                            td.text-center= school.accepted
+                            td.text-center= school.waitlisted
+                            td.text-center= school.rejected
+                            td.text-center= school.total
+                    tr
+                        td.text-center Total:
+                        td.text-center=totalAccept
+                        td.text-center=totalWaitlist
+                        td.text-center=totalReject
+                        td.text-center=totalAccept+totalWaitlist+totalReject
+
+
             .lottery-section
                 h2 Run Lottery
                 p Run a gender-balanced lottery for Cornell students.
@@ -118,6 +154,17 @@ block append admin_content
                     .form-group.np-enabled
                         input#waitlist-amount(type='Number' name='numberToAccept' placeholder='amount')
                         button#waitlist-make.btn.btn-success(type='submit' onclick="return confirm('Are you sure?')") Move Off Waitlist
+        #rsvp-override.tab-pane(role='tabpanel')
+            h2 Per-User RSVP Override
+            form(method='POST', action='/api/admin/deadlineOverride')
+                .form-group
+                    label User's email
+                    input.form-control(type='text', name='email', placeholder='ex. dinasauronion@yahoo.com',value='')
+                    br
+                    label New RSVP Time (in days)
+                    input.form-control(type='text', name='daysToRSVP', placeholder='ex. 12 Days', value='')
+                .form-group
+                    button#rsvpOverride.btn.btn-success(type='submit') Override
         #mentors.tab-pane(role='tabpanel')
             .assign-mentor-section
                 h2 Assign Mentor Key
@@ -134,4 +181,3 @@ block append admin_content
                     for key in mentorkeys
                         tr
                             td= key.key
-

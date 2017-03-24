@@ -4,19 +4,31 @@
 extends _layout-admin
 block prepend header
     link(href="/css/vendor/c3.css", rel="stylesheet")
+    link(href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css", rel="stylesheet")
 
 block append admin_content
     if !input
         - input = {}
     +contentHeading("Stats")
     div#chart
-    form#annotate(method='post', action='/api/admin/annotate')
+    form#annotate
         label Add an annotation (just the message, will use current time as annotation)
+        .form-group
+            #datepicker(name='time')
         .form-group
             input#annotation.form-control(type='text', name='annotation', placeholder='ex: Placed a message in a bottle.', value = input.info || '', required=true)
         .form-group
-            button#resume-save.btn.btn-blue(type='submit') Add
-    div#annotationlist
+            button#send-ann.btn.btn-blue Add
+    table#annotationlist.table.table-striped
+        tr 
+            th #
+            th Annotation
+            th Date Created
+        each annotation,index in annotations
+            tr
+                td #{index+1}
+                td #{annotation.info}
+                td #{annotation.time}
 
     h2 Major Distribution for RSVP'd
     table#majors-table.table.table-striped
@@ -35,4 +47,5 @@ block append footer
     script(type='text/javascript').
         var users =!{JSON.stringify(users)}
         var annotations =!{JSON.stringify(annotations)}
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js")
     script(src="/js/stats.js")

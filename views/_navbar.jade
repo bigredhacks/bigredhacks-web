@@ -1,22 +1,36 @@
 //-
    General navbar for unsecured pages
 
-nav.navbar.navbar-custom.navbar-fixed-top.top-nav-collapse(role='navigation')
-    .container
-        .navbar-header.page-scroll
-            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-main-collapse')
-                i.fa.fa-bars
+nav.navbar.navbar-default
+    .container-fluid
+        .navbar-header
             a.navbar-brand(href='/')
-                img(src='/img/logo/BRH-Logo-White.svg', height='40', width='180', draggable='false')
-        //- Collect the nav links, forms, and other content for toggling
-        .collapse.navbar-collapse.navbar-left.navbar-main-collapse
-            ul.nav.navbar-nav
-                li: a(href="/") Home
-                if isUser
-                    li: a(href="/user/dashboard") Dashboard
-                    li: a(href="/user/logout") Logout
-                else
-                    if middlehelp.isRegistrationOpen()
-                        li: a(href="/register") Register
-                    li: a(href="/login") Login
+                img(alt='BigRed//Hacks', src='/img/icon/brh-icon-white-full.png', width=40, height=40)
+        .navbar-header: a.navbar-text(href='/') Home
+        if isUser
+            .navbar-header: a.navbar-text(href="/user/dashboard") Dashboard
+            .navbar-header: a.navbar-text(href="/user/logout") Logout
+        else
+            if middlehelp.isCornellRegistrationOpen()
+                .navbar-header: a.navbar-text(href="/register/cornelluniversity") Register
+            .navbar-header: a.navbar-text(href="/login") Login
+//-
+    nav.navbar.top-nav-collapse.navbar-default(role='navigation')
+        .container
+            .navbar-header.page-scroll
+                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-main-collapse')
+                    i.fa.fa-bars
+                a.navbar-brand(href='/')
+                    img(src='/img/logo/BRH-Logo-White.svg', height='40', width='180', draggable='false')
+            //- Collect the nav links, forms, and other content for toggling
+            .collapse.navbar-collapse.navbar-left.navbar-main-collapse
+                ul.nav.navbar-nav
+                    li: a.navbar-text(href="/") Home
+                    if isUser
+                        li: a.navbar-text(href="/user/dashboard") Dashboard
+                        li: a.navbar-text(href="/user/logout") Logout
+                    else
+                        if middlehelp.isRegistrationOpen()
+                            li: a.navbar-text(href="/register") Register
+                        li: a.navbar-text(href="/login") Login
 
