@@ -19,7 +19,7 @@ block append main_content
     h1#live-title Live Page
     .container
         .row
-            .col-md-4
+            .col-md-3.col-md-offset-1
                 .row
                     .panel.panel-default
                         .panel-heading
@@ -53,7 +53,7 @@ block append main_content
                             h3.panel-title Twitter
                         .twitter-feed
                             a.twitter-timeline(href='https://twitter.com/BigRedHacks') Tweets by BigRedHacks
-            .col-md-4
+            .col-md-3.col-md-offset-1
                 //- .row
                 //-     .panel.panel-default
                 //-         .panel-heading
@@ -93,7 +93,7 @@ block append main_content
                                 for event in calendar
                                         if moment(event.start).format("ddd").toLowerCase() == "sun"
                                             +calendarEvents(event)
-            .col-md-4
+            .col-md-3.col-md-offset-1
                 .row
                     .panel.panel-default
                         .panel-heading
