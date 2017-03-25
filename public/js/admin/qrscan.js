@@ -3,8 +3,11 @@ var app = angular.module('brh.controllers', []);
 
 var attendeeBlob = $('#data-init').data('init');
 var responseP = $('#response-message');
-var audioSuccess = new Audio('/sound/beep-success.wav');
-var audioFail = new Audio('/sound/beep-failure.wav');
+var audioSuccess = document.createElement('audio');
+var audioFail = document.createElement('audio');
+audioSuccess.src = '/sound/beep-success.wav';
+audioFail.src = '/sound/beep-failure.wav';
+
 
 var lastScan = Date.now();
 var TWO_SECOND_MILLIS = 2000;
@@ -14,7 +17,7 @@ function makeEventScan(email, pubid) {
     if (currentScan - lastScan < TWO_SECOND_MILLIS) {
         return;
     }
-    
+
     lastScan = currentScan;
     var event = $('#active-event option:selected').text();
     $.ajax({
