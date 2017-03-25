@@ -6,7 +6,16 @@ var responseP = $('#response-message');
 var audioSuccess = new Audio('/sound/beep-success.wav');
 var audioFail = new Audio('/sound/beep-failure.wav');
 
+var lastScan = Date.now();
+var TWO_SECOND_MILLIS = 2000;
+
 function makeEventScan(email, pubid) {
+    var currentScan = Date.now();
+    if (currentScan - lastScan < TWO_SECOND_MILLIS) {
+        return;
+    }
+    
+    lastScan = currentScan;
     var event = $('#active-event option:selected').text();
     $.ajax({
         type: 'POST',
