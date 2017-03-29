@@ -1,27 +1,28 @@
 "use strict";
 
-var AWS = require('aws-sdk');
-var uid = require('uid2');
-var fs = require('fs');
-var async = require('async');
+let AWS = require('aws-sdk');
+let uid = require('uid2');
+let fs = require('fs');
+let async = require('async');
 
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
 mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
 //mongoose.connect('mongodb://localhost/bigredhacks');
-var config = require('../config.js');
-var User = require('../models/user.js');
+let config = require('../config.js');
+let User = require('../models/user.js');
 
-var RESUME_DEST = 'resume/';
-var RECEIPT_DEST = 'travel/';
+let RESUME_DEST = 'resume/';
+let RECEIPT_DEST = 'travel/';
 
-var LOCAL_DEST = 'D:/resumes/';
+let LOCAL_DEST = 'D:/resumes/';
 
-var s3 = new AWS.S3({
+let s3 = new AWS.S3({
     accessKeyId: config.setup.AWS_access_key,
     secretAccessKey: config.setup.AWS_secret_key
 });
 
-var query = { "internal.going": true};
+var query = {"internal.status": "Accepted"};
+    //{ "internal.going": true};
 /*
     "$or": [
         {"internal.going": true},
@@ -42,13 +43,13 @@ User.find(query, function (err, users) {
     else {
         console.log("Starting resume dump.");
         async.each(users, function (user, done) {
-            var save_name = LOCAL_DEST + user.name.first + "_" + user.name.last + "_" + uid(2) + ".pdf";
-            var filename = user.app.resume;
+            let save_name = LOCAL_DEST + user.name.first + "_" + user.name.last + "_" + uid(2) + ".pdf";
+            let filename = user.app.resume;
             console.log(filename, save_name);
-            var params = {Bucket: "files.bigredhacks.com", Key: RESUME_DEST + filename};
+            let params = {Bucket: "files.bigredhacks.com", Key: RESUME_DEST + filename};
             //console.log(params);
-            var file = fs.createWriteStream(save_name);
-            var r = s3.getObject(params).createReadStream().pipe(file);
+            let file = fs.createWriteStream(save_name);
+            let r = s3.getObject(params).createReadStream().pipe(file);
             r.on("error", function(err) {console.log(err)});
             r.on('finish', done);
         }, function (err, res) {

@@ -1,10 +1,11 @@
-var fs = require('fs');
-var async = require('async');
-var mongoose = require('mongoose');
+let fs = require('fs');
+let async = require('async');
+let mongoose = require('mongoose');
 mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
-var User = require('../models/user.js');
+let User = require('../models/user.js');
 
-var query = {"internal.going": true};
+let query = {"internal.status": "Accepted"};
+// {"internal.going": true};
 
 User.find(query, null, {"name.first": 1}, function (err, users) {
     if (err) {
@@ -12,12 +13,12 @@ User.find(query, null, {"name.first": 1}, function (err, users) {
     }
     else {
         console.log("Starting user dump.");
-        var stream = fs.createWriteStream("participant_info.csv");
-        stream.write("First Name,Last Name,School,Email,Phone Number\r\n");
+        let stream = fs.createWriteStream("participant_info.csv");
+        stream.write("First Name,Last Name,Email,Major,Gender,Year\r\n");
         stream.once('open', function (fd) {
             async.each(users, function (user, done) {
                 console.log("wrote user " + user.name.full);
-                stream.write(user.name.first + "," + user.name.last + "," + user.school.name + "," + user.email + "," + user.phone + "\r\n");
+                stream.write(user.name.first + "," + user.name.last + "," + user.email + "," + user.school.major + "," + user.gender + "," + user.school.year + "\r\n");
                 done();
             }, function (err) {
                 if (err) {
