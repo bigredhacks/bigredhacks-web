@@ -72,18 +72,19 @@ module.exports = function (io) {
      * @apiName Register
      * @apiGroup Auth
      */
-    router.get('/register', middle.requireRegistrationOpen, function (req, res) {
+    router.get('/register', middle.requireRegistrationOpen, middle.requireNoAuthentication, function (req, res) {
         res.render("register_general",
             {title: "Register", enums: enums, error: req.flash('error')});
     });
 
     /* GET registration page for Cornell (University and Tech) Students */
-    router.get('/register/:name', middle.requireCornellRegistrationOpen, function (req, res) {
+    router.get('/register/:name', middle.requireCornellRegistrationOpen, middle.requireNoAuthentication, function (req, res) {
         //get full college object
         _findCollegeFromFilteredParam(req.params.name, function (err, college) {
 
             if (college == null) {
                 //college does not exist, or not allowed
+                console.error('found null college, redirecting to index');
                 return res.redirect('/');
             }
             else {
@@ -454,7 +455,7 @@ module.exports = function (io) {
                                 questions: {
                                     q1: req.body.q1,
                                     q2: req.body.q2,
-                                    hardware: req.body.hardware.split(",")
+                                    //hardware: req.body.hardware.split(",")
                                 }
                             },
                             role: "user"
@@ -556,15 +557,13 @@ module.exports = function (io) {
      * @apiParam user.email Email for login
      */
     router.post('/login',
-        /** TODO: Uncomment this before 2017 registration. In 2016 we have a mix of cases so this cannot be used yet.
          function (req, res, next) {
             if (req.body.email) {
                 req.body.email = req.body.email.toLowerCase();
             }
-
             next();
         },
-         */
+
         passport.authenticate('user_strat', {
             failureRedirect: '/login',
             failureFlash: true

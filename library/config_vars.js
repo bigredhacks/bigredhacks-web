@@ -23,21 +23,21 @@ function traverse_full_config(schema, eachItem) {
 
 exports.validate_against_schema = function validate_against_schema(schema, config) {
     traverse_full_config(schema, function (category, key) {
-        if (!(config.hasOwnProperty(category) && config[category].hasOwnProperty(key))) throw new Error("Missing environment variable " + category + "." + key);
+        if (!(config.hasOwnProperty(category) && config[category].hasOwnProperty(key))) throw new Error("Missing environment variable " + category + "__" + key);
         let type = schema[category][key].type || "String";
-        if (!validate_type(config[category][key], type)) throw new Error("Incorrect type for " + category + "." + key);
+        if (!validate_type(config[category][key], type)) throw new Error("Incorrect type for " + category + "__" + key);
     });
 };
 
 exports.from_environment = function from_environment(schema) {
     var config = {};
     traverse_full_config(schema, function (category, key) {
-        if (!process.env.hasOwnProperty(category + "." + key)) throw new Error('Missing environment variable ' + category + "." + key);
+        if (!process.env.hasOwnProperty(category + "__" + key)) throw new Error('Missing environment variable ' + category + "__" + key);
         let type = schema[category][key].type || "String";
         if (!config.hasOwnProperty(category)) {
             config[category] = {};
         }
-        config[category][key] = cast_to_type(process.env[category + "." + key], type);
+        config[category][key] = cast_to_type(process.env[category + "__" + key], type);
     });
     return config;
 };

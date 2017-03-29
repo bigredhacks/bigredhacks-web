@@ -88,16 +88,17 @@ block append content
                               
                     block mlh_data_provision
                         br
-                        label We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share certain application/registration information for event administration, ranking, MLH administration, pre and post-event informational e-mails, and occasional messages about hackathons in line with the MLH Privacy Policy.
-                        .form-group
-                            .checkbox
-                                label
-                                    input#CoC(type='checkbox', name='CoC')
-                                    | I agree to abide by the #[a(href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf") Major League Hacking Code of Conduct]
+                        //-
+                            label We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share certain application/registration information for event administration, ranking, MLH administration, pre and post-event informational e-mails, and occasional messages about hackathons in line with the MLH Privacy Policy.
+                            .form-group
+                                .checkbox
+                                    label
+                                        input#CoC(type='checkbox', name='CoC')
+                                        | I agree to abide by the #[a(href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf") Major League Hacking Code of Conduct]
 
                     fieldset
                         block submit
-                            button#submit.btn.btn-primary(type="submit") submit
+                            button#submit.btn.btn-default(type="submit") submit
 
 block footer
     script(src='//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js')

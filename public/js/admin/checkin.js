@@ -5,7 +5,6 @@ var app = angular.module('brh.controllers', []);
 app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
     $scope.users = [];
     $scope.inputSearch = "";
-
     $scope.filterSearch = function (user) {
         var input = $scope.inputSearch.toLowerCase();
         var name = (user.name.first + " " + user.name.last).toLowerCase();

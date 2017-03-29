@@ -1,10 +1,9 @@
 @import "_global";
 
 body {
-  padding-top: 80px;
   padding-bottom: 50px;
   height: initial;
-  background-color: @bg-light;
+  background-color: @bg-dark;
 }
 
 .login {
@@ -14,4 +13,11 @@ body {
 
 .login-help {
   margin-top: 10px;
+}
+
+@media (max-width: 767px) {
+  .login h2 {
+    margin-top: 15px;
+    margin-left: 0px;
+  }
 }

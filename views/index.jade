@@ -1,364 +1,141 @@
 extends _global/_layout
-
 //-Generates full section header
 mixin sectionHeading(name)
+
     .section-heading.container
+        img.fade-img(src='/img/fade.png')
         br
-        h2(style={float: left}) #{name}
+        h2.fade-heading #{name}
 
-block vars
-    - bodyAttr = {"id":"page-top", "data-spy":"scroll", "data-target":".navbar-custom"}
-block append header
-    link(href="/css/index.css", rel="stylesheet")
-
-block append content
-    a#mlh-trust-badge(style='display:block;max-width:100px;min-width:60px;position:fixed;right:50px;top:0;width:10%;z-index:10000', href='https://mlh.io/seasons/na-2017/events?utm_source=na-2017&utm_medium=TrustBadge&utm_campaign=na-2017&utm_content=gray', target='_blank')
-      img(src='https://s3.amazonaws.com/logged-assets/trust-badge/2017/gray.svg', alt='Major League Hacking 2017 Hackathon Season', style='width:100%')
-    nav.navbar.navbar-custom.navbar-fixed-top.top-nav-collapse(role="navigation")
-        .container
-            .navbar-header.page-scroll
-                button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-main-collapse")
-                    i.fa.fa-bars
-                a.navbar-brand(href="/")
-                    img(src="img/logo/BRH-Logo-White.svg", height="40" width="180", draggable="false")
-
-            //- Collect the nav links, forms, and other content for toggling
-            .collapse.navbar-collapse.navbar-left.navbar-main-collapse
-                ul.nav.navbar-nav
-                    li: a(href="#about") About
-                    li: a(href="#sustainable") Sustainability
-                    li: a(href="#faq") FAQ
-                    li: a(href="#sponsors") Sponsors
-
-
-    //- Creates a message if content exists, where type:error|success
-    mixin message(content, type)
-        if content
-            - var msg_class
-            case type.toLowerCase()
-                when "error": -msg_class = "alert-danger"
-                when "success": -msg_class = "alert-success"
-                default: -msg_class = "alert-success"
-            .alert.float.alert-dismissible.float.fadeOut(class=msg_class, role="alert")
-                button.close(type="button", data-dismiss="alert", aria-label="Close"): span(aria-hidden="true") &times;
-                | #{content.toLowerCase()}
+mixin generateFAQs(text, count)
+    - for (var i=0; i<count; i++)
+        .question
+            p Question
+            p #{text}
+//- Creates a message if content exists, where type:error|success
+mixin message(content, type)
+    if content
+        - var msg_class
+        case type.toLowerCase()
+            when "error": -msg_class = "alert-danger"
+            when "success": -msg_class = "alert-success"
+            default: -msg_class = "alert-success"
+        .alert.float.alert-dismissible.float.fadeOut(class=msg_class, role="alert")
+            button.close(type="button", data-dismiss="alert", aria-label="Close"): span(aria-hidden="true") &times;
+            | #{content.toLowerCase()}
 
     if messages.error
         +message(messages.error[0].toLowerCase(), "error")
     if messages.success
         +message(messages.success[0].toLowerCase(), "success")
 
-    //- Section: intro
-    section#intro.intro
-        .transparent
-        .intro-wrapper
-            .h1container
-                h1 #[div.icon] BigRed//Hacks
+block append header
+    link(href="/css/index.css", rel="stylesheet")
+block append content
+    nav.navbar.navbar-default.navbar-fixed-top
+        .container-fluid
+            .navbar-header
+                a.navbar-brand(href='/')
+                    img(alt='BigRed//Hacks', src='/img/icon/brh-icon-white-full.png', width=40, height=40)
+            .navbar-header
+                a.navbar-text(href='#description') About
+            .navbar-header
+                a.navbar-text(href='#faq') FAQ
+            .navbar-header
+                a.navbar-text(href='#sponsors') Sponsors
+
+    section.intro#intro
+        .slogan
+            img#title-logo.center-block.wide-img(src='/img/sp17_brh_title_2.png')
+            div#wrapper
+                img#title-v2(src="/img/sp17_pro_pic.png")
             .intro-contents
-            .bluebox
-                .slogan
-                    br
-                    br
-                    br
-                    br
-                    .center-date
-                        .big-heading2
-                            h2 Sept 16-18, 2016 @ Ithaca,&nbsp;NY
-                            h2 Cornell University
-                            br
-                            br
+              .headerbox
+                .redbox
+                  .img-block
+                    img(src='/img/datascienceflask.png', width= 35, height= 56)
+                  .big-heading
+                    h2 Data Science Student Challenge
+                  .big-heading2
+                    h2#date March 24 3PM - March 25 4PM, 2017
+                    h2#caption Powered by Cortana Intelligence Suite
+                  btn-group.group.user-action-group#sponsors
+                    if isUser
+                        case userRole
+                            when "admin": a.btn.btn-default(href="/admin/dashboard") admin dashboard
+                            when "mentor": a.btn.btn-default(href="/admin/dashboard") my dashboard
+                            default: a.btn.btn-default(href="/user/dashboard") my dashboard
+                        a.button.btn.btn-default(href="/live") live
+                    else
+                        if middlehelp.isCornellRegistrationOpen()
+                            a.button.btn.btn-default(href="/register/cornelluniversity") Apply Now
+                        a.button.btn.btn-default(href="/login") Log In
 
-                        .buttons
-                            if isUser
-                                case userRole
-                                    when "admin": a.btn.btn-light-blue(href="/admin/dashboard") admin dashboard
-                                    when "mentor": a.btn.btn-light-blue(href="/admin/dashboard") my dashboard
-                                    default: a.btn.btn-light-blue(href="/user/dashboard") my dashboard
-                                a.btn.btn-light-blue(href="/live") live
-                            else
-                                if middlehelp.isRegistrationOpen()
-                                    button.btn.btn-light-blue(data-toggle="modal" data-target="#regModal") register
-                                    | &nbsp;&nbsp;&nbsp;
-                                    a.btn.btn-blue(href="/login") login
-                                else if middlehelp.isResultsReleased()
-                                    a.btn.btn-light-blue(href="/login") login
+              .banner
+                  .logos
+                      img(src='/img/logos/blackstone.png')
+                      img#microsft(src='/img/logos/microsoft.png')
+                      img#cis_corn(src='/img/logos/cis.jpg')
+                      img#entrep(src='/img/logos/eac.jpg')
 
-                //- section about
-                //+sectionHeading("Be a part of something big")
-                .about#about.container
-                    br
-                    br
-                    br
-                    br
-                    .big-heading
-                        h2 Be a part of something big
-
-                    p
-                        | BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
-                        | Across three days, students from all across the US will gather to build the coolest and most innovative projects, meet amazing people, and win some prizes along the way!
-                    p We encourage all developers regardless of technical ability or hackathon experience to apply. Admission and food is free for all hackers.
-                    br
-
-        .leftClouds(data-100="left:-5%;" data-top="left:-30%;")
-        .rightClouds(data-50="left:70%;" data-top="left:100%;")
-        .cloud3
-        .rainClouds(data-0="left:2%;" data-160-top="left:2%;")
-
-    //- Section: sustainable
-    section#clocktowerland.clocktowerland
-        .clockTop
-        .clockBody
-            .clockWindow
-            .clockCircle
-                p.counter 161
-                p days until
-                p BigRed//Hacks!
-
-        section#schedule.schedule
-            .section-heading.container
-                h2(style='float:left;') Schedule
-            .driftCloud1(data-100-bottom="left:40%;" data-top="left:100%;")
-            .driftCloud2(data-100-bottom="left:37%;" data-top="left:100%;")
-            .twocloud
-                .cloud4
-                .cloud5
-                .cloud6
-            .container
-                .schedule-table
-                    .heading
-                        h3 friday, 9/16
-                    .time
-                        p 4:30 - 6:30 pm
-                    .data
-                        p participant registration
-                        h5 call auditorium
-                    .time
-                        p 6:00 pm
-                    .data
-                        p opening ceremony
-                        h5 call auditorium
-                    .time
-                        p 8:00 pm
-                    .data
-                        p hacking begins
-                        h5 physical sciences building
-                    .heading
-                    h3 sunday, 9/18
-                    .time
-                        p 8:00 am
-                    .data
-                        p hacking ends
-                        h5 physical sciences building
-                    .time
-                        p 9:00 am - 11:00 am
-                    .data
-                        p project expo
-                        h5 physical sciences building
-                    .time
-                        p 12:00 pm - 2:00 pm
-                    .data
-                        p closing ceremony
-                        h5 call auditorium
-
-        section#sustainable.sustainable
-
-            .content
-                +sectionHeading("Sustainable hacks")
-                .container
-                    br
-                    p
-                        | Passionate about the environment? This year, we will have prizes for the best sustainable hacks.
-                        | Band together with other like-minded students to solve some of the most pressing issues facing our planet’s future.
-                    p We will provide mentors and resources necessary for your hack to succeed!
-                    br
-
-        section.hillholder
-            .hill
-        section#whaleDiv
-            .whale
-            .whale-happy
-            .preload-01
-    section.waterholder
-        .water
-
-            //- Section: faq
-            section#faq.faq
-                +sectionHeading("Frequently Asked Questions")
-                .container
-                    dl
-                        dt Who is eligible to participate?
-                        dd
-                            | We are inviting all undergraduate and graduate students to participate in our hackathon.
-                            | You don't need any past experience.
-                            | You don't even need to be a computer science major!
-                            | Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
-                        dt What will I need to bring?
-                        dd
-                            | Bring your school ID for registration.
-                            | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
-                            | You may also want to bring a sleeping bag, change of clothes, and toothbrush.
-                        dt Do I have to sign up with a team?
-                        dd
-                            | You don't have to sign up with a team, but it's certainly more fun!
-                            | We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event.
-                            | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
-                        dt Are you providing food?
-                        dd
-                            | Don't worry, there will be lots of delicious food and beverages at our event, complementary to all participants.
-                            | We'll have vegetarian options as well.
-                        dt What's the deal with transportation?
-                        dd
-                            | Our goal is to reimburse student travel as needed (up to $150 evaluated on a case by case basis).
-                            | There will be a reimbursement table: please bring your travel ticket, receipt, and government-issued photo ID.
-                            | We ask that you pick a reasonably priced method of travel.
-                            | There will be limited on-campus parking.
-                            | We'll also be chartering buses for popular locations.
-                            | <br><br>Are you the director of a hackathon club at your school? Get in touch with us to organize a trip!
-                        dt Do I have to do a sustainable hack?
-                        dd
-                            | Nope! While the theme of this year's BigRed//Hacks will be sustainability, we'll have plenty of other
-                            | prize categories to compete for.
-                        dt Are hardware hacks allowed?
-                        dd
-                            | This is the first year that we will be providing a dedicated hardware lab with sensors, microcontrollers, and basic components.
-                            | Some of our sponsors are bringing hardware to loan, but we still suggest that you bring your own equipment if you know that you'll absolutely need it.
-                        dt What are the rules?
-                        dd
-                            | We want BigRed//Hacks to be fun and fair for everyone.
-                            | Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
-                            | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
-                        dt Why is there an application?
-                        dd
-                            | We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate.
-                            | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
-                            | Even if you've never been to a hackathon before, please apply!
-                        dt Why can't Cornell students apply yet?
-                        dd
-                            | We're doing applications a little differently this year.
-                            | General applications are immediately available for all students not at Cornell.
-                            | In early September, we will open applications to Cornell students, and these will be on a first-come first-serve basis.
-                            | Add yourself to the mailing list so that you'll know when applications open.
-                        dt Have more questions?
-                        dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com], or tweet us #[a(href="http://www.twitter.com/@BigRedHacks", target="_blank") @BigRedHacks].
-                        //- School 1 20-30%
-                        .redfish(style="top:20%;" data-800-top="left:70%;" data--200-top="left:35%;")
-                        .bluefish(style="top:22%;" data-800-top="left:90%;" data--200-top="left:25%;")
-                        .greenfish(style="top:26%;" data-800-top="left:85%;" data--200-top="left:15%;")
-                        //- School 2 45-55%
-                        .redfish(style="top:45%;" data-900-top="left:60%;" data--200-top="left:22%;")
-                        .bluefish(style="top:48%;" data-900-top="left:75%;" data--200-top="left:25%;")
-                        .redfish(style="top:52%;" data-900-top="left:62%;" data--200-top="left:12%;")
-                        .orangefish(style="top:54%;" data-900-top="left:64%;" data--200-top="left:12%;")
-                        .yellowfish(style="top:57%;" data-900-top="left:55%;" data--200-top="left:11%;")
-                        //- School 3 75-85%
-                        .redfish(style="top:75%;" data-900-top="left:70%;" data--200-top="left:-10%;")
-                        .bluefish(style="top:78%;" data-900-top="left:90%;" data--200-top="left:5%;")
-                        .orangefish(style="top:82%;" data-900-top="left:85%;" data--200-top="left:7%;")
-                        .redfish(style="top:85%;" data-900-top="left:85%;" data--200-top="left:2%;")
-
-    //- Section: sponsors
-    section#sponsors.sponsors
-        +sectionHeading("Sponsors")
-
+    section.faq#description
+        +sectionHeading("What's the Data Science Student Challenge?")
         .container
-            ul.logos
-                li#capitalone.logo-4
-                    a(href='http://capitalone.com')
-                        img(src='img/logos/capitalone.png', alt='Capital One')
-                li#Priceline.logo-4
-                    a(href='http://priceline.com')
-                        img(src='img/logos/priceline.png', alt='Priceline')
-                li#microsoft.logo-4
-                    a(href='http://microsoft.com')
-                        img(src='img/logos/microsoft.png', alt='Microsoft')
-            ul.logos
-                li#bloomberg.logo-3
-                    a(href='http://www.bloomberg.com')
-                        img(src='img/logos/bloomberg.png', alt='Bloomberg')
-                li#grammatech.logo-3
-                    a(href='https://www.grammatech.com/')
-                        img(src='https://www.grammatech.com/sites/all/themes/grammatech/logo.png', alt='GrammaTech')
-                li#a16z.logo-3
-                    a(href='https://www.a16z.com/')
-                        img(src='img/logos/a16z.png', alt='a16z')
+            p
+                | The Data Science Student Challenge is part of a global series of hackathons.
+                | These events are designed to ignite a passion for the amazing things made possible by Data Science and to help students develop
+                | the skills necessary to harness the power of analytics. A variety of learning resources will be made
+                | available. With amazing prizes, workshops, and swag for all
+                | participants, it’s a great opportunity to build your skills, meet other top students, have fun and
+                | learn. The Data Science Student Challenge is a collaboration between Microsoft and BigRed//Hacks!
 
-            ul.logos
-                li#wayfair.logo-2
-                    a(href='http://www.wayfair.com/')
-                        img(src='img/logos/wayfair.png', alt='Wayfair')
-                li#oracle.logo-2
-                    a(href='http://oracle.com/')
-                        img(src='img/logos/oracle.png', alt='Oracle')
-                li#mathworks.logo-2
-                    a(href='https://www.mathworks.com/')
-                        img(src='img/logos/mathworks.png', alt='MathWorks')
+            p We encourage all developers regardless of technical ability or hackathon experience to apply. Admission and food is free for all hackers.
 
-            ul.logos
-                li#deshaw.logo-1
-                    a(href='https://www.deshaw.com/')
-                        img(src='img/logos/DEShaw.png', alt='D.E. Shaw and Co.')
-                li#eship.logo-1
-                    a(href='http://eship.cornell.edu')
-                        img(src='img/logos/eship.png', alt='Entrepreneurship at Cornell')
-            ul.logos
-                li#codepen.logo-1
-                    a(href='http://codepen.com')
-                        img(src='img/logos/codepen.png', alt='CodePen')
-                li#tech.logo-1
-                    a(href='http://get.tech/')
-                        img(src='https://www.101domain.com/images/flags/large/TECH.png', alt='.Tech')
-                li#venturestorm.logo-1
-                    a(href='http://www.venturestorm.com/')
-                        img(src='img/logos/venturestorm.png', alt='Venture Storm')
 
-            ul.logos
+    section.faq#faq
+        +sectionHeading("FAQ")
+        .container
+            .faq-table
+                dl
+                    dt Who is eligible to participate?
+                    dd
+                        | We are inviting all undergraduate and graduate students currently enrolled at Cornell's Ithaca Campus to participate in our hackathon.
+                        | You don't need any past experience.
+                        | You don't even need to be a computer science major!
+                        | Our only requirement is that you are attending Cornell University at the Ithaca campus.
+                    dt What will I need to bring?
+                    dd
+                        | Bring your school ID for registration.
+                        | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
+                        | You may also want to bring a sleeping bag, change of clothes, and toothbrush, if you're feeling dedicated.
+                    .break-bef
+                    dt Do I have to sign up with a team?
+                    dd
+                        | You don't have to sign up with a team, but it's certainly more fun!
+                        | We allow teams of up to four people, and while they can be specified on the application, you won't officially create your team until the event.
+                        | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
+                    dt Are you providing food?
+                    dd
+                        | Don't worry, there will be lots of delicious food and beverages at our event, complementary to all participants.
+                        | We'll have vegetarian options as well.
+                    dt What's the deal with transportation?
+                    dd
+                        | You're a Cornell student, right? Just walk.
+                    .break-bef
+                    dt What are the rules?
+                    dd
+                        | We want BigRed//Hacks to be fun and fair for everyone.
+                        | Your project should be started from scratch and worked on only during the 24 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
+                        | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
+                    dt Why is there an application?
+                    dd
+                        | We want to guarantee that students from a wide range of experiences are given an equal and fair chance to participate.
+                        | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
+                        | Even if you've never been to a hackathon before, please apply!
 
-                li#lifx.logo-1
-                    a(href='http://www.lifx.com/')
-                        img(src='img/logos/lifx.jpg', alt='LIFX')
-                li#sketch.logo-1
-                    a(href='https://www.sketchapp.com/')
-                        img(src='img/logos/sketch.png', alt='Sketch')
-                li#soylent.logo-1
-                    a(href='https://www.soylent.com/')
-                        img(src='/img/logos/soylent.png', alt='Soylent')
-
-            ul.logos
-                li#hackerearth.logo-1
-                    a(href='https://www.hackerearth.com/')
-                        img(src='/img/logos/hackerearth.png', alt='HackerEarth')
-                li#ultrapress.logo-1
-                    a(href='https://ultrapress.com/')
-                        img(src='https://ultrapress-production.s3.amazonaws.com/static/images/public/ultrapress-custom-tshirts.png', alt='UltraPress')
-
-            ul.logos
-                li#mlh.logo-1
-                    a(href='http://www.mlh.io')
-                        img(src='img/logos/mlh.png', alt='Major League Hacking')
-                li#cornellcs.logo-1
-                    a(href='http://www.cs.cornell.edu')
-                        img(src='img/logos/cis.jpg', alt='Cornell Computer Science')
-
-            ul.logos
-                li#equitas.logo-1
-
-                        img(src='img/logos/equitas.png', alt='Equitas')
-                li#clerky.logo-1
-                    a(href='http://www.clerky.com')
-                        img(src='img/logos/clerky.png', alt='Clerky')
-                li#jetbrains.logo-1
-                    a(href='http://www.jetbrains.com')
-                        img(src='img/logos/jetBrains.png', alt='Jet Brains')
-            p.logos
-                | Interested in sponsoring? Contact us at
-                a(href='mailto:sponsors@bigredhacks.com')  sponsors@bigredhacks.com
-                | .
-            br
-            br
-            br
-            .c
 
     footer
+        +sectionHeading("")
         .container
             .row
                 .col-md-12.col-lg-12
@@ -377,38 +154,15 @@ block append content
                         | &nbsp;&nbsp;
                     br
                     p.footer
-                        | ©2016 BigRed//Hacks
+                        | ©2017 BigRed//Hacks
                         br
                         //span#cover-photo-attribution
                         | All other trademarks and logos ® their respective owners.
                         br
                         | From Ithaca with ♥
-    #regModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
-        .modal-dialog
-            .modal-content
-                form#subscribeEmail(method='post', action='/cornell/subscribe', name='subscribeEmail')
-                    .modal-header
-                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                        h4.modal-title Where do you go to school?
-                    .modal-body.hidden
-                        p Cornell University students won't be able to register until August 25th, but in the meantime, add yourself to the mailing list. You'll receive an email when we open registration.
-                        .form-group
-                            label(for='cornellEmail') email address *
-                            input#cornellEmail.form-control(type='email', name='cornellEmail', placeholder='bigredhacks@cornell.edu', value='', required='')
-                    #regFooter.modal-footer
-                        if middlehelp.isCornellRegistrationOpen()
-                            a.btn.btn-blue.reg-select(href='/register/cornelluniversity') Cornell/Ithaca
-                        else
-                            button#regCornell.btn.btn-blue.reg-select(type='button') Cornell/Ithaca
-                        a.btn.btn-blue.reg-select(href='/register') Somewhere else
-                        button#cornell-submit.btn.btn-blue.hidden(type='submit') Submit
 
 block footer
-    script(src="/js/vendor/jquery.easing.min.js")
-    script(src="/js/vendor/jquery.scrollTo.js")
-    script(src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js")
     script(src="/js/jquery.validate.options.js")
-    script(src="/js/vendor/skrollr.min.js")
+    script(src="//code.jquery.com/jquery-3.1.1.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js")
     script(src="/js/index.js")
-    script(src="/js/asdf.js")

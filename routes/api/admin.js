@@ -19,6 +19,7 @@ var Inventory = require('../../models/hardware_item.js');
 var InventoryTransaction = require('../../models/hardware_item_checkout.js');
 var HardwareItemTransaction = require('../../models/hardware_item_transaction.js');
 var MentorAuthorizationKey = require('../../models/mentor_authorization_key');
+var ScanEvent = require('../../models/scan_event');
 
 var config = require('../../config.js');
 var helper = require('../../util/routes_helper.js');
@@ -29,13 +30,13 @@ var OAuth = require('oauth');
 var util = require('../../util/util.js');
 
 var Twitter = require('twitter');
-var graph = require('fbgraph');
-graph.setAccessToken(config.fb.access_token);
 
 // All routes
 router.patch('/user/:pubid/setStatus', setUserStatus);
 router.patch('/team/:teamid/setStatus', setTeamStatus);
 router.patch('/user/:email/setRole', setUserRole);
+
+router.delete('/user/removeUser', removeUser);
 
 router.get('/np', getNoParticipation);
 router.post('/np/set', setNoParticipation);
@@ -82,6 +83,9 @@ router.post('/cornellWaitlist', cornellWaitlist);
 
 router.post('/makeKey', makeKey);
 
+router.post('/qrScan', scanQR);
+router.post('/makeEvent', makeEvent);
+
 /**
  * @api {PATCH} /api/admin/user/:pubid/setStatus Set status of a single user. Will also send an email to the user if their status changes from "Waitlisted" to "Accepted" and releaseDecisions is true
  * @apiname SetStatus
@@ -111,6 +115,43 @@ function setUserStatus(req, res, next) {
         }
     });
 }
+
+
+/**
+ * @api {DELETE} /api/admin/user/removeUser Remove a single user from database.
+ *
+ * @apiName RemoveUser
+ * @apiGroup Admin
+ *
+ * @apiParam {String} pubid
+ */
+function removeUser(req, res, next) {
+    User.findOne({pubid: req.body.pubid}, function (err, user) {
+        if (err) {
+            console.error(err);
+            req.flash('error', 'An error occurred while finding the user');
+            return res.status(500).send(err);
+        }
+        if (!user) {
+            req.flash('error', 'Cannot find user with this pubid');
+            return res.status(500).send('User not found! ');
+        }
+        else {
+            user.remove({'pubid': req.body.pubid}, function (err) {
+                if (err) {
+                    console.error('Remove error: ' + err);
+                    return res.sendStatus(500);
+                }
+                else {
+                    console.log('Success: removed user ' + req.body.pubid);
+                    req.flash('success', 'Successfully removed user '+ req.body.pubid);
+                    res.sendStatus(200);
+                }
+            });
+        }
+    });
+}
+
 
 /**
  * @api {PATCH} /api/admin/team/:teamid/setStatus Set status of entire team
@@ -751,7 +792,6 @@ function getUsersPlanningToAttend(req, res, next) {
  * @apiParam twitter post to twitter
  */
 function postAnnouncement(req, res, next) {
-    console.log(req.body);
     const message = req.body.message;
 
     var newAnnouncement = new Announcement({
@@ -787,13 +827,6 @@ function postAnnouncement(req, res, next) {
                 };
 
                 fcm.send(message, function(err,response){
-                });
-            }
-
-            if (req.body.facebook) {
-                graph.post("/feed", {message: req.body.message}, function (err, res) {
-                    if (err) console.log('ERROR posting to Facebook: ' + err);
-                    console.log(res);
                 });
             }
 
@@ -863,6 +896,7 @@ function deleteAnnouncement(req, res, next) {
  *
  */
 function annotate(req, res, next) {
+    // format the date
     var newAnnotation = new TimeAnnotation({
         time: (req.body.time) ? req.body.time : Date.now(),
         info: req.body.annotation
@@ -942,7 +976,6 @@ function studentReimbursementsDelete(req, res, next) {
     });
 }
 
-// TODO: Implement front-end to call this (#115)
 /**
  * @api {POST} /api/admin/rsvpDeadlineOverride Override the RSVP deadline of the given user
  * @apiname DeadlineOverride
@@ -958,7 +991,7 @@ function rsvpDeadlineOverride(req, res, next) {
         return res.status(500).send('Need positive daysToRSVP value');
     }
 
-    User.find({email: req.body.email}, function (err, user) {
+    User.findOne({email: req.body.email}, function (err, user) {
         if (err) {
             return res.status(500).send(err);
         } else if (!user) {
@@ -1434,6 +1467,90 @@ function makeKey(req, res, next) {
             return res.redirect('/admin/dashboard');
         }
     );
+}
+
+/**
+ * A qr scan (or manual entry) for checkin-based events.
+ */
+function scanQR(req, res, next) {
+  let pubid = req.body.pubid;
+  let email = req.body.email;
+  let scanEventId = req.body.scanEventId;
+
+  if (!pubid && !email) {
+      return res.status(500).send('missing pubid or email');
+  }
+
+  if (!scanEventId) {
+    return res.status(500).send('missing scanEventId');
+  }
+
+  async.parallel({
+    user: function(cb) {
+        if (pubid) {
+          User.findOne({pubid:pubid},cb);
+        } else {
+          User.findOne({email:email},cb);
+        }
+    },
+    scanEvent: function(cb) {
+        ScanEvent.findOne({name: scanEventId}, cb);
+    }
+  }, function(err,data) {
+    if (!data.user) {
+      return res.status(500).send('No such user.');
+    }
+
+    if (!data.scanEvent) {
+      return res.status(500).send('No such event: ' + scanEventId);
+    }
+
+    for (let i = 0; i < data.scanEvent.attendees.length; i++) {
+        let person = data.scanEvent.attendees[i];
+        if ( (person.reference + "") == (data.user._id + "")) {
+            return res.status(200).send('Sorry! ' + data.user.name.full + ' is already checked in for ' + data.scanEvent.name);
+        }
+    }
+
+    data.scanEvent.attendees.push({
+        name: {
+            first: data.user.name.first,
+            last: data.user.name.last
+        },
+        email: data.user.email,
+        reference: data.user.id
+    });
+    data.scanEvent.save(function(err) {
+        if (err) {
+          return res.status(500).send(err);
+        }
+
+        return res.status(200).send(data.user.name.full + ' is checked in for ' + data.scanEvent.name);
+    });
+  });
+}
+
+/**
+ * Makes a scanEvent.
+ */
+function makeEvent(req, res, next) {
+  var name = req.body.name;
+
+  //Check whether the key already exists and save it
+  ScanEvent.findOneAndUpdate(
+    {'name': name}, //queries to see if it exists
+    {'name': name, attendees: []}, //rewrites it if it does (does not make a new one)
+    {upsert: true}, //if it doesn't exist, it makes a creates a new one
+    function(err){
+      if(err){
+        req.flash('error', 'An error occurred');
+        return res.redirect('/admin/qrscan');
+      }
+
+      req.flash('success', 'Successfully made a new event');
+      return res.redirect('/admin/qrscan');
+    }
+  );
 }
 
 /**

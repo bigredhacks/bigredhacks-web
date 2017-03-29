@@ -2,6 +2,7 @@
    Display detailed information for a user
 
 h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pubid}])
+
 .row
     .col-sm-3.col-md-3
         h4 Basic Info
@@ -77,6 +78,8 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
         br
 
         h4 Admin
+        .text-center
+            | Reimbursement: $#{reimbursement}
         .form-inline
             .form-group.np-enabled
                 label(for="setRSVP") Going:&nbsp;
@@ -90,6 +93,9 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
                     select#setCheckedIn.form-control(name="setCheckedIn")
                         option(value="") select
                         +generateOptions("true false".split(" "), {selected: (user.internal.checkedin + "")})
+        br
+        button#remove-user.btn.btn-danger delete user
+        br
         .text-center
             | Update user application decision:
             form.decision-radio.user.np-enabled(data-pubid = user.pubid)

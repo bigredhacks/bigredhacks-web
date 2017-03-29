@@ -22,7 +22,7 @@ The greatest hackathon management app of all time.
         npm install
 1. Setup any configuration variables. This can be done in two ways. The presence of a config file overrides the environment variable method.
   * Config file - Duplicate `config.template.json` in the root directory and name it `config.json`. Fill out all fields.
-  * Environment variables - Open `config.template.json`. Use this file to input env variables of the same name. Ignore top level categories, and "_comment" fields. Note: you *must* update `config.template.json` with any additional global variables for them to be recognized.
+  * Environment variables - Open `config.template.json`. Use this file to input env variables of the same name. Ignore top level categories, and "_comment" fields. Note: you *must* update `config.schema.json` with any additional global variables for them to be recognized. Note that environment variables use a double underscore ( __ ) in order to separate categories from variable names.
 1. Run the app! The entry point is at `/bin/www.js`.
 
 ### Admin Setup

@@ -13,6 +13,8 @@ block admin_content
         li.active(role='presentation')
             a(href='#schools', aria-controls='schools', role='tab', data-toggle='tab') Schools
         li(role='presentation')
+            a(href='#checked-in-table', aria-controls='user', role='tab', data-toggle='tab') Checked In Table
+        li(role='presentation')
             a(href='#user', aria-controls='user', role='tab', data-toggle='tab') User Override
     // Tab panes
     .tab-content
@@ -63,6 +65,21 @@ block admin_content
                     .form-group.np-enabled
                         button#btn-add-school.btn.btn-success(type='button')
                             | Create
+        #checked-in-table.tab-pane(role='tabpanel')
+            h2 Reimbursements for Students Checked In
+            table#checked-in-reimbursements.table.table-striped
+                tr
+                    th Name
+                    th Email
+                    th School
+                    th Reimbursement
+                for user in easyReimbursements
+                    tr
+                        td #{user.name}
+                        td #{user.email}
+                        td #{user.school}
+                        td #{user.reimbursement}
+
         #user.tab-pane(role='tabpanel')
             h2 User Override
             p Use this page to manage reimbursement overrides for individual users.

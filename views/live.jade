@@ -9,17 +9,17 @@ mixin calendarEvents(event)
         h5 #{event.description}
 
 block header
+    link(rel="stylesheet", href="/css/live.css")
     link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-    link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css")
+    //- link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css")
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")
     link(href="/css/index.css", rel="stylesheet")
-    link(rel="stylesheet", href="/css/live.css")
-
+    
 block append main_content
     h1#live-title Live Page
     .container
         .row
-            .col-md-4
+            .col-md-3.col-md-offset-1
                 .row
                     .panel.panel-default
                         .panel-heading
@@ -27,7 +27,7 @@ block append main_content
                         .panel.panel-default
                             .wifi
                                 h4 wifi: Cornell-Visitor
-                                h4 hacking ends: 9/18, 8 am
+                                h4 hacking ends: 3/25, 11:30 am
                                 h4 campus police: (607) 255-1111
                 .row
                     .panel.panel-default
@@ -53,25 +53,25 @@ block append main_content
                             h3.panel-title Twitter
                         .twitter-feed
                             a.twitter-timeline(href='https://twitter.com/BigRedHacks') Tweets by BigRedHacks
-            .col-md-4
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Request a Mentor
-                        .mentor-request
-                            #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
-                            label#mentor-label You must use the email you registered with
-                            form
-                                .form-group
-                                    label email
-                                    input#mentor-req-email.form-control(type='text', name='email', placeholder='ex. abc@cornell.edu')
-                                .form-group
-                                    label problem
-                                    input#mentor-req-text.form-control(type='text', name='request', placeholder='ex. need help with Javascript')
-                                .form-group
-                                    label table number
-                                    input#mentor-req-table.form-control(type='text', name='tableNumber', placeholder='ex. 4')
-                                button#request-mentor-btn.btn.btn-primary request mentor
+            .col-md-3.col-md-offset-1
+                //- .row
+                //-     .panel.panel-default
+                //-         .panel-heading
+                //-             h3.panel-title Request a Mentor
+                //-         .mentor-request
+                //-             #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
+                //-             label#mentor-label You must use the email you registered with
+                //-             form
+                //-                 .form-group
+                //-                     label email
+                //-                     input#mentor-req-email.form-control(type='text', name='email', placeholder='ex. abc@cornell.edu')
+                //-                 .form-group
+                //-                     label problem
+                //-                     input#mentor-req-text.form-control(type='text', name='request', placeholder='ex. need help with Javascript')
+                //-                 .form-group
+                //-                     label table number
+                //-                     input#mentor-req-table.form-control(type='text', name='tableNumber', placeholder='ex. 4')
+                //-                 button#request-mentor-btn.btn.btn-primary request mentor
                 .row
                     .panel.panel-default
                         .panel-heading
@@ -79,21 +79,21 @@ block append main_content
                         .calendar
                             .schedule-tab
                                 .heading
-                                        h3 fri, 9/16
+                                        h3 fri, 3/24
                                 for event in calendar
                                         if moment(event.start).format("ddd").toLowerCase() == "fri"
                                             +calendarEvents(event)
                                 .heading
-                                        h3 sat, 9/17
+                                        h3 sat, 3/25
                                 for event in calendar
                                         if moment(event.start).format("ddd").toLowerCase() == "sat"
                                             +calendarEvents(event)
-                                .heading
-                                        h3 sun, 9/18
-                                for event in calendar
-                                        if moment(event.start).format("ddd").toLowerCase() == "sun"
-                                            +calendarEvents(event)
-            .col-md-4
+                                //- .heading
+                                //-         h3 sun, 9/18
+                                //- for event in calendar
+                                //-         if moment(event.start).format("ddd").toLowerCase() == "sun"
+                                //-             +calendarEvents(event)
+            .col-md-3.col-md-offset-1
                 .row
                     .panel.panel-default
                         .panel-heading
@@ -116,36 +116,36 @@ block append main_content
                         .panel-heading
                             h3.panel-title program
                         .program
-                            a(href="/docs/BRH_schedule_finalfinalfinal.pdf") program schedule
+                            a(href="//docs.google.com/spreadsheets/d/1SLBX9h_j0h0pUVewNDfGovfCfDlNuj62F4plWuRMnWw/edit#gid=0") program schedule
                 .row
                     .panel.panel-default
                         .panel-heading
-                            h3.panel-title HackerEarth
+                            h3.panel-title Devpost
                         .submit
-                            a.box(href="https://bigredhacks2016.hackerearth.com/") submit projects here
+                            a(href="//brh-sp2017.devpost.com/") submit projects here
                 .row
                     .panel.panel-default
                         .panel-heading
                             h3.panel-title Social Media
                         .social-media
-                            a(href="http://facebook.com/BigRedHacks")
+                            a(href="//facebook.com/BigRedHacks")
                                 i.fa.fa-facebook-square.fa-3x(aria-hidden='true')
-                            a(href="http://twitter.com/BigRedHacks")
+                            a(href="//twitter.com/BigRedHacks")
                                 i.fa.fa-twitter-square.fa-3x(aria-hidden='true')
-                            a(href="http://instagram.com/BigRedHacks")
+                            a(href="//instagram.com/BigRedHacks")
                                 i.fa.fa-instagram.fa-3x(aria-hidden='true')
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Hardware
-                        .program
-                            a(href="https://hardware.mlh.io/events/bigred-hacks") hardware
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Android App
-                        .program
-                            a(href="https://play.google.com/store/apps/details?id=edu.bigredhacks.android") android app
+                //- .row
+                //-     .panel.panel-default
+                //-         .panel-heading
+                //-             h3.panel-title Hardware
+                //-         .program
+                //-             a(href="https://hardware.mlh.io/events/bigred-hacks") hardware
+                //- .row
+                //-     .panel.panel-default
+                //-         .panel-heading
+                //-             h3.panel-title Android App
+                //-         .program
+                //-             a(href="https://play.google.com/store/apps/details?id=edu.bigredhacks.android") android app
 block footer
     script(src="https://code.jquery.com/jquery-1.10.2.min.js")
     script(src="/socket.io/socket.io.js")

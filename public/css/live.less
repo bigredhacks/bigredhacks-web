@@ -7,13 +7,13 @@ body{
   text-align: center;
 }
 
-.panel .panel-default{
-  margin:0;
+.panel-title{
+  margin: 0px;
 }
-.panel .panel-heading{
-  background-color: @sky-blue;
-}
+
 .announcements{
+  color: @bg-dark;
+  font-family: 'Overpass Mono', sans-serif;
   overflow-x: hidden;
   overflow-y: scroll;
   height: 250px;
@@ -42,7 +42,7 @@ body{
 
   #mentor-label {
     margin-top: 20px;
-    color: @jasonblue;
+    color: @bg-dark;
     font-style: italic;
   }
 }
@@ -57,7 +57,7 @@ body{
   }
 }
 #clockdiv{
-  font-family: 'Montserrat';
+  font-family: 'Overpass Mono', sans-serif;
   color: white;
   display: inline-block;
   font-weight: 100;
@@ -78,7 +78,7 @@ body{
 #clockdiv div > span{
   padding: 10px;
   border-radius: 3px;
-  background: @jasonblue;
+  background: @bg-dark;
   display: inline-block;
   width: 60px;
 }
@@ -101,22 +101,6 @@ body{
   margin: 5px;
 }
 
-.submit{
-  a {
-    color: white;
-    font-size: 18px;
-  }
-}
-.box {
-  background-color: @light-blue;
-  padding: 20px;
-  display: block;
-}
-
-.box:hover{
-  background: @jasonblue;
-}
-
 .calendar{
   height: 400px;
   overflow-x: hidden;
@@ -128,7 +112,7 @@ body{
     font-weight: bold;
   }
   h2, h3, h4, h5{
-    color: @jasonblue;
+    color: @bg-dark;
     margin: 0px;
   }
 
@@ -166,7 +150,7 @@ body{
     margin: 10px;
   }
   a:hover{
-  color: @jasonblue;
+  color: @bg-dark;
   }
 }
 
@@ -175,6 +159,13 @@ body{
   a {
     font-size: 18px;
   }
+}
+
+.submit{
+  padding: 20px;
+  a {
+    font-size: 18px;
+  }  
 }
 
 .not-display{

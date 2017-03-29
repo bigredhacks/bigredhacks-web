@@ -10,6 +10,7 @@ var email = require('../util/email.js');
 var enums = require('../models/enum.js');
 var config = require('../config.js');
 var queryBuilder = require('../util/search_query_builder.js');
+var util = require('../util/util.js');
 
 var User = require('../models/user.js');
 var Team = require('../models/team.js');
@@ -20,6 +21,7 @@ var HardwareItem = require('../models/hardware_item.js');
 var HardwareItemCheckout = require('../models/hardware_item_checkout.js');
 var HardwareItemTransaction = require('../models/hardware_item_transaction.js');
 var MentorAuthorizationKey = require('../models/mentor_authorization_key');
+var ScanEvent = require('../models/scan_event');
 
 //filter out admin users in aggregate queries.
 var USER_FILTER = {role: "user"};
@@ -223,12 +225,52 @@ router.get('/dashboard', function (req, res, next) {
             })
         },
         decisionAnnounces: function (done) {
-            User.count({$and: [{$where: "this.internal.notificationStatus != this.internal.status"}, {"internal.status": {$ne: "Pending"}}]}, function (err, resu) {
-                if (err) console.log(err);
-                else {
-                    return done(err, resu);
-                }
-            });
+            User.aggregate([
+                {
+                    $project: {
+                        notified: {$strcasecmp: ["$internal.notificationStatus", "$internal.status"]},
+                        school: {
+                            name:1,
+                            id: 1
+                        },
+                        "internal.status": 1
+                    }
+                },
+                {$match: {$and: [{"notified": {$ne: 0}}, {"internal.status": {$ne: "Pending"}}]}},
+                {
+                    $group: {
+                        _id: {name: "$school.name", collegeid: "$school.id", status: "$internal.status"},
+                        total: {$sum: 1}
+                    }
+                },
+                {
+                    $project: {
+                        accepted: {$cond: [{$eq: ["$_id.status", "Accepted"]}, "$total", 0]},
+                        waitlisted: {$cond: [{$eq: ["$_id.status", "Waitlisted"]}, "$total", 0]},
+                        rejected: {$cond: [{$eq: ["$_id.status", "Rejected"]}, "$total", 0]}
+                    }
+                },
+                {
+                    $group: {
+                        _id: {name: "$_id.name", collegeid: "$_id.collegeid"},
+                        accepted: {$sum: "$accepted"},
+                        waitlisted: {$sum: "$waitlisted"},
+                        rejected: {$sum: "$rejected"},
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        name: "$_id.name",
+                        collegeid: "$_id.collegeid",
+                        accepted: "$accepted",
+                        waitlisted: "$waitlisted",
+                        rejected: "$rejected",
+                        total: {$add: ["$accepted", "$waitlisted", "$rejected"]}
+                    }
+                },
+                {$sort: {total: -1, name: 1}}
+            ], done);
         },
         reimbursements: function (done) {
             Reimbursements.find({}, done);
@@ -247,36 +289,9 @@ router.get('/dashboard', function (req, res, next) {
             console.log(err);
         }
 
-        // Calculate Maximum Reimbursement
-        // Checks through per-school reimbursements to see if user matches any of those schools
-        let _filterSchoolReimbursement = function _filterSchoolReimbursement(user) {
-            for (let i = 0; i < result.reimbursements.length; i++) {
-                let x = result.reimbursements[i];
-                if (x.college.id == user.school.id) {
-                    return x.amount;
-                }
-            }
-
-            return -1;
-        };
-
-        // Calculates reimbursement using the ordering: user-override => school-override => default
-        let _calculateReimbursement = function _calculateReimbursement(user, rsvpOnly) {
-            if (user.internal.going == false || (rsvpOnly && !user.internal.going)) {
-                return 0;
-            }
-
-            if (user.internal.reimbursement_override > 0) {
-                return user.internal.reimbursement_override;
-            }
-
-            let school_override = _filterSchoolReimbursement(user);
-            return (school_override == -1) ? Number(config.admin.default_reimbursement) : school_override;
-        };
-
         // Assumes charterbus reimbursements have been set
-        let currentMax = result.accepted.reduce((acc, user) => acc + _calculateReimbursement(user, true), 0);
-        let potentialMax = result.accepted.reduce((acc, user) => acc + _calculateReimbursement(user, false), 0);
+        let currentMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, true), 0);
+        let potentialMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, false), 0);
         let reimburse = {currentMax, potentialMax};
 
         return res.render('admin/index', {
@@ -311,6 +326,9 @@ router.get('/user/:pubid', function (req, res, next) {
                 },
                 stats: function genStats(callback) {
                     _getStats(user, callback);
+                },
+                reimbursements: function (done) {
+                    Reimbursements.find({}, done);
                 }
             }, function (err, info) {
                 if (err) {
@@ -320,7 +338,8 @@ router.get('/user/:pubid', function (req, res, next) {
                 res.render('admin/user', {
                     title: 'Review User',
                     currentUser: user,
-                    stats: info.stats
+                    stats: info.stats,
+                    reimbursement: util.calculateReimbursement(info.reimbursements, user, false)
                 })
             });
         }
@@ -567,15 +586,32 @@ router.get('/reimbursements', function (req, res, next) {
                 .select("pubid name email school.name internal.reimbursement_override")
                 .sort("name.first")
                 .exec(done)
+        }, checkedIns: function (done) {
+            User.find({'internal.checkedin' : true}).sort('school.name').exec(done);
         }
     }, function (err, result) {
         if (err) {
             console.error(err);
         }
 
+        var easyReimbursements = [];
+
+        result.checkedIns.forEach(function(user) {
+            var reimbursement = util.calculateReimbursement(result.reimbursements, user, false);
+            if (reimbursement > 0) {
+                easyReimbursements.push({
+                    name: user.name.full,
+                    email: user.email,
+                    school: user.school.name,
+                    reimbursement:reimbursement
+                });
+            }
+        });
+
         return res.render('admin/reimbursements', {
             reimbursements: result.reimbursements,
-            overrides: result.overrides
+            overrides: result.overrides,
+            easyReimbursements: easyReimbursements
         });
     })
 });
@@ -676,6 +712,28 @@ router.get('/stats', function (req, res, next) {
             res.render('admin/hardware', result);
         });
     });
+
+/**
+ * @api {GET} /admin/qrscan The scanEvent checkin page
+ * @apiName QRScan
+ * @apiGroup AdminAuth
+ */
+router.get('/qrscan', function (req, res, next) {
+  async.parallel({
+        scanEvents: function(cb) {
+            ScanEvent.find({}, cb).populate('attendees');
+        }
+  }, function(err, result) {
+    if (err) {
+      console.error(err);
+    }
+
+    res.render('admin/qrscan', {
+        scanEvents: result.scanEvents
+    });
+  });
+});
+
 
 /**
  * Helper function to fill team members in teammember prop

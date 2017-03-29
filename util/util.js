@@ -146,4 +146,30 @@ util.distanceBetweenPointsInMiles = function distanceBetweenPointsInMiles(coordi
     return distance;
 };
 
+// Calculates reimbursement using the ordering: user-override => school-override => default
+util.calculateReimbursement = function calculateReimbursement(reimbursements, user, rsvpOnly) {
+    // Checks through per-school reimbursements to see if user matches any of those schools
+    let _filterSchoolReimbursement = function _filterSchoolReimbursement(user) {
+        for (let i = 0; i < reimbursements.length; i++) {
+            let x = reimbursements[i];
+            if (x.college.id == user.school.id) {
+                return x.amount;
+            }
+        }
+
+        return -1;
+    };
+
+    if (user.internal.going == false || (rsvpOnly && !user.internal.going)) {
+        return 0;
+    }
+
+    if (user.internal.reimbursement_override > 0) {
+        return user.internal.reimbursement_override;
+    }
+
+    let school_override = _filterSchoolReimbursement(user);
+    return (school_override == -1) ? Number(config.admin.default_reimbursement) : school_override;
+};
+
 module.exports = util;

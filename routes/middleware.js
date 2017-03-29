@@ -10,6 +10,10 @@ function _isCornellRegistrationOpen() {
     return config.admin.cornell_reg_open;
 }
 
+function _isAnyRegistrationOpen() {
+    return _isRegistrationOpen() || _isCornellRegistrationOpen();
+}
+
 function _isResultsReleased() {
     return config.admin.results_released;
 }
@@ -86,6 +90,15 @@ middle.requireCornellRegistrationOpen = function (req, res, next) {
     }
 };
 
+middle.requireAnyRegistrationOpen = function (req, res, next) {
+    if (_isAnyRegistrationOpen()) {
+        return next();
+    }
+    else {
+        return res.redirect('/');
+    }
+};
+
 middle.requireResultsReleased = function (req, res, next) {
     if (_isResultsReleased()) {
         return next();
@@ -116,6 +129,7 @@ middle.requireAccepted = function (req, res, next) {
 middle.helper = {
     isRegistrationOpen: _isRegistrationOpen,
     isCornellRegistrationOpen: _isCornellRegistrationOpen,
+    anyRegistrationOpen: _isAnyRegistrationOpen,
     isResultsReleased: _isResultsReleased,
     isDayof: _isDayof
 };

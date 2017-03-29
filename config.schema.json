@@ -40,9 +40,6 @@
     "tw_access_token": {"type": "String"},
     "tw_token_secret": {"type": "String"}
   },
-  "fb": {
-    "access_token": {"type": "String"}
-  },
   "firebase": {
     "key": {"type": "String"}
   }

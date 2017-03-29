@@ -193,7 +193,7 @@ module.exports = function (io) {
      * @apiName Add
      * @apiGroup User
      */
-    router.post('/team/add', middle.requireRegistrationOpen, function (req, res, next) {
+    router.post('/team/add', middle.requireAnyRegistrationOpen, function (req, res, next) {
         var pubid = req.body.userid;
         var user = req.user;
 
@@ -220,7 +220,7 @@ module.exports = function (io) {
      * @apiName Leave
      * @apiGroup User
      */
-    router.get('/team/leave', middle.requireRegistrationOpen, function (req, res, next) {
+    router.get('/team/leave', middle.requireAnyRegistrationOpen, function (req, res, next) {
         req.user.leaveTeam(function (err, resMsg) {
             if (err) {
                 console.log(err);
@@ -402,6 +402,8 @@ module.exports = function (io) {
                                 function(cb) {
                                     if (!req.user.internal.cornell_applicant) {
                                         helper.addSubscriber(config.mailchimp.l_external_rsvpd, req.user.email, req.user.name.first, req.user.name.last, cb);
+                                    } else {
+                                        cb();
                                     }
                                 }
                             ], function(err, result) {
