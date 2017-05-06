@@ -2,7 +2,7 @@
 ==================
 The greatest hackathon management app of all time.
  
-###Dev Environment Setup
+### Dev Environment Setup
 1. To prevent accidental pushing to protected branches (master, develop, rc), install the git pre-push hook by running `dev-tools/configure.sh` (cmd if windows) *from within the dev-tools directory*.
 
         cd dev-tools
@@ -15,7 +15,7 @@ The greatest hackathon management app of all time.
 * When your code is ready for review, create a pull request. Make sure you change the base if your branch is not based off of develop.
 * When you get two sign-offs, and after your tests pass, press the green button in the pull request to merge your commits.
 
-###Setup Instructions
+### Setup Instructions
 1. Make sure node.js and mongoDB are installed, with the latter running.
 1. Fetch all dependencies by running:
 
