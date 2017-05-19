@@ -102,23 +102,23 @@ function sendCustomEmail (body, config, callback) {
 module.exports.sendDecisionEmail = function (name, notifyStatus, newStatus, config, callback) {
   if (notifyStatus === "Waitlisted" && newStatus === "Accepted") {
       config.subject = ACCEPTED_SUBJECT;
-      sendCustomEmail(`<p>Hey !{name},</p>` + WAITLISTED_TO_ACCEPTED_BODY, config, callback);
+      sendCustomEmail(`<p>Hey ${name},</p>` + WAITLISTED_TO_ACCEPTED_BODY, config, callback);
   } else if (notifyStatus === "Accepted" && newStatus === "Rejected") {
       config.subject = ACCEPTED_TO_REJECTED_SUBJECT;
-      sendCustomEmail(`<p>Hi !{name},</p>` + ACCEPTED_TO_REJECTED_BODY, config, callback);
+      sendCustomEmail(`<p>Hi ${name},</p>` + ACCEPTED_TO_REJECTED_BODY, config, callback);
   } else {
       switch (newStatus) {
           case "Accepted":
               config.subject = ACCEPTED_SUBJECT;
-              sendCustomEmail(`<p>Hey !{name},</p>` + ACCEPTED_BODY, config, callback);
+              sendCustomEmail(`<p>Hey ${name},</p>` + ACCEPTED_BODY, config, callback);
               break;
           case "Waitlisted":
               config.subject = WAITLISTED_SUBJECT;
-              sendCustomEmail(`<p>Hi !{name},</p>` + WAITLISTED_BODY, config, callback);
+              sendCustomEmail(`<p>Hi ${name},</p>` + WAITLISTED_BODY, config, callback);
               break;
           case "Rejected":
               config.subject = REJECTED_SUBJECT;
-              sendCustomEmail(`<p>Hi !{name},</p>` + REJECTED_BODY, config, callback);
+              sendCustomEmail(`<p>Hi ${name},</p>` + REJECTED_BODY, config, callback);
               break;
           case "Pending":
               // In this case, we revoked a decision. No email should be sent as this only
@@ -171,7 +171,7 @@ module.exports.sendRequestMadeEmail = function (email, name, callback) {
         }
     };
 
-    let body = `<p>Hi !{name.first},</p>` +
+    let body = `<p>Hi ${name.first},</p>` +
         '<p>This is to confirm that you have created a request for a mentor. The mentors will ' +
         'view your request, and someone will respond shortly. Please make sure you are at the location that ' +
         'you provided in your request!</p>' +
@@ -192,7 +192,7 @@ module.exports.sendRequestClaimedStudentEmail = function (email, studentName, me
         }
     };
 
-    let body = '`<p>Hi !{studentName.first},</p>`' +
+    let body = `<p>Hi ${studentName.first},</p>` +
         `<p>A mentor ${mentorName.first} ${mentorName.last} has claimed your request!</p>` +
         '<p>Please be on the lookout for your mentor, and make sure you are at the location you specified ' +
         'in your request!</p>' +
@@ -213,7 +213,7 @@ module.exports.sendRequestClaimedMentorEmail = function (email, studentName, men
         }
     };
 
-    let body = '`<p>Hi !{mentorName.first},</p>`' +
+    let body = `<p>Hi ${mentorName.first},</p>` +
         `<p>This is to confirm you have claimed a mentor request from ${studentName.first} ${studentName.last}.'</p>` +
         '<p>Cheers</p>' +
         '<p>BigRed//Hacks Team</p>';
