@@ -27,17 +27,19 @@ block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
     //- TODO: Change the font and other css to match design specs when you get them
-    h1 BigRed
-        b //Hacks
-    h3 Sept. 15 - 17, 2017 @ Ithaca, NY
+    div#splash2017
+        h1 BigRed
+            b //Hacks
+        h3 Sept. 15 - 17, 2017 @ Ithaca, NY
 
-    //- TODO: Insert text here
+        input#scroll(type="text" class="form-control")
 
-    //- TODO: Insert keyboard image/graphic here
+        //- TODO: Insert keyboard image/graphic here
+        img(src="/img/keyboard.png")
 
-    //- TODO: Add the social media icons. Check the commented out old footer below for info.
+        //- TODO: Add the social media icons. Check the commented out old footer below for info.
 
-    //- TODO: Add the subscribe here 
+        //- TODO: Add the subscribe here 
 
     //- footer
     //-     +sectionHeading("")
@@ -67,7 +69,8 @@ block append content
     //-                     | From Ithaca with ♥
 
 block footer
-    script(src="/js/jquery.validate.options.js")
+    //- script(src="/js/jquery.validate.options.js")
     script(src="//code.jquery.com/jquery-3.2.1.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js")
-    script(src="/js/index.js")
+    script(src="//rawgit.com/mattboldt/typed.js/master/dist/typed.min.js")
+    script(src="/js/index.js")    
