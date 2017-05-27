@@ -104,3 +104,9 @@ document.addEventListener('DOMContentLoaded', function(){
         typeSpeed: 0
       });
   });
+
+// TODO: Implement Registration here
+$('#signup').click(function(){
+  var email = $('#reg_email').val();
+  console.log(email);
+})

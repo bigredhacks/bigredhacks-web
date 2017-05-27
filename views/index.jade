@@ -39,16 +39,16 @@ block append content
 
         //- TODO: Add the social media icons. Check the commented out old footer below for info.
         div#bottomkeys
-            a(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
-                img(src="/img/keyboard_components/Facebook.png")
-            a(href='http://www.twitter.com/BigRedHacks', target='_blank', class="keyicon")
-                img(src="/img/keyboard_components/Twitter.png")
-            a(href='https://www.instagram.com/bigredhacks/', target='_blank', class="keyicon")
-                img(src="/img/keyboard_components/Instagram.png", class="keyicon")
-            a(href='mailto:info@bigredhacks.com')
-                img(src="/img/keyboard_components/Email.png", class="keyicon")
+            a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
+                img(src="/img/keyboard_components/Facebook.png", class="fill")
+            a#twitter(href='http://www.twitter.com/BigRedHacks', target='_blank', class="keyicon")
+                img(src="/img/keyboard_components/Twitter.png", class="fill")
+            a#insta(href='https://www.instagram.com/bigredhacks/', target='_blank', class="keyicon")
+                img(src="/img/keyboard_components/Instagram.png", class="keyicon", class="fill")
+            a#email(href='mailto:info@bigredhacks.com', class="keyicon")
+                img(src="/img/keyboard_components/Email.png", class="keyicon", class="fill")
             //- TODO: Add the subscribe here 
-            div(class='spacebar_subscribe')
+            div#spacebar(class='spacebar_subscribe')
                 input#reg_email
             img#signup(src="/img/keyboard_components/Sign_Up.png", class="keyicon")
             img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
