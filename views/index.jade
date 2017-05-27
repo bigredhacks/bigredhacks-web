@@ -1,17 +1,11 @@
 extends _global/_layout
 //-Generates full section header
 mixin sectionHeading(name)
-
     .section-heading.container
         img.fade-img(src='/img/fade.png')
         br
         h2.fade-heading #{name}
 
-mixin generateFAQs(text, count)
-    - for (var i=0; i<count; i++)
-        .question
-            p Question
-            p #{text}
 //- Creates a message if content exists, where type:error|success
 mixin message(content, type)
     if content
@@ -32,137 +26,39 @@ mixin message(content, type)
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
-    nav.navbar.navbar-default.navbar-fixed-top
-        .container-fluid
-            .navbar-header
-                a.navbar-brand(href='/')
-                    img(alt='BigRed//Hacks', src='/img/icon/brh-icon-white-full.png', width=40, height=40)
-            .navbar-header
-                a.navbar-text(href='#description') About
-            .navbar-header
-                a.navbar-text(href='#faq') FAQ
-            .navbar-header
-                a.navbar-text(href='#sponsors') Sponsors
+    h1 to be built
 
-    section.intro#intro
-        .slogan
-            img#title-logo.center-block.wide-img(src='/img/sp17_brh_title_2.png')
-            div#wrapper
-                img#title-v2(src="/img/sp17_pro_pic.png")
-            .intro-contents
-              .headerbox
-                .redbox
-                  .img-block
-                    img(src='/img/datascienceflask.png', width= 35, height= 56)
-                  .big-heading
-                    h2 Data Science Student Challenge
-                  .big-heading2
-                    h2#date March 24 3PM - March 25 4PM, 2017
-                    h2#caption Powered by Cortana Intelligence Suite
-                  btn-group.group.user-action-group#sponsors
-                    if isUser
-                        case userRole
-                            when "admin": a.btn.btn-default(href="/admin/dashboard") admin dashboard
-                            when "mentor": a.btn.btn-default(href="/admin/dashboard") my dashboard
-                            default: a.btn.btn-default(href="/user/dashboard") my dashboard
-                        a.button.btn.btn-default(href="/live") live
-                    else
-                        if middlehelp.isCornellRegistrationOpen()
-                            a.button.btn.btn-default(href="/register/cornelluniversity") Apply Now
-                        a.button.btn.btn-default(href="/login") Log In
+    //- Start all work here
 
-              .banner
-                  .logos
-                      img(src='/img/logos/blackstone.png')
-                      img#microsft(src='/img/logos/microsoft.png')
-                      img#cis_corn(src='/img/logos/cis.jpg')
-                      img#entrep(src='/img/logos/eac.jpg')
-
-    section.faq#description
-        +sectionHeading("What's the Data Science Student Challenge?")
-        .container
-            p
-                | The Data Science Student Challenge is part of a global series of hackathons.
-                | These events are designed to ignite a passion for the amazing things made possible by Data Science and to help students develop
-                | the skills necessary to harness the power of analytics. A variety of learning resources will be made
-                | available. With amazing prizes, workshops, and swag for all
-                | participants, it’s a great opportunity to build your skills, meet other top students, have fun and
-                | learn. The Data Science Student Challenge is a collaboration between Microsoft and BigRed//Hacks!
-
-            p We encourage all developers regardless of technical ability or hackathon experience to apply. Admission and food is free for all hackers.
-
-
-    section.faq#faq
-        +sectionHeading("FAQ")
-        .container
-            .faq-table
-                dl
-                    dt Who is eligible to participate?
-                    dd
-                        | We are inviting all undergraduate and graduate students currently enrolled at Cornell's Ithaca Campus to participate in our hackathon.
-                        | You don't need any past experience.
-                        | You don't even need to be a computer science major!
-                        | Our only requirement is that you are attending Cornell University at the Ithaca campus.
-                    dt What will I need to bring?
-                    dd
-                        | Bring your school ID for registration.
-                        | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
-                        | You may also want to bring a sleeping bag, change of clothes, and toothbrush, if you're feeling dedicated.
-                    .break-bef
-                    dt Do I have to sign up with a team?
-                    dd
-                        | You don't have to sign up with a team, but it's certainly more fun!
-                        | We allow teams of up to four people, and while they can be specified on the application, you won't officially create your team until the event.
-                        | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
-                    dt Are you providing food?
-                    dd
-                        | Don't worry, there will be lots of delicious food and beverages at our event, complementary to all participants.
-                        | We'll have vegetarian options as well.
-                    dt What's the deal with transportation?
-                    dd
-                        | You're a Cornell student, right? Just walk.
-                    .break-bef
-                    dt What are the rules?
-                    dd
-                        | We want BigRed//Hacks to be fun and fair for everyone.
-                        | Your project should be started from scratch and worked on only during the 24 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
-                        | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
-                    dt Why is there an application?
-                    dd
-                        | We want to guarantee that students from a wide range of experiences are given an equal and fair chance to participate.
-                        | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
-                        | Even if you've never been to a hackathon before, please apply!
-
-
-    footer
-        +sectionHeading("")
-        .container
-            .row
-                .col-md-12.col-lg-12
-                    p.footer
-                        a(href='http://www.facebook.com/BigRedHacks', target='_blank')
-                            img.s-icon(src='img/social/icon_facebook.png', draggable='false')
-                        | &nbsp;&nbsp;
-                        a(href='http://www.twitter.com/BigRedHacks', target='_blank')
-                            img.s-icon(src='img/social/icon_twitter.png', draggable='false')
-                        | &nbsp;&nbsp;
-                        a(href='https://www.instagram.com/bigredhacks/', target='_blank')
-                            img.s-icon(src='img/social/icon_instagram.png', draggable='false')
-                        | &nbsp;&nbsp;
-                        a(href='mailto:info@bigredhacks.com')
-                            img.s-icon(src='img/social/icon_email.svg', draggable='false')
-                        | &nbsp;&nbsp;
-                    br
-                    p.footer
-                        | ©2017 BigRed//Hacks
-                        br
-                        //span#cover-photo-attribution
-                        | All other trademarks and logos ® their respective owners.
-                        br
-                        | From Ithaca with ♥
+    //- footer
+    //-     +sectionHeading("")
+    //-     .container
+    //-         .row
+    //-             .col-md-12.col-lg-12
+    //-                 p.footer
+    //-                     a(href='http://www.facebook.com/BigRedHacks', target='_blank')
+    //-                         img.s-icon(src='img/social/icon_facebook.png', draggable='false')
+    //-                     | &nbsp;&nbsp;
+    //-                     a(href='http://www.twitter.com/BigRedHacks', target='_blank')
+    //-                         img.s-icon(src='img/social/icon_twitter.png', draggable='false')
+    //-                     | &nbsp;&nbsp;
+    //-                     a(href='https://www.instagram.com/bigredhacks/', target='_blank')
+    //-                         img.s-icon(src='img/social/icon_instagram.png', draggable='false')
+    //-                     | &nbsp;&nbsp;
+    //-                     a(href='mailto:info@bigredhacks.com')
+    //-                         img.s-icon(src='img/social/icon_email.svg', draggable='false')
+    //-                     | &nbsp;&nbsp;
+    //-                 br
+    //-                 p.footer
+    //-                     | ©2017 BigRed//Hacks
+    //-                     br
+    //-                     //span#cover-photo-attribution
+    //-                     | All other trademarks and logos ® their respective owners.
+    //-                     br
+    //-                     | From Ithaca with ♥
 
 block footer
     script(src="/js/jquery.validate.options.js")
-    script(src="//code.jquery.com/jquery-3.1.1.min.js")
+    script(src="//code.jquery.com/jquery-3.2.1.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js")
     script(src="/js/index.js")
