@@ -35,38 +35,23 @@ block append content
         input#scroll(type="text" class="form-control")
 
         //- TODO: Insert keyboard image/graphic here
-        img(src="/img/keyboard.png")
+        img#keyboard(src="/img/keyboard_components/Keys.png")
 
         //- TODO: Add the social media icons. Check the commented out old footer below for info.
-
-        //- TODO: Add the subscribe here 
-
-    //- footer
-    //-     +sectionHeading("")
-    //-     .container
-    //-         .row
-    //-             .col-md-12.col-lg-12
-    //-                 p.footer
-    //-                     a(href='http://www.facebook.com/BigRedHacks', target='_blank')
-    //-                         img.s-icon(src='img/social/icon_facebook.png', draggable='false')
-    //-                     | &nbsp;&nbsp;
-    //-                     a(href='http://www.twitter.com/BigRedHacks', target='_blank')
-    //-                         img.s-icon(src='img/social/icon_twitter.png', draggable='false')
-    //-                     | &nbsp;&nbsp;
-    //-                     a(href='https://www.instagram.com/bigredhacks/', target='_blank')
-    //-                         img.s-icon(src='img/social/icon_instagram.png', draggable='false')
-    //-                     | &nbsp;&nbsp;
-    //-                     a(href='mailto:info@bigredhacks.com')
-    //-                         img.s-icon(src='img/social/icon_email.svg', draggable='false')
-    //-                     | &nbsp;&nbsp;
-    //-                 br
-    //-                 p.footer
-    //-                     | ©2017 BigRed//Hacks
-    //-                     br
-    //-                     //span#cover-photo-attribution
-    //-                     | All other trademarks and logos ® their respective owners.
-    //-                     br
-    //-                     | From Ithaca with ♥
+        div#bottomkeys
+            a(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
+                img(src="/img/keyboard_components/Facebook.png")
+            a(href='http://www.twitter.com/BigRedHacks', target='_blank', class="keyicon")
+                img(src="/img/keyboard_components/Twitter.png")
+            a(href='https://www.instagram.com/bigredhacks/', target='_blank', class="keyicon")
+                img(src="/img/keyboard_components/Instagram.png", class="keyicon")
+            a(href='mailto:info@bigredhacks.com')
+                img(src="/img/keyboard_components/Email.png", class="keyicon")
+            //- TODO: Add the subscribe here 
+            div(class='spacebar_subscribe')
+                input#reg_email
+            img#signup(src="/img/keyboard_components/Sign_Up.png", class="keyicon")
+            img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
 
 block footer
     //- script(src="/js/jquery.validate.options.js")

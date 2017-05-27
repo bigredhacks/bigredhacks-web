@@ -97,3 +97,10 @@ document.addEventListener('DOMContentLoaded', function(){
         typeSpeed: 0
       });
   });
+
+document.addEventListener('DOMContentLoaded', function(){
+      Typed.new('#reg_email', {
+        strings: ["Type your email here for updates!"],
+        typeSpeed: 0
+      });
+  });
