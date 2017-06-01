@@ -24,13 +24,17 @@ router.get('/', function (req, res, next) {
 
 
 /**
- * @api {POST} /cornell/subscribe subscribe a cornell student to the mailing list
+ * @api {POST} /subscribe subscribe a student to the mailing list
  * @apiName Subscribe
  * @apiGroup Index
+ * @params isCornell- is the student from Cornell or not?
+ * @params cornellEmail or email- the email to subscribe
  */
-router.post('/cornell/subscribe', function (req, res, next) {
-    req = validator.validate(req, ['cornellEmail']);
-    var email = req.body.cornellEmail;
+router.post('/subscribe', function (req, res, next) {
+    let isCornell = req.body.isCornell;
+    let check = isCornell ? 'cornellEmail' : 'email';
+    req = validator.validate(req, [check]);
+    var email = req.body[check];
     if (req.validationErrors()) {
         console.log(req.validationErrors());
         req.flash("error", "Please enter a valid email.");

@@ -107,6 +107,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
 // TODO: Implement Registration here
 $('#signup').click(function(){
-  var email = $('#reg_email').val();
-  console.log(email);
+  var input_email = $('#reg_email').val();
+  $.ajax({
+        url : "./subscribe",
+        type: "POST",
+        data: JSON.stringify({email: input_email, isCornell: false}),
+        contentType: "application/json; charset=utf-8",
+        dataType   : "json",
+        success    : function(){
+            console.log("Submitted");
+        }
+    });
 })
