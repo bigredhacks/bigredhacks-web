@@ -1,31 +1,19 @@
 extends _global/_layout
-//-Generates full section header
-mixin sectionHeading(name)
-    .section-heading.container
-        img.fade-img(src='/img/fade.png')
-        br
-        h2.fade-heading #{name}
 
-//- Creates a message if content exists, where type:error|success
-mixin message(content, type)
-    if content
-        - var msg_class
-        case type.toLowerCase()
-            when "error": -msg_class = "alert-danger"
-            when "success": -msg_class = "alert-success"
-            default: -msg_class = "alert-success"
-        .alert.float.alert-dismissible.float.fadeOut(class=msg_class, role="alert")
-            button.close(type="button", data-dismiss="alert", aria-label="Close"): span(aria-hidden="true") &times;
-            | #{content.toLowerCase()}
-
+mixin showMessages(messages)
     if messages.error
-        +message(messages.error[0].toLowerCase(), "error")
+        h1 error
+        .alert.alert-danger(role="alert") #{messages.error[0].toLowerCase()}
     if messages.success
-        +message(messages.success[0].toLowerCase(), "success")
+        h1 success
+        .alert.alert-success(role="alert") #{messages.success[0].toLowerCase()}
 
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
+
+    +showMessages(messages)
+
     //- TODO: Change the font and other css to match design specs when you get them
     div#splash2017
         h1 BigRed
