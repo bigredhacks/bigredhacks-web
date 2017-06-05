@@ -17,11 +17,13 @@ var util = require('../util/util');
  * @apiGroup Index
  */
 router.get('/', function (req, res, next) {
+    let ev = req.flash();
+    console.log(ev);
     res.render('index', {
-        title: 'Cornell\'s Ultimate Hackathon'
+        title: 'Cornell\'s Ultimate Hackathon',
+        messages: ev
     });
 });
-
 
 /**
  * @api {POST} /subscribe subscribe a student to the mailing list
@@ -30,33 +32,27 @@ router.get('/', function (req, res, next) {
  * @params isCornell- is the student from Cornell or not?
  * @params cornellEmail or email- the email to subscribe
  */
-router.post('/subscribe', function (req, res, next) {
-    let isCornell = req.body.isCornell;
-    let check = isCornell ? 'cornellEmail' : 'email';
-    req = validator.validate(req, [check]);
-    var email = req.body[check];
+router.get('/subscribe', function (req, res, next) {
+    req = validator.validate(req, ['email']);
+    var email = req.query['email'];
     if (req.validationErrors()) {
         console.log(req.validationErrors());
-        req.flash("error", "Please enter a valid email.");
-        res.redirect("/");
+        res.send({status: false, message: "Please enter a valid email"});
     }
     else {
         helper.addSubscriber(config.mailchimp.l_interested, email, "", "", function (err, result) {
             if (err) {
                 if (err.name === "List_AlreadySubscribed") {
-                    req.flash("error", err.error);
+                    res.send({status: false, message: "You're already subscribed!"});
                 }
                 else {
                     console.log(err);
-                    req.flash("error", "There was an error adding your email to the list.");
+                    res.send({status: false, message: "There was an error adding your email to the list."});
                 }
-                //console.log(err);
             }
             else {
-                //console.log(result);
-                req.flash("success", "Your email has been added to the mailing list.");
-            }
-            res.redirect('/');
+                res.send({status: true, message: "Your email has been added to the mailing list!"});
+            }  
         })
     }
 });
