@@ -1,11 +1,17 @@
 extends _global/_layout
 //-Generates full section header
 mixin sectionHeading(name)
+
     .section-heading.container
         img.fade-img(src='/img/fade.png')
         br
         h2.fade-heading #{name}
 
+mixin generateFAQs(text, count)
+    - for (var i=0; i<count; i++)
+        .question
+            p Question
+            p #{text}
 //- Creates a message if content exists, where type:error|success
 mixin message(content, type)
     if content
@@ -18,15 +24,9 @@ mixin message(content, type)
             button.close(type="button", data-dismiss="alert", aria-label="Close"): span(aria-hidden="true") &times;
             | #{content.toLowerCase()}
 
-    if messages.error
-        +message(messages.error[0].toLowerCase(), "error")
-    if messages.success
-        +message(messages.success[0].toLowerCase(), "success")
-
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
-    //- TODO: Change the font and other css to match design specs when you get them
     div#splash2017
         h1 BigRed
             b //Hacks
@@ -54,8 +54,8 @@ block append content
             img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
 
 block footer
-    //- script(src="/js/jquery.validate.options.js")
-    script(src="//code.jquery.com/jquery-3.2.1.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js")
+    script(src="//code.jquery.com/jquery-3.1.1.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
     script(src="//rawgit.com/mattboldt/typed.js/master/dist/typed.min.js")
+    script(src="/js/jquery.validate.options.js")
     script(src="/js/index.js")    
