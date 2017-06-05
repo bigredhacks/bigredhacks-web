@@ -34,24 +34,40 @@ block append content
 
         input#scroll(type="text" class="form-control")
 
-        //- TODO: Insert keyboard image/graphic here
-        img#keyboard(src="/img/keyboard_components/Keys.png")
+        div#keyboard_whole
+            //- TODO: Insert keyboard image/graphic here
+            img#keyboard(src="/img/keyboard_components/Keys.png")
 
-        //- TODO: Add the social media icons. Check the commented out old footer below for info.
-        div#bottomkeys
-            a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
-                img(src="/img/keyboard_components/Facebook.png", class="fill")
-            a#twitter(href='http://www.twitter.com/BigRedHacks', target='_blank', class="keyicon")
-                img(src="/img/keyboard_components/Twitter.png", class="fill")
-            a#insta(href='https://www.instagram.com/bigredhacks/', target='_blank', class="keyicon")
-                img(src="/img/keyboard_components/Instagram.png", class="keyicon", class="fill")
-            a#email(href='mailto:info@bigredhacks.com', class="keyicon")
-                img(src="/img/keyboard_components/Email.png", class="keyicon", class="fill")
-            //- TODO: Add the subscribe here 
-            div#spacebar(class='spacebar_subscribe')
-                input#reg_email
-            img#signup(src="/img/keyboard_components/Sign_Up.png", class="keyicon")
-            img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
+            //- TODO: Add the social media icons. Check the commented out old footer below for info.
+            div#bottomkeys
+                a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
+                    img(src="/img/keyboard_components/Facebook.png", class="fill")
+                a#twitter(href='http://www.twitter.com/BigRedHacks', target='_blank', class="keyicon")
+                    img(src="/img/keyboard_components/Twitter.png", class="fill")
+                a#insta(href='https://www.instagram.com/bigredhacks/', target='_blank', class="keyicon")
+                    img(src="/img/keyboard_components/Instagram.png", class="keyicon", class="fill")
+                a#email(href='mailto:info@bigredhacks.com', class="keyicon")
+                    img(src="/img/keyboard_components/Email.png", class="keyicon", class="fill")
+                //- TODO: Add the subscribe here 
+                div#spacebar(class='spacebar_subscribe')
+                    input#reg_email
+                img#signup(src="/img/keyboard_components/Sign_Up.png", class="keyicon")
+                img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
+        div#mobile_keyboard
+            div#boxinput
+                input#reg_email2
+                button#signup2(class="btn btn-default") Sign Up!
+            div#links
+                a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
+                    img(src="/img/keyboard_components/Facebook.png", class="fill")
+                a#twitter(href='http://www.twitter.com/BigRedHacks', target='_blank', class="keyicon")
+                    img(src="/img/keyboard_components/Twitter.png", class="fill")
+                a#insta(href='https://www.instagram.com/bigredhacks/', target='_blank', class="keyicon")
+                    img(src="/img/keyboard_components/Instagram.png", class="fill")
+                a#email(href='mailto:info@bigredhacks.com', class="keyicon")
+                    img(src="/img/keyboard_components/Email.png", class="fill")
+
+            
 
 block footer
     //- script(src="/js/jquery.validate.options.js")
