@@ -72,16 +72,6 @@ dd {
   margin: 0 0 25px;
 }
 
-a {
-  -webkit-transition: all .2s ease-in-out;
-  -moz-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  &:hover, &:focus {
-    text-decoration: none;
-    color: #176e61;
-  }
-}
-
 .light {
   font-weight: 400;
 }
@@ -527,17 +517,11 @@ footer p {
 //============================
 
 .btn {
-  font-family: "Overpass Mono", Arial, sans-serif;
   font-size: 14px;
   letter-spacing: 0.5px;
   padding: 9px 15px 9px 15px;
   z-index: 600;
   position: relative;
-  background-color: transparent;
-  border-color: transparent;
-  border-bottom-width: thick;
-  color: red;
-
 
   &.fixed-width {
     width: 90px;
@@ -547,7 +531,6 @@ footer p {
 /* Media queries */
 
 @media (min-width: 767px) {
-
   .red{
     color: red;
   }
@@ -883,5 +866,64 @@ footer p {
       0% { opacity:1; }
       50% { opacity:0; }
       100% { opacity:1; }
+  }
+}
+
+#mobile_keyboard{
+  visibility: hidden;
+}
+
+@media screen and (max-width: 565px){
+  #splash2017{
+    h1{
+      font-size: 38px;
+    }
+
+    h3{
+      font-size: 16px;
+    }
+
+    #scroll{
+      font-size: 12px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    #signup{
+      width: 100%;
+      padding-top: 10px;
+      padding-bottom: 40px;
+    }
+
+    #boxinput{
+      border: 2px solid #cd5257;
+      margin-bottom: 35px;
+    }
+
+    #keyboard_whole{
+      display: none;
+    }
+
+    #mobile_keyboard{
+      visibility: visible;
+      display: block;
+      width: 100%;
+      min-height: 300px;
+      max-height: 100vh;
+    }
+
+    #reg_email{
+      height: 25px;
+      margin-top: 50px;
+    }
+
+    #fb{
+      width: 21%;
+    }
+
+    #twitter, #insta, #email{
+      width: 25%;
+    }
+
   }
 }
