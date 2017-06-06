@@ -11,15 +11,6 @@ function pad(num, size) {
 
 (function ($) {
 
-    //jQuery to collapse the navbar on scroll
-    $(window).scroll(function () {
-        if ($(".navbar").offset().top > 50) {
-            $(".navbar-fixed-top").addClass("top-nav-collapse");
-        } else {
-            $(".navbar-fixed-top").removeClass("top-nav-collapse");
-        }
-    });
-
     //jQuery for page scrolling feature - requires jQuery Easing plugin
     $(function () {
         var padding = 30;
@@ -79,10 +70,13 @@ function pad(num, size) {
             strings: ["Hello World!", "Get ready to be a part of something big!"],
             typeSpeed: 0
         });
-    });
 
-    document.addEventListener('DOMContentLoaded', function () {
         Typed.new('#reg_email', {
+            strings: ["Type your email here for updates!"],
+            typeSpeed: 0
+        });
+
+        Typed.new('#reg_email2', {
             strings: ["Type your email here for updates!"],
             typeSpeed: 0
         });
@@ -109,6 +103,43 @@ function pad(num, size) {
                 });
             }
         });
+    });
+
+    $('#signup2').click(function () {
+        var input_email = $('#reg_email2').val();
+        console.log(input_email)
+        $.ajax({
+            url: "./subscribe",
+            type: "get",
+            data: {
+                "email": input_email,
+                "isCornell": false 
+            },
+            success: function (result) {
+                $("#reg_email2").val("");
+                if(!result.status){
+                    alert(result.message);
+                }
+                Typed.new('#scroll', {
+                    strings: [result.message],
+                    typeSpeed: 0
+                });
+            }
+        });
+    });
+
+    var currentPhrase = 0;
+    var phrases = ["Learn, code, share!", "Hello World!", "Get ready to be a part of something big!", "Get ready for the new school year!", 'console.log("Ready!")'];
+
+    $('#keyboard').click(function(){
+        var current = phrases[currentPhrase];
+
+        Typed.new('#scroll', {
+            strings: [current],
+            typeSpeed: 0
+        });
+
+        currentPhrase = (currentPhrase < phrases.length - 1) ? currentPhrase + 1 : 0;
     });
 
     // $('#signup').validate({
