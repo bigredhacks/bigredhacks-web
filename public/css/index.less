@@ -760,17 +760,18 @@ footer p {
 #splash2017{
   height: 100vh;
   width: 100vw;
-  padding-left: 15%;
-  padding-right: 15%;
-  padding-top: 5%;
+  padding-left: 25%;
+  padding-right: 25%;
+  padding-top: 7%;
   margin-bottom: 50px;
 
   #scroll{
-    margin-top: 35px;
-    margin-bottom: 35px;
-    font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 20px;
     border-style: none;
     padding: 0;
+    background: white;
   }
 
   #keyboard{
@@ -780,28 +781,28 @@ footer p {
 
   #bottomkeys{
     width: 100%;
+    overflow: hidden;
   }
 
   .spacebar_subscribe{
     float: left;
     margin: 0;
     padding: 0;
-    background-image: url("../img/keyboard_components/Spacebar.png");
-    background-size: 90%;
-    background-repeat: no-repeat;
   }
 
   .keyicon{
     float: left;
+    position:relative;
   }
 
   #reg_email{
     display: block;
-    margin : 0 auto;
-    width: 95%;
-    height: 80%;
-    margin-top: 5px;
-    padding-left: 5px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
     border: none;
     background: transparent;
   }
@@ -828,11 +829,18 @@ footer p {
 
   #spacebar{
     width: (318/828)*100%;
-    height: 55px;
+    position:relative;
+    height: 3vw;
+
+    border-radius: 4px;
+    margin-top: 0.5%;
+    background-color: #ffffff;
+    border: solid 1px #ff4a4a;
   }
 
   #signup{
     width: (88/828)*100%;
+    cursor: pointer;
   }
 
   #rightkeys{
@@ -841,10 +849,14 @@ footer p {
 
   h1{
     margin-bottom: 0;
+    font-size: 55px;
+    letter-spacing: -3.4px;
   }
 
   h3{
     margin-top: 15px;
+    font-size: 20px;
+    letter-spacing: -1px;
   }
 
   .typed-cursor{

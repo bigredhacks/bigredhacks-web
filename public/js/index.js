@@ -70,16 +70,6 @@ function pad(num, size) {
             strings: ["Hello World!", "Get ready to be a part of something big!"],
             typeSpeed: 0
         });
-
-        Typed.new('#reg_email', {
-            strings: ["Type your email here for updates!"],
-            typeSpeed: 0
-        });
-
-        Typed.new('#reg_email2', {
-            strings: ["Type your email here for updates!"],
-            typeSpeed: 0
-        });
     });
 
     // TODO: Implement Registration here
