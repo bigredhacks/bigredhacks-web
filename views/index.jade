@@ -32,7 +32,7 @@ block append content
             b //Hacks
         h3 Sept. 15 - 17, 2017 @ Ithaca, NY
 
-        input#scroll(type="text" class="form-control")
+        input#scroll(type="text" class="form-control" disabled="disabled")
 
         div#keyboard_whole
             //- TODO: Insert keyboard image/graphic here
@@ -50,12 +50,12 @@ block append content
                     img(src="/img/keyboard_components/Email.png", class="keyicon", class="fill")
                 //- TODO: Add the subscribe here 
                 div#spacebar(class='spacebar_subscribe')
-                    input#reg_email
+                    input#reg_email(placeholder="enter your email here for updates!")
                 img#signup(src="/img/keyboard_components/Sign_Up.png", class="keyicon")
                 img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
         div#mobile_keyboard
             div#boxinput
-                input#reg_email2
+                input#reg_email2(placeholder="enter your email here for updates!")
                 button#signup2(class="btn btn-default") Sign Up!
             div#links
                 a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
