@@ -807,13 +807,26 @@ footer p {
   #reg_email{
     display: block;
     width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto 5%;
     height: 100%;
     border: none;
     background: transparent;
+
+    &:focus {
+      outline: none;
+
+      .hiddenPlaceholderText {
+        color: transparent;
+        opacity: 0;
+      }
+
+      &::placeholder               { .hiddenPlaceholderText }
+      &::-webkit-input-placeholder { .hiddenPlaceholderText }
+      &:-moz-placeholder           { .hiddenPlaceholderText }
+      &::-moz-placeholder          { .hiddenPlaceholderText }
+      &:-ms-input-placeholder      { .hiddenPlaceholderText }
+      /* Separate declarations are necessary, using comments doesn't work. I don't know why. :( */
+    }
   }
   
   .fill{
