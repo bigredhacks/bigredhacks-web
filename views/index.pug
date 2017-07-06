@@ -7,11 +7,6 @@ mixin sectionHeading(name)
         br
         h2.fade-heading #{name}
 
-mixin generateFAQs(text, count)
-    - for (var i=0; i<count; i++)
-        .question
-            p Question
-            p #{text}
 //- Creates a message if content exists, where type:error|success
 mixin message(content, type)
     if content
@@ -27,6 +22,20 @@ mixin message(content, type)
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
+    //- div#frontPage2017
+    //-     div#mainDiv
+    //-         h1#bigred BigRed
+    //-         h1#squiggles //
+    //-         h1#hacks
+    //-             b Hacks
+    //-         h3 Sept. 15 - 17, 2017 @ Cornell University
+    //-     div#aboutDiv
+    //-         h1 About_
+    //-     div#scheduleDiv
+    //-         h1 Schedule_
+    //-     div#sponsorsDiv
+    //-         h1 Sponsors_
+
     div#splash2017
         h1#bigred BigRed
         h1#squiggles //
