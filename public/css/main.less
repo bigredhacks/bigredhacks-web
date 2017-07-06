@@ -3,19 +3,7 @@
 
 @header-decor-min-width: 500px;
 
-@font-face {
-  font-family: 'Oval-Light';
-  src: url('/fonts/oval-light/oval-light-webfont.eot');
-  src: url('/fonts/oval-light/oval-light-webfont.eot?#iefix') format('embedded-opentype'),
-  url('/fonts/oval-light/oval-light-webfont.woff2') format('woff2'),
-  url('/fonts/oval-light/oval-light-webfont.woff') format('woff'),
-  url('/fonts/oval-light/oval-light-webfont.ttf') format('truetype'),
-  url('/fonts/oval-light/oval-light-webfont.svg#oval_lightregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@import url(https://fonts.googleapis.com/css?family=Nunito Sans);
+@import url('https://fonts.googleapis.com/css?family=Nunito Sans');
 
 body {
   //margin-top: 50px;
@@ -334,32 +322,6 @@ h1 {
   margin-bottom: 30px;
 }
 
-//h1.leaf {
-//  @media (min-width: @header-decor-min-width) {
-//    @leafwidth: 53px;
-//    @leaf-margin: 20px;
-//    padding-right: @leafwidth+@leaf-margin;
-//    position: relative;
-//    display: inline-block;
-//    background-color: @bg-light;
-//    .leaf-scale(@ratio:1) {
-//      //idek
-//      width: 53px*@ratio+.1;
-//      height: 28px*@ratio+.4;
-//      background-size: 53px*@ratio - 0.1 28px*@ratio;
-//    }
-//    &:after {
-//      display: inline-block;
-//      position: absolute;
-//      top: 23.4px;
-//      margin-left: @leaf-margin;
-//      background: url('/img/leaf.svg') no-repeat;
-//      content: "";
-//      .leaf-scale(1.01);
-//    }
-//  }
-//}
-
 .page-title {
   position: relative;
   color: @bg-light;
@@ -382,32 +344,6 @@ h1 {
     right: -4px;
   }
 }
-
-//.header-wrapper {
-//  display: block;
-//  position: relative;
-//
-//  &::before {
-//    background-color: @black;
-//    width: 100%;
-//    height: 2px;
-//    display: block;
-//    content: " ";
-//    position: absolute;
-//    top: 58%;
-//  }
-//}
-
-//.header-wrapper-leaf {
-//  .header-wrapper;
-//  &&:before {
-//    height: 1.5px;
-//    top: 50%;
-//    @media (max-width: @header-decor-min-width) {
-//      height: 0px;
-//    }
-//  }
-//}
 
 legend {
   margin-bottom: 0; //needed for correct display with firefox

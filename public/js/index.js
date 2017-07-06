@@ -66,7 +66,7 @@ function pad(num, size) {
     }, 'Please enter a cornell.edu email.');
 
     document.addEventListener('DOMContentLoaded', function () {
-        Typed.new('#scroll', {
+        var typed = new Typed('#scroll', {
             strings: ["Hello World!", "Get ready to be a part of something big!"],
             typeSpeed: 0
         });
@@ -87,7 +87,7 @@ function pad(num, size) {
                 if(!result.status){
                     alert(result.message);
                 }
-                Typed.new('#scroll', {
+                var typed = new Typed('#scroll', {
                     strings: [result.message],
                     typeSpeed: 0
                 });
@@ -110,7 +110,7 @@ function pad(num, size) {
                 if(!result.status){
                     alert(result.message);
                 }
-                Typed.new('#scroll', {
+                var typed = new Typed('#scroll', {
                     strings: [result.message],
                     typeSpeed: 0
                 });
@@ -124,7 +124,7 @@ function pad(num, size) {
     $('#keyboard').click(function(){
         var current = phrases[currentPhrase];
 
-        Typed.new('#scroll', {
+        var typed = new Typed('#scroll', {
             strings: [current],
             typeSpeed: 0
         });
