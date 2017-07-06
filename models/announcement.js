@@ -1,8 +1,7 @@
 "use strict";
-var mongoose = require('mongoose');
-var async = require('async');
+const mongoose = require('mongoose');
 
-var announcementSchema = new mongoose.Schema({
+let announcementSchema = new mongoose.Schema({
     message: {type: String, required: true},
     time: {type: Date, default: Date.now},
 });
