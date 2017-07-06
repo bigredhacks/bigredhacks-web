@@ -65,13 +65,6 @@ function pad(num, size) {
         return /^[^@]+@cornell\.edu$/i.test(val) || val === "";
     }, 'Please enter a cornell.edu email.');
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var typed = new Typed('#scroll', {
-            strings: ["Hello World!", "Get ready to be a part of something big!"],
-            typeSpeed: 0
-        });
-    });
-
     // TODO: Implement Registration here
     $('#signup').click(function () {
         var input_email = $('#reg_email').val();
@@ -87,10 +80,10 @@ function pad(num, size) {
                 if(!result.status){
                     alert(result.message);
                 }
-                var typed = new Typed('#scroll', {
-                    strings: [result.message],
-                    typeSpeed: 0
-                });
+                // var typed = new Typed('#scroll', {
+                //     strings: [result.message],
+                //     typeSpeed: 0
+                // });
             }
         });
     });
@@ -110,10 +103,10 @@ function pad(num, size) {
                 if(!result.status){
                     alert(result.message);
                 }
-                var typed = new Typed('#scroll', {
-                    strings: [result.message],
-                    typeSpeed: 0
-                });
+                // var typed = new Typed('#scroll', {
+                //     strings: [result.message],
+                //     typeSpeed: 0
+                // });
             }
         });
     });
@@ -124,10 +117,10 @@ function pad(num, size) {
     $('#keyboard').click(function(){
         var current = phrases[currentPhrase];
 
-        var typed = new Typed('#scroll', {
-            strings: [current],
-            typeSpeed: 0
-        });
+        // var typed = new Typed('#scroll', {
+        //     strings: [current],
+        //     typeSpeed: 0
+        // });
 
         currentPhrase = (currentPhrase < phrases.length - 1) ? currentPhrase + 1 : 0;
     });

@@ -909,6 +909,7 @@ footer p {
 //--- Main Site 2017
 //============================
 #frontPage2017{
+  @triangle-val: 150px;
   h1{
     margin-bottom: 0;
     font-size: 55px;
@@ -931,11 +932,29 @@ footer p {
       display: inline;
       font-weight: 400 !important;
     }
+
+    padding-bottom: @triangle-val;
   }
 
   #aboutDiv{
+    background-color: @light-gray;
 
+    .innerContent{
+      margin-top: -@triangle-val;
+      padding-bottom: @triangle-val;
+    }
   }
+
+  #aboutDiv:before {
+    display: inline-block;
+    margin: 0;
+    margin-top: -@triangle-val;
+    margin-left: -@triangle-val;
+    content: '';
+    border: @triangle-val solid transparent;
+    border-right: 100vw solid @light-gray;
+  }
+
 
   #scheduleDiv{
 
