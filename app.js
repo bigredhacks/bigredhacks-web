@@ -40,7 +40,10 @@ var passport = require("passport");
 
 //mongoose setup
 var mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
+mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
+  useMongoClient: true,
+  /* other options */
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
