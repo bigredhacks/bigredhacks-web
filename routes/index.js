@@ -1,15 +1,15 @@
 "use strict";
-var express = require('express');
-var router = express.Router();
-var validator = require('../library/validations.js');
-var helper = require('../util/routes_helper');
-var middle = require('./middleware.js');
-var async = require('async');
-var Announcement = require ('../models/announcement.js');
-var Inventory = require ('../models/hardware_item.js');
+const express = require('express');
+const router = express.Router();
+const validator = require('../library/validations.js');
+const helper = require('../util/routes_helper');
+const middle = require('./middleware.js');
+const async = require('async');
+const Announcement = require ('../models/announcement.js');
+const Inventory = require ('../models/hardware_item.js');
 
-var config = require('../config.js');
-var util = require('../util/util');
+const config = require('../config.js');
+const util = require('../util/util');
 
 /**
  * @api {GET} /index Home page.
