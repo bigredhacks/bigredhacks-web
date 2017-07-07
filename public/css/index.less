@@ -349,7 +349,7 @@ section {
       margin: 0px;
     }
     h5 {
-      color: @light-gray;
+      color: @2017-light-gray;
     }
   }
 
@@ -632,11 +632,9 @@ footer p {
 }
 
 @media (max-width: 496px) {
-
   body{
     width: 100%;
   }
-
 }
 
 .top-nav-collapse {
@@ -649,7 +647,6 @@ footer p {
 }
 
 //sponsors
-
 .logos {
   //width: 800px; //todo width based on screen
   width: 100%;
@@ -688,230 +685,12 @@ footer p {
 }
 
 // ===========================
-//--- Splash
-//============================
-#splash2017{
-  height: 100vh;
-  width: 100vw;
-  padding-left: 25%;
-  padding-right: 25%;
-  padding-top: 7%;
-  margin-bottom: 50px;
-
-  #bigred, #hacks{
-    display: inline;
-  }
-
-  #squiggles{
-    display: inline;
-    font-weight: 400 !important;
-  }
-
-  #scroll{
-    margin-top: 40px;
-    margin-bottom: 40px;
-    font-size: 20px;
-    border-style: none;
-    padding: 0;
-    background: white;
-  }
-
-  #keyboard{
-    width: 100%;
-    height: auto;
-  }
-
-  #bottomkeys{
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .spacebar_subscribe{
-    float: left;
-    margin: 0;
-    padding: 0;
-  }
-
-  .keyicon{
-    float: left;
-    position:relative;
-  }
-
-  #reg_email{
-    display: block;
-    width: 90%;
-    margin: auto 5%;
-    height: 100%;
-    border: none;
-    background: transparent;
-
-    &:focus {
-      outline: none;
-
-      .hiddenPlaceholderText {
-        color: transparent;
-        opacity: 0;
-      }
-
-      &::placeholder               { .hiddenPlaceholderText }
-      &::-webkit-input-placeholder { .hiddenPlaceholderText }
-      &:-moz-placeholder           { .hiddenPlaceholderText }
-      &::-moz-placeholder          { .hiddenPlaceholderText }
-      &:-ms-input-placeholder      { .hiddenPlaceholderText }
-      /* Separate declarations are necessary, using comments doesn't work. I don't know why. :( */
-    }
-  }
-  
-  .fill{
-    width: 100%;
-  }
-  
-  #fb{
-    width: (49/828)*100%;
-  }
-
-  #twitter{
-    width: (58/828)*100%;
-  }
-
-  #insta{
-    width: (56/828)*100%;
-  }
-
-  #email{
-    width: (58/828)*100%;
-  }
-
-  #spacebar{
-    width: (308/828)*100%;
-    margin-left: (8/828)*100%;
-    margin-right: (2/828)*100%;
-    position:relative;
-    height: 3vw;
-
-    border-radius: 4px;
-    margin-top: 0.5%;
-    background-color: #ffffff;
-    border: solid 1px #ff4a4a;
-  }
-
-  #signup{
-    width: (88/828)*100%;
-    cursor: pointer;
-  }
-
-  #rightkeys{
-    width: (200/828)*100%;
-  }
-
-  h1{
-    margin-bottom: 0;
-    font-size: 55px;
-    letter-spacing: -3.4px;
-  }
-
-  h3{
-    margin-top: 15px;
-    font-size: 20px;
-    letter-spacing: -1px;
-  }
-
-  .typed-cursor{
-      opacity: 1;
-      -webkit-animation: blink 0.7s infinite;
-      -moz-animation: blink 0.7s infinite;
-      animation: blink 0.7s infinite;
-  }
-  @keyframes blink{
-      50% { opacity:0; }
-      100% { opacity:1; }
-  }
-  @-webkit-keyframes blink{
-      0% { opacity:1; }
-      50% { opacity:0; }
-      100% { opacity:1; }
-  }
-  @-moz-keyframes blink{
-      0% { opacity:1; }
-      50% { opacity:0; }
-      100% { opacity:1; }
-  }
-}
-
-#mobile_keyboard{
-  visibility: hidden;
-}
-
-@media screen and (max-width: 565px){
-  #splash2017{
-    h1{
-      font-size: 38px;
-    }
-
-    h3{
-      font-size: 16px;
-    }
-
-    #scroll{
-      font-size: 12px;
-      margin-top: 15px;
-      margin-bottom: 15px;
-    }
-
-    #signup{
-      width: 100%;
-      padding-top: 10px;
-      padding-bottom: 40px;
-    }
-
-    #boxinput{
-      border: 2px solid #cd5257;
-      margin-bottom: 35px;
-    }
-
-    #keyboard_whole{
-      display: none;
-    }
-
-    #mobile_keyboard{
-      visibility: visible;
-      display: block;
-      width: 100%;
-      min-height: 300px;
-      max-height: 100vh;
-    }
-
-    #reg_email2{
-      height: 25px;
-      margin-top: 50px;
-      width: 100%;
-      text-align: center; 
-    }
-
-    #fb{
-      width: 21%;
-    }
-
-    #twitter, #insta, #email{
-      width: 25%;
-    }
-
-    #signup2{
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-  }
-}
-
-// ===========================
 //--- Main Site 2017
 //============================
 #frontPage2017{
   @triangle-val: 150px;
   h1{
-    margin-bottom: 0;
+    margin-bottom: 55px;
     font-size: 55px;
     letter-spacing: -3.4px;
   }
@@ -920,6 +699,11 @@ footer p {
     margin-top: 15px;
     font-size: 20px;
     letter-spacing: -1px;
+    color: @2017-red;
+  }
+
+  p{
+    color: @2017-text-gray;
   }
 
   .paddedSection{
@@ -942,7 +726,7 @@ footer p {
   }
 
   #aboutDiv{
-    background-color: @light-gray;
+    background-color: @2017-light-gray;
 
     .innerContent{
       margin-top: -@triangle-val;
@@ -961,17 +745,36 @@ footer p {
     margin-left: -@triangle-val;
     content: '';
     border: @triangle-val solid transparent;
-    border-right: 100vw solid @light-gray;
+    border-right: 100vw solid @2017-light-gray;
   }
 
 
   #scheduleDiv{
     margin-top: 10%;
     padding-bottom: @triangle-val;
+    text-align: center;
+    #schedule{
+      overflow:auto;
+      margin-left: 5%;
+      margin-right: 5%;
+
+      h4{
+        margin-bottom: 45px;
+      }
+
+      b{
+        text-transform: uppercase;
+      }
+
+      p{
+        margin-bottom: 3px;
+      }
+    }
   }
 
   #sponsorsDiv{
-    background-color: @light-gray;
+    background-color: @2017-light-gray;
+    text-align: right;
     .innerContent{
       margin-top: -@triangle-val;
       padding-bottom: @triangle-val;
@@ -989,6 +792,6 @@ footer p {
     margin-right: -@triangle-val;
     content: '';
     border: @triangle-val solid transparent;
-    border-left: 100vw solid @light-gray;
+    border-left: 100vw solid @2017-light-gray;
   }
 }
