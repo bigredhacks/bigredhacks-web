@@ -922,7 +922,12 @@ footer p {
     letter-spacing: -1px;
   }
 
+  .paddedSection{
+    margin: 0 20% 0 20%;
+  }
+
   #mainDiv{
+    margin-top: 15%;
     // For the BigRed//Hacks text
     #bigred, #hacks{
       display: inline;
@@ -943,6 +948,10 @@ footer p {
       margin-top: -@triangle-val;
       padding-bottom: @triangle-val;
     }
+
+    .paddedSection{
+      margin-top: 5%;
+    }
   }
 
   #aboutDiv:before {
@@ -957,10 +966,29 @@ footer p {
 
 
   #scheduleDiv{
-
+    margin-top: 10%;
+    padding-bottom: @triangle-val;
   }
 
   #sponsorsDiv{
+    background-color: @light-gray;
+    .innerContent{
+      margin-top: -@triangle-val;
+      padding-bottom: @triangle-val;
+    }
 
+    .paddedSection{
+      margin-top: 5%;
+    }
+  }
+
+  #sponsorsDiv:before {
+    display: inline-block;
+    margin: 0;
+    margin-top: -@triangle-val;
+    margin-left: -@triangle-val;
+    content: '';
+    border: @triangle-val solid transparent;
+    border-left: 100vw solid @light-gray;
   }
 }
