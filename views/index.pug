@@ -11,7 +11,7 @@ block append content
                 h1#hacks
                     b Hacks
                 h3 Sept. 15 - 17, 2017 @ Cornell University
-                p Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
+                 
                 if isUser
                     case userRole
                         when "admin": a.btn(href="/admin/dashboard") admin dashboard
@@ -20,17 +20,21 @@ block append content
                     a.btn(href="/live") live
                 else
                     if middlehelp.isRegistrationOpen()
-                        a(href='/register')
-                            button.btn register
-                        a.btn.btn-blue(href="/login") login
+                        a.btn(href='/register') register
+                        a.btn(href="/login") login
                     else if middlehelp.isResultsReleased()
-                        a.btn.btn-light-blue(href="/login") login
+                        a.btn(href="/login") login
         div#aboutDiv
             div.innerContent
                 div.paddedSection
                     h1 About_
+                    p BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
+                    p Across three days, students from all across the US will gather to build the coolest and most innovative projects, meet amazing people, and win some prizes along the way!
+                
+
                     p This year, BigRed//Hacks seeks innovation in education. This will mean something different to every person. Perhaps, this means transforming the classroom, which has looked relatively the same for the past 100 years, into a dynamic experience for the next generation with technologies as reactive as students. To others, this will mean using the wide reach of the internet to ensure education is truly the great equalizer for the underrepresented, the quiet, and the forgotten. To you, this should mean something special; the experiences we live through, the opportunities we take, and the people who touch our lives and shape who we are. Education happens both within and without the classroom, and convention should not limit what you decide to build. We want you to learn and show others how to learn. We want you to speak with your audience and be spoken to. Most of all, here at BigRed//Hacks, we want you to be empowered and empower others.
 
+                    p * We encourage all developers regardless of technical ability or hackathon experience to apply. Admission and food is free for all hackers.
         div#scheduleDiv
             h1 Schedule_
             div#schedule
@@ -87,7 +91,7 @@ block append content
                     h1 Sponsors_
                     //- TODO: add company logos. Higher tiers = bigger logos
                     //- Issue #263
-                    
+
                     //- Two Sigma (3)
                     //- a16z (3)
                     //- Lutron (2)
