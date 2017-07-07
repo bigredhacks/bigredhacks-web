@@ -15,6 +15,7 @@ var util = require('../util/util.js');
 
 var Bus = require('../models/bus.js');
 var User = require('../models/user.js');
+var Mentor = require('../models/mentor.js');
 var College = require('../models/college.js');
 var Event = require('../models/event.js');
 var uid = require('uid2');
@@ -488,12 +489,12 @@ module.exports = function (io) {
      * @apiGroup User
      */
     router.get('/dashboard/mentorlist', function (req, res) {
-        User.find({role: "mentor"}).sort("mentorinfo.company").exec(function (err, mentors) {
+        Mentor.find().sort("mentorinfo.company").exec(function (err, mentors) {
             _getSortedCompanyImages(req, function (sortedCompanyList, sortedCompanyImageList) {
                 var companyCount = []; //will contain the number of mentors for each company
                 async.eachSeries(sortedCompanyList, function (company, callback) {
-                    User.aggregate([
-                        {$match: {'mentorinfo.company': company}},
+                    Mentor.aggregate([
+                        {$match: {'company': company}},
                         {$group: {_id: null, count: {$sum: 1}}}
                     ], function (err, result) {
                         if (err) {

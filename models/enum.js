@@ -30,6 +30,10 @@ var en = {
             long: "test/admin/mentor".split("/")//remove "user item"
         }
     },
+    mentor: {
+        companyimage: "bigredhacks.png".split("/"), // When more companies are added, separate them with /
+        companyname:  "Big Red Hacks".split("/"),
+    },
     mentorrequest: {
         status: "Unclaimed Claimed".split(" ")
     },

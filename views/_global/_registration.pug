@@ -5,11 +5,11 @@ extends _layout
 
 
 //- overrrideable variables
-- var actionUrl = "/register"; //- url the form should submit to
-- var multipart = true; //- whether the form has multipart data
-- var fluid = false; //-use div.container over div.container-fluid
-- var contentFormAttr = {}; //- no extra attrs in form content wrapper
 block vars
+    - var actionUrl = "/register"; //- url the form should submit to
+    - var multipart = true; //- whether the form has multipart data
+    - var fluid = false; //- use div.container over div.container-fluid
+    - var contentFormAttr = {}; //- no extra attrs in form content wrapper
 
 mixin sectionHeading(name)
     .header-wrapper

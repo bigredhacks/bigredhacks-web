@@ -88,7 +88,7 @@ block dashboard_content
                     | We'll be sending lots more information as we get closer to the event, so stay tuned!
                 p.long-text
                     | Please join our
-                    a(href='https://www.facebook.com/groups/423328391392502/')&nbsp;BigRed//Hacks #{new Date().getFullYear()} Hackers
+                    a(href='https://www.facebook.com/groups/423328391392502/') BigRed//Hacks #{new Date().getFullYear()} Hackers
                     |  Facebook group to find partners and plan travel with other students.
                 p.long-text Looking forward to seeing you in Ithaca,
                 p BigRed//Hacks Team
@@ -105,7 +105,7 @@ block dashboard_content
                 | Please RSVP to secure your spot at the event!
             p.long-text
                 | Also, join our
-                a(href='https://www.facebook.com/groups/423328391392502/')&nbsp;BigRed//Hacks #{new Date().getFullYear()} Hackers
+                a(href='https://www.facebook.com/groups/423328391392502/') BigRed//Hacks #{new Date().getFullYear()} Hackers
                 |  Facebook group to find partners and form discussions with other participants.
             p.long-text
                 | Make sure to register yourself on
@@ -152,7 +152,7 @@ block dashboard_content
                     |  violations.
                 p
                     | Please send any questions or concerns to
-                    a(href='mailto:info@bigredhacks.com?Subject=Transportation')&nbsp;info@bigredhacks.com
+                    a(href='mailto:info@bigredhacks.com?Subject=Transportation') info@bigredhacks.com
                     | .
             else
                 p= bus.message
@@ -201,7 +201,7 @@ block dashboard_content
                                 br
                                 p
                                     | We need a bus captain for your route! Email
-                                    a(href='mailto:info@bigredhacks.com?subject=Transportation')&nbsp;info@bigredhacks.com
+                                    a(href='mailto:info@bigredhacks.com?subject=Transportation') info@bigredhacks.com
                                     |  if you'd like to help out.
                             if (!bus.confirmed)
                                 p
@@ -244,18 +244,16 @@ block dashboard_content
                         button#rsvp-no-button.btn.btn-success(type='submit', name='rsvpsubmit') submit
                 #rsvp-yes(style='display:none')
                     if bus == null
-                            if (!cornellian)
-                                .form-group
-                                    label(for='receipt') Travel Receipt (.pdf, .jpg, .png, max: 15MB) *
-                                    p
-                                        | Upload a copy of receipt for a roundtrip ticket. If you
-                                        |  are driving, then include a screenshot of your route on Google Maps.
-                                    .wrapper
-                                        input#receipt.form-control.filepicker-bootstrap(data-label='upload', type='file', name='receipt', accept='.pdf,image/jpg,image/png')
-                            br
-                        p
-                            | Please click the following link and read the
-                            | document carefully.
+                        if (!cornellian)
+                            .form-group
+                                label(for='receipt') Travel Receipt (.pdf, .jpg, .png, max: 15MB) *
+                                p
+                                    | Upload a copy of receipt for a roundtrip ticket. If you
+                                    |  are driving, then include a screenshot of your route on Google Maps.
+                                .wrapper
+                                    input#receipt.form-control.filepicker-bootstrap(data-label='upload', type='file', name='receipt', accept='.pdf,image/jpg,image/png')
+                        br
+                        p Please click the following link and read the document carefully.
                         .form-group
                             label
                                 input#agreements-viewed(name='agreements-viewed', hidden=true)
@@ -275,13 +273,13 @@ block dashboard_content
                 p You told us that you are going to BigRed//Hacks.
                 p
                     | If you can't make it, please let us know at
-                    a(href='mailto:info@bigredhacks.com?Subject=Transportation')&nbsp;info@bigredhacks.com
+                    a(href='mailto:info@bigredhacks.com?Subject=Transportation') info@bigredhacks.com
                     | .
             else
                 p
                     | You told us that you weren't going to BigRed//Hacks.  If your
                     | plans have changed, please let us know as know at
-                    a(href='mailto:info@bigredhacks.com?subject=Transportation')&nbsp;info@bigredhacks.com
+                    a(href='mailto:info@bigredhacks.com?subject=Transportation') info@bigredhacks.com
                     | .
             br
 

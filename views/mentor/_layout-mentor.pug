@@ -12,7 +12,7 @@ mixin sectionHeading(name)
     .header-wrapper
         h2.page-title #{name}
 
-//Display flash messages from a flash message object
+//- Display flash messages from a flash message object
 mixin showMessages(messages)
     if messages.error
         .alert.alert-danger(role="alert") #{messages.error[0].toLowerCase()}

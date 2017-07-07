@@ -1,0 +1,32 @@
+extends _layout-dashboard
+
+block dashboard_content
+    +contentHeading("Mentor List")
+    - var currentMentor = 0;
+    -function range(start, end) {
+    -    var arr = [];
+    -    for (var i = start; i < end; i++) arr.push(i);
+    -    return arr;
+    -  }
+    each curCompany in range(0, companyCount)
+        .company
+            .companyname
+                h2=companyList[curCompany]
+                img(class="mentor-company-logo" src=companyImages[curCompany] alt=companyList[curCompany] id=companyList[curCompany].toLowerCase())
+                if companyCount[curCompany] === 0
+                    .nomentors
+                        p There are currently no registered mentors for this organization.
+                else
+                    each currentMentor in companyCount[curCompany]
+                        .mentorinfo
+                            h3=mentors[currentMentor].name.first + " " + mentors[currentMentor].name.last
+                            ul.skillsandbio
+                                li.skills
+                                    b Skills:
+                                        ul.skillslist
+                                            each curSkill in mentors[currentMentor].mentorinfo.skills
+                                                li=curSkill
+                                li.bio
+                                    b Bio:
+                                    p=mentors[currentMentor].name.bio
+                        - currentMentor = currentMentor + 1

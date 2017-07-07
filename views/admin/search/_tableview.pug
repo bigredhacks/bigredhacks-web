@@ -15,7 +15,7 @@ table.table.table-striped
             td
                 form.decision-radio.np-enabled
                     +generateInlineRadio(enums.virtual.status.long, {
-                    checked: app.internal.status, //set default value
-                    name: "status", //name attr of each input
-                    label: enums.virtual.status.short //label of the input different from actual input
+                        checked: app.internal.status,
+                        name: "status",
+                        label: enums.virtual.status.short
                     })

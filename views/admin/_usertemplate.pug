@@ -100,9 +100,9 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
             | Update user application decision:
             form.decision-radio.user.np-enabled(data-pubid = user.pubid)
                 +generateInlineRadio(enums.virtual.status.longWithPending, {
-                checked: user.internal.status, //set default value
-                name: "individualstatus", //name attr of each input
-                label: enums.virtual.status.longWithPending //label of the input different from actual input
+                    checked: user.internal.status,
+                    name: "individualstatus",
+                    label: enums.virtual.status.longWithPending
                 })
         br
         .text-center
