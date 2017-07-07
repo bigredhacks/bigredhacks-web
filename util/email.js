@@ -13,15 +13,10 @@ const year = new Date().getFullYear();
 
 // Subjects
 const ACCEPTED_SUBJECT             = `You've been accepted to BigRed//Hacks ${year}!`;
-
 const ACCEPTED_TO_REJECTED_SUBJECT = `BigRed//Hacks ${year} RSVP Deadline Passed`;
-
 const DEADLINE_WARNING_SUBJECT     = "One day left to RSVP to BigRed//Hacks!";
-
 const HARDWARE_TRANSACTION_SUBJECT = 'BigRed//Hacks Hardware Transaction';
-
 const REJECTED_SUBJECT             = `BigRed//Hacks ${year} Decision Status`;
-
 const WAITLISTED_SUBJECT           = `BigRed//Hacks ${year} Decision Status`;
 
 // Generic (Canned) responses
@@ -77,23 +72,46 @@ const WAITLISTED_TO_ACCEPTED_BODY = `<p>Congratulations, you've survived the wai
  * @param config Contains parameters: to.email, to.name, from_email, from_name, and subject
  * @param callback a function of (err, json) to handle callback
  */
-function sendCustomEmail (body, config, callback) {
-    if (!callback) callback = defaultCallback;
-    let email = new sendgrid.Email();
+function sendCustomEmail (bodyText, config, callback) {
+    // If callback doesn't exist, default to the default callback
+    callback = (!callback) ? defaultCallback : callback;
 
-    email.addTo(config.to.email);
-    email.setFrom(config.from_email);
-    email.setFromName(config.from_name);
-    email.setSubject(config.subject);
-    email.setHtml(body);
-    email.addFilter('templates', 'enable', 1);
-    email.addFilter('templates', 'template_id', global_config.sendgrid.sg_general);
+    // Generate the SendGrid request (as per Web API 3.0)
+    // https://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/index.html
+    let request = sendgrid.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: {
+            personalizations: [
+                {
+                    to: [
+                        {
+                            email: config.to.email
+                        }
+                    ],
+                    subject: config.subject
+                }
+            ],
+            from: {
+                email: config.from_email,
+                name: config.from_name
+            },
+            content: [
+                {
+                    type: 'text/html',
+                    value: bodyText
+                }
+            ],
+            template_id: global_config.sendgrid.sg_general
+        }
+    });
 
-    sendgrid.send(email, function(err) {
-        if (err) {
-            console.log(err);
-            callback(err);
-        } else {
+    sendgrid.API(request, function (error, response) {
+        if (error) {
+            console.log(error);
+            callback(error);
+        }
+        else{
             callback();
         }
     });
@@ -157,8 +175,6 @@ module.exports.sendHardwareEmail = function (checkingOut, quantity, itemName, fi
 
     sendCustomEmail(body, config, callback);
 };
-
-
 
 module.exports.sendRequestMadeEmail = function (email, name, callback) {
     let config = {
@@ -224,9 +240,5 @@ module.exports.sendRequestClaimedMentorEmail = function (email, studentName, men
 module.exports.sendCustomEmail = sendCustomEmail;
 
 let defaultCallback = function (err, json) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(json);
-    }
+    console.log(err ? err : json);
 };
