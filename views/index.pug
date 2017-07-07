@@ -20,7 +20,8 @@ block append content
                     a.btn(href="/live") live
                 else
                     if middlehelp.isRegistrationOpen()
-                        button.btn(href='/register') register
+                        a(href='/register')
+                            button.btn register
                         a.btn.btn-blue(href="/login") login
                     else if middlehelp.isResultsReleased()
                         a.btn.btn-light-blue(href="/login") login
