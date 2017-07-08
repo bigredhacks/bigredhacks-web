@@ -14,23 +14,3 @@ nav.navbar.navbar-default
             if middlehelp.isCornellRegistrationOpen()
                 .navbar-header: a.navbar-text(href="/register/cornelluniversity") Register
             .navbar-header: a.navbar-text(href="/login") Login
-//-
-    nav.navbar.top-nav-collapse.navbar-default(role='navigation')
-        .container
-            .navbar-header.page-scroll
-                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-main-collapse')
-                    i.fa.fa-bars
-                a.navbar-brand(href='/')
-                    img(src='/img/logo/BRH-Logo-White.svg', height='40', width='180', draggable='false')
-            //- Collect the nav links, forms, and other content for toggling
-            .collapse.navbar-collapse.navbar-left.navbar-main-collapse
-                ul.nav.navbar-nav
-                    li: a.navbar-text(href="/") Home
-                    if isUser
-                        li: a.navbar-text(href="/user/dashboard") Dashboard
-                        li: a.navbar-text(href="/user/logout") Logout
-                    else
-                        if middlehelp.isRegistrationOpen()
-                            li: a.navbar-text(href="/register") Register
-                        li: a.navbar-text(href="/login") Login
-

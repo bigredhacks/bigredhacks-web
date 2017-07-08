@@ -215,10 +215,7 @@ $('#liability-cornell').click(function(){
         .addClass('btn-success');
         */
 });
-/*
-$('#code-of-conduct-cornell').click(function(){
-    $(this)
-        .removeClass('btn-danger')
-        .addClass('btn-success');
+
+$("#mlh-agree").click(function() {
+  $("#submit").attr("disabled", !this.checked);
 });
-    */
