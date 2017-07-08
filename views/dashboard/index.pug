@@ -65,8 +65,8 @@ block dashboard_content
 
             when "accepted"
                 p.long-text
-                    | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks Spring #{new Date().getFullYear()},
-                    |  taking place on March 24-25 at Cornell University. 
+                    | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks Fall #{new Date().getFullYear()},
+                    |  taking place on September 15-17 at Cornell University. 
                 if !user.internal.cornell_applicant
                     if (user.internal.going == null)
                         if (deadline.active)
@@ -87,8 +87,8 @@ block dashboard_content
                 p.long-text
                     | We'll be sending lots more information as we get closer to the event, so stay tuned!
                 p.long-text
-                    | Please join our
-                    a(href='https://www.facebook.com/groups/423328391392502/') BigRed//Hacks #{new Date().getFullYear()} Hackers
+                    | Please join our 
+                    a(href='https://www.facebook.com/groups/151710352067181/') BigRed//Hacks #{new Date().getFullYear()} Hackers
                     |  Facebook group to find partners and plan travel with other students.
                 p.long-text Looking forward to seeing you in Ithaca,
                 p BigRed//Hacks Team
@@ -99,18 +99,14 @@ block dashboard_content
     else
         if status == "accepted"
             p.long-text
-                | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks Spring #{new Date().getFullYear()},
-                |  taking place on March 24-25 at Cornell University. 
+                | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks Fall #{new Date().getFullYear()},
+                |  taking place on September 15-17 at Cornell University. 
             p.long-text
                 | Please RSVP to secure your spot at the event!
             p.long-text
-                | Also, join our
-                a(href='https://www.facebook.com/groups/423328391392502/') BigRed//Hacks #{new Date().getFullYear()} Hackers
+                | Also, join our 
+                a(href='https://www.facebook.com/groups/151710352067181/') BigRed//Hacks #{new Date().getFullYear()} Hackers
                 |  Facebook group to find partners and form discussions with other participants.
-            p.long-text
-                | Make sure to register yourself on
-                a(href='https://www.eventbrite.com.au/e/bigredhacks-spring-data-science-student-challenge-2017-registration-32038006540')   Eventbrite
-                |   as well
             p.long-text Looking forward to seeing you soon,
             p BigRed//Hacks Team
             br
@@ -216,7 +212,7 @@ block dashboard_content
                                 p.long-text
                                     | This bus route has been <b>confirmed</b>.
                                     | Please sign up to secure your spot on the bus at
-                                    a(href="https://www.sharethebus.com/events/bigredhacks")  https://www.sharethebus.com/events/bigredhacks.
+                                    a(href="//www.sharethebus.com/events/bigredhacks")  https://www.sharethebus.com/events/bigredhacks.
                                     |  Signing up requires a $20 deposit that will be refunded upon arriving at Cornell.
                                 if (bus.customMessage)
                                     p= bus.customMessage
@@ -257,7 +253,7 @@ block dashboard_content
                         .form-group
                             label
                                 input#agreements-viewed(name='agreements-viewed', hidden=true)
-                                a#liability.btn.btn-danger(type='button', href='http://www.bigredhacks.com/docs/waiver.pdf', target='_blank') liability waiver & release
+                                a#liability.btn.btn-danger(type='button', href='//www.bigredhacks.com/docs/waiver.pdf', target='_blank') liability waiver & release
                                 br
                         .form-group
                             .checkbox
