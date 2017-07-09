@@ -326,6 +326,8 @@ footer p {
   }
 
   #mainDiv{
+    position: relative;
+    height: 70vh;
     margin-top: 15%;
     // For the BigRed//Hacks text
     #bigred, #hacks{
@@ -337,7 +339,20 @@ footer p {
       font-weight: 400 !important;
     }
 
-    padding-bottom: @triangle-val;
+    // padding-bottom: @triangle-val;
+
+    #headerText{
+      display: inline-block;
+      h3{
+        display: inline-block;
+      }
+    }
+
+    #headerImg{
+      position: absolute;
+      bottom: 0;
+      right:0;
+    }
   }
 
   #aboutDiv{
@@ -387,20 +402,16 @@ footer p {
     }
   }
 
-  #sponsorsDiv{
+  #faqDiv{
     background-color: @2017-light-gray;
-    text-align: right;
+
     .innerContent{
       margin-top: -@triangle-val;
       padding-bottom: @triangle-val;
     }
-
-    .paddedSection{
-      margin-top: 5%;
-    }
   }
 
-  #sponsorsDiv:before {
+  #faqDiv:before{
     display: inline-block;
     margin: 0;
     margin-top: -@triangle-val;
@@ -410,53 +421,66 @@ footer p {
     border-left: 100vw solid @2017-light-gray;
   }
 
-  //-------CSS for all of the logos------------
-  #two_sigma{
-    max-width:none;
-    margin-bottom: 5%;
-    width: 60%;
+  #sponsorsDiv{
+    position: relative;
+    text-align: right;
+
+    .paddedSection{
+      margin-top: 5%;
+    }
+
+    #heart{
+      position: absolute;
+      top:0;
+      left: 7%;
+      height: 70%;
+    }
+
+    //-------CSS for all of the logos------------
+    #two_sigma{
+      max-width:none;
+      margin-bottom: 5%;
+      width: 60%;
+    }
+
+    #bloomberg {
+      margin-right: 10%;
+      margin-bottom: 5%;
+      width: 55%;
+    }
+
+    #a16z {
+      width: 14%;
+      margin-bottom: 5%;
+    }
+
+    #lutron{
+      max-width:none;
+      width: 33%;
+      margin-top: 3%;
+      margin-right: 10%;
+      margin-bottom: 7%;
+    }
+
+    #wayfair{
+      margin-top: -0.3%;
+      margin-left: -1%;
+      margin-bottom: 7%;
+      max-width: none;
+      width: 30%;
+    }
+
+    #de_shaw{
+      max-width: none;
+      width: 20%;
+      margin-top: -1%;
+    }
+
+    #mlh{
+      max-width: none;
+      width: 12%;
+    }
+
+    // -----------------------------------------
   }
-
-  #bloomberg {
-    margin-right: 10%;
-    margin-bottom: 5%;
-    width: 55%;
-  }
-
-  #a16z {
-    width: 14%;
-    margin-bottom: 5%;
-  }
-
-  #lutron{
-    max-width:none;
-    width: 33%;
-    margin-top: 3%;
-    margin-right: 10%;
-    margin-bottom: 7%;
-  }
-
-  #wayfair{
-    margin-top: -0.3%;
-    margin-left: -1%;
-    margin-bottom: 7%;
-    max-width: none;
-    width: 30%;
-  }
-
-  #de_shaw{
-    max-width: none;
-    width: 20%;
-    margin-top: -1%;
-  }
-
-  #mlh{
-    max-width: none;
-    width: 12%;
-  }
-
-  // -----------------------------------------
-
-
-
 }

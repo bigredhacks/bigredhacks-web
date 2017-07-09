@@ -9,13 +9,15 @@ block append content
 
     div#frontPage2017
         div#mainDiv
-            div.paddedSection
+            div#headerText.paddedSection
                 h1#bigred BigRed
                 h1#squiggles //
                 h1#hacks
                     b Hacks
+                br
                 h3 Sept. 15 - 17, 2017 @ Cornell University
-                 
+                br
+
                 if isUser
                     case userRole
                         when "admin": a.btn(href="/admin/dashboard") admin dashboard
@@ -28,6 +30,8 @@ block append content
                         a.btn(href="/login") login
                     else if middlehelp.isResultsReleased()
                         a.btn(href="/login") login
+                
+            img#headerImg(src="img/f2017/header.png")
         div#aboutDiv
             div.innerContent
                 div.paddedSection
@@ -89,6 +93,10 @@ block append content
                         p Project Expo
                         p Closing Ceremony
                         p Buses Depart
+        div#faqDiv
+            div.innerContent
+                div.paddedSection
+                    h1 FAQ
         div#sponsorsDiv
             div.innerContent
                 div.paddedSection
@@ -119,6 +127,7 @@ block append content
                                 img#de_shaw(src="/img/logos/DEShaw.png" alt="D.E.Shaw Logo")
                             a(href="//mlh.io/")
                                 img#mlh(src="/img/logos/mlh.png" alt="MLH Logo")
+            img#heart(src="img/f2017/sponsorHeart.png")        
 
             //- div#bottomkeys
             //-     a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
