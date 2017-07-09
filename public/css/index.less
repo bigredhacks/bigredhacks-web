@@ -294,6 +294,25 @@ footer p {
 //============================
 #frontPage2017{
   @triangle-val: 150px;
+
+  .leftFloat{
+    position: absolute;
+    top:0;
+    left: 7%;
+    z-index: 999;
+  }
+
+  .rightFloat{
+    position: absolute;
+    bottom: 0;
+    right:7%;
+    z-index: 999;
+  }
+
+  .leftFloat{
+
+  }
+
   h1{
     margin-bottom: 55px;
     font-size: 55px;
@@ -347,16 +366,11 @@ footer p {
         display: inline-block;
       }
     }
-
-    #headerImg{
-      position: absolute;
-      bottom: 0;
-      right:0;
-    }
   }
 
   #aboutDiv{
     background-color: @2017-light-gray;
+    position:relative;
 
     .innerContent{
       margin-top: -@triangle-val;
@@ -366,6 +380,29 @@ footer p {
     .paddedSection{
       margin-top: 5%;
     }
+
+    #A{
+      position: absolute;
+      bottom: -10%;
+      left: 2%;
+      height: 40%;
+    }
+
+    #B{
+      position: absolute;
+      bottom: -20%;
+      left: 16%;
+      height: 40%;
+    }
+
+    #C{
+      position: absolute;
+      bottom: -30%;
+      left: 29%;
+      height: 40%;
+    }
+
+    margin-bottom: 20%;
   }
 
   #aboutDiv:before {
@@ -383,6 +420,12 @@ footer p {
     margin-top: 10%;
     padding-bottom: @triangle-val;
     text-align: center;
+
+    h1{
+      text-align: right;
+      margin-right: 7%;
+    }
+
     #schedule{
       overflow:auto;
       margin-left: 5%;
@@ -404,6 +447,11 @@ footer p {
 
   #faqDiv{
     background-color: @2017-light-gray;
+    position: relative;
+
+    #question{
+      height: 80%;
+    }
 
     .innerContent{
       margin-top: -@triangle-val;
@@ -430,9 +478,6 @@ footer p {
     }
 
     #heart{
-      position: absolute;
-      top:0;
-      left: 7%;
       height: 70%;
     }
 
