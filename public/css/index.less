@@ -296,18 +296,8 @@ footer p {
 #frontPage2017{
   @triangle-val: 150px;
 
-  .leftFloat{
-    position: absolute;
-    top:0;
-    left: 7%;
-    z-index: 999;
-  }
-
-  .rightFloat{
-    position: absolute;
-    bottom: 0;
-    right:7%;
-    z-index: 999;
+  .layer{
+    display: block;
   }
 
   h1{
@@ -338,13 +328,14 @@ footer p {
   }
 
   .paddedSection{
-    margin: 0 20% 0 20%;
+    margin: 0 15% 0 15%;
   }
 
   #mainDiv{
     position: relative;
-    height: 70vh;
-    margin-top: 15%;
+    height: 100vh;
+    padding-top: 10vh;
+    z-index: 3;
     // For the BigRed//Hacks text
     #bigred, #hacks{
       display: inline;
@@ -359,19 +350,30 @@ footer p {
 
     #headerText{
       display: inline-block;
+      position:absolute;
+      top: 25vh;
       h3{
         display: inline-block;
       }
     }
 
     #headerImg{
-      width: 50%;
+      text-align: right;
+      padding-top: 30vh;
+
+      img{
+        width: 45%;
+        margin-right: 5%;
+
+      }
     }
   }
 
   #aboutDiv{
     background-color: @2017-light-gray;
     position:relative;
+
+    z-index: 2;
 
     .innerContent{
       margin-top: -@triangle-val;
@@ -414,8 +416,8 @@ footer p {
     content: '';
     border: @triangle-val solid transparent;
     border-right: 100vw solid @2017-light-gray;
+    z-index: 1;
   }
-
 
   #scheduleDiv{
     margin-top: 10%;
@@ -453,8 +455,11 @@ footer p {
     position: relative;
 
     #question{
-      width: 30%;
-      top: -@triangle-val;
+      img{
+        width: 30%;
+        top: -@triangle-val;
+      }
+ 
     }
 
     .innerContent{
@@ -488,7 +493,9 @@ footer p {
     }
 
     #heart{
-      height: 70%;
+      img{
+        height: 70%;
+      }
     }
 
     //-------CSS for all of the logos------------
@@ -540,63 +547,6 @@ footer p {
   }
 
   // Animations
-  /* Bob */
-  @-webkit-keyframes hvr-bob {
-    0% {
-      -webkit-transform: translateY(-8px);
-      transform: translateY(-8px);
-    }
-    50% {
-      -webkit-transform: translateY(-4px);
-      transform: translateY(-4px);
-    }
-    100% {
-      -webkit-transform: translateY(-8px);
-      transform: translateY(-8px);
-    }
-  }
-  @keyframes hvr-bob {
-    0% {
-      -webkit-transform: translateY(-8px);
-      transform: translateY(-8px);
-    }
-    50% {
-      -webkit-transform: translateY(-4px);
-      transform: translateY(-4px);
-    }
-    100% {
-      -webkit-transform: translateY(-8px);
-      transform: translateY(-8px);
-    }
-  }
-  @-webkit-keyframes hvr-bob-float {
-    100% {
-      -webkit-transform: translateY(-8px);
-      transform: translateY(-8px);
-    }
-  }
-  @keyframes hvr-bob-float {
-    100% {
-      -webkit-transform: translateY(-8px);
-      transform: translateY(-8px);
-    }
-  }
-  .hvr-bob {
-    -webkit-animation-name: hvr-bob-float, hvr-bob;
-    animation-name: hvr-bob-float, hvr-bob;
-    -webkit-animation-duration: .3s, 1.5s;
-    animation-duration: .3s, 1.5s;
-    -webkit-animation-delay: 0s, .3s;
-    animation-delay: 0s, .3s;
-    -webkit-animation-timing-function: ease-out, ease-in-out;
-    animation-timing-function: ease-out, ease-in-out;
-    -webkit-animation-iteration-count: 1, infinite;
-    animation-iteration-count: 1, infinite;
-    -webkit-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-    -webkit-animation-direction: normal, alternate;
-    animation-direction: normal, alternate;
-  }
 
   /* Pulse */
   @-webkit-keyframes hvr-pulse {
