@@ -309,10 +309,6 @@ footer p {
     z-index: 999;
   }
 
-  .leftFloat{
-
-  }
-
   h1{
     margin-bottom: 55px;
     font-size: 55px;
@@ -366,6 +362,10 @@ footer p {
         display: inline-block;
       }
     }
+
+    #headerImg{
+      width: 50%;
+    }
   }
 
   #aboutDiv{
@@ -385,21 +385,21 @@ footer p {
       position: absolute;
       bottom: -10%;
       left: 2%;
-      height: 40%;
+      width: 12%;
     }
 
     #B{
       position: absolute;
       bottom: -20%;
       left: 16%;
-      height: 40%;
+      width: 12%;
     }
 
     #C{
       position: absolute;
       bottom: -30%;
-      left: 29%;
-      height: 40%;
+      left: 30%;
+      width: 12%;
     }
 
     margin-bottom: 20%;
@@ -420,6 +420,7 @@ footer p {
     margin-top: 10%;
     padding-bottom: @triangle-val;
     text-align: center;
+    position: relative;
 
     h1{
       text-align: right;
@@ -450,7 +451,8 @@ footer p {
     position: relative;
 
     #question{
-      height: 80%;
+      width: 30%;
+      top: -@triangle-val;
     }
 
     .innerContent{
@@ -468,10 +470,11 @@ footer p {
     border: @triangle-val solid transparent;
     border-left: 100vw solid @2017-light-gray;
   }
-
   #sponsorsDiv{
     position: relative;
     text-align: right;
+
+    margin-bottom: 10%;
 
     .paddedSection{
       margin-top: 5%;
