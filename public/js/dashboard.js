@@ -1,4 +1,4 @@
-var max_receipt_mb = 15
+const MAX_RESUME_MB = 15
 
 $(document).ready(function () {
 
@@ -32,10 +32,10 @@ $(document).ready(function () {
 
     //working with cornell students checkbox event
     $("#cornellteamcheck").on("change", function () {
-        var _this = this;
+        let _this = this;
         $(".checkbox").addClass("disabled");
         $(_this).prop("disabled", true);
-        var checked = this.checked;
+        let checked = this.checked;
         $.ajax({
             url: "/user/team/cornell",
             type: "POST",
@@ -204,7 +204,7 @@ $.validator.addMethod("cocAndLiabilityRead", function (val, elem, params) {
 
 $.validator.addMethod('filesize', function (value, element, param) {
     return this.optional(element) || (element.files[0].size <= param)
-    }, 'File size must be less than ' + max_receipt_mb + ' mb'); 
+    }, 'File size must be less than ' + MAX_RESUME_MB + ' mb'); 
 
 $('#rsvpForm').validate({
     ignore: 'input:not([name])', //ignore unnamed input tags
@@ -220,7 +220,7 @@ $('#rsvpForm').validate({
             conditionalRSVP: true,
             extension: "pdf,jpg,png",
             accept: 'application/pdf,image/jpg,image/png',
-            filesize: 1024 * 1024 * max_receipt_mb
+            filesize: 1024 * 1024 * MAX_RESUME_MB
         },
         legal: {
             conditionalRSVP: true

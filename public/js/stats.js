@@ -71,7 +71,6 @@ $('#datepicker').datepicker({
 
 // annotations submit button
     $("#send-ann").on('click', function () {
-        var that = this;
         $.ajax({
             method: "POST",
             url: "/api/admin/annotate",

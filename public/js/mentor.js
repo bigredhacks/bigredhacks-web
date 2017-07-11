@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
     // Socket
-    var socket = io(); //client-side Socket.IO object
+    let socket = io(); //client-side Socket.IO object
 
     socket.on('request update', function (newRequestList) {
         location.reload(); // TODO: Use jquery to make this more user-friendly

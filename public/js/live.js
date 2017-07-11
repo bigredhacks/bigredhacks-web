@@ -4,7 +4,7 @@ socket.on('announcement', function(data) {
     //window.alert(data);
     if(window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(function(status) {  // status is "granted", if accepted by user
-            var n = new Notification('BigRed//Hacks Announcement!', {
+            let n = new Notification('BigRed//Hacks Announcement!', {
                 body: data,
                 icon: '/img/logo/full-red.png' // optional
             });
@@ -13,11 +13,11 @@ socket.on('announcement', function(data) {
 });
 
 function getTimeRemaining(endtime) {
-    var t = Math.max(0,Date.parse(endtime) - Date.parse(new Date()));
-    var seconds = Math.floor((t / 1000) % 60);
-    var minutes = Math.floor((t / 1000 / 60) % 60);
-    var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+    let t = Math.max(0,Date.parse(endtime) - Date.parse(new Date()));
+    let seconds = Math.floor((t / 1000) % 60);
+    let minutes = Math.floor((t / 1000 / 60) % 60);
+    let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    let days = Math.floor(t / (1000 * 60 * 60 * 24));
     return {
         'total': t,
         'days': days,
@@ -56,14 +56,14 @@ $("#request-mentor-btn").on('click', function(e) {
 $(".fadeOut").delay(2000).fadeOut(2000, "easeInCubic");
 
 function initializeClock(id, endtime) {
-    var clock = document.getElementById(id);
-    var daysSpan = clock.querySelector('.days');
-    var hoursSpan = clock.querySelector('.hours');
-    var minutesSpan = clock.querySelector('.minutes');
-    var secondsSpan = clock.querySelector('.seconds');
+    let clock = document.getElementById(id);
+    let daysSpan = clock.querySelector('.days');
+    let hoursSpan = clock.querySelector('.hours');
+    let minutesSpan = clock.querySelector('.minutes');
+    let secondsSpan = clock.querySelector('.seconds');
 
     function updateClock() {
-        var t = getTimeRemaining(endtime);
+        let t = getTimeRemaining(endtime);
 
         daysSpan.innerHTML = t.days;
         hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
@@ -76,8 +76,8 @@ function initializeClock(id, endtime) {
     }
 
     updateClock();
-    var timeinterval = setInterval(updateClock, 1000);
+    let timeinterval = setInterval(updateClock, 1000);
 }
 
-var deadline = new Date(Date.parse(new Date("March 25, 2017 11:30:00")));
+let deadline = new Date(Date.parse(new Date("September 17, 2017 11:30:00")));
 initializeClock('clockdiv', deadline);
