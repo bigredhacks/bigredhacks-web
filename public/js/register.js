@@ -1,7 +1,6 @@
+const MAX_RESUME_MB = 10;
+
 $('document').ready(function () {
-
-    var max_resume_mb = 10;
-
     $.CollegeTypeahead.enable();
 
     //File picker
@@ -85,7 +84,7 @@ $('document').ready(function () {
 
     $.validator.addMethod('filesize', function (value, element, param) {
         return this.optional(element) || (element.files[0].size <= param)
-    }, 'File size must be less than ' + max_resume_mb + ' mb'); // TODO: Parametrize this
+    }, 'File size must be less than ' + MAX_RESUME_MB + ' mb'); // TODO: Parametrize this
 
     $('#registrationForm').validate({
         ignore: 'input:not([name])', //ignore unnamed input tags
@@ -134,7 +133,7 @@ $('document').ready(function () {
                 required: true,
                 extension: "pdf",
                 accept: 'application/pdf',
-                filesize: 1024 * 1024 * max_resume_mb // Note must match backend
+                filesize: 1024 * 1024 * MAX_RESUME_MB // Note must match backend
             },
             q1: {
                 required: true,
@@ -205,15 +204,6 @@ $('document').ready(function () {
             return false;
         }
     });
-});
-
-// Make buttons success-colored after clicked on
-$('#liability-cornell').click(function(){
-    /*
-    $(this)
-        .removeClass('btn-danger')
-        .addClass('btn-success');
-        */
 });
 
 $("#mlh-agree").click(function() {
