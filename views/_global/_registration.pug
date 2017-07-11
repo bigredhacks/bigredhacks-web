@@ -31,9 +31,9 @@ block append content
         - input = {}
 
     - container = fluid ? "container-fluid" : "container"
-    div(class=container,style={"overflow-x": "hidden"},novalidate=true)
+    div(class=container, style={"overflow-x": "hidden"}, novalidate=true)
         .row
-            div&attributes(contentFormAttr || {})
+            div&attributes(contentFormAttr || {}).col-sm-10.col-md-12
                 //- generic flash error
                 if messages.error
                     .alert.alert-danger(role="alert") #{messages.error[0]}

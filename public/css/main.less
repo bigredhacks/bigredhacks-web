@@ -391,3 +391,24 @@ h2, legend {
   margin-left: @jade-spacing;
   margin-right: @jade-spacing;
 }
+
+.navbar-header {
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .navbar-header {
+    &:first-child {
+      img {
+        margin: auto;
+      }
+    }
+    &:not(:first-child) {
+      margin: 7% 0;
+    }
+  }
+  .navbar-brand {
+    float: none;
+    padding: 0;
+  }
+}

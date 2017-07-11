@@ -55,52 +55,68 @@ block append content
             h1 Schedule_
             div#schedule
                 div.col-md-4
-                    h4 
+                    h4
                         b Friday (09/15)
-                    div.col-md-4
-                        p 4:30p
-                        p 6:30p
-                        p 8:00p
-                        p 9:00p
-                        p 9:30p
-                    div.col-md-8
-                        p Participant Registration
-                        p Opening Ceremony
-                        p Hacking Officially Begins
-                        p Dinner
-                        p Extended API Demos
+                        .table-responsive
+                            table.table
+                                tr
+                                    td 4:30p
+                                    td Participant Registration
+                                tr
+                                    td 6:30p
+                                    td Opening Ceremony
+                                tr
+                                    td 8:00p
+                                    td Hacking officially begins
+                                tr
+                                    td 9:00p
+                                    td Dinner
+                                tr
+                                    td 9:30p
+                                    td Extended API Demos
                 div.col-md-4
                     h4
                         b Saturday (09/16)
-                    div.col-md-4
-                        p 12:00a
-                        p 8:00a
-                        p 12:00p
-                        p 5:30p
-                        p 7:00p
-                    div.col-md-8
-                        p Midnight Snack!
-                        p Breakfast
-                        p Lunch
-                        p Shirt Giveaway
-                        p Dinner
+                        .table-responsive
+                            table.table
+                                tr
+                                    td 12:00a
+                                    td Midnight Snack!
+                                tr
+                                    td 8:00a
+                                    td Breakfast
+                                tr
+                                    td 12:00p
+                                    td Lunch
+                                tr
+                                    td 5:30p
+                                    td Shirt Giveaway
+                                tr
+                                    td 7:00p
+                                    td Dinner
                 div.col-md-4
-                    h4 
+                    h4
                         b Sunday (09/17)
-                    div.col-md-4
-                        p 1:00a
-                        p 7:00a
-                        p 8:00a
-                        p 9:00a
-                        p 12:00p
-                        p 3:30p
-                    div.col-md-8
-                        p Post-Midnight Snack!
-                        p Breakfast
-                        p Hacking Officially extends
-                        p Project Expo
-                        p Closing Ceremony
-                        p Buses Depart
+                        .table-responsive
+                            table.table
+                                tr
+                                    td 1:00a
+                                    td Post-Midnight Snack!
+                                tr
+                                    td 7:00a
+                                    td Breakfast
+                                tr
+                                    td 8:00a
+                                    td Hacking officially ends
+                                tr
+                                    td 9:00a
+                                    td Project Expo
+                                tr
+                                    td 12:00p
+                                    td Closing Ceremony
+                                tr
+                                    td 3:30p
+                                    td Buses Depart
         div#faqDiv
             div.innerContent
                 div.paddedSection
@@ -174,7 +190,7 @@ block append content
                             a(href="//www.twosigma.com/")
                                 img#two_sigma(src="/img/logos/twosigma.png" alt="Two Sigma Logo")
                             //- Bloomberg (3)
-                            a(href="//www.bloomberg.com/")    
+                            a(href="//www.bloomberg.com/")
                                 img#bloomberg(src="/img/logos/bloomberg.png" alt="Bloomberg Logo")
                             //- a16z (3)
                             a(href="//a16z.com/")
@@ -193,7 +209,7 @@ block append content
                             a(href="//mlh.io/")
                                 img#mlh(src="/img/logos/mlh.png" alt="MLH Logo")
             div#heart.layer(data-depth="0.4")
-                img.hvr-pulse(src="img/f2017/sponsorHeart.png")        
+                img.hvr-pulse(src="img/f2017/sponsorHeart.png")
 
             //- div#bottomkeys
             //-     a#fb(href='http://www.facebook.com/BigRedHacks', target='_blank', class="keyicon")
@@ -204,15 +220,15 @@ block append content
             //-         img(src="/img/keyboard_components/Instagram.png", class="keyicon", class="fill")
             //-     a#email(href='mailto:info@bigredhacks.com', class="keyicon")
             //-         img(src="/img/keyboard_components/Email.png", class="keyicon", class="fill")
-            //-     //- TODO: Add the subscribe here 
+            //-     //- TODO: Add the subscribe here
             //-     div#spacebar(class='spacebar_subscribe')
             //-         input#reg_email(placeholder="enter your email here for updates!")
             //-     img#signup(src="/img/keyboard_components/Sign_Up.png", class="keyicon")
-            //-     img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")    
+            //-     img#rightkeys(src="/img/keyboard_components/right_keys.png", class="keyicon")
 
 block footer
     script(src="//code.jquery.com/jquery-3.1.1.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
     script(src="/js/jquery.validate.options.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/parallax/2.1.3/parallax.min.js")
-    script(src="/js/index.js")    
+    script(src="/js/index.js")
