@@ -1,7 +1,7 @@
 /*
  * Typeahead
  */
-const _tt_college_enabled = false; //whether the typeahead is enabled
+let _tt_college_enabled = false; //whether the typeahead is enabled
 
 let engine = new Bloodhound({
     name: 'colleges',
