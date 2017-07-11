@@ -20,8 +20,14 @@ $(document).ready(function () {
     });
 
     setInterval(function () {
-        checkUserId();
-        checkResume();
+        try{
+            checkUserId();
+            checkResume();
+        }
+        catch(err){
+            // can occur if there is no flie
+        }
+        
     }, 1000);
 
     //working with cornell students checkbox event
