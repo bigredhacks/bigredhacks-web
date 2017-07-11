@@ -1,21 +1,18 @@
 /*
  * Typeahead
  */
-var _tt_college_enabled = false; //whether the typeahead is enabled
+const _tt_college_enabled = false; //whether the typeahead is enabled
 
-var engine = new Bloodhound({
+let engine = new Bloodhound({
     name: 'colleges',
     prefetch: '/api/colleges',
-    datumTokenizer: function (d) {
-        return Bloodhound.tokenizers.whitespace(d.name);
-    },
+    datumTokenizer: (d => Bloodhound.tokenizers.whitespace(d.name)),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     limit: 5,
     sorter: function (a, b) {
 
         //case insensitive matching
-        var input = $('#college,#new-college').val().toLowerCase();
-
+        let input = $('#college,#new-college').val().toLowerCase();
         a = a.name.toLowerCase();
         b = b.name.toLowerCase();
 
@@ -43,7 +40,7 @@ engine.initialize();
  * Enable the typeahead
  * @private
  */
-var _tt_college_enable = function() {
+let _tt_college_enable = function() {
     if (_tt_college_enabled) {
         return;
     }
@@ -90,7 +87,7 @@ var _tt_college_enable = function() {
  * Disable the typeahead
  * @private
  */
-var _tt_college_disable = function() {
+let _tt_college_disable = function() {
     _tt_college_enabled = false;
     $("#college").typeahead("destroy");
     $("#college,#new-college").off("focusout");

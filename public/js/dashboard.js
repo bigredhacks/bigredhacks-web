@@ -254,16 +254,3 @@ $('#liability').click(function(){
             .addClass('btn-success');
     //}
 });
-/*
-$('#code-of-conduct').click(function(){
-    $(this)
-        .removeClass('btn-danger')
-        .addClass('btn-success');
-    if ($('#liability').hasClass('btn-success')) {
-        $('#rsvp-yes-button')
-            .removeClass('btn-danger')
-            .addClass('btn-success');
-    }
-});
-
-   */
