@@ -210,46 +210,18 @@ footer p {
 .btn {
   font-size: 14px;
   letter-spacing: 0.5px;
-  padding: 9px 15px 9px 15px;
+  margin: 9px 15px;
   z-index: 600;
   position: relative;
 
   &.fixed-width {
     width: 90px;
   }
-}
 
-/* Media queries */
-
-@media (min-width: 767px) {
-  .red{
-    color: red;
+  &:active, &:focus {
+    box-shadow: none;
+    outline: 1px solid red;
   }
-  .navbar {
-    padding: 20px 0;
-    letter-spacing: 2px;
-    background: 0 0;
-    border-color: transparent;
-  }
-
-  .navbar-default .navbar-text {
-    margin-left: 60px;
-    padding-top: 15px;
-    font-size: 16px;
-  }
-
-  .intro {
-    min-height: 110wh;
-  }
-
-  .brand-heading {
-    font-size: 100px;
-  }
-
-  .intro-text {
-    font-size: 25px;
-  }
-
 }
 
 // sponsors
@@ -323,7 +295,7 @@ footer p {
   }
 
   .btn{
-    padding-left: 0;
+    padding: 0;
     margin-left: 0;
   }
 
@@ -476,6 +448,7 @@ footer p {
     content: '';
     border: @triangle-val solid transparent;
     border-left: 100vw solid @2017-light-gray;
+    border-right: 0;
   }
 
   dt{
@@ -580,5 +553,55 @@ footer p {
     animation-timing-function: linear;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
+  }
+}
+
+/* Media queries */
+@media (min-width: 767px) {
+  .red{
+    color: red;
+  }
+  .navbar {
+    padding: 20px 0;
+    letter-spacing: 2px;
+    background: 0 0;
+    border-color: transparent;
+  }
+
+  .navbar-default .navbar-text {
+    margin-left: 60px;
+    padding-top: 15px;
+    font-size: 16px;
+  }
+
+  .intro {
+    min-height: 110wh;
+  }
+
+  .brand-heading {
+    font-size: 100px;
+  }
+
+  .intro-text {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  dt, dd, p {
+    margin: 5%;
+  }
+  #frontPage2017 {
+    h1 {
+      font-size: 50px;
+    }
+    .paddedSection {
+      margin: 0;
+    }
+  }
+  #sponsorsDiv {
+    #heart img {
+      width: 30%;
+    }
   }
 }
