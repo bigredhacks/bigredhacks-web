@@ -15,6 +15,7 @@
   "dependencies": {
     "async": "^2.5.0",
     "aws-sdk": "^2.81.0",
+    "babel-preset-env": "^1.6.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.17.2",
     "compression": "^1.6.2",
@@ -29,6 +30,7 @@
     "express-validator": "^2.13.0",
     "fcm-push": "^1.0.7",
     "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-uglify": "^0.11.1",
     "icalendar": "^0.7.1",

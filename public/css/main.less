@@ -77,11 +77,6 @@ body {
 ///filepicker///
 ////////////////
 
-.filepicker-bootstrap {
-  //symbolic class used in filepicker
-  width: 0;
-}
-
 .filepicker-components(@color) {
   button {
     background-color: @color;
@@ -300,17 +295,17 @@ label {
 
 .btn {
   border-radius: 0;
-  &.btn-default {
-    .btn-style(@neutral);
-    outline: none;
-    font-size: 18px;
-    padding-top: 60px;
-    margin-right: 150px;
-    border-color:transparent;
-    background-color: transparent;
-    letter-spacing: 2px;
-    color: #cd5257;
-  }
+  // &.btn-default {
+  //   .btn-style(@neutral);
+  //   outline: none;
+  //   font-size: 18px;
+  //   padding-top: 60px;
+  //   margin-right: 150px;
+  //   border-color:transparent;
+  //   background-color: transparent;
+  //   letter-spacing: 2px;
+  //   color: #cd5257;
+  // }
 }
 
 ///////////////////////
@@ -390,6 +385,11 @@ h2, legend {
 .btn, .form-inline .form-group {
   margin-left: @jade-spacing;
   margin-right: @jade-spacing;
+}
+
+.navbar-default{
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .navbar-header {
