@@ -164,13 +164,13 @@ section {
 }
 
 .section-heading {
-  h2 {
-
-    font-size: 26px;
-    color: @dark-red;
-    display: inline-block;
-    word-spacing: -4px;
-    margin-left: 0px;
+  &.right {
+    text-align: right;
+    margin-right: 7%;
+  }
+  &.left {
+    text-align: left;
+    margin-left: 7%;
   }
 }
 
@@ -270,6 +270,13 @@ footer p {
 
   .layer{
     display: block;
+  }
+
+  & > div > h1:nth-of-type(odd) {
+    h1{
+      text-align: right;
+      margin-right: 7%;
+    }
   }
 
   h1{
@@ -395,15 +402,8 @@ footer p {
     text-align: center;
     position: relative;
 
-    h1{
-      text-align: right;
-      margin-right: 7%;
-    }
-
     #schedule{
       overflow:auto;
-      margin-left: 5%;
-      margin-right: 5%;
 
       h4{
         margin-bottom: 45px;
@@ -457,12 +457,13 @@ footer p {
 
   #sponsorsDiv{
     position: relative;
+    margin-bottom: 10%;
     text-align: right;
 
-    margin-bottom: 10%;
 
     .paddedSection{
       margin-top: 5%;
+      margin-bottom: 5%;
     }
 
     #heart{
@@ -597,6 +598,11 @@ footer p {
     }
     .paddedSection {
       margin: 0;
+    }
+    #mainDiv {
+      #headerText {
+        margin-left: 3%;
+      }
     }
   }
   #sponsorsDiv {
