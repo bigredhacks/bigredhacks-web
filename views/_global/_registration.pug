@@ -1,0 +1,116 @@
+//-
+   Global layout for registration pages
+
+extends _layout
+
+
+//- overrrideable variables
+block vars
+    - var actionUrl = "/register"; //- url the form should submit to
+    - var multipart = true; //- whether the form has multipart data
+    - var fluid = false; //- use div.container over div.container-fluid
+    - var contentFormAttr = {}; //- no extra attrs in form content wrapper
+
+mixin sectionHeading(name)
+    .header-wrapper
+        legend.page-title #{name}
+
+
+block header
+    link(href='/css/login.css', rel='stylesheet')
+    link(href='/css/registration.css', rel='stylesheet')
+
+block append content
+    //- content header, i.e. navbar goes here
+    block navbar
+
+    //- initialize variables
+    - var en = enums.user;
+
+    if !input
+        - input = {}
+
+    - container = fluid ? "container-fluid" : "container"
+    div(class=container, style={"overflow-x": "hidden"}, novalidate=true)
+        .row
+            div&attributes(contentFormAttr || {}).col-sm-10.col-md-12
+                //- generic flash error
+                if messages.error
+                    .alert.alert-danger(role="alert") #{messages.error[0]}
+                //- form validation errors
+                if errors
+                    each err in errors
+                        .alert.alert-danger(role="alert") #{err.msg}
+
+                //- registration description
+                block description
+
+                - multipart = multipart ? "multipart/form-data" : "application/x-www-form-urlencoded";
+                - var formattr = {"action": actionUrl, "enctype": multipart};
+
+                form#registrationForm(name="registrationForm", method="POST", autocomplete="on", enctype="multipart/form-data")&attributes(formattr)
+                    block no_account-information
+                        fieldset
+                            block account-information
+                                +sectionHeading("account information")
+
+                    block no_basic-information
+                        br
+                        fieldset
+                            block basic-information
+                                +sectionHeading("basic information")
+
+                    block no_school
+                        br
+                        fieldset
+                            block school
+                                +sectionHeading("school")
+
+                    block no_background
+                        br
+                        fieldset
+                            block background
+                                +sectionHeading("background")
+
+                    block no_logistics
+                        br
+                        fieldset
+                            block logistics
+                                +sectionHeading("logistics")
+                                
+                    block terms
+
+                    block no_terms
+                        br
+                        fieldset
+                            block terms
+                              //  +sectionHeading("terms")
+                              
+                    block mlh_data_provision
+                        br
+                        label Please carefully read the below terms:
+                        .form-group
+                            .checkbox
+                                label
+                                    input#mlh-agree(type='checkbox', name='mlhData')
+                                    | I agree to the terms of both the 
+                                    a(href='//github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions') MLH Contest Terms and Conditions 
+                                    | and the 
+                                    a(href='//mlh.io/privacy') MLH Privacy Policy. 
+                                    |Please note that you may receive pre and post-event informational e-mails and occasional messages about hackathons from MLH as per the MLH Privacy Policy.
+
+                    fieldset
+                        block submit
+                            button#submit.btn.btn-default(type="submit" disabled) submit
+
+block footer
+    script(src='//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js')
+    script(src='//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/additional-methods.min.js')
+    script(src='/js/jquery.validate.options.js')
+    script(src='//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js')
+    script(src='/js/typeahead_college.js')
+    script(src='/js/typeahead_major.js')
+    script(src='/js/tags/bootstrap-tagsinput.js')
+    script(src='/js/typeahead_hardware.js')
+    script(src='//cdn.rawgit.com/benignware/jquery-filepicker/master/dist/js/jquery.filepicker.min.js')
+    script(src='/js/register.js')

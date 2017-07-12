@@ -40,11 +40,14 @@ var passport = require("passport");
 
 //mongoose setup
 var mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
+mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
+  useMongoClient: true,
+  /* other options */
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 //require pretty output for proper html formatting
 //Some elements, i.e. inline forms, require pretty
@@ -121,7 +124,7 @@ app.use(function (req, res, next) {
     // err.status = 404;
     // next(err);
     res.status(400);
-    res.render('404.jade', {title: '404: File Not Found'});
+    res.render('404.pug', {title: '404: File Not Found'});
 });
 
 // error handlers

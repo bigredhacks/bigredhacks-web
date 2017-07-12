@@ -1,0 +1,123 @@
+//-
+   Reimbursement settings
+
+extends _layout-admin
+
+block prepend header
+    link(href='/css/registration.css', rel='stylesheet')
+
+block admin_content
+    +contentHeading("Reimbursement Settings")
+    // Nav tabs
+    ul.nav.nav-tabs(role='tablist')
+        li.active(role='presentation')
+            a(href='#schools', aria-controls='schools', role='tab', data-toggle='tab') Schools
+        li(role='presentation')
+            a(href='#checked-in-table', aria-controls='user', role='tab', data-toggle='tab') Checked In Table
+        li(role='presentation')
+            a(href='#user', aria-controls='user', role='tab', data-toggle='tab') User Override
+    // Tab panes
+    .tab-content
+        #schools.tab-pane.active(role='tabpanel')
+            h2 Manage Schools
+            p Use this page to manage reimbursements for schools.
+            #searchresults.col-md-12
+                p#result-count.text-right #{reimbursements.length} results found.
+                table#user-roles.table.table-striped
+                    tr
+                        th School Name
+                        th Transportation Mode
+                        th Reimbursement Amount
+                        th(width='220px')
+                    for rem in reimbursements
+                        tr.school(data-collegeid=rem.college.id)
+                            td= rem.college.name
+                            td
+                                form.form-inline
+                                    .form-group
+                                        select.modeDropdown.form-control(name="modeDropdown",data-revert=rem.mode, disabled=true)
+                                            +generateOptions(enums.admin.travel_mode, {selected: rem.mode})
+                            td
+                                form.form-inline
+                                    .form-group
+                                        .input-group
+                                            .input-group-addon $
+                                            input.form-control.amount(type="number",name="amount",value=rem.amount,disabled=true)
+                            td
+                                button.btn.btn-primary.btn-edit.reimbursements(type="button") edit
+                                button.btn.btn-success.btn-save.reimbursements(disabled=true,type="button") save
+                                button.btn.btn-danger.btn-remove.reimbursements remove
+                br
+                form#new-reimbursement.form-inline
+                    .form-group
+                        label Add a School:
+                    input#new-collegeid.form-control(type='hidden', name='collegeid', value='', required='')
+                    .form-group
+                        input#new-college.form-control.typeahead(type='text', name='college', placeholder='School Name', value='', required='')
+                    .form-group
+                        select#new-travel.form-control(name='travel', required='')
+                            option(value='') Select
+                            +generateOptions(enums.admin.travel_mode)
+                    .form-group
+                        .input-group
+                            .input-group-addon $
+                            input#new-amount.amount.form-control(type='number', name='amount', placeholder='amount')
+                    .form-group.np-enabled
+                        button#btn-add-school.btn.btn-success(type='button')
+                            | Create
+        #checked-in-table.tab-pane(role='tabpanel')
+            h2 Reimbursements for Students Checked In
+            table#checked-in-reimbursements.table.table-striped
+                tr
+                    th Name
+                    th Email
+                    th School
+                    th Reimbursement
+                for user in easyReimbursements
+                    tr
+                        td #{user.name}
+                        td #{user.email}
+                        td #{user.school}
+                        td #{user.reimbursement}
+
+        #user.tab-pane(role='tabpanel')
+            h2 User Override
+            p Use this page to manage reimbursement overrides for individual users.
+            #overrideresults.col-md-12
+                p#override-count.text-right #{overrides.length} results found.
+                table#user-overrides.table.table-striped
+                    tr
+                        th Name
+                        th School Name
+                        th School Amt
+                        th Override Amt
+                        th(width='210px')
+                    for student in overrides
+                        tr.student(data-student=student.email)
+                            td= student.name.first + " " + student.name.last
+                            td= student.school.name
+                            td= "Unimplemented"
+                            td= "$ " + student.internal.reimbursement_override
+                            td.np-enabled
+                                button.btn.btn-danger.btn-remove.delete-student remove
+            #add-override
+                form#add-student.np-enabled.form-inline
+                    .form-group
+                        label Add a student override:
+                    .form-group
+                        input#add-email.form-control(type='text', name='email', placeholder='student@university.edu')
+                    .form-group
+                        .input-group
+                            .input-group-addon $
+                            input#add-amount.form-control(type='number', name='amount', placeholder='amount')
+                    .form-group.np-enabled
+                        button#submit-student.btn.btn-success(type='button') Add
+
+block prepend footer
+    script(src='//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js')
+    script(src='/js/typeahead_college.js')
+        
+block append footer
+    script.
+        overrideFormDefault("#add-student","#submit-student");
+        overrideFormDefault("#new-reimbursement","#btn-add-school");

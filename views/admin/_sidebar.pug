@@ -1,0 +1,63 @@
+//-
+   Basic admin sidebar used by layout-admin
+
+-
+    var urlItems = [
+        {
+            name: "overview",
+            url: "/admin/dashboard"
+        },
+        {
+            name: "search",
+            url: "/admin/search"
+        },
+        {
+            name: "review apps",
+            url: "/admin/review"
+        },
+        {
+            name: "bus information",
+            url: "/admin/businfo"
+        },
+        {
+            name: "reimbursements",
+            url: "/admin/reimbursements"
+        },
+        {
+            name: "checkin",
+            url: "/admin/checkin"
+        },
+        {
+            name: "event scan",
+            url: "/admin/qrscan"
+        },
+        {
+            name: "stats",
+            url: "/admin/stats"
+        },
+        {
+            name: "hardware",
+            url: "/admin/hardware"
+        },
+        {
+            name: "user dashboard",
+            url: "/user/dashboard"
+        },
+        {
+            name: "settings",
+            url: "/admin/settings"
+        },
+        {
+            name: "logout",
+            url: "/user/logout"
+        }
+    ];
+
+.col-sm-3.col-md-3.col-lg-2.sidebar
+    a.brand(href="/"): img#brand-img(src="/img/logo/full-red.png")
+    ul.nav.nav-sidebar
+        +generateUrlList(urlItems, currentUrl)
+    .np-toggle
+        label(for='np-toggle-checkbox') no participation mode:
+        input(type='checkbox', name='np-toggle-checkbox', data-size='small', data-on-color='success', data-off-color='danger')
+

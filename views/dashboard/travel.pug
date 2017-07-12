@@ -1,0 +1,200 @@
+//-
+   Travel information
+    * This page does not follow the style guide for inline text.
+        It should gradually be transitioned to use inline tags rather than piping.
+
+extends _layout-dashboard
+
+block dashboard_content
+    +contentHeading("Travel")
+
+    .container-fluid
+        p
+            | Note that the linked TCAT schedules are from fall 2015.
+            |  We will update this page with any changes as soon as the 2016 schedules are released.
+
+        +sectionHeading("Location")
+        p.long-text
+            | BigRed//Hacks will take place on Cornell University's campus.
+            | The opening and closing ceremonies will be taking place at Call Auditorium in 
+            a(href="https://www.google.com/maps/place/Kennedy+Hall", target="_blank") Kennedy Hall.
+            | The hacking/main events will take place at the
+            a(href='https://www.google.com/maps/place/Physical+Sciences+Building,+245+East+Ave,+Ithaca,+NY/', target='_blank')  Physical Sciences Building (PSB).
+
+        +sectionHeading("Bus Information")
+        p.long-text
+            | We will be sending out buses out to the schools listed below.
+            | A bus may have been suggested to you if you are closer than #[em 50 miles] from a bus stop.
+            | More information about exact times will be posted here closer to the hackathon date.
+        p We are searching for bus captains! If you are interested, please email 
+            a(href='mailto:info@bigredhacks.com?subject=Transportation') info@bigredhacks.com
+            |  if you'd like to help out.
+            | The time and location of each bus stop is shown below.  If you have decided
+            |  to take that bus, please plan to arrive #[em on time].
+            |  The buses run on strict schedules, and they will leave with or without you on board.
+            |  All times are approximate and may be subject to changes depending on traffic conditions and
+            |  availability. Please coordinate with your school's bus captain, as they will have the most
+            |  up-to-date information.
+        
+        h3 * Stay Tuned For Bus Information!*
+        br
+        //- table.table
+        //-     thead
+        //-         tr
+        //-             th(colspan='3') Upstate New York
+        //-     tbody
+        //-         tr
+        //-             td.col-md-3 10:45 am - 11:00 am
+        //-             td.col-md-3 University at Buffalo
+        //-             td.col-md-3 Student Union, Putnam Way, Buffalo, NY, 14228
+        //-             td.col-md-3 Bus captain: Stephen James
+        //-         tr
+        //-             td.col-md-3 12:35 pm - 12:50 pm
+        //-             td.col-md-3 Rochester Institute of Technology
+        //-             td.col-md-3 Grace Watson Hall
+        //-             td.col-md-3 Bus captain: Fernando Flores-Hernandez
+        //- table.table
+        //-     thead
+        //-         tr
+        //-             th(colspan='4') Pittsburgh/Binghamton
+        //-     tbody
+        //-         tr
+        //-             td.col-md-3 9:15 am - 9:30 am
+        //-             td.col-md-3 Carnegie Mellon University
+        //-             td.col-md-3 Cyert Hall, 5000 Forbes Ave.
+        //-         tr
+        //-             td.col-md-3 3:30 pm - 3:45 pm
+        //-             td.col-md-3 SUNY at Binghamton
+        //-             td.col-md-3 Lot T1, between Johnson and O'Connor Hall
+        //-             td.col-md-3 Bus captain: William Jagels
+        //- table.table
+        //-     thead
+        //-         tr
+        //-             th(colspan='4') NJ/NYC
+        //-     tbody
+        //-         tr
+        //-             td.col-md-3 9:45 am - 10:00 am
+        //-             td.col-md-3 Princeton University
+        //-             td.col-md-3 Engineering Quad, 41 Olden Street
+        //-             td.col-md-3 Bus captain: Mack Lee
+        //-         tr
+        //-             td.col-md-3 10:45 am - 11:00 am
+        //-             td.col-md-3 Rutgers New Brunswick
+        //-             td.col-md-3 Yellow Lot, Livingston Campus
+        //-             td.col-md-3 Bus captain: Carlin Au
+        //-         tr
+        //-             td.col-md-3 12:15 pm - 12:30 pm
+        //-             td.col-md-3 Columbia University
+        //-             td.col-md-3 Broadway & 116th
+        //-             td.col-md-3 Bus captain: Mohammed Ali
+        //- table.table
+        //-     thead
+        //-         tr
+        //-             th(colspan='4') Maryland/Pennsylvania
+        //-     tbody
+        //-         tr
+        //-             td.col-md-3 8:45 am - 9:00 am
+        //-             td.col-md-3 University of Maryland
+        //-             td.col-md-3 Parking Lot By Patterson Hall
+        //-             td.col-md-3 Bus captain: Elton Tian
+        //-         tr
+        //-             td.col-md-3 10:00 am - 10:15 am
+        //-             td.col-md-3 Johns Hopkins University
+        //-             td.col-md-3 Mason Hall, 3101 Wyman Park Dr
+        //-         tr
+        //-             td.col-md-3 12:45 pm - 1:00 pm
+        //-             td.col-md-3 University of Pennsylvania
+        //-             td.col-md-3 Irvine Auditorium
+
+        //- table.table
+        //-     thead
+        //-         tr
+        //-             th(colspan='4') Midwest
+        //-     tbody
+        //-         tr
+        //-             td.col-md-3 2:00 am - 2:15 am
+        //-             td.col-md-3 UIUC
+        //-             td.col-md-3 Illinois Street Residence Halls, 1010 W Illinois St, Urbana, IL 61801, USA
+        //-             td.col-md-3 Bus captain: Kevin Guo
+        //-         tr
+        //-             td.col-md-3 4:15 am - 4:30 am
+        //-             td.col-md-3 Purdue University
+        //-             td.col-md-3 Lawson Computer Science Building (305 N University St. West Lafayette, IN 47907
+        //-             td.col-md-3 Bus captain: Sophia Zhuoya Chen
+
+        p Please have proof of purchase ready to get on the bus. This can be a screenshot or a paper printout of your deposit.
+        +sectionHeading("Planning your own travel")
+        p.long-text
+            | If you are planning your own travel, please plan to arrive on Friday around
+            |  5:30 PM and to leave on Sunday around 3:00 PM.
+        p.long-text
+            | Note that we will not reimburse any upgrades, tickets, or any change fees.
+            | Please be reasonable when planning your travel, or we will not reimburse you!
+
+        h3 Traveling by Shortline
+        p.long-text
+            | Please plan to get off at the Collegetown stop. Kennedy Hall is roughly 20
+            | minutes by foot. Alternatively, you can take TCAT routes
+            a(href='http://tcat.nextinsight.com/pdfpics/30_fall2015.pdf', target='_blank')  30 outbound
+            |  or
+            a(href='http://tcat.nextinsight.com/pdfpics/32_fall2015.pdf', target='_blank')  32 outbound
+            |  , getting on at the #[em Collegetown @ Dryden]
+            |  stop (42°26'30.8"N 76°29'07.1"W) and getting off at the #[em Rockefeller Hall]
+            |  stop. The TCAT fare is $1.50.
+        h3 Traveling by Greyhound
+        p.long-text
+            | The Greyhound bus will drop you off at the downtown Ithaca terminal. The most
+            |  convenient option would be to take a taxi. Some taxi options include
+            a(href='http://www.ithacataxi.biz/', target='_blank')  Ithaca Dispatch
+            |  and
+            a(href='http://collegetowncab.com/', target='_blank')  Collegetown Cab
+            | . Alternatively, you can take the TCAT routes
+            a(href='http://tcat.nextinsight.com/pdfpics/30_fall2015.pdf', target='_blank')  30 outbound
+            |  or
+            a(href='http://tcat.nextinsight.com/pdfpics/32_fall2015.pdf', target='_blank')  32 outbound
+            | , getting on at the #[em Green St @ Commons]
+            |  stop (42°26'18.8"N 76°29'51.5"W). It is a 15 minute walk from the Greyhound terminal to the Green St @ Commons stop.
+            |  Get off at #[em Rockefeller Hall]. The TCAT fare is $1.50.
+        h3 Traveling by Car
+        p.long-text
+            | If you are traveling by car, you can park your car at&nbsp;
+            a(href='https://www.google.com/maps/place/A+Lot,+Ithaca,+NY+14850/@42.4584572,-76.4777676,18z/' target='_blank') A Lot
+            | . You will not need a parking permit to park there after 5pm on Friday
+            |  through Sunday; however, if you plan on staying longer, you will need a temporary permit
+            |  starting 7:30AM on Monday. More details can be found on the&nbsp;
+            a(href='http://transportation.fs.cornell.edu/parking/campusparking/visitors/shortterm.cfm', target='_blank')
+                | Cornell Commuter and Parking Services Website
+            | . We are not responsible for any fines for parking violations.
+        p.long-text
+            | If A Lot is filled, there are several garages in the Commons that are inexpensive
+            |  and also offer free parking during off-hours. The TCAT, our local bus company, provides several
+            |  routes (we recommend route 30) that run from the Commons to the center of campus. You can take route
+            a(href='http://tcat.nextinsight.com/pdfpics/30_fall2015.pdf', target='_blank')  30 outbound
+            |  or
+            a(href='http://tcat.nextinsight.com/pdfpics/32_fall2015.pdf', target='_blank')  32 outbound
+            |  , getting on at the #[em  Green St @ Commons] stop (42°26'18.8"N 76°29'51.5"W). Get off at
+            | #[em  Rockefeller Hall]. The TCAT fare is $1.50.
+        h3 Traveling by Plane
+        p.long-text
+            | The most straightforward flight is directly to Ithaca's own airport, the Ithaca Tompkins Area Airport.
+            | If you are flying in to this airport, you can take a&nbsp;
+            a(href='http://flyithaca.com/ground/', target='_blank') taxi
+            |  (~$15-$20) to campus. Alternatively, you can take the TCAT route&nbsp;
+            a(href='http://tcat.nextinsight.com/pdfpics/32_fall2015.pdf') 32 inbound
+            |  and get off at #[em  Goldwin Smith Hall].
+        p.long-text
+            | A few other options are flying to either the Syracuse Hancock International Airport or
+            | an airport from New York City and then taking a bus to Cornell. 
+            a(href='https://www.wanderu.com/en/bus-tickets/us-ny/syracuse/us-ny/ithaca/', target='_blank')  Buses
+            |  from Syracuse to Ithaca are around $20 and stop at the Greyhound terminal in downtown Ithaca.
+            | See 'Traveling by Greyhound' above for more information.
+        p.long-text
+            |  We are considering chartering a bus from NYC departing around 12:30 pm, but if we decide not to offer this,
+            |  or you cannot find a flight in that time frame,
+            |  buses from New York City to Ithaca are around $50-$90. Some bus options include&nbsp;
+            a(href='http://sales.coachusa.com/home.aspx?pid=5', target='_blank') Coach Shortline
+            |  and 
+            a(href='https://c2cbus.ipp.cornell.edu/', target='_blank')  Campus to Campus
+            | . For the Shortline bus, see 'Traveling by Shortline' above for more information. For
+            | Campus to Campus, you can select to be dropped off at Sage Hall. Due to construction,
+            | the actual drop off site will be Uris Hall.

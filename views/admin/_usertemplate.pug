@@ -1,0 +1,112 @@
+//-
+   Display detailed information for a user
+
+h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pubid}])
+
+.row
+    .col-sm-3.col-md-3
+        h4 Basic Info
+        ul
+            li Gender: #{user.gender}
+            li Email: #{user.email}
+            li Phone: #{user.phone}
+            li Hackathons attended: #{user.app.hackathonsAttended}
+    .col-sm-3.col-md-3
+        h4 Education
+        ul
+            li School: #{user.school.name}
+            li Major: #{user.school.major}
+            li Year: #{user.school.year}
+    .col.sm-3.col-md-3
+        h4 Logistics
+        ul
+            li Bus: #{user.internal.busid}
+            li T-shirt Size: #{user.logistics.tshirt}
+            li Dietary Restrictions: #{user.logistics.dietary}
+    if user.team.length > 0
+        .col-sm-3.col-md-3
+            h4 Team Members
+            ul
+                for member in user.team
+                    if member.pubid != user.pubid
+                        li: a(href="/admin/user/"+member.pubid) #{member.name.first} #{member.name.last}
+            a.btn.btn-default(type="button",href="/admin/team/"+user.internal.teamid) View Team Page
+
+.row
+    .col-md-12
+        br
+        h4 Application
+        -
+            //disable buttons if properties don't exist
+                var gh_disabled = user.app.github == "";
+                var lk_disabled = user.app.linkedin == "";
+            //normalize github
+                gh_url = (user.app.github.toLowerCase().indexOf("github.com") == -1 ? "https://github.com/" : "") + user.app.github;
+            //normalize linkedin (append http to force non-relative url)
+                var linkedin = user.app.linkedin.toLowerCase();
+                var lk_url;
+                if (linkedin.indexOf("http") != -1) {
+                    lk_url = linkedin;
+                } else {
+                    lk_url = "https://" + linkedin;
+                }
+        a.btn.btn-default(type="button", href="http://files.bigredhacks.com/resume/"+user.app.resume,
+        target="_blank") #[i.fa.fa-file-pdf-o] Resume
+        a.btn.btn-default(type="button",href=gh_url,target="_blank",disabled=gh_disabled) #[i.fa.fa-github] Github
+        a.btn.btn-default(type="button",href=lk_url,target="_blank",disabled=lk_disabled) #[i.fa.my-fa-linkedin-square] Linkedin
+        if (user.internal.travel_receipt)
+            a.btn.btn-default(type="button", href="http://files.bigredhacks.com/travel/" + user.internal.travel_receipt,
+        target="_blank") #[i.fa.fa-file-pdf-o] Travel Receipt
+        br
+        br
+        div: embed.center-block(src="//files.bigredhacks.com/resume/"+user.app.resume, width="75%", height="400",type='application/pdf')
+        br
+        br
+
+        br
+        div Tell us something interesting about yourself.
+            p= user.app.questions.q1
+        br
+        div What's a cool project that you've worked on?
+            p= user.app.questions.q2
+        br
+        div Types of hardware hacks:
+            p= user.app.questions.hardware
+        br
+        div Is there anything else you'd like to tell us?
+            p= user.logistics.anythingelse
+        br
+
+        h4 Admin
+        .text-center
+            | Reimbursement: $#{reimbursement}
+        .form-inline
+            .form-group.np-enabled
+                label(for="setRSVP") Going:&nbsp;
+                select#setRSVP.form-control(name="setRSVP")
+                    option(value="") select
+                    +generateOptions("true false".split(" "), {selected: (user.internal.going+"")})
+        if middlehelp.isDayof()
+            .form-inline
+                .form-group.np-enabled
+                    label(for="setCheckedIn") Checked In
+                    select#setCheckedIn.form-control(name="setCheckedIn")
+                        option(value="") select
+                        +generateOptions("true false".split(" "), {selected: (user.internal.checkedin + "")})
+        br
+        button#remove-user.btn.btn-danger delete user
+        br
+        .text-center
+            | Update user application decision:
+            form.decision-radio.user.np-enabled(data-pubid = user.pubid)
+                +generateInlineRadio(enums.virtual.status.longWithPending, {
+                    checked: user.internal.status,
+                    name: "individualstatus",
+                    label: enums.virtual.status.longWithPending
+                })
+        br
+        .text-center
+            | Previous status: #{user.internal.previousStatus}
+        if user.internal.status == "Rejected" && user.internal.previousStatus == "Accepted"
+            .text-center
+                | This user's deadline to RSVP has expired.

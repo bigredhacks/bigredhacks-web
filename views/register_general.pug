@@ -1,0 +1,109 @@
+//-
+   General registration page
+
+extends _layout-registration
+
+block vars
+    - var actionUrl = "/register"; //- url the form should submit to
+    - var multipart = true; //- whether the form has multipart data
+
+block header
+    link(href='//cdn.rawgit.com/benignware/jquery-filepicker/3f11222d/dist/css/filepicker.default.css', rel='stylesheet')
+    link(href='./css/registration.css' rel="stylesheet")
+
+block append description
+    h1 General Registration
+    p This registration form is only for <emph>non-Cornell</emph> students. If you're a Cornell student, sign up for our mailing list (we'll open registration for you in September).
+
+block append account-information
+    .form-group
+        label(for='email') email address *
+        input#email.form-control.not-cornell(type='email', name='email', placeholder='bigredhacks@example.com', value=input.email || '', required=true)
+    .form-group
+        label(for='password') password *
+        input#password.form-control(type='password', name='password', placeholder='password', required=true)
+    .form-group
+        label(for='confirmpassword') confirm password *
+        input#confirmpassword.form-control(type='password', name='confirmpassword', placeholder='password', required=true)
+
+block append basic-information
+    .form-group
+        label(for='firstname') first name *
+        input#firstname.form-control(type='text', name='firstname', minlength='2', placeholder='first name', value=input.firstname || '',  required=true)
+    .form-group
+        label(for='lastname') last name *
+        input#lastname.form-control(type='text', name='lastname', minlength='2', placeholder='last name', value=input.lastname || '', required=true)
+    .form-group
+        label(for='phonenumber') phone number *
+        input#phonenumber.form-control(type='text', name='phonenumber', placeholder='XXX-XXX-XXXX', value=input.phonenumber || '', required=true)
+    .form-group
+        label(for='genderDropdown') gender *
+        select#genderDropdown.form-control(name='genderDropdown', required=true)
+            option(value='') select
+            +generateOptions(en.gender, {selected: (input.genderDropdown || "")})
+
+block append school
+    .form-group
+        input#collegeid.form-control(type='hidden', name='collegeid', value=input.collegeid || '', required=true)
+        .form-group
+            label(for='yearDropdown') academic year *
+            select#yearDropdown.form-control(name='yearDropdown', required='')
+                option(value='') select
+                +generateOptions(en.year, {selected: (input.yearDropdown || "")})
+        .form-group
+            label(for='college') full school name *
+            br
+            input#college.form-control.typeahead(type='text', name='college', placeholder='School Name', value=input.college || '', required=true)
+        .form-group
+            label(for='major') major *
+            input#major.form-control.typeahead(type='text', name='major', placeholder='major', value=input.major || '', required=true)
+
+
+
+block append background
+    .form-group
+        //- TODO: link size of resume to backend constant
+        label(for='resume') resume (.pdf, max 10 mb) *
+        .wrapper
+            input#resume.form-control.filepicker-ui(data-label='upload', type='file', name='resume', accept='.pdf', required='')
+    .form-group
+        label tell us something interesting about yourself. *
+        textarea#q1.form-control(name='q1', rows='4', required='') #{input.q1 || "" }
+    .form-group
+        label what's a cool project that you've worked on? *
+        textarea#q2.form-control(name='q2', rows='4', required='') #{input.q2 || "" }
+    .form-group
+        label(for='github') github profile
+        .input-group
+            .input-group-addon @
+            input#github.form-control(type='text', name='github', placeholder='johndoe', value=input.github || '')
+    .form-group
+        label(for='linkedin') linkedIn profile
+        .input-group
+            .input-group-addon http://
+            input#linkedin.form-control(type='text', name='linkedin', placeholder='www.linkedin.com/', value=input.linkedin || '')
+    .form-group
+        label(for='hackathonsAttended') how many hackathons have you attended? *
+        select#hackathonsAttended.form-control(name='hackathonsAttended', required=true)
+            option(value='') select
+            +generateOptions(en.hackathonsAttended, {selected: (input.hackathonsAttended || "")})
+
+block append logistics
+    .form-group
+        label(for='dietary') dietary restrictions *
+        select#dietary.form-control(name='dietary', required='')
+            option(value='') select
+            +generateOptions(en.dietary, {selected: (input.dietary || "")})
+    .form-group
+        label(for='tshirt') t-shirt size *
+        select#tshirt.form-control(name='tshirt', required='')
+            option(value='') select
+            +generateOptions(en.tshirt, {selected: (input.tshirt || "")})
+    .form-group
+        label is there any kind of hardware that you want to hack on?
+        input#hardware.form-control.typeahead(type='text', name='hardware', placeholder='VR, Smart Home, etc...'  value=input.hardware || '', data-role="tagsinput")
+    .form-group
+        label is there anything else you'd like to tell us?
+        textarea#anythingelse.form-control(name='anythingelse', rows='2') #{input.anythingelse || ""}
+
+block append mlh_data_provision

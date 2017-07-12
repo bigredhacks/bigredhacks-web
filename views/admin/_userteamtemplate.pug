@@ -1,0 +1,32 @@
+//-
+   Display detailed information for a user's team
+
+h4 Team Information:
+ul
+    li Team id:&nbsp;
+        a#teamid(href="/admin/team/"+currentUser.internal.teamid,target="_blank")= currentUser.internal.teamid
+    li No. Members: #{currentUser.team.length}
+    li Team with Cornell: #{currentUser.internal.teamwithcornell ? "Yes" : "No"}
+br
+
+#accordion.panel-group(role="tablist" aria-multiselectable="true")
+    for user in currentUser.team
+        .panel.panel-default
+            panel-headding(role="tab",id="user-heading-"+user.pubid)
+            h4.panel-title
+                a.collapsed(data-toggle="collapse",data-parent="#accordion",href="#user-collapse-"+user.pubid,
+                aria-expanded="false" aria-controls="user-collapse"+user.pubid) #{user.name.first} #{user.name.last}
+                span.status(class=user.internal.status)= user.internal.status
+        .panel-collapse.collapse(id="user-collapse-"+user.pubid, role="tabpanel" aria-labelledby="user-heading-"+user.pubid)
+            .panel-body
+                include _usertemplate
+
+if currentUser.team.length > 0
+    .text-center
+        | Update team application decision
+        form.decision-radio.team.np-enabled
+            +generateInlineRadio(enums.virtual.status.long, {
+                checked: null,
+                name: "teamstatus",
+                label: enums.virtual.status.long
+            })

@@ -1,0 +1,128 @@
+//-
+   General registration page
+
+extends _layout-registration
+
+block vars
+    - var actionUrl = "/register/" + urlparam; //- url the form should submit to
+    - var multipart = true; //- whether the form has multipart data
+    - var cornell_reg = (college.name == "Cornell University");
+    - var cornell_tech_reg = (college.name == "Cornell Tech");
+
+block append description
+    //-
+        if (cornell_reg)
+            h1 Cornell Registration
+            p This year, we're admitting Cornell students using a lottery system. Apply by <strong> September 6 </strong> to be entered!
+            p Any additional registrants will be put on an ordered waitlist. Based on last year, we anticipate that most waitlisted students will be offered a spot at the hackathon. Don't miss this amazing event, sign up now!
+            p If you are a Cornell Tech student, please register <a href="/register/cornelltech">here</a>.
+        else if (cornell_tech_reg)
+            //-
+                h1 Cornell Tech Registration
+                p This is a registration form for Cornell Tech students. After registering, please give us some time to process your registration.
+        else
+            h1 #{college.name} Registration
+            p This is a special case late registration form. Registration is by permission only. After registering, you will be automatically waitlisted. If we have given you permission to attend, please leave us some time to unwaitlist you.
+
+block append account-information
+    .form-group
+        label(for='email') email address *
+        input#email.form-control(type='email', name='email', placeholder='bigredhacks@example.com', value=input.email || '', required=true)
+    .form-group
+        label(for='password') password *
+        input#password.form-control(type='password', name='password', placeholder='password', required=true)
+    .form-group
+        label(for='confirmpassword') confirm password *
+        input#confirmpassword.form-control(type='password', name='confirmpassword', placeholder='password', required=true)
+
+block append basic-information
+    .form-group
+        label(for='firstname') first name *
+        input#firstname.form-control(type='text', name='firstname', minlength='2', placeholder='first name', value=input.firstname || '',  required=true)
+    .form-group
+        label(for='lastname') last name *
+        input#lastname.form-control(type='text', name='lastname', minlength='2', placeholder='last name', value=input.lastname || '', required=true)
+    .form-group
+        label(for='phonenumber') phone number *
+        input#phonenumber.form-control(type='text', name='phonenumber', placeholder='XXX-XXX-XXXX', value=input.phonenumber || '', required=true)
+    .form-group
+        label(for='genderDropdown') gender *
+        select#genderDropdown.form-control(name='genderDropdown', required=true)
+            option(value='') select
+            +generateOptions(en.gender, {selected: (input.genderDropdown || "")})
+
+block append school
+    .form-group
+        input#collegeid.form-control(type='hidden', name='collegeid', value=college._id, required=true)
+    .form-group
+        label(for='yearDropdown') academic year *
+        select#yearDropdown.form-control(name='yearDropdown', required='')
+            option(value='') select
+            +generateOptions(en.yearNoHighSchool, {selected: (input.yearDropdown || "")})
+    .form-group
+        label(for='college') full school name *
+        br
+        input#college.form-control(type='text',value=college.display, readonly=true)
+    .form-group
+        label(for='major') major *
+        input#major.form-control.typeahead(type='text', name='major', placeholder='major', value=input.major || '', required=true)
+
+block append background
+    .form-group
+        //- TODO: link size of resume to backend constant
+        label(for='resume') resume (.pdf, max 10 mb) *
+        .wrapper
+            input#resume.form-control.filepicker-bootstrap(data-label='upload', type='file', name='resume', accept='.pdf', required='')
+    .form-group
+        label tell us something interesting about yourself. *
+        textarea#q1.form-control(name='q1', rows='4', required='') #{input.q1 || "" }
+    .form-group
+        label what's a cool project that you've worked on? *
+        textarea#q2.form-control(name='q2', rows='4', required='') #{input.q2 || "" }
+    .form-group
+        label(for='github') github profile
+        .input-group
+            .input-group-addon @
+            input#github.form-control(type='text', name='github', placeholder='johndoe', value=input.github || '')
+    .form-group
+        label(for='linkedin') linkedIn profile
+        .input-group
+            .input-group-addon http://
+            input#linkedin.form-control(type='text', name='linkedin', placeholder='www.linkedin.com/', value=input.linkedin || '')
+    .form-group
+        label(for='hackathonsAttended') how many hackathons have you attended? *
+        select#hackathonsAttended.form-control(name='hackathonsAttended', required=true)
+            option(value='') select
+            +generateOptions(en.hackathonsAttended, {selected: (input.hackathonsAttended || "")})
+
+block append logistics
+    .form-group
+        label(for='dietary') dietary restrictions *
+        select#dietary.form-control(name='dietary', required='')
+            option(value='') select
+            +generateOptions(en.dietary, {selected: (input.dietary || "")})
+    .form-group
+        label(for='tshirt') t-shirt size *
+        select#tshirt.form-control(name='tshirt', required='')
+            option(value='') select
+            +generateOptions(en.tshirt, {selected: (input.tshirt || "")})
+    //-
+        .form-group
+            label is there any kind of hardware that you want to hack on?
+            input#hardware.form-control.typeahead(type='text', name='hardware', placeholder='VR, Smart Home, etc...'  value=input.hardware || '', data-role="tagsinput")
+    .form-group
+        label is there anything else you'd like to tell us?
+        textarea#anythingelse.form-control(name='anythingelse', rows='2') #{input.anythingelse || ""}
+        
+block append terms
+    br
+    label Please carefully read the liability waiver:
+    .form-group
+        a.button.btn.btn-default.button-b2#liability-cornell(type='button', href='/docs/waiver.pdf', target='_blank') liability waiver & release
+    .form-group
+        .checkbox
+            label
+                input#liability-agree(type='checkbox', name='liability')
+                | I understand and agree to the liability waiver & release.
+
+block mlh_data_provision

@@ -1,6 +1,5 @@
 @import "_global";
 @import "_fontawesome-custom";
-@import "_index_effects";
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 @import url('https://fonts.googleapis.com/css?family=Overpass+Mono');
 
@@ -31,12 +30,12 @@ img {
 body {
   //width: 100%;
   //height: 100%;
-  font-family: 'Open Sans', sans-serif;
+  font-family: @2017-font;
   font-weight: @weight-normal;
-  color: @black;
-  background-color: @white;
+  background-color: @2017-background;
   padding: 0;
   margin: 0;
+  color: @2017-text-gray
 }
 @media (max-width: 768px){
   .navbar-fixed-top {
@@ -62,14 +61,9 @@ p {
   }
 }
 
-p, dl {
+p{
   font-size: @body-size;
   line-height: @body-line-height;
-}
-
-dd {
-  line-height: @body-line-height;
-  margin: 0 0 25px;
 }
 
 .light {
@@ -79,7 +73,7 @@ dd {
 .navbar {
   margin-bottom: 0;
   border-bottom: 1px solid rgba(255, 255, 255, .3);
-  background: @bg-dark !important;
+  background: @2017-background !important;
 }
 
 .navbar-brand {
@@ -89,7 +83,6 @@ dd {
   font-size: 18px;
   line-height: 1em;
   h1 {
-    color: #fff;
     font-size: 20px;
     line-height: 40px;
   }
@@ -119,43 +112,14 @@ section {
     width: @content-width;
     padding-left: @content-padding-left;
   }
-  .redbox {
-    .container {
-      position: relative;
-      //left: -80px;
-      width: 40%;
-    }
-  }
-  .sustainable {
-    .container {
-      width: 40%
-    }
-  }
 }
 
-.headerbox {
-  margin-left: auto;
-  margin-right: auto;
-  width: 800px;
-  padding-right: 180px;
-}
-
-.redbox {
-  //background-color: @medium-red;
-  margin-top: 10px;
-  //margin-left: calc(~"25% - 150px");
-  //margin-right: calc(~"50% - 120px");
-  h2,h3,h4,p {
-    color: @white;
-  }
-}
 .img-block {
   position: absolute;
   padding-top: 30px;
   padding-left: 25px;
 }
 .big-heading h2 {
-  color: @white;
   font-size: 32px;
   padding-top: 25px;
   margin-bottom: 18px;
@@ -176,7 +140,6 @@ section {
 }
 
 .big-heading2 h2 {
-  color: @white;
   font-size: 13px;
   font-family: 'Overpass Mono', sans-serif;
   text-align: left;
@@ -210,170 +173,6 @@ section {
     margin-left: 0px;
   }
 }
-.dots {
-  display: inline-block;
-  .dot1{
-    border-radius: 50%;
-    width: 14px;
-    height: 14px;
-    background-color: @dark-red;
-    display: inline-block;
-    margin: 0 3px;
-
-  }
-  .dot2{
-    border-radius: 50%;
-    width: 14px;
-    height: 14px;
-    background-color: @medium-red;
-    display: inline-block;
-    margin: 0 3px;
-
-  }
-  .dot3{
-    border-radius: 50%;
-    width: 14px;
-    height: 14px;
-    background-color: @light-red;
-    display: inline-block;
-    margin: 0px 20px 0px 3px;
-
-  }
-}
-// ===========================
-//--- Intro
-//============================
-
-.intro {
-  //width: 100%;
-  padding: 160px 0 0 0;
-  //padding-top: 15%; //with announcement
-  position: relative;
-  background-color: #242C37;
-  //background-color: @white;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-
-  .banner{
-    padding-top: 30px;
-    padding-bottom: 30px;
-    background-color: @white;
-    margin-top: 50px;
-    text-align: center;
-    //margin-left: 90px;
-    img {
-      height: 40px;
-      margin-left: 40px;
-    }
-    .logos{
-      display: inline-block;
-    }
-    #microsft {
-      height: 60px;
-      margin-left: 40px;
-    }
-    #entrep {
-      height: 35px;
-      margin-left: 40px;
-    }
-    #cis_corn {
-      height: 50 px;
-      margin-left: 40px;
-    }
-
-  }
-  @media (max-width: 768px){
-    .btn.btn-default.button-b2 {
-      margin-left: 70px;
-    }
-    .btn.btn-default{
-      margin-right: 0px;
-      margin-left: 0;
-      padding-top: 15px;
-    }
-
-    .banner{
-      display:none;
-    }
-  }
-  .intro-wrapper {
-    text-align: center;
-    position: relative;
-    color: @black;
-
-    img {
-      position: relative;
-      top: -21px;
-      padding-right: 10px;
-    }
-
-    h2, h4, h3 {
-      z-index: 600;
-    }
-
-    .h1container {
-      position: relative;
-      height: 50px;
-      //margin-left: calc(~"25% - 150px");
-      display: inline-block;
-      padding-bottom: 0;
-      //top: -70px;
-      //float: left;
-
-      .icon { top: -15px; }
-      h1 {
-        margin: 0;
-        padding: 0;
-        //position: absolute;
-        bottom: 0;
-        width: 100%;
-        font-size: @main-header-size; //60px;
-        line-height: @main-header-size;
-        background-color: rgba(0, 0, 0, 0);
-        text-decoration: none;
-        color: @picton;
-        font-family: 'Oval-Light', sans-serif;
-        text-transform: uppercase;
-        .noselect;
-        vertical-align: text-bottom;
-      }
-    }
-
-    h2, h3, h4 {
-      margin: 0 0 15px;
-      color: @picton;
-    }
-    .intro-contents {
-      display: inline-block;
-      margin-bottom: 0;
-      padding-bottom: 0;
-      .slogan {
-        text-align: left;
-        float: left;
-      }
-    }
- //   .date {
- //     //text-align: right;
- //     position: absolute;
-  //    right: 0;
-  //  }
-
-
-  }
-  .page-scroll {
-    text-align: center;
-  }
-
-}
-
-.buttondiv {
-  position: relative;
-  float: left;
-  margin-left: calc(~"25% - 50px");
-}
-
 
 .transparent {
   width: 100%;
@@ -384,112 +183,6 @@ section {
   background: @white;
 }
 
-.sponsors {
-  h2 {
-    color: @black;
-    text-align: center;
-  }
-  .container img{
-    margin-bottom: 80px;
-  }
-
-}
-
-#microsoft{
-  height: 200px;
-}
-.schedule {
-
-  h2, h3, h4, p {
-    margin: 0px;
-  }
-  h2 {
-    margin-bottom: 15px;
-  }
-  h3 {
-    margin-bottom: 10px;
-  }
-  .data {
-    p {
-      margin: 0px;
-    }
-    h5 {
-      color: @light-gray;
-    }
-  }
-
-  margin-bottom: 100px;
-}
-
-@media (min-width: 767px){
-  .faq-table {
-    column-count: 3;
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    margin-bottom: 150px;
-  }
-  dd, dt {
-    color: @bg-light;
-  }
-}
-
-
-.faq {
-  position: relative;
-  z-index: 500;
-  padding-top: 70px;
-  padding-bottom: 0px;
-  opacity: 0.8;
-
-  .break-bef {
-    break-before: column;
-  }
-  h2 {
-    font-size: 20px;
-    color:#cd5257;
-  }
-  p {
-    color: white;
-    font-size: 14px;
-  }
-  dd, dt {
-    color: @bg-light;
-  }
-  .container {
-    width: 60%;
-  }
-  dt {
-    font-size: 16px;
-    padding-top: 20px;
-  }
-  dd {
-    font-size: 14px;
-    font-weight: @weight-normal;
-  }
-  a {
-    color: white;
-  }
-}
-
-.boxed-grey {
-  padding: 20px;
-}
-
-.pics {
-  h5 {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  p.subtitle {
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
-}
-
-.avatar {
-  margin-bottom: 20px;
-}
-
 // ===========================
 //--- Footer
 //============================
@@ -497,7 +190,6 @@ section {
 footer {
   padding: 50px;
   background-color: #242C37;
-  //background-color: @dark-red;
   bottom: 0;
   width: 100%;
   margin-top: 30px;
@@ -508,7 +200,6 @@ footer {
 }
 
 footer p {
-  color: #f8f8f8;
   text-align: left;
 }
 
@@ -519,204 +210,21 @@ footer p {
 .btn {
   font-size: 14px;
   letter-spacing: 0.5px;
-  padding: 9px 15px 9px 15px;
+  margin: 9px 15px;
   z-index: 600;
   position: relative;
 
   &.fixed-width {
     width: 90px;
   }
-}
 
-/* Media queries */
-
-@media (min-width: 767px) {
-  .red{
-    color: red;
-  }
-  .navbar {
-    padding: 20px 0;
-    letter-spacing: 2px;
-    background: 0 0;
-    border-color: transparent;
-  }
-
-  .navbar-default .navbar-text {
-    // font-weight: bold;
-    //font-family: 'Nunito';
-    color: @bg-light;
-    margin-left: 60px;
-    padding-top: 15px;
-    font-size: 16px;
-  }
-
-  .intro {
-    min-height: 110wh;
-  }
-
-  .brand-heading {
-    font-size: 100px;
-  }
-
-  .intro-text {
-    font-size: 25px;
-  }
-
-}
-
-.wide-img{
-  width: 80vw;
-  max-width: 800px;
-  height: 85px;
-}
-
-#wrapper{
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .faq {
-    .container {
-      width: 80%;
-    }
-  }
-    #intro{
-      padding-top: 5px;
-    }
-
-    #wrapper {
-        display: block;
-        max-width: 40vw; /* max-width doesn't behave correctly in legacy IE */
-        margin: 0 auto;
-    }
-    #wrapper img{
-        width:100%;       /* the image will now scale down as its parent gets smaller */
-    }
-    .wide-img{
-      display: none;
-    }
-
-    .redbox {
-      .container {
-        position: relative;
-        //left: -80px;
-        // width: 80%;
-      }
-    }
-
-  footer {
-    padding: 5px;
-    .container{
-      width: 100%;
-    }
-  }
-
-  footer p {
-    color: #f8f8f8;
-    text-align: left;
-  }
-
-  #title-logo {
-    width: 99%;
-    padding-right: 0.5%;
-    padding-left: 0.5%;
-  }
-
-  .intro {
-    width: 100%;
-  }
-
-  .headerbox {
-    width: 100%;
-    padding-right: 5%;
-  }
-
-  .fade-img {
-    display: none;
-  }
-
-  .slogan {
-    width: 100%;
-    text-align: left;
-    float: none;
-  }
-
-  .navbar-header {
-    display: inline-block;
-    width: 25%;
-    vertical-align: bottom;
-  }
-  .navbar {
-    display: none;
-    letter-spacing: 2px;
-    background: 0 0;
-    border-color: transparent;
-  }
-  .a.navbar-text {
-    display: inline;
-  }
-
-  .navbar-default
-    .navbar-text {
-      font-weight: 900;
-      font-family: 'Nunito';
-      color: @bg-light;
-      font-size: 16px;
-    }
-  .intro {
-    .intro-wrapper {
-      .h1container {
-        margin-left: 0;
-
-        .icon {
-          top: -26px;
-          height: 64px;
-          width: 64px;
-
-        }
-
-        h1 {
-          font-size: @main-header-size - 28pt;
-          line-height: @main-header-size;
-        }
-      }
-    }
-  }
-
-
-  .buttons {
-    padding-left: 0;
-    text-align: center;
-    width: 100%;
-  }
-
-  .s-icon {
-    margin-right: 15px;
-    width: 30px;
-    height: 30px;
+  &:active, &:focus {
+    box-shadow: none;
+    outline: 1px solid red;
   }
 }
 
-@media (max-width: 496px) {
-
-  body{
-    width: 100%;
-  }
-
-}
-
-.top-nav-collapse {
-  background: @medium-red;
-  opacity: .92;
-}
-
-.modal-footer#regFooter {
-  text-align: center;
-}
-
-
-//sponsors
-
+// sponsors
 .logos {
   //width: 800px; //todo width based on screen
   width: 100%;
@@ -755,100 +263,17 @@ footer p {
 }
 
 // ===========================
-//--- Splash
+//--- Main Site 2017
 //============================
-#splash2017{
-  height: 100vh;
-  width: 100vw;
-  padding-left: 25%;
-  padding-right: 25%;
-  padding-top: 7%;
-  margin-bottom: 50px;
+#frontPage2017{
+  @triangle-val: 150px;
 
-  #scroll{
-    margin-top: 40px;
-    margin-bottom: 40px;
-    font-size: 20px;
-    border-style: none;
-    padding: 0;
-    background: white;
-  }
-
-  #keyboard{
-    width: 100%;
-    height: auto;
-  }
-
-  #bottomkeys{
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .spacebar_subscribe{
-    float: left;
-    margin: 0;
-    padding: 0;
-  }
-
-  .keyicon{
-    float: left;
-    position:relative;
-  }
-
-  #reg_email{
+  .layer{
     display: block;
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: 100%;
-    border: none;
-    background: transparent;
-  }
-  
-  .fill{
-    width: 100%;
-  }
-  
-  #fb{
-    width: (49/828)*100%;
-  }
-
-  #twitter{
-    width: (58/828)*100%;
-  }
-
-  #insta{
-    width: (56/828)*100%;
-  }
-
-  #email{
-    width: (58/828)*100%;
-  }
-
-  #spacebar{
-    width: (318/828)*100%;
-    position:relative;
-    height: 3vw;
-
-    border-radius: 4px;
-    margin-top: 0.5%;
-    background-color: #ffffff;
-    border: solid 1px #ff4a4a;
-  }
-
-  #signup{
-    width: (88/828)*100%;
-    cursor: pointer;
-  }
-
-  #rightkeys{
-    width: (200/828)*100%;
   }
 
   h1{
-    margin-bottom: 0;
+    margin-bottom: 35px;
     font-size: 55px;
     letter-spacing: -3.4px;
   }
@@ -857,93 +282,326 @@ footer p {
     margin-top: 15px;
     font-size: 20px;
     letter-spacing: -1px;
+    color: @2017-red;
   }
 
-  .typed-cursor{
-      opacity: 1;
-      -webkit-animation: blink 0.7s infinite;
-      -moz-animation: blink 0.7s infinite;
-      animation: blink 0.7s infinite;
+  a{
+    color: @2017-red;
+    font-size: 25px;
   }
-  @keyframes blink{
-      50% { opacity:0; }
-      100% { opacity:1; }
-  }
-  @-webkit-keyframes blink{
-      0% { opacity:1; }
-      50% { opacity:0; }
-      100% { opacity:1; }
-  }
-  @-moz-keyframes blink{
-      0% { opacity:1; }
-      50% { opacity:0; }
-      100% { opacity:1; }
-  }
-}
 
-#mobile_keyboard{
-  visibility: hidden;
-}
+  p{
+    color: @2017-text-gray;
+  }
 
-@media screen and (max-width: 565px){
-  #splash2017{
+  .btn{
+    padding: 0;
+    margin-left: 0;
+  }
+
+  .paddedSection{
+    margin: 0 15% 0 15%;
+  }
+
+  #mainDiv{
+    position: relative;
+    height: 100vh;
+    padding-top: 10vh;
+    z-index: 3;
+    // For the BigRed//Hacks text
+    #bigred, #hacks{
+      display: inline;
+    }
+
+    #squiggles{
+      display: inline;
+      font-weight: 400 !important;
+    }
+
+    // padding-bottom: @triangle-val;
+
+    #headerText{
+      display: inline-block;
+      position:absolute;
+      top: 25vh;
+      h3{
+        display: inline-block;
+      }
+    }
+
+    #headerImg{
+      text-align: right;
+      padding-top: 30vh;
+
+      img{
+        width: 45%;
+        margin-right: 5%;
+
+      }
+    }
+  }
+
+  #aboutDiv{
+    background-color: @2017-light-gray;
+    position:relative;
+
+    z-index: 2;
+
+    .innerContent{
+      margin-top: -@triangle-val;
+    }
+
+    .paddedSection{
+      margin-top: 5%;
+    }
+
+    #A{
+      height: 0%;
+      padding-bottom: 10%;
+      img{
+        margin-left: 10%;
+        width: 10%;
+      }
+    }
+
+    #B{
+      position: absolute;
+      bottom: -20%;
+      left: 16%;
+      width: 12%;
+    }
+
+    #C{
+      position: absolute;
+      bottom: -30%;
+      left: 30%;
+      width: 12%;
+    }
+  }
+
+  #aboutDiv:before {
+    display: inline-block;
+    margin: 0;
+    margin-top: -@triangle-val;
+    margin-left: -@triangle-val;
+    content: '';
+    border: @triangle-val solid transparent;
+    border-right: 100vw solid @2017-light-gray;
+    z-index: 1;
+  }
+
+  #scheduleDiv{
+    padding-bottom: @triangle-val;
+    text-align: center;
+    position: relative;
+
     h1{
-      font-size: 38px;
+      text-align: right;
+      margin-right: 7%;
     }
 
-    h3{
-      font-size: 16px;
+    #schedule{
+      overflow:auto;
+      margin-left: 5%;
+      margin-right: 5%;
+
+      h4{
+        margin-bottom: 45px;
+      }
+
+      b{
+        text-transform: uppercase;
+      }
+
+      p{
+        margin-bottom: 3px;
+      }
+    }
+  }
+
+  #faqDiv{
+    background-color: @2017-light-gray;
+    position: relative;
+
+    #question{
+      text-align: right;
+      margin-bottom: 10%;
+      height: 0%;
+      img{
+        width: 30%;
+        top: -@triangle-val;
+      }
+ 
     }
 
-    #scroll{
-      font-size: 12px;
-      margin-top: 15px;
-      margin-bottom: 15px;
+    .innerContent{
+      margin-top: -@triangle-val;
+      padding-bottom: @triangle-val;
+    }
+  }
+
+  #faqDiv:before{
+    display: inline-block;
+    margin: 0;
+    margin-top: -@triangle-val;
+    margin-right: -@triangle-val;
+    content: '';
+    border: @triangle-val solid transparent;
+    border-left: 100vw solid @2017-light-gray;
+    border-right: 0;
+  }
+
+  dt{
+    margin-top: 15px;
+  }
+
+  #sponsorsDiv{
+    position: relative;
+    text-align: right;
+
+    margin-bottom: 10%;
+
+    .paddedSection{
+      margin-top: 5%;
     }
 
-    #signup{
-      width: 100%;
-      padding-top: 10px;
-      padding-bottom: 40px;
+    #heart{
+      text-align: left;
+      img{
+        margin-left: 5%;
+        height: 70%;
+      }
     }
 
-    #boxinput{
-      border: 2px solid #cd5257;
-      margin-bottom: 35px;
+    //-------CSS for all of the logos------------
+    #two_sigma{
+      max-width:none;
+      margin-bottom: 5%;
+      width: 60%;
     }
 
-    #keyboard_whole{
-      display: none;
+    #bloomberg {
+      margin-right: 10%;
+      margin-bottom: 5%;
+      width: 55%;
     }
 
-    #mobile_keyboard{
-      visibility: visible;
-      display: block;
-      width: 100%;
-      min-height: 300px;
-      max-height: 100vh;
+    #a16z {
+      width: 14%;
+      margin-bottom: 5%;
     }
 
-    #reg_email2{
-      height: 25px;
-      margin-top: 50px;
-      width: 100%;
-      text-align: center; 
+    #lutron{
+      max-width:none;
+      width: 33%;
+      margin-top: 3%;
+      margin-right: 10%;
+      margin-bottom: 7%;
     }
 
-    #fb{
-      width: 21%;
+    #wayfair{
+      margin-top: -0.3%;
+      margin-left: -1%;
+      margin-bottom: 7%;
+      max-width: none;
+      width: 30%;
     }
 
-    #twitter, #insta, #email{
-      width: 25%;
+    #de_shaw{
+      max-width: none;
+      width: 20%;
+      margin-top: -1%;
     }
 
-    #signup2{
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    #mlh{
+      max-width: none;
+      width: 12%;
     }
 
+    // -----------------------------------------
+  }
+
+  // Animations
+
+  /* Pulse */
+  @-webkit-keyframes hvr-pulse {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+    75% {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+  }
+  @keyframes hvr-pulse {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+    75% {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+  }
+  .hvr-pulse{
+    -webkit-animation-name: hvr-pulse;
+    animation-name: hvr-pulse;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+  }
+}
+
+/* Media queries */
+@media (min-width: 767px) {
+  .red{
+    color: red;
+  }
+  .navbar {
+    padding: 20px 0;
+    letter-spacing: 2px;
+    background: 0 0;
+    border-color: transparent;
+  }
+
+  .navbar-default .navbar-text {
+    margin-left: 60px;
+    padding-top: 15px;
+    font-size: 16px;
+  }
+
+  .intro {
+    min-height: 110wh;
+  }
+
+  .brand-heading {
+    font-size: 100px;
+  }
+
+  .intro-text {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  dt, dd, p {
+    margin: 5%;
+  }
+  #frontPage2017 {
+    h1 {
+      font-size: 50px;
+    }
+    .paddedSection {
+      margin: 0;
+    }
+  }
+  #sponsorsDiv {
+    #heart img {
+      width: 30%;
+    }
   }
 }

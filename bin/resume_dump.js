@@ -6,7 +6,10 @@ let fs = require('fs');
 let async = require('async');
 
 let mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
+mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
+  useMongoClient: true,
+  /* other options */
+});
 //mongoose.connect('mongodb://localhost/bigredhacks');
 let config = require('../config.js');
 let User = require('../models/user.js');

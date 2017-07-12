@@ -1,7 +1,10 @@
 let fs = require('fs');
 let async = require('async');
 let mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
+mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
+  useMongoClient: true,
+  /* other options */
+});
 let User = require('../models/user.js');
 
 let query = {"internal.status": "Accepted"};

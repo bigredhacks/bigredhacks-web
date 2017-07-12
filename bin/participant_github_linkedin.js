@@ -1,7 +1,10 @@
 var fs = require('fs');
 var async = require('async');
 var mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks');
+mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
+  useMongoClient: true,
+  /* other options */
+});
 var User = require('../models/user.js');
 
 var query = {"internal.going": true};

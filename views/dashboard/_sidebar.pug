@@ -1,0 +1,40 @@
+//-
+   User dashboard sidebar
+
+-
+    var urlItems = [
+        {
+            name: "Dashboard Home",
+            url: "/user/dashboard"
+        },
+        {
+            name: "Edit Application",
+            url: "/user/dashboard/edit",
+            reg_open: true
+        },
+        /*{
+            name: "ask for help",
+            url: "/user/dashboard/requestmentor"
+        },*/
+        /*{
+            name: "mentor list",
+            url: "/user/dashboard/mentorlist",
+            dayof: true
+        },*/
+        {
+            name: "Travel",
+            url: "/user/travel",
+            accepted: true,
+            external: true
+        },
+        {
+            name: "Logout",
+            url: "/user/logout"
+        }
+    ];
+
+.col-sm-3.col-md-3.col-lg-2.sidebar
+    a.brand(href="/"): img#brand-img(src="/img/logo/full-red.png")
+    ul.nav.nav-sidebar
+        +generateUrlList(urlItems, currentUrl)
+

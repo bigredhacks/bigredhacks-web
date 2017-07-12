@@ -17,14 +17,12 @@ body {
 }
 
 body {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: @2017-font;
   font-weight: @weight-normal;
-  background-color: @bg-dark;
-  color: @bg-light;
+  background-color: @2017-background;
 }
 
 p {
-  color: @bg-light;
 }
 
 .btn {
@@ -47,7 +45,6 @@ form#resume-form {
 
 ul.team-list {
   margin-top: 10px;
-  color: @bg-light;
   list-style-type: none;
 
   li {
@@ -66,7 +63,7 @@ ul.team-list {
 ///////////////
 
 .sidebar {
-  background: @bg-dark;
+  background: @2017-background;
   top: 0;
   bottom: 0;
   left: 0;
@@ -84,8 +81,9 @@ ul.team-list {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 90%;
-  height: 120px;
+  width: 95%;
+  height: 50px;
+  margin-top: 20px;
 }
 
 #brand-text {
@@ -93,9 +91,8 @@ ul.team-list {
   text-align: center;
   display: block;
   text-decoration: none;
-  font-family: "Blogger Sans Light", Arial, sans-serif;
+  font-family: @2017-font;
   font-size: @sidebar-brand-font-size;
-  color: @white;
 }
 
 @media (min-width: 768px) {
@@ -175,5 +172,5 @@ ul.team-list {
 }
 
 .panel {
-  background-color: @bg-dark;
+  background-color: @2017-background;
 }

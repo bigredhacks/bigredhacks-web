@@ -1,0 +1,24 @@
+extends _layout-unsecured
+
+block header
+    link(href="/css/index.css", rel="stylesheet")
+    link(rel="stylesheet", href="/css/login.css")
+
+block append main_content
+    .container
+        .login.center-block.col-lg-5.col-md-5.col-sm-10
+            h2 login to bigred//hacks
+            br/
+            if (messages.error)
+                .alert.alert-danger(role="alert")= messages.error[0].toLowerCase()
+            form(action="/login", method="post")
+                .form-group
+                    label(for="email") email address
+                    input#email.form-control(type="email", name="email", placeholder="email", value=messages.email || "" required=true)
+                .form-group
+                    label(for="password") password
+                    input#password.form-control(type="password", name="password", placeholder="password", required=true)
+                button.btn.btn-default.center-block(type="submit") login
+            br/
+            .login-help
+                p forgot your password? #[a(href="/forgotpassword") click here to reset it]

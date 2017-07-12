@@ -3,13 +3,13 @@
  */
 var engine2 = new Bloodhound({
     datumTokenizer: function (d) {
-        console.log(d);
+        // console.log(d);
         return Bloodhound.tokenizers.whitespace(d.name);
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     prefetch: '/api/hardware',
     identify: function (obj) {
-        console.log(obj);
+        // console.log(obj);
         return obj.name;
     }
 });

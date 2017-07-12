@@ -1,0 +1,21 @@
+//-
+   Table view used to display search results
+
+table.table.table-striped
+    tr
+        th Name
+        th Email
+        th School
+        th Status
+    for app in applicants
+        tr.applicant(data-pubid=app.pubid)
+            td: a(href="/admin/user/"+app.pubid, target="_blank") #{app.name.first} #{app.name.last}
+            td= app.email
+            td= app.school.name
+            td
+                form.decision-radio.np-enabled
+                    +generateInlineRadio(enums.virtual.status.long, {
+                        checked: app.internal.status,
+                        name: "status",
+                        label: enums.virtual.status.short
+                    })

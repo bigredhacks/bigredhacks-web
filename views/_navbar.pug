@@ -1,0 +1,16 @@
+//-
+   General navbar for unsecured pages
+
+nav.navbar.navbar-default
+    .container-fluid
+        .row
+            .navbar-header.col-xs-4
+                a.navbar-brand(href='/')
+                    img(alt='BigRed//Hacks', src='/img/icon/brh-icon-full.png', width=40, height=40)
+            if isUser
+                .navbar-header.col-xs-4: a.navbar-text(href="/user/dashboard") Dashboard
+                .navbar-header.col-xs-4: a.navbar-text(href="/user/logout") Logout
+            else
+                if middlehelp.isCornellRegistrationOpen()
+                    .navbar-header.col-xs-4: a.navbar-text(href="/register/cornelluniversity") Register
+                    .navbar-header.col-xs-4: a.navbar-text(href="/login") Login
