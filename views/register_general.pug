@@ -7,6 +7,10 @@ block vars
     - var actionUrl = "/register"; //- url the form should submit to
     - var multipart = true; //- whether the form has multipart data
 
+block header
+    link(href='//cdn.rawgit.com/benignware/jquery-filepicker/3f11222d/dist/css/filepicker.default.css', rel='stylesheet')
+    link(href='./css/dashboard.css' rel="stylesheet")
+
 block append description
     h1 General Registration
     p This registration form is only for <emph>non-Cornell</emph> students. If you're a Cornell student, sign up for our mailing list (we'll open registration for you in September).
@@ -61,7 +65,7 @@ block append background
         //- TODO: link size of resume to backend constant
         label(for='resume') resume (.pdf, max 10 mb) *
         .wrapper
-            input#resume.form-control.filepicker-bootstrap(data-label='upload', type='file', name='resume', accept='.pdf', required='')
+            input#resume.form-control.filepicker-ui(data-label='upload', type='file', name='resume', accept='.pdf', required='')
     .form-group
         label tell us something interesting about yourself. *
         textarea#q1.form-control(name='q1', rows='4', required='') #{input.q1 || "" }
