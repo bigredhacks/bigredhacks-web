@@ -2,13 +2,7 @@
 var exports = {};
 
 function normalize_bool(string) {
-    if (string.toLowerCase() == "true") {
-        return true;
-    }
-    else if (string.toLowerCase() == "false") {
-        return false;
-    }
-    return false;
+    return (string.toLowerCase() == "true") ? true : false;
 }
 
 function traverse_full_config(schema, eachItem) {

@@ -53,11 +53,9 @@
     "socket.io-redis": "^1.0.0",
     "subdomain": "^1.2.0",
     "twitter": "^1.7.1",
+    "uid2": "0.0.3",
     "underscore": "^1.8.3",
     "validator": "^7.2.0"
-  },
-  "optionalDependencies": {
-    "uid2": "0.0.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
