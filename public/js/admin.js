@@ -10,19 +10,18 @@ $('document').ready(function () {
      * @param newStatus
      * @param callback
      */
-    var updateStatus = function updateStatus(type, id, newStatus, callback) {
+    function updateStatus(type, id, newStatus, callback) {
         if (type != "user" && type != "team") {
             console.error("Unrecognized update type in updateStatus!");
         }
+
         $.ajax({
             type: "PATCH",
             url: "/api/admin/" + type + "/" + id + "/setStatus",
             data: {
                 status: newStatus
             },
-            success: function (data) {
-                callback(data);
-            },
+            success: callback,
             error: function (e) {
                 //todo more descriptive errors
                 console.log("Update failed!");
@@ -31,7 +30,7 @@ $('document').ready(function () {
     };
 
     //generic ajax to update role
-    var updateRole = function updateRole(email, newRole, callback) {
+    function updateRole(email, newRole, callback) {
         $.ajax({
             type: "PATCH",
             url: "/api/admin/user/" + email + "/setRole",

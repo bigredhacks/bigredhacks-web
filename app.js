@@ -1,8 +1,8 @@
 "use strict";
-var express = require('express');
+const express = require('express');
 var socket_io = require('socket.io');
 var path = require('path');
-var favicon = require('serve-favicon');
+const favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -103,10 +103,6 @@ app.use(subdomain({base: config.setup.url}));
 app.use(middle.allRequests);
 
 //setup routes
-//app.use('/subdomain/fa14/', express.static(__dirname + '/brh_old/2014/fa14'));
-/*app.use('/subdomain/fa15/', function(req,res,next) {
- // res.redirect('/*');
- });*/
 //requireAuthentication must come before requireNoAuthentication to prevent redirect loops
 app.use('/', routes);
 app.use('/api/admin', middle.requireAdmin, apiAdminRoute);
@@ -120,9 +116,6 @@ app.use('/', authRoute); //todo mount on separate route to allow use of noAuth w
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    // var err = new Error('Not Found');
-    // err.status = 404;
-    // next(err);
     res.status(400);
     res.render('404.pug', {title: '404: File Not Found'});
 });
@@ -150,7 +143,6 @@ app.use(function (err, req, res, next) {
 
 
 //app.locals definitions
-app.locals.viewHelper = require("./util/views_helper.js");
 app.locals.enums = require("./models/enum.js");
 app.locals.middlehelp = require("./routes/middleware").helper;
 app.locals.moment = require('moment');
