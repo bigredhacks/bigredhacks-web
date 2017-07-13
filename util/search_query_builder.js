@@ -40,14 +40,17 @@ var builder = function queryBuilder(query, schema) {
             }
             path = path.split(" "); //path must be array
 
-            var valToMatch;
-            if (searchItem.fuzzytext) { // Convert to tokens by word (fuzzy search)
-                valToMatch = _toTextMatch(v.trim().split(" "));
-            }
-            else {
-                // Convert string to bool, only possible when not fuzzy
-                valToMatch = normalize_bool(v);
-            }
+            // fix this later
+            // var valToMatch;
+            // if (searchItem.fuzzytext) { // Convert to tokens by word (fuzzy search)
+            //     valToMatch = _toTextMatch(v.trim().split(" "));
+            // }
+            // else {
+            //     // Convert string to bool, only possible when not fuzzy
+            //     valToMatch = normalize_bool(v);
+            // }
+
+            var valToMatch = normalize_bool(v);
 
             //generate projection
             if (path.length > 1) {
@@ -99,13 +102,7 @@ var _toTextMatch = function _toTextMatch(terms) {
  * @param string
  * @returns {*}
  */
-function normalize_bool(string) {
-    if (string.toLowerCase() == "true") {
-        return true;
-    }
-    else if (string.toLowerCase() == "false") {
-        return false;
-    }
-    return string;
+function normalize_bool(str) {
+    return (str.toString().toLowerCase() == "true") ? true : false;
 }
 module.exports = builder;
