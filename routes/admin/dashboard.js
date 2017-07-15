@@ -86,7 +86,7 @@ module.exports = (req, res, next) => {
                     null: 0
                 });
                 return done(err, res);
-            })
+            });
         },
         decisionAnnounces: (done) => {
             User.aggregate([
@@ -142,7 +142,7 @@ module.exports = (req, res, next) => {
         accepted:   (done) => {
             User.find({"internal.status": "Accepted"})
                 .select("pubid name email school.name school.id internal.reimbursement_override internal.status internal.going")
-                .exec(done)
+                .exec(done);
         },
         mentorkeys: (done) => {
             MentorAuthorizationKey.find({}, done);

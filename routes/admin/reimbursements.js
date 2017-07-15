@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
             User.find({"internal.reimbursement_override": {$gt: 0}})
                 .select("pubid name email school.name internal.reimbursement_override")
                 .sort("name.first")
-                .exec(done)
+                .exec(done);
         }, checkedIns: (done) => {
             User.find({'internal.checkedin' : true}).sort('school.name').exec(done);
         }

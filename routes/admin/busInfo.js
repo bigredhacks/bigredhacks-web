@@ -1,4 +1,7 @@
+// Node Modules and utilities
 const async = require("async");
+
+// Mongo models
 let   Bus   = require('../../models/bus.js');
 let   User  = require('../../models/user.js');
 

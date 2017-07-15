@@ -1,7 +1,11 @@
+// Node Modules and utilities
 const async  = require("async");
 const helper = require('../../util/helpers/admin');
-let   User   = require('../../models/user.js');
 const util   = require('../../util/util.js');
+
+// Mongo models
+let Reimbursements = require("../../models/reimbursements");
+let User           = require('../../models/user.js');
 
 const USER_FILTER = {role: "user"};
 
