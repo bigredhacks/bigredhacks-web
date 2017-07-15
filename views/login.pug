@@ -14,7 +14,8 @@ block append main_content
             form(action="/login", method="post")
                 .form-group
                     label(for="email") email address
-                    input#email.form-control(type="email", name="email", placeholder="email", value=messages.email || "" required=true)
+                    - email = typeof messages.email !== "undefined" ? (messages.email.length > 0 ? messages.email[0] : "") : "";
+                    input#email.form-control(type="email", name="email", placeholder="email", value=email, required=true)
                 .form-group
                     label(for="password") password
                     input#password.form-control(type="password", name="password", placeholder="password", required=true)
