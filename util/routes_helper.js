@@ -1,16 +1,20 @@
 "use strict";
-var helper = {};
-var AWS = require('aws-sdk');
-var uid = require('uid2');
-var fs = require('fs');
-var qs = require('qs');
-var mcapi = require('mailchimp-api');
 
-var config = require('../config.js');
+let helper = {};
 
-const MAX_RESUME_SIZE = 1024 * 1024 * 10; // 10 mb limit
+// Node Modules and utilities
+const AWS          = require('aws-sdk');
+const config       = require('../config.js');
+const fs           = require('fs');
+const mcapi        = require('mailchimp-api');
+
+const qs           = require('qs');
+const uid          = require('uid2');
+
+// Variables
+const MAX_RESUME_SIZE  = 1024 * 1024 * 10; // 10 mb limit
 const MAX_RECEIPT_SIZE = 1024 * 1024 * 15; // 15 mb limit
-const MIN_SIZE = 50; // 50 byte minimum to ensure non-null uploads
+const MIN_SIZE         = 50; // 50 byte minimum to ensure non-null uploads
 
 const RESUME_DEST = 'resume/';
 const RECEIPT_DEST = 'travel/';
