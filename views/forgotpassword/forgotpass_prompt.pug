@@ -16,6 +16,6 @@ block append main_content
             form(method='post')
                 .form-group
                     label(for='email') email address
-                    input#email.form-control(type='email', name='email', placeholder='email', value=email || "", required=true)
+                    input#email.form-control(type='email', name='email', placeholder='email', value=email.length > 0 ? email : "", required=true)
 
                 button.btn.btn-primary.center-block(type='submit') submit
