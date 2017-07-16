@@ -87,7 +87,9 @@ helper._findCollegeFromFilteredParam = (name, callback) => {
  * @private
  */
 helper._isCornellian = (college) => {
-    return college.name === "Cornell University";
+    return typeof college !== "undefined"
+        ? college.name === "Cornell University" || college.display === "Cornell University"
+        : false;
 };
 
 /**
