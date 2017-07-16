@@ -269,8 +269,10 @@ module.exports = function (io) {
 
         form.parse(req, function (err, fields, files) {
             if (err) {
-                console.log(err);
-                req.flash('error', "Error parsing form.");
+                if (err.toString() === "Error: maximum file length exceeded") {
+                    err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
+                }
+                req.flash('error', [err]);
                 return res.redirect('/user/dashboard');
             }
 
@@ -375,8 +377,10 @@ module.exports = function (io) {
 
         form.parse(req, function (err, fields, files) {
             if (err) {
-                console.log(err);
-                req.flash('error', "Error parsing form.");
+                if (err.toString() === "Error: maximum file length exceeded") {
+                    err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
+                }
+                req.flash('error', err);
                 return res.redirect('/user/dashboard');
             }
 
@@ -387,7 +391,7 @@ module.exports = function (io) {
 
             req.body = helper.reformatFields(fields);
 
-            if (req.body.rsvpDropdown.toLowerCase() == "yes") {
+            if (req.body.rsvpDropdown.toLowerCase() === "yes") {
                 req.user.internal.going = true;
                 //travel receipt
                 _findAssignedOrNearestBus(req, function (err, bus) {
@@ -397,31 +401,30 @@ module.exports = function (io) {
                     // Shared function between control flow
                     let _saveAndSubscribe = function _saveAndSubscribe() {
                         async.parallel([
-                                function(cb) {
-                                    req.user.save(cb)
-                                },
-                                function(cb) {
-                                    if (!req.user.internal.cornell_applicant) {
-                                        helper.addSubscriber(config.mailchimp.l_external_rsvpd, req.user.email, req.user.name.first, req.user.name.last, cb);
-                                    } else {
-                                        cb();
-                                    }
-                                }
-                            ], function(err, result) {
-                                if (err) {
-                                    console.error(err);
-                                    req.flash('error', 'An internal error has occurred.');
+                            function(cb) {
+                                req.user.save(cb);
+                            },
+                            function(cb) {
+                                if (!req.user.internal.cornell_applicant) {
+                                    helper.addSubscriber(config.mailchimp.l_external_rsvpd, req.user.email, req.user.name.first, req.user.name.last, cb);
                                 } else {
-                                    req.flash('success', 'We have received your response!');
+                                    cb();
                                 }
-
-                                return res.redirect('/user/dashboard');
                             }
-                        );
+                        ], function(err, result) {
+                            if (err) {
+                                console.error(err);
+                                req.flash('error', 'An internal error has occurred.');
+                            } else {
+                                req.flash('success', 'We have received your response!');
+                            }
+
+                            return res.redirect('/user/dashboard');
+                        });
                     };
 
                     //travel receipt required if no bus and not from cornell
-                    if (bus == null && !req.user.internal.cornell_applicant) {
+                    if (bus === null && !req.user.internal.cornell_applicant) {
                         //fail if no receipt uploaded
                         if (!receipt) {
                             req.flash('error', "Please upload a travel receipt.");
@@ -441,7 +444,7 @@ module.exports = function (io) {
                             } else {
                                 return _saveAndSubscribe();
                             }
-                        })
+                        });
                     } else {
                         return _saveAndSubscribe();
                     }
