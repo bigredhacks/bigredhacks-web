@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "console": true,
+    "exports": true,
+    "module":  true,
+    "require": false
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "rules": {
+    "indent": [
+      "error", 4, {
+        "SwitchCase": 1
+      }
+    ],
+    "no-console": 0,
+    "no-control-regex": 0,
+    "semi": [
+      "error", "always"
+    ]
+  }
+}

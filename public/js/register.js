@@ -69,7 +69,7 @@ $('document').ready(function () {
         return /^(www\.)?linkedin\.com\/\S+$/ig.test(val) || val === "";
     });
 
-    notCornellText = 'We aren\'t accepting applications from Cornell University students right now.';
+    var notCornellText = 'We aren\'t accepting applications from Cornell University students right now.';
 
     //fails for cornell email
     $.validator.addMethod("emailNotCornell", function (val, elem, params) {
