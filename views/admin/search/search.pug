@@ -27,19 +27,7 @@ block admin_content
     #searchparameters.col-md-12
         p All fields are optional.
         form(action='/admin/search', method='GET')
-            input(type='hidden', name='render', value=render)/
-            .form-group
-                label(for='college') Search by College
-                input#collegeid.form-control(type='hidden', name='collegeid', value=params.collegeid || '', required=true)/
-                input#college.form-control.typeahead(type='text', name='college', placeholder='School Name', value=params.college || '')/
-            .form-group
-                label(for='categoryselection') Search by Category
-                select#categoryselection.form-control
-                    option(value='', data-persist='') Select Category
-                    option(value='pubid', data-persist=params.pubid || '') Public User Id
-                    option(value='email', data-persist=params.email || '') Email
-                    option(value='name', data-persist=params.name || '') Name
-            .form-group.category-input
+            input(type='hidden', name='render', value=render)
             .decision-search
                 label Narrow by Decision:
                 br
@@ -101,7 +89,10 @@ block admin_content
 
 
 block prepend footer
+    script(src="//unpkg.com/vue")
     script(src="//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js")
     script(src="/js/typeahead_college.js")
     script.
+        window.applicants = !{JSON.stringify(applicants)};
         _tt_college_enable()
+    script(src="/js/admin/search.js")
