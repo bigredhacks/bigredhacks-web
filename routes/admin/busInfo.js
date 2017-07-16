@@ -72,11 +72,26 @@ function busInfoGet (req, res, next) {
  */
 function busInfoPost (req, res, next) {
     //todo clean this up so that college ids and names enter coupled
+    const errorMap = {
+        busname: "Bus Name",
+        collegeidlist: "College IDs",
+        busstops: "Bus Stops",
+        buscapacity: "Bus Capacity"
+    };
+    const bodyKeys = Object.keys(req.body);
+    for (let i = 0; i < bodyKeys.length; i++) {
+        let curItem = req.body[bodyKeys[i]];
+        if (curItem.length === 0) {
+            req.flash("error", `Please enter the ${errorMap[bodyKeys[i]]} field.`);
+            return res.redirect('/admin/businfo');
+        }
+    }
+
     let collegeidlist = req.body.collegeidlist.split(",");
     let collegenamelist = req.body.busstops.split(",");
     let stops = [];
     if (collegeidlist.length !== collegenamelist.length) {
-        console.error("Inletiant error: Cannont create bus route when colleges do not match!");
+        console.error("Error: Cannot create bus route when colleges do not match!");
         console.log(collegeidlist, collegenamelist);
         return res.sendStatus(500);
     }
