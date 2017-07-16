@@ -1,21 +1,25 @@
 //-
    Table view used to display search results
 
-table.table.table-striped
+table.table.table-striped#searchresults
+    .form-group 
+        label(for='filter') Filter
+        input.form-control(v-model="filterText")
     tr
         th Name
         th Email
         th School
         th Status
-    for app in applicants
-        tr.applicant(data-pubid=app.pubid)
-            td: a(href="/admin/user/"+app.pubid, target="_blank") #{app.name.first} #{app.name.last}
-            td= app.email
-            td= app.school.name
-            td
-                form.decision-radio.np-enabled
-                    +generateInlineRadio(enums.virtual.status.long, {
-                        checked: app.internal.status,
-                        name: "status",
-                        label: enums.virtual.status.short
-                    })
+    tr.applicant(v-for="applicant in applicantsToShow()" v-bind:data-pubid="applicant.pubid")
+        td
+            a(v-bind:href="getUserUrl(applicant)", target="_blank") 
+                | {{applicant.name.first}} {{applicant.name.last}}
+        td
+            | {{applicant.email}}
+        td
+            | {{applicant.school.name}}
+        td
+            form.decision-radio.np-enabled
+                label.radio-inline(v-for="value in ['Accepted', 'Waitlisted', 'Rejected']")
+                    input(type="radio" name="status" v-bind:value="value" v-bind:checked="value === applicant.internal.status")
+                    | {{value.charAt(0)}}

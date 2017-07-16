@@ -17,7 +17,8 @@ const USER_FILTER = {role: "user"};
 function search (req, res, next) {
     let queryKeys = Object.keys(req.query);
     if (queryKeys.length === 0 || (queryKeys.length === 1 && queryKeys[0] === "render")) {
-        User.find().limit(50).sort('name.first').exec((err, applicants) => {
+        // .limit(50)
+        User.find().sort('name.first').exec((err, applicants) => {
             if (req.query.render === "table") {
                 //dont need to populate for tableview
                 endOfCall(err, applicants);
