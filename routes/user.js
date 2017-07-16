@@ -269,6 +269,7 @@ module.exports = function (io) {
 
         form.parse(req, function (err, fields, files) {
             if (err) {
+                console.log(err);
                 if (err.toString() === "Error: maximum file length exceeded") {
                     err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
                 }
@@ -377,6 +378,7 @@ module.exports = function (io) {
 
         form.parse(req, function (err, fields, files) {
             if (err) {
+                console.log(err);
                 if (err.toString() === "Error: maximum file length exceeded") {
                     err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
                 }
