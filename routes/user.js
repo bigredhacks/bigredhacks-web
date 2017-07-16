@@ -273,7 +273,7 @@ module.exports = function (io) {
                 if (err.toString() === "Error: maximum file length exceeded") {
                     err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
                 }
-                req.flash('error', [err]);
+                req.flash('error', err);
                 return res.redirect('/user/dashboard');
             }
 
@@ -300,11 +300,11 @@ module.exports = function (io) {
                 if (user) {
                     user.app.resume = file.filename; // TODO: We may need to validate before saving here
                     user.save ( function (err) {
-                       if (err)  {
-                           console.error(err);
-                           req.flash('error', 'Error in saving resume');
-                           return res.redirect('/user/dashboard');
-                       }
+                        if (err)  {
+                            console.error(err);
+                            req.flash('error', 'Error in saving resume');
+                            return res.redirect('/user/dashboard');
+                        }
 
                         req.flash('success', 'Resume successfully updated');
                         return res.redirect('/user/dashboard');
