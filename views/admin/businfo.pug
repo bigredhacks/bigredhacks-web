@@ -8,6 +8,8 @@ block append header
 
 block admin_content
     +contentHeading("Bus Information")
+    if (messages.error)
+        .alert.alert-danger(role="alert")= messages.error[0]
     // Tabs
     ul.nav.nav-tabs(role='tablist')
         li.active(role='presentation')
@@ -17,7 +19,6 @@ block admin_content
     // Tab panes
     .tab-content
         #buses-tab.tab-pane.active(role='tabpanel')
-
             if buses.length == 0
                 h3#nobuses No Buses Currently
             else
