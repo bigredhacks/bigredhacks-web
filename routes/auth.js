@@ -64,7 +64,7 @@ module.exports = function (io) {
     let router = express.Router();
 
     // Login
-    router.get('/login', login.get);
+    router.get('/login',  login.get);
     router.post('/login', passport.authenticate('user_strat', {
         failureRedirect: '/login',
         failureFlash: true
@@ -79,12 +79,23 @@ module.exports = function (io) {
     router.post('/resetpassword',  passwordReset.post);
 
     // Registration (General)
-    router.get('/register',  middle.requireRegistrationOpen, middle.requireNoAuthentication, register.get);
-    router.post('/register', middle.requireRegistrationOpen,                                 register.post);
+    router.get('/register/:name?', (req, res, next) => {
+        if (req.params.name) {
+            return middle.requireCornellRegistrationOpen(req, res, next);
+        }
+        else {
+            return next();
+        }
+    }, middle.requireRegistrationOpen, middle.requireNoAuthentication, register.get);
 
-    // Registration (Cornell)
-    router.get('/register/:name',  middle.requireCornellRegistrationOpen, registerCornell.get);
-    router.post('/register/:name', middle.requireCornellRegistrationOpen, registerCornell.post);
+    router.post('/register/:name?', (req, res, next) => {
+        if (req.params.name) {
+            return middle.requireCornellRegistrationOpen(req, res, next);
+        }
+        else {
+            return next();
+        }
+    }, middle.requireRegistrationOpen, register.post);
 
     // Registration (Mentor)
     router.get('/mentorregistration',  registerMentor.get);
