@@ -23,10 +23,11 @@ block dashboard_content
         #qr-holder(data-pubid=user.pubid)
 
     +sectionHeading("Status")
-    if middlehelp.isCornellRegistrationOpen()
-        p Cornell registration is still open.
-    else
-        p Registration process is closed.
+    //- TODO: Replace usage of "middlehelp" with a non-middleware function
+    //- if middlehelp.isCornellRegistrationOpen()
+    //-     p Cornell registration is still open.
+    //- else
+    //-     p Registration process is closed.
 
 
     //-General (Non-Cornell) decision content
