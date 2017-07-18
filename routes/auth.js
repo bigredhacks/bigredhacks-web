@@ -15,7 +15,6 @@ const login           = require("./auth/login");
 const passwordForgot  = require("./auth/passwordForgot");
 const passwordReset   = require("./auth/passwordReset");
 const register        = require("./auth/register");
-const registerCornell = require("./auth/registerCornell");
 const registerMentor  = require("./auth/registerMentor");
 
 passport.use('user_strat', new LocalStrategy({
