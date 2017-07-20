@@ -113,12 +113,12 @@ helper.uploadFile = function uploadFile(file, options, callback) {
 
     const typeHeader = file.headers['content-type'];
     const RECEIPT_FORMATS = 'application/pdf,image/jpg,image/png'.split(',');
-    if (options.type == "resume") {
+    if (options.type === "resume") {
         if (typeHeader !== 'application/pdf') {
             return callback(null, 'File must be a pdf!');
         }
-    } else if (options.type == "receipt") {
-        if (RECEIPT_FORMATS.indexOf(typeHeader) == -1) {
+    } else if (options.type === "receipt") {
+        if (RECEIPT_FORMATS.indexOf(typeHeader) === -1) {
             return callback(null, 'File must be a pdf, jpg, or png!');
         }
     } else {
