@@ -2,28 +2,55 @@
  *** Bus Management****
  **********************/
 
-//add college to list of bus stops
-$('#addcollege').on('click', function () {
-    //FIXME: highly error-prone implementation
+//used in admin bus management
+$('.typeaheadlist').typeahead({
+        hint: true,
+        highlight: true,
+        autoselect: false,
+        minLength: 3
+    }, 
+    {
+        displayKey: 'name', // if not set, will default to 'value',
+        source: engine.ttAdapter()
+    })
+    .on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
+        addCollege(datum);
+    });
+
+_tt_college_enabled = true;
+
+function addCollege(collegeDatum){
     // College ID
-    var currentidlist = $("#collegeidlist").val();
+    let currentidlist = $("#collegeidlist").val();
     if (currentidlist != "") {
         $("#collegeidlist").val(currentidlist + "," + collegeDatum.id);
     }
     else {
         $("#collegeidlist").val(collegeDatum.id);
     }
-    var newCollege = $("#college").val();
-    var currentBusStops = $("#busstops").val();
-    var currentBusStopsDisplay = $("#busstops-display").text();
-    if (currentBusStopsDisplay != "") {
-        $("#busstops,#busstops-display").val(currentBusStops + "," + newCollege).text(currentBusStops + "," + newCollege);
-    }
-    else {
-        $("#busstops,#busstops-display").val(newCollege).text(newCollege);
-    }
-    $("#college").val("");
-});
+
+    let currentNameList = $("#busstops-display").text();
+    $("#busstops-display").text( (currentNameList != "") ? currentNameList + "," + collegeDatum.name : collegeDatum.name);
+}
+
+$("#submitAddBus").click(() => {
+    // console.log($("#busstops-display").text());
+    let postData = {
+            "busname": $("#busname").val(),
+            "buscapacity": $("#buscapacity").val(),
+            "collegeidlist": $("#collegeidlist").val(),
+            "collegenamelist": $("#busstops-display").text()
+        };
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/businfo",
+        data: postData,
+        success: function () {
+            window.location.reload();
+        }
+    });
+})
 
 //edit bus from list of buses
 $('.editbus').on('click', function () {
