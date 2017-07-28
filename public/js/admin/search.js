@@ -2,6 +2,17 @@
  *** SEARCH PAGE ***
  ******************/
 
+const statusFlag = "status:";
+const searchFlag = "search:";
+const divider = "|";
+
+function getFilter(flag, options){
+    let hasFlag = options.find(function(part){
+                return part.includes(flag)
+            });
+    return hasFlag ? hasFlag.trim().substring(statusFlag.length).toLowerCase() : "";
+}
+
 let searchResults = new Vue({
   el: '#searchresults',
   data: {
@@ -11,6 +22,27 @@ let searchResults = new Vue({
   methods: {
     getUserUrl: (applicant) => "/admin/user/" + applicant.pubid,
     applicantsToShow: function(){
+        if(this.filterText.includes(statusFlag)){
+            let options = this.filterText.split(divider);
+            let statusFilter = getFilter(statusFlag, options);
+            let searchFilter = getFilter(searchFlag, options);
+
+            return this.applicantList.filter((app) => {
+                let filterText = searchFilter.toLowerCase().trim();
+                let firstName = app.name.first.toString().toLowerCase();
+                let lastName = app.name.last.toString().toLowerCase();
+                let email = app.email.toString().toLowerCase();
+                let college = app.school.name.toString().toLowerCase();
+
+                let statusMatches = (statusFilter != ""  ? app.internal.status.toLowerCase() == statusFilter : true);
+
+                return (firstName.includes(filterText) ||
+                    lastName.includes(filterText) ||
+                    email.includes(filterText) ||
+                    college.includes(filterText)) &&
+                    statusMatches;
+            });
+        }
         return this.applicantList.filter((app) => {
             let filterText = this.filterText.toLowerCase();
             let firstName = app.name.first.toString().toLowerCase();
