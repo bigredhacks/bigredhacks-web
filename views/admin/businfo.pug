@@ -107,13 +107,12 @@ block admin_content
                             input#collegeidlist.form-control(type='hidden', name='collegeidlist', value='', required='')
                             input#busstops(type='hidden', name='busstops')
                             input#college.form-control.typeaheadlist(type='text', name='college', placeholder='School Name', value='')
-                            input#addcollege.btn.btn-primary(type='button', value='add college', name='addcollege')
                         .form-group
                             label.buscapacitylabel(for='buscapacity')
                                 h4 Bus Capacity
                             input#buscapacity.form-control(type='text', name='buscapacity', value='', placeholder='Enter Capacity Number')
                         #createbus
-                            input.btn.btn-primary(type='submit', value='create bus', name='createbus')
+                            input.btn.btn-primary#submitAddBus
 
             div
                 h2 Set captain for a Bus
@@ -173,5 +172,6 @@ block admin_content
 block prepend footer
     script(src="//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js")
     script(src="/js/typeahead_college.js")
+    script(src="/js/admin/businfo.js")
     script.
         _tt_college_enable()

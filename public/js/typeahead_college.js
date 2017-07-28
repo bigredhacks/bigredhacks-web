@@ -58,29 +58,6 @@ let _tt_college_enable = function() {
         $(this).data("collegeid", datum.id);
         $("#collegeid,#new-collegeid").val(datum.id);
     });
-
-//used in admin bus management
-    $('.typeaheadlist').typeahead({
-        hint: true,
-        highlight: true,
-        autoselect: false,
-        minLength: 3
-    }, {
-        displayKey: 'name', // if not set, will default to 'value',
-        source: engine.ttAdapter()
-    }).on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
-        collegeDatum = datum; // Intentionally global
-    });
-
-    _tt_college_enabled = true;
-
-    //clear if empty on focusout
-    $("#college,#new-college").on("focusout", function () {
-        if ($(this).val().length == 0) {
-            $(this).data("collegeid", "");
-            $("#collegeid,#new-collegeid").val("");
-        }
-    });
 };
 
 /**

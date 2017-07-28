@@ -75,9 +75,10 @@ function busInfoPost (req, res, next) {
     const errorMap = {
         busname: "Bus Name",
         collegeidlist: "College IDs",
-        busstops: "Bus Stops",
+        collegenamelist: "Bus Stops",
         buscapacity: "Bus Capacity"
     };
+
     const bodyKeys = Object.keys(req.body);
     for (let i = 0; i < bodyKeys.length; i++) {
         let curItem = req.body[bodyKeys[i]];
@@ -88,7 +89,7 @@ function busInfoPost (req, res, next) {
     }
 
     let collegeidlist = req.body.collegeidlist.split(",");
-    let collegenamelist = req.body.busstops.split(",");
+    let collegenamelist = req.body.collegenamelist.split(",");
     let stops = [];
     if (collegeidlist.length !== collegenamelist.length) {
         console.error("Error: Cannot create bus route when colleges do not match!");
