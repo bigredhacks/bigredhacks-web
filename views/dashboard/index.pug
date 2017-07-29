@@ -211,10 +211,10 @@ block dashboard_content
                                     | this deposit later on if we decide to send a bus on this route.
                             else
                                 p.long-text
-                                    | This bus route has been <b>confirmed</b>.
-                                    | Please sign up to secure your spot on the bus at
-                                    a(href="//www.sharethebus.com/events/bigredhacks")  https://www.sharethebus.com/events/bigredhacks.
-                                    |  Signing up requires a $20 deposit that will be refunded upon arriving at Cornell.
+                                    | This bus route has been <b>confirmed</b>. Please watch out for a future email about more detailed bus information!
+                                    //- | Please sign up to secure your spot on the bus at
+                                    //- a(href="//www.sharethebus.com/events/bigredhacks")  https://www.sharethebus.com/events/bigredhacks.
+                                    //- |  Signing up requires a $20 deposit that will be refunded upon arriving at Cornell.
                                 if (bus.customMessage)
                                     p= bus.customMessage
                             .busselection
@@ -250,21 +250,21 @@ block dashboard_content
                                 .wrapper
                                     input#receipt.form-control.filepicker-bootstrap(data-label='upload', type='file', name='receipt', accept='.pdf,image/jpg,image/png')
                         br
-                        p Please click the following link and read the document carefully.
-                        .form-group
+                    p Please click the following link and read the document carefully.
+                    .form-group
+                        label
+                            input#agreements-viewed(name='agreements-viewed', hidden=true)
+                            a#liability.btn.btn-danger(type='button', href='//www.bigredhacks.com/docs/waiver.pdf', target='_blank') liability waiver & release
+                            br
+                    .form-group
+                        .checkbox
                             label
-                                input#agreements-viewed(name='agreements-viewed', hidden=true)
-                                a#liability.btn.btn-danger(type='button', href='//www.bigredhacks.com/docs/waiver.pdf', target='_blank') liability waiver & release
-                                br
-                        .form-group
-                            .checkbox
-                                label
-                                    input#legal.checkbox(type='checkbox', name='legal', value='true')
-                                    | I affirm that I have read and agree in full to the BigRed//Hacks Accident Waiver and
-                                    |  Release of Liability. I understand that if I do not agree with any component of
-                                    | this agreement, I should not RSVP for the event.
-                        .form-group
-                            button#rsvp-yes-button.btn.btn-danger(type='submit', name='rsvpsubmit') submit
+                                input#legal.checkbox(type='checkbox', name='legal', value='true')
+                                | I affirm that I have read and agree in full to the BigRed//Hacks Accident Waiver and
+                                |  Release of Liability. I understand that if I do not agree with any component of
+                                | this agreement, I should not RSVP for the event.
+                    .form-group
+                        button#rsvp-yes-button.btn.btn-danger(type='submit', name='rsvpsubmit') submit
         else
             if user.internal.going
                 p You told us that you are going to BigRed//Hacks.
