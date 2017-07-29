@@ -107,6 +107,9 @@ module.exports = function (io) {
                 return res.sendStatus(500);
             }
 
+            console.log(config.dayof)
+            console.log(config.dayof.facebook)
+
             var render_data = {
                 user: req.user,
                 resumeLink: results.resumeLink,
