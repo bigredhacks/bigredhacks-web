@@ -5,7 +5,7 @@ var async = require('async');
 var mongoose = require('mongoose');
 var app = require('../../app');
 
-var FCM = require('fcm-push');
+const FCM = require('fcm-push');
 
 // Mongoose Models
 var Colleges = require('../../models/college.js');
@@ -430,12 +430,12 @@ function setBusCaptain(req, res, next) {
             return res.sendStatus(500);
         }
 
-        var captain = results.captain;
-        var bus = results.bus;
+        let captain = results.captain;
+        let bus = results.bus;
 
         if (bus.captain.name) {
             res.status(500).send('Bus already has a captain');
-        } else if (captain.internal.busid != bus.id) {
+        } else if (captain && captain.internal.busid != bus.id) {
             res.status(500).send('User has not signed up for that bus');
         } else {
             bus.captain.name = captain.name.first + " " + captain.name.last;
