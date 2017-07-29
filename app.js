@@ -28,6 +28,8 @@ var subdomain = require('subdomain');
 var routes = require('./routes/index');
 var user = require('./routes/user')(app.io);
 var mentor = require('./routes/mentor')(app.io);
+var sponsors = require('./routes/sponsors')(app.io);
+
 var socketutil = require('./util/socketutil');
 socketutil.activateIo(app.io);
 var admin = require('./routes/admin');
@@ -111,6 +113,9 @@ app.use('/api', apiRoute);
 app.use('/admin', middle.requireAdmin, admin);
 app.use('/user', middle.requireAuthentication, user);
 app.use('/mentor', mentor);
+
+app.use('/sponsors', sponsors);
+
 app.use('/', authRoute); //todo mount on separate route to allow use of noAuth without disabling 404 pages
 
 
