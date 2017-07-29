@@ -107,8 +107,7 @@ module.exports = function (io) {
                 return res.sendStatus(500);
             }
 
-            console.log(config.dayof)
-            console.log(config.dayof.facebook)
+            console.log(config)
 
             var render_data = {
                 user: req.user,
@@ -118,7 +117,7 @@ module.exports = function (io) {
                 reimbursement: results.reimbursement,
                 deadline: results.deadline,
                 title: "Dashboard",
-                fbLink: config.dayof.facebook
+                fbLink: config.dayof.facebook ? config.dayof.facebook : "fb.com/bigredhacks"
             };
 
             return res.render('dashboard/index', render_data);
