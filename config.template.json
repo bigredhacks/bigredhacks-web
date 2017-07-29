@@ -8,7 +8,9 @@
     "cookie_secret": "",
     "sendgrid_api_key": "",
     "url": "",
-    "ical": "https://calendar.google.com/calendar/ical/cornell.edu_9dauk4h1ovouehcm2g70a7nb5o%40group.calendar.google.com/public/basic.ics"
+    "ical": "",
+    "use_redis": false,
+    "redis_pass": ""
   },
   "mailchimp": {
     "_comment": "Mailchimp list ids",
@@ -20,12 +22,12 @@
     "l_cornell_applicants": ""
   },
   "admin": {
-    "email": "",
+    "email": "info@bigredhacks.com",
     "reg_open": true,
-    "cornell_reg_open": true,
-    "results_released": true,
+    "cornell_reg_open": false,
     "cornell_auto_accept": 150,
-    "dayof": true,
+    "results_released": false,
+    "dayof": false,
     "days_to_rsvp": 14,
     "default_reimbursement": 150
   },
@@ -40,6 +42,16 @@
     "tw_token_secret": ""
   },
   "firebase": {
-    "key":""
+    "app_id":"",
+    "key":"",
+    "secret":""
+  },
+  "google": {
+    "gcal_client_secret": "",
+    "gcal_client_id": ""
+  },
+  "dayof": {
+    "facebook": ""
   }
 }
+
