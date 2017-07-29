@@ -18,9 +18,5 @@ module.exports = function (io) {
         res.render('sponsors/resources');
     });
 
-    router.get('/participantInfo', function(req, res, next){
-        res.render('sponsors/participantInfo');
-    });
-
     return router;
 };

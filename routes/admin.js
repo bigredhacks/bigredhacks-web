@@ -14,6 +14,7 @@ const homeRedirect   = require("./admin/home");
 const qrscan         = require("./admin/qrscan");
 const reimbursements = require("./admin/reimbursements");
 const settings       = require("./admin/settings");
+const sponsors       = require("./admin/sponsors");
 const stats          = require("./admin/stats");
 
 // Home
@@ -43,6 +44,9 @@ router.get("/qrscan",         qrscan);
 
 // Reimbursements
 router.get("/reimbursements", reimbursements);
+
+// Sponsors
+router.get("/sponsors",       sponsors);
 
 // Settings
 router.get("/settings",       settings);

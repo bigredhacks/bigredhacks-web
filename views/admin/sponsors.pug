@@ -1,0 +1,10 @@
+extends _layout-admin
+
+block admin_content
+    +contentHeading("Sponsor Materials")
+    button#contactInfo.btn.btn-primary
+        p Contact Info
+block append footer
+    script(src='/js/admin/sponsors.js')
+    script.
+        setDownloads('#{contactInfo}');

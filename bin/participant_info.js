@@ -1,3 +1,6 @@
+// LOCAL VERSION OF ADMIN SPONSORS DOWNLOAD
+// DEPRECATED
+
 let fs = require('fs');
 let async = require('async');
 let mongoose = require('mongoose');
