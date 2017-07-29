@@ -8,7 +8,7 @@ var moment = require("moment");
 
 var enums = require('../models/enum.js');
 var helper = require('../util/routes_helper.js');
-var config = require('../config.js');
+const config = require('../config.js');
 var validator = require('../library/validations.js');
 var middle = require('../routes/middleware.js');
 var util = require('../util/util.js');
@@ -107,14 +107,15 @@ module.exports = function (io) {
                 return res.sendStatus(500);
             }
 
-            var render_data = {
+            let render_data = {
                 user: req.user,
                 resumeLink: results.resumeLink,
                 team: results.members,
                 bus: results.bus,
                 reimbursement: results.reimbursement,
                 deadline: results.deadline,
-                title: "Dashboard"
+                title: "Dashboard",
+                fbLink: config.dayof.facebook ? config.dayof.facebook : "fb.com/bigredhacks"
             };
 
             return res.render('dashboard/index', render_data);

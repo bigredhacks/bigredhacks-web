@@ -42,5 +42,8 @@
   },
   "firebase": {
     "key": {"type": "String"}
+  },
+  "dayof": {
+    "facebook": {"type": "String"}
   }
 }
