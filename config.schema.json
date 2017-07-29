@@ -43,7 +43,8 @@
   "firebase": {
     "key": {"type": "String"}
   },
-  "dayof": {
-    "facebook": {"type": "String"}
+  "yearly": {
+    "facebook": {"type": "String"},
+    "sponsorshipProspectus": {"type": "String"}
   }
 }

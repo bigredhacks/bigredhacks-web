@@ -115,7 +115,7 @@ module.exports = function (io) {
                 reimbursement: results.reimbursement,
                 deadline: results.deadline,
                 title: "Dashboard",
-                fbLink: config.dayof.facebook ? config.dayof.facebook : "fb.com/bigredhacks"
+                fbLink: config.yearly.facebook ? config.yearly.facebook : "fb.com/bigredhacks"
             };
 
             return res.render('dashboard/index', render_data);

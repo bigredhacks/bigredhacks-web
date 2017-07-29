@@ -50,8 +50,9 @@
     "gcal_client_secret": "",
     "gcal_client_id": ""
   },
-  "dayof": {
-    "facebook": ""
+  "yearly": {
+    "facebook": "",
+    "sponsorshipProspectus": ""
   }
 }
 
