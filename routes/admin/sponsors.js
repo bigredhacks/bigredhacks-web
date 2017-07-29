@@ -42,7 +42,7 @@ function getContactInfoExtra(callback) {
             // let stream = fs.createWriteStream("participant_info.csv");
             let result = [];
             result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,GitHub,LinkedIn\r\n");
-            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + user.app.github + "," + user.app.linkedin + "\r\n"));
+            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + ("https://github.com/" + user.app.github) + "," + user.app.linkedin + "\r\n"));
             console.log("Finished writing users: ");
             console.log(result);
             
