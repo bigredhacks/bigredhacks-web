@@ -48,6 +48,9 @@ function search (req, res, next) {
         for (let app of applicants){
             emailCsv += app.email + ', ';
         }
+
+        console.log(applicants);
+
         return res.render('admin/search/search', {
             title: 'Admin Dashboard - Search',
             applicants: applicants,

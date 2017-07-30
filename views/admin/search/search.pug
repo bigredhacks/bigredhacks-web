@@ -93,6 +93,13 @@ block prepend footer
     script(src="//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js")
     script(src="/js/typeahead_college.js")
     script.
-        window.applicants = !{JSON.stringify(applicants)};
+        if(!{JSON.stringify(applicants)}){
+            window.applicants = !{JSON.stringify(applicants)};
+        }
+        else{
+            console.log("Error loading applicants");
+            window.applicants = [];
+        }
+        
         _tt_college_enable()
     script(src="/js/admin/search.js")
