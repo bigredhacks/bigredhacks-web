@@ -53,7 +53,7 @@ function search (req, res, next) {
 
         return res.render('admin/search/search', {
             title: 'Admin Dashboard - Search',
-            applicants: applicants,
+            applicants: JSON.stringify(applicants),
             params: req.query,
             render: req.query.render, //table, box
             emailCsv: emailCsv
