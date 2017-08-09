@@ -23,5 +23,7 @@ block admin_content
 block append footer
     script(src='/js/admin/sponsors.js')
     script.
-        setDownloads('#{contactInfo}', 'contactInfo', "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
-        setDownloads('#{deluxeContactInfo}', 'deluxeContactInfo', "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
+        var contactInfo = '#{contactInfo}';
+        var deluxeContactInfo = '#{deluxeContactInfo}';
+        setDownloads(contactInfo, 'contactInfo', "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
+        setDownloads(deluxeContactInfo, 'deluxeContactInfo', "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
