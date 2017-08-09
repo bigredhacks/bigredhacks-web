@@ -62,7 +62,7 @@ function getContactInfo(req, res, next) {
 }
 
 // Also includes GitHub and LinkedIn
-function getContactInfoExtra(callback) {
+function getContactInfoExtra(req, res, next) {
     let query = { "internal.status": "Accepted" };
 
     User.find(query, null, { "name.first": 1 }, function (err, users) {
@@ -71,16 +71,39 @@ function getContactInfoExtra(callback) {
         }
         else {
             console.log("Starting user dump.");
-            // let stream = fs.createWriteStream("participant_info.csv");
+            
             let result = [];
-            result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,GitHub,LinkedIn,School\r\n");
-            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + (user.app.github ? "https://github.com/" + user.app.github : "") + "," + user.app.linkedin + + ",\"" + user.school.name + "\"\r\n"));
+            result.push(listToCsv([
+                "First Name",
+                "Last Name",
+                "Email",
+                "Phone Number",
+                "Major",
+                "Gender",
+                "Year",
+                "GitHub",
+                "LinkedIn",
+                "School"]));
+            result = result.concat(users.map(user => listToCsv([
+                user.name.first,
+                user.name.last, 
+                user.email, 
+                user.phone, 
+                user.school.major, 
+                user.gender,
+                user.school.year, 
+                (user.app.github ? "https://github.com/" + user.app.github : ""), 
+                user.app.linkedin,
+                user.school.name])));
+
+            result = result.join("");
+
             console.log("Finished writing users: ");
             console.log(result);
 
-            // callback(null, encodeURI(result.join("")));
-            res.attachment("bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
-            res.status(200).send(encodeURI(result));
+            res.setHeader('Content-disposition', 'attachment; filename=' + "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
+            res.setHeader('Content-type', 'text/csv');
+            res.status(200).send(result);
         }
     });
 }
