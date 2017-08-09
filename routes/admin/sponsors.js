@@ -15,7 +15,8 @@ function listToCsv(li) {
     return res;
 }
 
-function getContactInfo(callback) {
+function getContactInfo(req, res, next) {
+    console.log("in get contactInfo");
     let query = { "internal.status": "Accepted" };
 
     User.find(query, null, { "name.first": 1 }, function (err, users) {
@@ -49,11 +50,13 @@ function getContactInfo(callback) {
 
             result = result.join("");
 
-            result = "data:text/csv;charset=utf-8," + result;
             console.log("Finished writing users: ");
             console.log(result);
 
-            callback(null, encodeURI(result));
+            res.setHeader('Content-disposition', 'attachment; filename=' + "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
+            res.setHeader('Content-type', 'text/csv');
+            res.status(200).send(result);
+            // callback(null, encodeURI(result));
         }
     });
 }
@@ -75,7 +78,9 @@ function getContactInfoExtra(callback) {
             console.log("Finished writing users: ");
             console.log(result);
 
-            callback(null, encodeURI(result.join("")));
+            // callback(null, encodeURI(result.join("")));
+            res.attachment("bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
+            res.status(200).send(encodeURI(result));
         }
     });
 }
@@ -85,20 +90,12 @@ function getContactInfoExtra(callback) {
  * @apiName UserRoles
  * @apiGroup AdminAuth
  */
-module.exports = (req, res, next) => {
-    async.parallel({
-        contactInfo: getContactInfo,
-        deluxeContactInfo: getContactInfoExtra
-    }, function (err, result) {
-        if (err) {
-            console.error(err);
-            return res.status(500); // Do not expose error to users
-        }
-
+module.exports = {
+    main: (req, res, next) => {
         return res.render('admin/sponsors', {
-            title: 'Admin Dashboard - Sponsors',
-            contactInfo: result.contactInfo,
-            deluxeContactInfo: result.deluxeContactInfo
+            title: 'Admin Dashboard - Sponsors'
         });
-    });
+    },
+    getContactInfo: getContactInfo,
+    getContactInfoExtra: getContactInfoExtra
 };

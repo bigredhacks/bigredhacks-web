@@ -46,7 +46,9 @@ router.get("/qrscan",         qrscan);
 router.get("/reimbursements", reimbursements);
 
 // Sponsors
-router.get("/sponsors",       sponsors);
+router.get("/sponsors",       sponsors.main);
+router.get("/sponsors/contactInfo", sponsors.getContactInfo);
+router.get("/sponsors/deluxeContactInfo", sponsors.getContactInfoExtra);
 
 // Settings
 router.get("/settings",       settings);

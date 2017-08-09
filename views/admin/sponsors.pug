@@ -4,7 +4,7 @@ block admin_content
     +contentHeading("Sponsor Materials")
     div.media#contactInfo
         div.media-left
-            a(href="#")
+            a(href="./sponsors/contactInfo")
                 img.media-object(src="../img/extra/userInfo.png" alt="..." style="width: 80px; height: 80px")
         div.media-body
             h4.media-heading Contact Info (.csv)
@@ -14,16 +14,8 @@ block admin_content
 
     div.media#deluxeContactInfo
         div.media-left
-            a(href="#")
+            a(href="./sponsors/deluxeContactInfo" download)
                 img.media-object(src="../img/extra/deluxeUserInfo.png" alt="..." style="width: 80px; height: 80px")
         div.media-body
             h4.media-heading Deluxe Contact Info (.csv)
             p For Tier 3 and above sponsors! Includes name, email, phone number, major, gender, year, GitHub, LinkedIn.
-
-block append footer
-    script(src='/js/admin/sponsors.js')
-    script.
-        var contactInfo = '#{contactInfo}';
-        var deluxeContactInfo = '#{deluxeContactInfo}';
-        setDownloads(contactInfo, 'contactInfo', "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
-        setDownloads(deluxeContactInfo, 'deluxeContactInfo', "bigredhacksParticipantInfo" + (new Date().getFullYear()) + ".csv");
