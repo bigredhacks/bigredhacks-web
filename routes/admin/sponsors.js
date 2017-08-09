@@ -21,10 +21,14 @@ function getContactInfo(callback) {
             let result = [];
             result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,School\r\n");
             result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + ",\"" + user.school.name + "\"\r\n"));
+
+            result = result.join("");
+
+            result = "data:text/csv;charset=utf-8," + result;
             console.log("Finished writing users: ");
             console.log(result);
             
-            callback(null, encodeURI(result.join("")));
+            callback(null, encodeURI(result));
         }
     });
 }
