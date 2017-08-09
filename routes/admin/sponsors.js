@@ -19,8 +19,8 @@ function getContactInfo(callback) {
             console.log("Starting user dump.");
             // let stream = fs.createWriteStream("participant_info.csv");
             let result = [];
-            result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year\r\n");
-            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "\r\n"));
+            result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,School\r\n");
+            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + user.school.name + "\r\n"));
             console.log("Finished writing users: ");
             console.log(result);
             
@@ -41,8 +41,8 @@ function getContactInfoExtra(callback) {
             console.log("Starting user dump.");
             // let stream = fs.createWriteStream("participant_info.csv");
             let result = [];
-            result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,GitHub,LinkedIn\r\n");
-            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + (user.app.github ? "https://github.com/" + user.app.github : "") + "," + user.app.linkedin + "\r\n"));
+            result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,GitHub,LinkedIn,School\r\n");
+            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + (user.app.github ? "https://github.com/" + user.app.github : "") + "," + user.app.linkedin +  + "," + user.school.name + "\r\n"));
             console.log("Finished writing users: ");
             console.log(result);
             
