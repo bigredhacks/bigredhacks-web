@@ -20,7 +20,7 @@ function getContactInfo(callback) {
             // let stream = fs.createWriteStream("participant_info.csv");
             let result = [];
             result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,School\r\n");
-            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + user.school.name + "\r\n"));
+            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + ", \"" + user.school.name + "\"\r\n"));
             console.log("Finished writing users: ");
             console.log(result);
             
@@ -42,7 +42,7 @@ function getContactInfoExtra(callback) {
             // let stream = fs.createWriteStream("participant_info.csv");
             let result = [];
             result.push("First Name,Last Name,Email,Phone Number,Major,Gender,Year,GitHub,LinkedIn,School\r\n");
-            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + (user.app.github ? "https://github.com/" + user.app.github : "") + "," + user.app.linkedin +  + "," + user.school.name + "\r\n"));
+            result = result.concat(users.map(user => user.name.first + "," + user.name.last + "," + user.email + "," + user.phone + "," + user.school.major + "," + user.gender + "," + user.school.year + "," + (user.app.github ? "https://github.com/" + user.app.github : "") + "," + user.app.linkedin +  + ",\"" + user.school.name + "\"\r\n"));
             console.log("Finished writing users: ");
             console.log(result);
             
