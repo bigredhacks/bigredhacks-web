@@ -5,8 +5,8 @@
  **/
 
 
-var validator = function () {
-    var validators = {
+let validator = function () {
+    let validators = {
         email: function (req) {
             req.assert('email', 'Email address is not valid.').isEmail().len(1,500);
         },
@@ -20,7 +20,7 @@ var validator = function () {
             req.assert('firstname', 'First name is required.').notEmpty().len(1,40);
         },
         lastname: function (req) {
-            req.assert('lastname', 'Last name is required.').notEmpty().len(1,40);;
+            req.assert('lastname', 'Last name is required.').notEmpty().len(1,40);
         },
         phonenumber: function (req) {
             req.body.phonenumber = req.body.phonenumber.replace(/-/g, '');
@@ -74,9 +74,8 @@ var validator = function () {
      * @param validations
      * @returns {runValidations}
      */
-    var validate = function validate(req, validations) {
-
-        for (var i = 0; i < validations.length; i++) {
+    let validate = function validate(req, validations) {
+        for (let i = 0; i < validations.length; i++) {
             if (!validators.hasOwnProperty(validations[i])) {
                 console.log("Error: validation ", validations[i], "does not exist");
                 continue;
@@ -89,9 +88,8 @@ var validator = function () {
 
     return {
         validate: validate
-    }
+    };
 
 };
-
 
 module.exports = validator();

@@ -183,9 +183,9 @@ router.post('/RequestMentor', function (req, res, next) {
             }
 
             email.sendRequestMadeEmail(user.email, user.name, function(err) {
-               if (err) {
-                   console.error(err);
-               }
+                if (err) {
+                    console.error(err);
+                }
                 MentorRequest.find({}, function(err, requests) {
                     socketutil.updateRequests(requests);
                     return res.status(200).send('Request made!');
