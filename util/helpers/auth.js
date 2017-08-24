@@ -9,48 +9,38 @@ let helper = {};
  * @returns {*} A validation object
  */
 helper.validateAll = (req) => {
-    //todo reorder validations to be consistent with form
     return validator.validate(req, [
         'email',
         'password',
         'firstname',
         'lastname',
         'phonenumber',
-        'major',
         'genderDropdown',
-        'dietary',
-        'tshirt',
-        'linkedin',
+        'yearDropdown',
         'collegeid',
+        'major',
         'q1',
         'q2',
-        'anythingelse',
+        'github',
+        'linkedin',
         'hackathonsAttended',
-        'yearDropdown',
-        'hardware'
+        'dietary',
+        'tshirt',
+        'hardware',
+        'anythingelse',
     ]);
 };
 
-// Cornell has its own set of fields to validate
-helper._validateCornell = (req) => {
-    //todo reorder validations to be consistent with form
+// Validation fields only for mentors
+helper.validateMentor = (req) => {
     return validator.validate(req, [
         'email',
         'password',
         'firstname',
         'lastname',
-        'phonenumber',
-        'major',
-        'genderDropdown',
-        'dietary',
-        'tshirt',
-        'linkedin',
-        'q1',
-        'q2',
-        'anythingelse',
-        'hackathonsAttended',
-        'yearDropdown',
-        'hardware'
+        'company',
+        'skills',
+        'bio'
     ]);
 };
 

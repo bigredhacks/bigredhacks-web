@@ -64,7 +64,16 @@ let validator = function () {
         },
         hardware: function(req) {
             req.assert('hardware', "That's a bit too much hardware for us.").len(0,500);
-        }
+        },
+        company: function (req) {
+            req.assert('company', 'Please specify your company name.').notEmpty();
+        },
+        skills: function (req) {
+            req.assert('skills', 'Please specify your skills as a comma-separated list.').notEmpty();
+        },
+        bio: function (req) {
+            req.assert('bio', 'Please specify your biography.').notEmpty();
+        },
     };
 
 
