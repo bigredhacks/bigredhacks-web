@@ -72,6 +72,21 @@ function registerGet (req, res) {
 function registerPost (req, res) {
     async.waterfall([
         (cb) => {
+            User.findOne({email: req.body.email}).exec((err, user) => {
+                if (!err) {
+                    if (typeof user !== "undefined" && user) {
+                        return cb("A user with this email address has already registered!");
+                    }
+                    else {
+                        return cb(null);
+                    }
+                }
+                else {
+                    return cb(err);
+                }
+            });
+        },
+        (cb) => {
             // Parse the resume
             const form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
             form.parse(req, function (err, fields, files) {
@@ -270,7 +285,7 @@ function registerPost (req, res) {
             email.sendCustomEmail(template_content, config);
             return cb(null);
         }
-    ], (err, result) => {
+    ], (err) => {
         if (!err) {
             req.flash("success", "Successfully registered!");
             return res.redirect('/user/dashboard');
