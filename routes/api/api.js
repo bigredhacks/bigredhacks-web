@@ -1,18 +1,18 @@
 "use strict";
 
-var express = require('express');
-var router = express.Router();
+const express     = require('express');
+const email       = require('../../util/email');
+const middle      = require('../middleware');
+let   router      = express.Router();
+const socketutil  = require('../../util/socketutil');
+const util        = require('../../util/util');
 
-var Colleges = require('../../models/college.js');
-var Hardware = require('../../models/hardware.js');
-var User = require('../../models/user.js');
-var Announcement = require ('../../models/announcement.js');
-var MentorRequest = require('../../models/mentor_request');
-
-var middle = require('../middleware');
-var util = require('../../util/util');
-var email = require('../../util/email');
-var socketutil = require('../../util/socketutil');
+let Announcement  = require('../../models/announcement');
+let Colleges      = require('../../models/college');
+let Hardware      = require('../../models/hardware');
+let Mentor        = require('../../models/mentor');
+let MentorRequest = require('../../models/mentor_request');
+let User          = require('../../models/user');
 
 /**
  * @api {get} /api/colleges Request a full list of known colleges
@@ -47,6 +47,26 @@ router.get('/hardware', function (req, res, next) {
  */
 router.get('/validEmail', function (req, res, next) {
     User.findOne({email: req.query.email}, function (err, user) {
+        if (err) {
+            res.send("Please enter a valid email.");
+        }
+        else {
+            res.send(!user);
+        }
+    });
+});
+
+/**
+ * @api {get} /api/validEmailMentor Confirm validity of email among mentors
+ * @apiName ValidEmail
+ * @apiGroup API
+ *
+ * @apiSuccess (200) {Boolean} valid True if the email isn't taken, false otherwise.
+ * @apiSuccess (200) {String} error Request for valid email.
+ */
+router.get('/validEmailMentor', function (req, res, next) {
+    console.log("hit API");
+    Mentor.findOne({email: req.query.email}, function (err, user) {
         if (err) {
             res.send("Please enter a valid email.");
         }
