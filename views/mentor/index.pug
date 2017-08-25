@@ -40,6 +40,7 @@ block mentor_content
                   th Name
                   th Email
                   th Description
+                  th Skills
                   th Location (Table #)
                   th Claim
 
@@ -49,13 +50,14 @@ block mentor_content
                       td #{mentorRequest.user.name.first}
                       td #{mentorRequest.user.email}
                       td #{mentorRequest.description}
+                      td #{mentorRequest.skills.join(", ")}
                       td #{mentorRequest.location}
-                      if (mentorRequest.status == 'Unclaimed')
+                      if (mentorRequest.status === 'Unclaimed')
                           td
                             button.btn.btn-primary.btn-claim.btn-danger.role claim
                       else
                           td.claimed
-                              if (mentorRequest.mentor.id == mentor.id)
+                              if (mentorRequest.mentor.id === mentor.id)
                                     | Claimed by you!
                               else
                                     | Claimed by #{mentorRequest.mentor.name.first} from #{mentorRequest.mentor.company}!

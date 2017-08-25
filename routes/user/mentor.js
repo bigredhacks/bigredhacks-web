@@ -1,7 +1,6 @@
 const authHelp   = require("../../util/helpers/auth");
 const async      = require("async");
 const email      = require("../../util/email");
-const helper     = require("../../util/routes_helper");
 const socketutil = require("../../util/socketutil");
 
 let enums         = require('../../models/enum');
@@ -9,7 +8,7 @@ let MentorRequest = require('../../models/mentor_request');
 let Mentor        = require('../../models/mentor.js');
 
 function requestMentorGet (req, res) {
-    MentorRequest.find({user: req.user}).exec((err, mentorRequests) => {
+    MentorRequest.find({user: req.user}).populate("mentor").exec((err, mentorRequests) => {
         if (!err) {
             return res.render("dashboard/request_mentor", {
                 mentorRequests: mentorRequests

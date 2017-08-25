@@ -251,9 +251,11 @@ module.exports.sendNewMentorRequestEmail = function (mentor, mentorRequest, stud
     let body = `<p>Hi ${mentor.name.first},</p>` +
         `<p>A new mentor request has been submitted!</p>` +
         `<p><b>Name</b>: ${studentName.first} ${studentName.last}</p>` +
-        `<p><b>Desired Skills</b>: ${mentorRequest.skills.join(",")}</p>` +
+        `<p><b>Desired Skills</b>: ${mentorRequest.skills.join(", ")}</p>` +
         `<p><b>Request Description</b>: ${mentorRequest.description}</p>` +
         `<p><b>Location</b>: ${mentorRequest.location}</p>` +
+        `<p>If you want to claim this request, head to <a href="https://bigredhacks.com/mentor/dashboard">the dashboard</a> ` +
+        `and click "Claim".</p>` +
         '<p>Cheers</p>' +
         '<p>BigRed//Hacks Team</p>';
 

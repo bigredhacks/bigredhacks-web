@@ -7,36 +7,27 @@ block dashboard_content
         h3#norequests You have not sent any mentor requests yet.
     else
         .usermentorrequests
-            each curRequest in mentorRequestSchema
+            each curRequest in mentorRequests
                 .mentorrequestbox(data-mentorrequestpubid=curRequest.pubid)
                     .mentorrequestboxtitle Request from #{curRequest.user.name}
                     .requeststatus
                         h3 Status of Request
-                        span(class=curRequest.requeststatus.toLowerCase())= curRequest.requeststatus
-                        if curRequest.requeststatus === "Unclaimed"
+                        span(class=curRequest.status.toLowerCase())= curRequest.status
+                        if curRequest.status === "Unclaimed"
                             span.nummatchingmentors # of Matching Mentors: #{curRequest.nummatchingmentors}
                     ul.requestinfo
-                        li.description
-                            b Description of Request:
-                            span.long-text.description= curRequest.description
+                        li.description #[b Description of Request:] #[span.long-text.description=curRequest.description]
                         li.desiredskills
                             b Desired Skills:
                             ul.skillslist
                                 each curSkill in curRequest.skills
                                     li= curSkill
-                        li.location
-                            b Location of User:
-                            span= curRequest.location
-                        li.mentor
-                            b Mentor:
-                            if curRequest.mentor.name === null
-                                span No name...
-                            else
-                                span= curRequest.mentor.name + " " + curRequest.mentor.company
-                    if curRequest.requeststatus === "Unclaimed"
+                        li.location #[b Location of User:] #[span.long-text.description= curRequest.location]
+                        li.mentor #[b Mentor:] #{curRequest.mentor.name.first} #{curRequest.mentor.name.last}, #{curRequest.mentor.company}
+                    if curRequest.status === "Unclaimed"
                         .changerequeststatus
                             input(type="button" value="cancel request" name="cancelrequest" class="cancelrequest btn btn-danger")
-                    else if curRequest.requeststatus === "Claimed"
+                    else if curRequest.status === "Claimed"
                         .changerequeststatus
                             input(type="button" value="set request as completed" name="completerequest" class="completerequest btn btn-success")
     .header-wrapper

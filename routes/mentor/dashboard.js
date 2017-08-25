@@ -1,3 +1,5 @@
+"use strict";
+
 let MentorRequest = require('../../models/mentor_request');
 
 function dashboardGet (req, res) {
