@@ -66,7 +66,6 @@ function registerMentorPost (req, res) {
             else {
                 return cb(null);
             }
-
         },
         (cb) => {
             if (!req.body.skills || req.body.skills.length === 0) {

@@ -30,10 +30,10 @@ passport.use('mentor_strat',
     })
 );
 
-const claimPost    = require("./mentor/claim").post;
-const dashboardGet = require("./mentor/dashboard").get;
-const registerGet  = require("./mentor/register").get;
-const registerPost = require("./mentor/register").post;
+const claimRoute     = require("./mentor/claim");
+const dashboardRoute = require("./mentor/dashboard");
+const optinRoute     = require("./mentor/optin");
+const registerRoute  = require("./mentor/register");
 
 module.exports = function (io) {
     /**
@@ -50,17 +50,17 @@ module.exports = function (io) {
      * @apiName Mentor
      * @apiGroup Mentor
      */
-    router.get('/dashboard', middle.requireMentor, dashboardGet);
+    router.get('/dashboard', middle.requireMentor, dashboardRoute.get);
 
     /**
      * @api {GET} /mentor/register Registration page for a mentor
      */
-    router.get('/register', registerGet);
+    router.get('/register', registerRoute.get);
 
     /**
      * @api {POST} /mentor/register Registration submission for a mentor
      */
-    router.post('/register', registerPost.bind(io));
+    router.post('/register', registerRoute.post.bind(io));
 
     /**
      * @api {GET} /mentor/login Login page for a mentor
@@ -99,7 +99,14 @@ module.exports = function (io) {
      * @apiParam {String} requestId The mongo id of the request being claimed
      * @apiParam {String} mentorId The mongo id of the mentor making the claim
      */
-    router.post('/claim', middle.requireMentor, claimPost);
+    router.post('/claim', middle.requireMentor, claimRoute.post);
+
+    /**
+     * @api {POST} /mentor/optin Route for mentors to opt in and out of email notifications for new requests
+     *
+     * @apiParam {Boolean} newVal The new value that optin will be set on the Mentor model
+     */
+    router.post("/optin", middle.requireMentor, optinRoute.post);
 
     return router;
 };

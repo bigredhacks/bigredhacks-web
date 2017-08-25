@@ -74,6 +74,12 @@ let validator = function () {
         bio: function (req) {
             req.assert('bio', 'Please specify your biography.').notEmpty();
         },
+        description: function (req) {
+            req.assert('description', 'Please specify your request description.').notEmpty();
+        },
+        location: function (req) {
+            req.assert('location', 'Please specify your current location.').notEmpty();
+        },
     };
 
 

@@ -27,6 +27,8 @@ var MAX_BUS_PROXIMITY = 50; //miles
 
 module.exports = function (io) {
 
+    const requestMentor = require("./user/mentor");
+
     var router = express.Router();
 
     /**
@@ -315,8 +317,8 @@ module.exports = function (io) {
                     req.flash('error', 'Error in user validation');
                     return res.redirect('/user/dashboard');
                 }
-            })
-        })
+            });
+        });
     });
 
     /**
@@ -328,9 +330,9 @@ module.exports = function (io) {
      */
     router.post('/busdecision', middle.requireAccepted, function (req, res) {
         var user = req.user;
-        if (req.body.decision == "signup") {
+        if (req.body.decision === "signup") {
             Bus.findOne({_id: req.body.busid}, function (err, bus) {
-                if (bus.members.length < bus.capacity && user.internal.busid != req.body.busid) {
+                if (bus.members.length < bus.capacity && user.internal.busid !== req.body.busid) {
                     user.internal.busid = req.body.busid;
                     bus.members.push({
                         name: user.name.last + ", " + user.name.first,
@@ -506,7 +508,7 @@ module.exports = function (io) {
                         if (err) {
                             console.error(err);
                         }
-                        if (result.length == 0) {
+                        if (result.length === 0) {
                             companyCount.push(0);
                         } else {
                             companyCount.push(result[0].count);
@@ -529,6 +531,8 @@ module.exports = function (io) {
             });
         });
     });
+
+    router.get("/dashboard/requestmentor", requestMentor.get);
 
     /**
      * @api {GET} /user/dashboard/schedule Gets a page displaying the schedule.
@@ -659,25 +663,25 @@ module.exports = function (io) {
                             function (err, colleges) {
                                 //The case when the query returns only one college because the college of the bus's stop
                                 //is the same as the user's college
-                                if (colleges.length == 1) {
+                                if (colleges.length === 1) {
                                     userbus = bus;
                                     userbus.message = "a bus stops at your school:";
                                     closestdistance = 0;
                                 }
                                 //The other case when the query returns two colleges because the college of the bus's
                                 //stop is not the same as the user's college.
-                                else if (colleges.length == 2) {
+                                else if (colleges.length === 2) {
                                     //find the distance between two colleges
                                     var distanceBetweenColleges = _distanceBetweenPointsInMiles(
                                         colleges[0].loc.coordinates, colleges[1].loc.coordinates);
                                     if (distanceBetweenColleges <= MAX_BUS_PROXIMITY) {
-                                        if (closestdistance == null || distanceBetweenColleges < closestdistance) {
+                                        if (closestdistance === null || distanceBetweenColleges < closestdistance) {
                                             userbus = bus;
                                             //properly round to two decimal points
                                             var roundedDistance = Math.round((distanceBetweenColleges + 0.00001) *
                                                     100) / 100;
-                                            userbus.message = "a bus stops near your school at " + stop.collegename +
-                                                " (roughly " + roundedDistance + " miles away):";
+                                            userbus.message = `a bus stops near your school at ${stop.collegename} ` +
+                                                ` (roughly ${roundedDistance} miles away):`;
                                             closestdistance = distanceBetweenColleges;
                                         }
                                     }

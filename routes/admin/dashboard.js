@@ -1,9 +1,9 @@
-const async                = require("async");
-const helper               = require('../../util/helpers/admin');
-let MentorAuthorizationKey = require('../../models/mentor_authorization_key');
-let Reimbursements         = require('../../models/reimbursements.js');
-let   User                 = require('../../models/user.js');
-const util                 = require('../../util/util.js');
+const async        = require("async");
+const helper       = require('../../util/helpers/admin');
+let Mentor         = require('../../models/mentor');
+let Reimbursements = require('../../models/reimbursements.js');
+let User           = require('../../models/user.js');
+const util         = require('../../util/util.js');
 
 const USER_FILTER = {role: "user"};
 
@@ -144,8 +144,8 @@ module.exports = (req, res, next) => {
                 .select("pubid name email school.name school.id internal.reimbursement_override internal.status internal.going")
                 .exec(done);
         },
-        mentorkeys: (done) => {
-            MentorAuthorizationKey.find({}, done);
+        mentors: (done) => {
+            Mentor.find({}, done);
         }
 
     }, (err, result) => {
@@ -165,7 +165,7 @@ module.exports = (req, res, next) => {
             rsvps: result.rsvps,
             decisionAnnounces: result.decisionAnnounces,
             reimburse,
-            mentorkeys: result.mentorkeys
+            mentors: result.mentors
         });
     });
 };
