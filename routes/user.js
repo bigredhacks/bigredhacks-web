@@ -533,6 +533,7 @@ module.exports = function (io) {
     });
 
     router.get("/dashboard/requestmentor", requestMentor.get);
+    router.post("/dashboard/requestmentor", requestMentor.post);
 
     /**
      * @api {GET} /user/dashboard/schedule Gets a page displaying the schedule.

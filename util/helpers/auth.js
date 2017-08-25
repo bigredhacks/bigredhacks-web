@@ -44,6 +44,14 @@ helper.validateMentor = (req) => {
     ]);
 };
 
+// Validation fields for a mentor request
+helper.validateMentorRequest = (req) => {
+    return validator.validate(req, [
+        'description',
+        'skills',
+        'location'
+    ]);
+};
 /**
  * Find a college entry from a (url) param. This ensures consistent results as only certain params are allowed
  * @param name

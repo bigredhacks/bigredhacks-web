@@ -7,7 +7,11 @@ block mentor_content
 
     p Welcome back, #{mentor.name.first}
 
-    br
+    legend Would you like to receive emails on new Mentor Requests?
+    | Yes #[input(type="radio" name="opt-in-toggle" value="true" checked=mentor.emailNewReq)]
+    | No #[input(type="radio" name="opt-in-toggle" value="false" checked=!mentor.emailNewReq)]
+    #success-msg
+
     +showMessages(messages)
 
     +contentHeading("Mentor Requests Queue")

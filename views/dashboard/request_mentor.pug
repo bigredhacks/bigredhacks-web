@@ -1,0 +1,59 @@
+extends _layout-dashboard
+
+block dashboard_content
+    +contentHeading("Request a Mentor")
+    .header-wrapper Your Requests
+    if !mentorRequests || mentorRequests.length === 0
+        h3#norequests You have not sent any mentor requests yet.
+    else
+        .usermentorrequests
+            each curRequest in mentorRequestSchema
+                .mentorrequestbox(data-mentorrequestpubid=curRequest.pubid)
+                    .mentorrequestboxtitle Request from #{curRequest.user.name}
+                    .requeststatus
+                        h3 Status of Request
+                        span(class=curRequest.requeststatus.toLowerCase())= curRequest.requeststatus
+                        if curRequest.requeststatus === "Unclaimed"
+                            span.nummatchingmentors # of Matching Mentors: #{curRequest.nummatchingmentors}
+                    ul.requestinfo
+                        li.description
+                            b Description of Request:
+                            span.long-text.description= curRequest.description
+                        li.desiredskills
+                            b Desired Skills:
+                            ul.skillslist
+                                each curSkill in curRequest.skills
+                                    li= curSkill
+                        li.location
+                            b Location of User:
+                            span= curRequest.location
+                        li.mentor
+                            b Mentor:
+                            if curRequest.mentor.name === null
+                                span No name...
+                            else
+                                span= curRequest.mentor.name + " " + curRequest.mentor.company
+                    if curRequest.requeststatus === "Unclaimed"
+                        .changerequeststatus
+                            input(type="button" value="cancel request" name="cancelrequest" class="cancelrequest btn btn-danger")
+                    else if curRequest.requeststatus === "Claimed"
+                        .changerequeststatus
+                            input(type="button" value="set request as completed" name="completerequest" class="completerequest btn btn-success")
+    .header-wrapper
+        legend.page-title send new request
+    form(id="requestmentorform" method="post" autocomplete="off")
+        #newrequest
+            .form-group
+                label(for="description" class="newrequestlabel")
+                    h4 Description of Request
+                textarea(id="description" name="description" class="form-control" rows="5" required)
+            .form-group
+                label(for="skills" class="newrequestlabel")
+                    h4 Desired Skills (comma-separated: java, python, web applications, etc.)
+                input(type="text" name="skills" id="skills" class="form-control" value="" required)
+            .form-group
+                label(for="location" class="newrequestlabel")
+                    h4 Current Location (seat number, area number, etc.)
+                input(type="text" name="location" id="location" class="form-control" value="" required)
+            .createrequest
+                input(type="submit" value="send request" name="sendrequest" class="btn btn-primary")

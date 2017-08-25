@@ -14,6 +14,7 @@ var mentorSchema = new mongoose.Schema({
     company:   { type: String,   required: true }, // May also just be an organization
     skills:    { type: [String], required: true },
     bio:       { type: String,   required: true },
+    emailNewReq: { type: Boolean, default: false },
     passwordtoken: String,
     created_at:  { type: Date, default: Date.now },
     modified_at: { type: Date, default: Date.now },
