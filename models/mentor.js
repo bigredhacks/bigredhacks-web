@@ -6,12 +6,17 @@ const SALT_WORK_FACTOR = 10;
 
 var mentorSchema = new mongoose.Schema({
     name: {
-        first: {type: String, required: true},
-        last: {type: String, required: true}
+        first: { type: String,   required: true },
+        last:  { type: String,   required: true }
     },
-    company: {type: String, required: true}, // May also just be an organization
-    email: {type: String, required: true, lowercase: true, trim: true, index: {unique: true}},
-    password: {type: String, required: true}
+    email:     { type: String,   required: true, lowercase: true, trim: true, index: { unique: true } },
+    password:  { type: String,   required: true },
+    company:   { type: String,   required: true }, // May also just be an organization
+    skills:    { type: [String], required: true },
+    bio:       { type: String,   required: true },
+    passwordtoken: String,
+    created_at:  { type: Date, default: Date.now },
+    modified_at: { type: Date, default: Date.now },
 });
 
 mentorSchema.pre('save', function (next) {

@@ -1,0 +1,55 @@
+//-
+   General registration page
+
+extends ../_layout-registration
+
+block vars
+    - var actionUrl = "/mentor/register"; //- url the form should submit to
+    - var multipart = true; //- whether the form has multipart data
+
+block append description
+    h1 Mentor Registration
+
+block append account-information
+    .form-group
+        label(for='email') email *
+        input#email.form-control(type='text' name='email' minlength='2' placeholder='email' value=input.email || '' required=true)
+    .form-group
+        label(for='password') password *
+        input#password.form-control(type='password' name='password' placeholder='****' required=true)
+    .form-group
+        label(for='confirmpassword') confirm password *
+        input#confirmpassword.form-control(type='password' name='confirmpassword' placeholder='****' required=true)
+
+block append basic-information
+    .form-group
+        label(for='firstname') first name *
+        input#firstname.form-control(type='text' name='firstname' minlength='2' placeholder='first name' value=(input.firstname || '')  required=true)
+    .form-group
+        label(for='lastname') last name *
+        input#lastname.form-control(type='text' name='lastname' minlength='2' placeholder='last name' value=(input.lastname || '') required=true)
+    .form-group
+        label(for='company-dropdown') company/organization *
+        input#company-dropdown.form-control(type='text' name='company' minlength='2' placeholder='company' value=(input.company || '') required=true)
+    .form-group
+        label(for='skills') comma separated list of skills *
+        input#skills.form-control(type='text' name='skills' minlength='2' placeholder='HTML, CSS, JavaScript' value=(input.skills || '') required=true)
+    .form-group
+        label(for='bio') short biography *
+        textarea#bio.form-control(name="bio" rows="3" value=(input.bio || '') required=true)
+    .form-group
+        label(for='mentorRegistrationKey') authorization code *
+        input#mentorRegistrationKey.form-control(type='password' name='mentorRegistrationKey' minlength='1' value=(input.mentorRegistrationKey || '')  required=true)
+
+//- noop blocks
+block no_school
+
+block no_background
+
+block no_logistics
+
+block no_terms
+
+block prepend footer
+    script.
+        var mentorRegistration = !{mentorRegistration};

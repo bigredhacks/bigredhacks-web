@@ -1,18 +1,26 @@
 "use strict";
-var mongoose = require('mongoose');
-var en = require("./enum.js");
+const mongoose = require('mongoose');
+const en = require("./enum.js");
 
-var mentorRequestSchema = new mongoose.Schema({
-    description: {type: String, required: true}, //description of problem/reason for mentorship request
-    user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
-    mentor: {type: mongoose.Schema.Types.ObjectId, ref: "Mentor", default: null},
-    status: {type: String, enum: en.mentorrequest.status, default: "Unclaimed"},
-    location: {type: String, default: "Unknown"}, // Location of user who made the request. Usually a table number.
-    createdAt: {type: Date, default: Date.now()}
+let mentorRequestSchema = new mongoose.Schema({
+    // Description of problem/reason for mentorship request
+    description: { type: String,                                required: true},
+    // Desired skills for this request
+    skills:      { type: [String] },
+    // User who made the request
+    user:        { type: mongoose.Schema.Types.ObjectId,        ref: "User", required: true},
+    // Mentor assigned to the request
+    mentor:      { type: mongoose.Schema.Types.ObjectId,        ref: "Mentor", default: null},
+    // Status of the request
+    status:      { type: String, enum: en.mentorrequest.status, default: "Unclaimed"},
+    // Location of user who made the request. Usually a table number.
+    location:    { type: String,                                default: "Unknown"},
+    // When the request was created
+    createdAt:   { type: Date,                                  default: Date.now()}
 });
 
 mentorRequestSchema.statics.generateRequest = function(userId, descrip, loc, callback) {
-    var request = new this({
+    let request = new this({
         user: userId,
         description: descrip,
         location: loc

@@ -291,7 +291,7 @@ function registerPost (req, res) {
             return res.redirect('/user/dashboard');
         }
         else {
-            console.log(err);
+            console.error(err);
             req.flash("error", err);
             return res.render('register_general', {
                 enums:  enums,

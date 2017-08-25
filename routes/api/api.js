@@ -45,13 +45,13 @@ router.get('/hardware', function (req, res, next) {
  * @apiSuccess (200) {Boolean} valid True if the email isn't taken, false otherwise.
  * @apiSuccess (200) {String} error Request for valid email.
  */
-router.get('/validEmail', function (req, res, next) {
+router.get('/validEmail', function (req, res) {
     User.findOne({email: req.query.email}, function (err, user) {
         if (err) {
-            res.send("Please enter a valid email.");
+            return res.send("Please enter a valid email.");
         }
         else {
-            res.send(!user);
+            return res.send(!user);
         }
     });
 });
@@ -64,14 +64,13 @@ router.get('/validEmail', function (req, res, next) {
  * @apiSuccess (200) {Boolean} valid True if the email isn't taken, false otherwise.
  * @apiSuccess (200) {String} error Request for valid email.
  */
-router.get('/validEmailMentor', function (req, res, next) {
-    console.log("hit API");
+router.get('/validEmailMentor', function (req, res) {
     Mentor.findOne({email: req.query.email}, function (err, user) {
         if (err) {
-            res.send("Please enter a valid email.");
+            return res.send("Please enter a valid email.");
         }
         else {
-            res.send(!user);
+            return res.send(!user);
         }
     });
 });
