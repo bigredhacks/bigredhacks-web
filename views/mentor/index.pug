@@ -4,20 +4,10 @@ extends _layout-mentor
 
 block mentor_content
     +contentHeading("dashboard home")
-
-    p Welcome back, #{mentor.name.first}
-
-    legend Would you like to receive emails on new Mentor Requests?
-    | Yes #[input(type="radio" name="opt-in-toggle" value="true" checked=mentor.emailNewReq)]
-    | No #[input(type="radio" name="opt-in-toggle" value="false" checked=!mentor.emailNewReq)]
-    #success-msg
-
+    - console.log(messages);
     +showMessages(messages)
-
+    p Welcome back, #{mentor.name.first}
     +contentHeading("Mentor Requests Queue")
-
-    +sectionHeading("Overview")
-
     p
         | Welcome to your mentor requests queue.
         | A request has two possible statuses:
@@ -28,10 +18,12 @@ block mentor_content
     span.claimed
         | Claimed:
     |  A request that has been claimed, and the mentor who claimed it will be shown.
-    br
+
+    legend Would you like to receive emails on new Mentor Requests?
+    | Yes #[input(type="radio" name="opt-in-toggle" value="true" checked=mentor.emailNewReq)]
+    | No #[input(type="radio" name="opt-in-toggle" value="false" checked=!mentor.emailNewReq)]
 
     .header-wrapper
-        h2.page-title requests
         .mentorRequests(data-mentor=mentor.id)
           h2.page-title unclaimed requests
           table#mentorRequests-table.table.table-striped
@@ -43,7 +35,6 @@ block mentor_content
                   th Skills
                   th Location (Table #)
                   th Claim
-
               for mentorRequest in mentorRequests
                   tr(data-request=mentorRequest.id)
                       td #{moment(mentorRequest.createdAt).from()}
