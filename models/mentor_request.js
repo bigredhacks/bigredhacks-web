@@ -16,6 +16,8 @@ let mentorRequestSchema = new mongoose.Schema({
     status:      { type: String, enum: en.mentorrequest.status, default: "Unclaimed"},
     // Location of user who made the request. Usually a table number.
     location:    { type: String,                                default: "Unknown"},
+    // Number of matching mentors for this request (based on skills)
+    num_matching_mentors: { type: Number, default: 0 },
     // When the request was created
     createdAt:   { type: Date,                                  default: Date.now()}
 });

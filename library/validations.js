@@ -57,7 +57,7 @@ let validator = function () {
             req.assert('hackathonsAttended', 'Please specify the number of hackathons you have attended.').notEmpty();
         },
         cornellEmail: function (req) {
-            req.assert('cornellEmail', 'Email address is not valid.').isEmail();
+            req.assert('cornellEmail', 'Email address is not valid.').isEmail().len(1, 100);
         },
         anythingelse: function(req) {
             req.assert('anythingelse', "Additional information must be less than 5000 characters.").optionalOrLen(0, 5000);
@@ -66,19 +66,19 @@ let validator = function () {
             req.assert('hardware', "That's a bit too much hardware for us.").len(0,500);
         },
         company: function (req) {
-            req.assert('company', 'Please specify your company name.').notEmpty();
+            req.assert('company', 'Please specify your company name.').notEmpty().len(1, 70);
         },
         skills: function (req) {
-            req.assert('skills', 'Please specify your skills as a comma-separated list.').notEmpty();
+            req.assert('skills', 'Please specify your skills as a comma-separated list.').notEmpty().len(1, 1000);
         },
         bio: function (req) {
-            req.assert('bio', 'Please specify your biography.').notEmpty();
+            req.assert('bio', 'Please specify your biography.').notEmpty().len(1, 3000);
         },
         description: function (req) {
-            req.assert('description', 'Please specify your request description.').notEmpty();
+            req.assert('description', 'Please specify your request description.').notEmpty().len(1, 3000);
         },
         location: function (req) {
-            req.assert('location', 'Please specify your current location.').notEmpty();
+            req.assert('location', 'Please specify your current location.').notEmpty().len(1, 70);
         },
     };
 

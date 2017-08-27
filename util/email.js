@@ -244,7 +244,7 @@ module.exports.sendNewMentorRequestEmail = function (mentor, mentorRequest, stud
         "from_name": "BigRed//Hacks",
         "to": {
             "email": mentor.email,
-            "name": `${mentor.name.first} ${mentor.name.last}`
+            "name":  mentor.name.full
         }
     };
 

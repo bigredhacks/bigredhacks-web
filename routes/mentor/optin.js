@@ -1,23 +1,23 @@
 "use strict";
 
-const async = require("async");
-let Mentor  = require('../../models/mentor.js');
+let Mentor  = require('../../models/mentor');
 
 function optinPost (req, res) {
-    async.waterfall([
-        (cb) => {
-            Mentor.findOne({_id: req.user._id.toString()}).exec(cb);
-        },
-        (foundMentor, cb) => {
-            foundMentor.emailNewReq = req.body.newVal;
-            foundMentor.save(cb);
-        }
-    ], (err) => {
-        if (!err) {
-            return res.status(200).send(req.body.newVal);
+    Mentor.findOneAndUpdate(
+        {_id: req.user._id.toString()},
+        {emailNewReq: req.body.newVal === "true"}
+    ).exec((err) => {
+        res.setHeader('Content-Type', 'application/json');
+        if (err) {
+            console.error(err);
+            return res.status(500).send({
+                err: "An unexpected error occurred."
+            });
         }
         else {
-            return res.status(500).send(err);
+            return res.status(200).send({
+                msg: "Email status successfully changed!"
+            });
         }
     });
 }

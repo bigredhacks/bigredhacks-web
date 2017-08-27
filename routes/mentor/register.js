@@ -1,16 +1,13 @@
 // Node Modules and utilities
-const _          = require("underscore");
-const authHelp   = require("../../util/helpers/auth");
-const async      = require("async");
-const config     = require('../../config.js');
-const helper     = require("../../util/routes_helper");
-const multiparty = require('multiparty');
+const _            = require("underscore");
+const authHelp     = require("../../util/helpers/auth");
+const async        = require("async");
+const config       = require('../../config.js');
+const mentorSkills = require("../../util/mentor_skills");
 
 // Mongo Models
 let enums         = require('../../models/enum');
 let Mentor        = require('../../models/mentor');
-let MentorRequest = require('../../models/mentor_request');
-let User          = require("../../models/user");
 
 // Variables
 const ALWAYS_OMIT = 'password confirmpassword mentorRegistrationKey'.split(' ');
@@ -35,23 +32,9 @@ function registerMentorGet (req, res) {
  * @apiGroup Auth
  */
 function registerMentorPost (req, res) {
-    const io = this.io;
+    const io = this;
     let skillList;
-
     async.waterfall([
-        (cb) => {
-            const form = new multiparty.Form();
-            form.parse(req, function (err, fields, files) {
-                if (err) {
-                    return cb(err);
-                }
-                else {
-                    req.body = helper.reformatFields(fields);
-                    req.files = files;
-                    return cb(null);
-                }
-            });
-        },
         (cb) => {
             req = authHelp.validateMentor(req);
             let errors = req.validationErrors();
@@ -99,8 +82,7 @@ function registerMentorPost (req, res) {
                     });
                 },
                 mentorKey: (cb) => {
-                    if (req.body.mentorRegistrationKey === config.mentor.mentorRegistrationKey
-                        && req.body.mentorRegistrationKey.length === config.mentor.mentorRegistrationKey.length) {
+                    if (req.body.mentorRegistrationKey === config.mentor.mentorRegistrationKey) {
                         return cb(null);
                     }
                     else {
@@ -108,22 +90,14 @@ function registerMentorPost (req, res) {
                     }
                 },
                 passwordCheck: (cb) => {
-                    if (req.body.password === req.body.confirmpassword
-                        && req.body.password.length === req.body.confirmpassword.length) {
+                    if (req.body.password === req.body.confirmpassword) {
                         return cb(null);
                     }
                     else {
                         return cb("Please enter two matching passwords.");
                     }
                 },
-            }, (err) => {
-                if (!err) {
-                    return cb(null);
-                }
-                else {
-                    return cb(err);
-                }
-            });
+            }, cb);
         },
         (cb) => {
             // Register this new mentor
@@ -139,62 +113,20 @@ function registerMentorPost (req, res) {
                 bio:       req.body.bio
             });
             newMentor.save((err) => {
-                if (!err) {
-                    return cb(null, newMentor);
+                if (err) {
+                    return cb(err);
                 }
                 else {
-                    return cb(err);
+                    return cb(null, newMentor);
                 }
             });
         },
         (newMentor, cb) => {
-            async.parallel({
-                mentorRequests: (cb) => {
-                    MentorRequest.find({}).exec(cb);
-                },
-                mentors: (cb) => {
-                    Mentor.find({}).exec(cb);
+            // Update existing mentor requests with this mentor's skillset
+            mentorSkills(io, (err) => {
+                if (err) {
+                    return cb(err);
                 }
-            }, (err, results) => {
-                if (!err && results) {
-                    return cb(null, newMentor, results.mentors, results.mentorRequests);
-                }
-            });
-        },
-        (newMentor, mentors, mentorRequests, cb) => {
-            async.each(mentorRequests, function (mentorRequest, callback) {
-                let numMatchingMentors = 0;
-                async.each(mentors, function (mentor, callback2) {
-                    if (authHelp._matchingSkills(mentor.mentorinfo.skills, mentorRequest.skills)) {
-                        numMatchingMentors = numMatchingMentors + 1;
-                    }
-                    callback2();
-                }, function (err) {
-                    if (err) console.error(err);
-                    else {
-                        mentorRequest.nummatchingmentors = numMatchingMentors;
-                        mentorRequest.save(function (err) {
-                            if (err) console.error(err);
-                            else {
-                                User.findOne({_id: mentorRequest.user.id}, function (err, user) {
-                                    if (err) {
-                                        return cb(err);
-                                    }
-                                    else {
-                                        let currentMentorRequest = {
-                                            mentorRequestPubid: mentorRequest.pubid,
-                                            nummatchingmentors: numMatchingMentors
-                                        };
-                                        io.sockets.emit("New number of mentors " + user.pubid, currentMentorRequest);
-                                        callback();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }, function (err) {
-                if (err) console.error(err);
                 else {
                     return cb(null, newMentor);
                 }
@@ -203,8 +135,12 @@ function registerMentorPost (req, res) {
     ], (err, newMentor) => {
         if (!err) {
             req.login(newMentor, function (err) {
-                if (err) console.error(err);
-                res.redirect('/mentor/dashboard');
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    return res.redirect('/mentor/dashboard');
+                }
             });
         }
         else {
@@ -224,7 +160,7 @@ function registerMentorPost (req, res) {
                 });
             }
             else {
-                req.flash("error", err);
+                req.flash("error", typeof err === "string" ? err : "An unknown error occurred.");
                 return res.render('mentor/register', {
                     title: 'Mentor Registration',
                     input: req.body,

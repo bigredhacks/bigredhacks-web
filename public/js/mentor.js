@@ -10,7 +10,6 @@ $(document).ready(function () {
 
     $("input[name='opt-in-toggle']").change(function () {
         var newVal = $(this).val() === "true";
-        console.log(newVal);
         $.ajax({
             type: "POST",
             url: "/mentor/optin",

@@ -1,51 +1,79 @@
 const async      = require("async");
-const email      = require('../../util/email');
-const socketutil = require('../../util/socketutil');
+const email      = require("../../util/email");
+const socketutil = require("../../util/socketutil");
 
-let Mentor        = require('../../models/mentor');
-let MentorRequest = require('../../models/mentor_request');
+let Mentor        = require("../../models/mentor");
+let MentorRequest = require("../../models/mentor_request");
 
 function claimPost (req, res) {
-    async.parallel({
-        request: function request(callback) {
-            MentorRequest.findOne({'_id' : req.body.requestId}).populate('user').exec(callback);
+    async.waterfall([
+        (cb) => {
+            Mentor.findOne({"_id" : req.body.mentorId}).exec(cb);
         },
-        mentor: function mentor(callback) {
-            Mentor.findOne({'_id' : req.body.mentorId}).exec(callback);
+        (curMentor, cb) => {
+            if (!curMentor) {
+                return cb("Mentor could not be found!");
+            }
+            else {
+                MentorRequest.findOneAndUpdate(
+                    {"_id" : req.body.requestId, "status": "Unclaimed"},
+                    {"status": "Claimed", mentor: curMentor},
+                    {returnNewDocument: true, new: true}
+                ).populate("mentor user").exec(cb);
+            }
+        },
+        (request, cb) => {
+            if (!request) {
+                return cb("Error finding the request! Has it already been claimed?");
+            }
+            else {
+                async.parallel([
+                    (cb) => {
+                        MentorRequest.find({}).exec((err, requests) => {
+                            if (err) {
+                                return cb(err);
+                            }
+                            else {
+                                socketutil.updateRequests(requests);
+                                return cb(null);
+                            }
+                        });
+                    },
+                    (cb) => {
+                        email.sendRequestClaimedStudentEmail(request.user.email, request.user.name, request.mentor.name, cb);
+                    },
+                    (cb) => {
+                        email.sendRequestClaimedMentorEmail(request.mentor.email, request.user.name, request.mentor.name, cb);
+                    }
+                ], (err) => {
+                    if (err) {
+                        return cb(err);
+                    }
+                    else {
+                        return cb(null, request);
+                    }
+                });
+            }
         }
-    }, function(err, result) {
+    ], (err, request) => {
         if (err) {
             console.error(err);
-            return res.status(500).send('An unexpected error occurred.');
+            req.flash("error", "An unexpected error occurred.");
         }
-        else if (!result.request || !result.mentor) {
-            return res.status(500).send('Missing request or mentor.');
+        else if (!request) {
+            req.flash("error", "Missing mentor request.");
         }
-        else if (result.request.mentor !== null) {
-            return res.status(500).send('Another mentor has already claimed this request.');
+        else {
+            req.flash("success", `You have claimed the request for help! Please go see ${request.user.name.full} at ${request.location}.`);
         }
-
-        result.request.mentor = result.mentor;
-        result.request.status = 'Claimed';
-
-        async.series({
-            notifyStudent: function notifyStudent(callback) {
-                email.sendRequestClaimedStudentEmail(result.request.user.email, result.request.user.name, result.mentor.name, callback);
-            },
-            notifyMentor: function notifyMentor(callback) {
-                email.sendRequestClaimedMentorEmail(result.mentor.email, result.request.user.name, result.mentor.name, callback);
-            },
-            saveRequest: function saveRequest(callback) {
-                result.request.save(callback);
-            }
-        }, function(err) {
-            if (err) {
-                console.error(err);
-            }
-
-            socketutil.updateRequests(null);
-            req.flash('success', `You have claimed the request for help! Please go see ${result.request.user.name.full} at ${result.request.location}`);
-            res.status(200).redirect('/');
+        MentorRequest.find({}).populate('user mentor').sort({'createdAt' : 'desc'}).exec(function (err, mentorRequests) {
+            if (err) console.error(err);
+            res.render('mentor/index', {
+                error: req.flash("error"),
+                mentor: req.user,
+                title: "Dashboard Home",
+                mentorRequests
+            });
         });
     });
 }

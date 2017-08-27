@@ -533,7 +533,7 @@ module.exports = function (io) {
     });
 
     router.get("/dashboard/requestmentor", requestMentor.get);
-    router.post("/dashboard/requestmentor", requestMentor.post);
+    router.post("/dashboard/requestmentor", requestMentor.post.bind(io));
 
     /**
      * @api {GET} /user/dashboard/schedule Gets a page displaying the schedule.
@@ -562,8 +562,8 @@ module.exports = function (io) {
                 else {
                     return res.sendStatus(200);
                 }
-            })
-        })
+            });
+        });
     });
 
     /**
