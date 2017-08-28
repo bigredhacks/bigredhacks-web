@@ -79,9 +79,9 @@ userSchema.path('internal.status').set(function (newStatus) {
     return newStatus;
 });
 
-//full name of user
+// Full name of user
 userSchema.virtual('name.full').get(function () {
-    return this.name.first + " " + this.name.last;
+    return `${this.name.first} ${this.name.last}`;
 });
 
 //todo validate existence of college

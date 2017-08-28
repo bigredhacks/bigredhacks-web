@@ -118,36 +118,36 @@ function sendCustomEmail (bodyText, config, callback) {
 }
 
 module.exports.sendDecisionEmail = function (name, notifyStatus, newStatus, config, callback) {
-  if (notifyStatus === "Waitlisted" && newStatus === "Accepted") {
-      config.subject = ACCEPTED_SUBJECT;
-      sendCustomEmail(`<p>Hey ${name},</p>` + WAITLISTED_TO_ACCEPTED_BODY, config, callback);
-  } else if (notifyStatus === "Accepted" && newStatus === "Rejected") {
-      config.subject = ACCEPTED_TO_REJECTED_SUBJECT;
-      sendCustomEmail(`<p>Hi ${name},</p>` + ACCEPTED_TO_REJECTED_BODY, config, callback);
-  } else {
-      switch (newStatus) {
-          case "Accepted":
-              config.subject = ACCEPTED_SUBJECT;
-              sendCustomEmail(`<p>Hey ${name},</p>` + ACCEPTED_BODY, config, callback);
-              break;
-          case "Waitlisted":
-              config.subject = WAITLISTED_SUBJECT;
-              sendCustomEmail(`<p>Hi ${name},</p>` + WAITLISTED_BODY, config, callback);
-              break;
-          case "Rejected":
-              config.subject = REJECTED_SUBJECT;
-              sendCustomEmail(`<p>Hi ${name},</p>` + REJECTED_BODY, config, callback);
-              break;
-          case "Pending":
-              // In this case, we revoked a decision. No email should be sent as this only
-              // should happen in exceptional cases.
-              callback();
-              break;
-          default:
-              callback('Error: Saw unknown status in sendDecisionEmail: ' + newStatus);
-              break;
-      }
-  }
+    if (notifyStatus === "Waitlisted" && newStatus === "Accepted") {
+        config.subject = ACCEPTED_SUBJECT;
+        sendCustomEmail(`<p>Hey ${name},</p>` + WAITLISTED_TO_ACCEPTED_BODY, config, callback);
+    } else if (notifyStatus === "Accepted" && newStatus === "Rejected") {
+        config.subject = ACCEPTED_TO_REJECTED_SUBJECT;
+        sendCustomEmail(`<p>Hi ${name},</p>` + ACCEPTED_TO_REJECTED_BODY, config, callback);
+    } else {
+        switch (newStatus) {
+            case "Accepted":
+                config.subject = ACCEPTED_SUBJECT;
+                sendCustomEmail(`<p>Hey ${name},</p>` + ACCEPTED_BODY, config, callback);
+                break;
+            case "Waitlisted":
+                config.subject = WAITLISTED_SUBJECT;
+                sendCustomEmail(`<p>Hi ${name},</p>` + WAITLISTED_BODY, config, callback);
+                break;
+            case "Rejected":
+                config.subject = REJECTED_SUBJECT;
+                sendCustomEmail(`<p>Hi ${name},</p>` + REJECTED_BODY, config, callback);
+                break;
+            case "Pending":
+                // In this case, we revoked a decision. No email should be sent as this only
+                // should happen in exceptional cases.
+                callback();
+                break;
+            default:
+                callback('Error: Saw unknown status in sendDecisionEmail: ' + newStatus);
+                break;
+        }
+    }
 };
 
 module.exports.sendDeadlineEmail = function (name, config, callback) {
@@ -230,7 +230,32 @@ module.exports.sendRequestClaimedMentorEmail = function (email, studentName, men
     };
 
     let body = `<p>Hi ${mentorName.first},</p>` +
-        `<p>This is to confirm you have claimed a mentor request from ${studentName.first} ${studentName.last}.'</p>` +
+        `<p>This is to confirm you have claimed a mentor request from ${studentName.first} ${studentName.last}.</p>` +
+        '<p>Cheers</p>' +
+        '<p>BigRed//Hacks Team</p>';
+
+    sendCustomEmail(body, config, callback);
+};
+
+module.exports.sendNewMentorRequestEmail = function (mentor, mentorRequest, studentName, callback) {
+    let config = {
+        "subject": 'New Mentorship Request',
+        "from_email": "info@bigredhacks.com",
+        "from_name": "BigRed//Hacks",
+        "to": {
+            "email": mentor.email,
+            "name":  mentor.name.full
+        }
+    };
+
+    let body = `<p>Hi ${mentor.name.first},</p>` +
+        `<p>A new mentor request has been submitted!</p>` +
+        `<p><b>Name</b>: ${studentName.first} ${studentName.last}</p>` +
+        `<p><b>Desired Skills</b>: ${mentorRequest.skills.join(", ")}</p>` +
+        `<p><b>Request Description</b>: ${mentorRequest.description}</p>` +
+        `<p><b>Location</b>: ${mentorRequest.location}</p>` +
+        `<p>If you want to claim this request, head to <a href="https://bigredhacks.com/mentor/dashboard">the dashboard</a> ` +
+        `and click "Claim".</p>` +
         '<p>Cheers</p>' +
         '<p>BigRed//Hacks Team</p>';
 

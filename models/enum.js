@@ -33,9 +33,10 @@ var en = {
     mentor: {
         companyimage: "bigredhacks.png".split("/"), // When more companies are added, separate them with /
         companyname:  "Big Red Hacks".split("/"),
+        emailNewReq:  [true, false]
     },
     mentorrequest: {
-        status: "Unclaimed Claimed".split(" ")
+        status: "Unclaimed Claimed Completed".split(" ")
     },
     schedule: {
         days: "9/18 9/19 9/20".split(" ")

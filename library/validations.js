@@ -5,8 +5,8 @@
  **/
 
 
-var validator = function () {
-    var validators = {
+let validator = function () {
+    let validators = {
         email: function (req) {
             req.assert('email', 'Email address is not valid.').isEmail().len(1,500);
         },
@@ -20,7 +20,7 @@ var validator = function () {
             req.assert('firstname', 'First name is required.').notEmpty().len(1,40);
         },
         lastname: function (req) {
-            req.assert('lastname', 'Last name is required.').notEmpty().len(1,40);;
+            req.assert('lastname', 'Last name is required.').notEmpty().len(1,40);
         },
         phonenumber: function (req) {
             req.body.phonenumber = req.body.phonenumber.replace(/-/g, '');
@@ -57,14 +57,29 @@ var validator = function () {
             req.assert('hackathonsAttended', 'Please specify the number of hackathons you have attended.').notEmpty();
         },
         cornellEmail: function (req) {
-            req.assert('cornellEmail', 'Email address is not valid.').isEmail();
+            req.assert('cornellEmail', 'Email address is not valid.').isEmail().len(1, 100);
         },
         anythingelse: function(req) {
             req.assert('anythingelse', "Additional information must be less than 5000 characters.").optionalOrLen(0, 5000);
         },
         hardware: function(req) {
             req.assert('hardware', "That's a bit too much hardware for us.").len(0,500);
-        }
+        },
+        company: function (req) {
+            req.assert('company', 'Please specify your company name.').notEmpty().len(1, 70);
+        },
+        skills: function (req) {
+            req.assert('skills', 'Please specify your skills as a comma-separated list.').notEmpty().len(1, 1000);
+        },
+        bio: function (req) {
+            req.assert('bio', 'Please specify your biography.').notEmpty().len(1, 3000);
+        },
+        description: function (req) {
+            req.assert('description', 'Please specify your request description.').notEmpty().len(1, 3000);
+        },
+        location: function (req) {
+            req.assert('location', 'Please specify your current location.').notEmpty().len(1, 70);
+        },
     };
 
 
@@ -74,9 +89,8 @@ var validator = function () {
      * @param validations
      * @returns {runValidations}
      */
-    var validate = function validate(req, validations) {
-
-        for (var i = 0; i < validations.length; i++) {
+    let validate = function validate(req, validations) {
+        for (let i = 0; i < validations.length; i++) {
             if (!validators.hasOwnProperty(validations[i])) {
                 console.log("Error: validation ", validations[i], "does not exist");
                 continue;
@@ -89,9 +103,8 @@ var validator = function () {
 
     return {
         validate: validate
-    }
+    };
 
 };
-
 
 module.exports = validator();

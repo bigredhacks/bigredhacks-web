@@ -166,18 +166,18 @@ block append admin_content
                 .form-group
                     button#rsvpOverride.btn.btn-success(type='submit') Override
         #mentors.tab-pane(role='tabpanel')
-            .assign-mentor-section
-                h2 Assign Mentor Key
-                p Assign a valid key for the mentor to enter on their end
-                form#mentor-assign-form(method = 'post', action='/api/admin/makeKey')
-                    .form-group.np-enabled
-                        input#mentor-secret-key(type='text' name='mentorKey' placeholder='key')
-                        button#mentor-assign.btn.btn-success(type='submit') Make Mentor Key
-            br
-            .existing-mentor-keys-section
-                table.table.table-striped
+            table(class="table")
+                thead
                     tr
-                        th Existing Mentor Keys
-                    for key in mentorkeys
+                        td #[b Name]
+                        td #[b Company]
+                        td #[b Email]
+                        td #[b Skills]
+                tbody
+                    each mentor in mentors
                         tr
-                            td= key.key
+                            td= mentor.name.first + " " + mentor.name.last
+                            td= mentor.company
+                            td= mentor.email
+                            td= mentor.skills.join(", ")
+                - console.log(mentors);

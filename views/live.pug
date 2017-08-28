@@ -53,25 +53,25 @@ block append main_content
                             h3.panel-title Twitter
                         .twitter-feed
                             a.twitter-timeline(href='https://twitter.com/BigRedHacks') Tweets by BigRedHacks
-            .col-md-3.col-md-offset-1
-                //- .row
-                //-     .panel.panel-default
-                //-         .panel-heading
-                //-             h3.panel-title Request a Mentor
-                //-         .mentor-request
-                //-             #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
-                //-             label#mentor-label You must use the email you registered with
-                //-             form
-                //-                 .form-group
-                //-                     label email
-                //-                     input#mentor-req-email.form-control(type='text', name='email', placeholder='ex. abc@cornell.edu')
-                //-                 .form-group
-                //-                     label problem
-                //-                     input#mentor-req-text.form-control(type='text', name='request', placeholder='ex. need help with Javascript')
-                //-                 .form-group
-                //-                     label table number
-                //-                     input#mentor-req-table.form-control(type='text', name='tableNumber', placeholder='ex. 4')
-                //-                 button#request-mentor-btn.btn.btn-primary request mentor
+            //-.col-md-3.col-md-offset-1
+            //-    .row
+            //-        .panel.panel-default
+            //-            .panel-heading
+            //-                h3.panel-title Request a Mentor
+            //-                .mentor-request
+            //-                    #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
+            //-                        label#mentor-label You must use the email you registered with
+            //-                    form
+            //-                        .form-group
+            //-                            label email
+            //-                            input#mentor-req-email.form-control(type='text' name='email' placeholder='ex. abc@cornell.edu')
+            //-                        .form-group
+            //-                            label problem
+            //-                            input#mentor-req-text.form-control(type='text' name='request' placeholder='ex. need help with Javascript')
+            //-                        .form-group
+            //-                            label table number
+            //-                            input#mentor-req-table.form-control(type='text' name='tableNumber' placeholder='ex. 4')
+            //-                        button#request-mentor-btn.btn.btn-primary request mentor
                 .row
                     .panel.panel-default
                         .panel-heading
@@ -79,15 +79,15 @@ block append main_content
                         .calendar
                             .schedule-tab
                                 .heading
-                                        h3 fri, 3/24
+                                    h3 fri, 3/24
                                 for event in calendar
-                                        if moment(event.start).format("ddd").toLowerCase() == "fri"
-                                            +calendarEvents(event)
+                                    if moment(event.start).format("ddd").toLowerCase() == "fri"
+                                        +calendarEvents(event)
                                 .heading
-                                        h3 sat, 3/25
+                                    h3 sat, 3/25
                                 for event in calendar
-                                        if moment(event.start).format("ddd").toLowerCase() == "sat"
-                                            +calendarEvents(event)
+                                    if moment(event.start).format("ddd").toLowerCase() == "sat"
+                                        +calendarEvents(event)
                                 //- .heading
                                 //-         h3 sun, 9/18
                                 //- for event in calendar
@@ -150,4 +150,4 @@ block footer
     script(src="https://code.jquery.com/jquery-1.10.2.min.js")
     script(src="/socket.io/socket.io.js")
     script(src="/js/live.js")
-    script(async='', src='//platform.twitter.com/widgets.js', charset='utf-8')
+    script(async='' src='//platform.twitter.com/widgets.js' charset='utf-8')
