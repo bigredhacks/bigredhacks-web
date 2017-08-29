@@ -54,7 +54,7 @@ router.get('/subscribe', function (req, res, next) {
             else {
                 res.send({status: true, message: "Your email has been added to the mailing list!"});
             }  
-        })
+        });
     }
 });
 
@@ -65,17 +65,17 @@ router.get('/subscribe', function (req, res, next) {
  */
 router.get('/live',function (req, res, next) {
     async.parallel({
-            announcements: function announcements(callback) {
-                const PROJECTION = 'message time';
-                Announcement.find({}, PROJECTION, callback);
-            },
-            calendar: function calendar(callback) {
-                util.grabCalendar(callback);
-            },
-            inventory: function inventory(cb) {
-                Inventory.find({}, null, {sort: {name: 'asc'}}, cb);
-            }
-        }, function (err, result) {
+        announcements: function announcements(callback) {
+            const PROJECTION = 'message time';
+            Announcement.find({}, PROJECTION, callback);
+        },
+        calendar: function calendar(callback) {
+            util.grabCalendar(callback);
+        },
+        inventory: function inventory(cb) {
+            Inventory.find({}, null, {sort: {name: 'asc'}}, cb);
+        }
+    }, function (err, result) {
         if (err) {
             console.error(err);
             return res.status(500); // Do not expose error to users

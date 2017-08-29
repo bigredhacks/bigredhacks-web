@@ -10,6 +10,7 @@ $('document').ready(function () {
 
     var lastMajor = "";
     var lastCollege = {id: "", name: ""};
+
     $("#yearDropdown").on("change", function(e) {
         const otherCollegeId = "x999999";
         var selMajor = $("#major.typeahead");
@@ -23,20 +24,20 @@ $('document').ready(function () {
             lastCollege.name = $("#college").val();
         }
 
-       if ($(this).val() === "High School") {
-           $.CollegeTypeahead.disable();
-           //proper way to set value that works with typeahead
-           selMajor.typeahead("val","Undecided");
-           $("#collegeid").val(otherCollegeId);
-           $("#college").val("");
+        if ($(this).val() === "High School") {
+            $.CollegeTypeahead.disable();
+            //proper way to set value that works with typeahead
+            selMajor.typeahead("val","Undecided");
+            $("#collegeid").val(otherCollegeId);
+            $("#college").val("");
 
-       }
+        }
         else {
-           $("#collegeid").val(lastCollege.id);
-           $("#college").val(lastCollege.name);
-           $.CollegeTypeahead.enable();
-           selMajor.typeahead("val",lastMajor);
-       }
+            $("#collegeid").val(lastCollege.id);
+            $("#college").val(lastCollege.name);
+            $.CollegeTypeahead.enable();
+            selMajor.typeahead("val",lastMajor);
+        }
 
         //force revalidation only if selected major is not blank
         if (selMajor.val() != "") {
@@ -97,7 +98,7 @@ $('document').ready(function () {
                 required: true,
                 email: true,
                 emailNotCornell: $("#email").hasClass("not-cornell"),
-                remote: "/api/validEmail"
+                remote: mentorRegistration === true ? "/api/validEmailMentor" : "/api/validEmail"
             },
             password: {
                 minlength: 6,

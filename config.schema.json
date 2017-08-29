@@ -1,4 +1,33 @@
 {
+  "admin": {
+    "email": {"type": "String"},
+    "reg_open": {"type": "Boolean"},
+    "results_released": {"type": "Boolean"},
+    "cornell_reg_open": {"type": "Boolean"},
+    "cornell_auto_accept": {"type": "Number"},
+    "dayof": {"type": "Boolean"},
+    "days_to_rsvp": {"type": "Number"},
+    "default_reimbursement": {"type": "Number"}
+  },
+  "firebase": {
+    "key": {"type": "String"}
+  },
+  "mailchimp": {
+    "_comment": "Mailchimp list ids",
+    "l_interested": {"type": "String"},
+    "l_applicants": {"type": "String"},
+    "l_cornell_accepted": {"type": "String"},
+    "l_cornell_waitlisted": {"type": "String"},
+    "l_external_rsvpd": {"type": "String"},
+    "l_cornell_applicants": {"type": "String"}
+  },
+  "mentor": {
+    "mentorRegistrationKey": {"type": "String"}
+  },
+  "sendgrid": {
+    "_comment": "Sendgrid template ids",
+    "sg_general": {"type": "String"}
+  },
   "setup": {
     "_comment": "Secret api keys.",
     "AWS_access_key": {"type": "String"},
@@ -11,37 +40,11 @@
     "ical": {"type": "String"},
     "use_redis": {"type": "Boolean"}
   },
-  "mailchimp": {
-    "_comment": "Mailchimp list ids",
-    "l_interested": {"type": "String"},
-    "l_applicants": {"type": "String"},
-    "l_cornell_accepted": {"type": "String"},
-    "l_cornell_waitlisted": {"type": "String"},
-    "l_external_rsvpd": {"type": "String"},
-    "l_cornell_applicants": {"type": "String"}
-  },
-  "admin": {
-    "email": {"type": "String"},
-    "reg_open": {"type": "Boolean"},
-    "results_released": {"type": "Boolean"},
-    "cornell_reg_open": {"type": "Boolean"},
-    "cornell_auto_accept": {"type": "Number"},
-    "dayof": {"type": "Boolean"},
-    "days_to_rsvp": {"type": "Number"},
-    "default_reimbursement": {"type": "Number"}
-  },
-  "sendgrid": {
-    "_comment": "Sendgrid template ids",
-    "sg_general": {"type": "String"}
-  },
   "twitter": {
     "tw_consumer_key": {"type": "String"},
     "tw_consumer_secret": {"type": "String"},
     "tw_access_token": {"type": "String"},
     "tw_token_secret": {"type": "String"}
-  },
-  "firebase": {
-    "key": {"type": "String"}
   },
   "yearly": {
     "facebook": {"type": "String"},

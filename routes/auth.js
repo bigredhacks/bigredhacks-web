@@ -15,7 +15,6 @@ const login           = require("./auth/login");
 const passwordForgot  = require("./auth/passwordForgot");
 const passwordReset   = require("./auth/passwordReset");
 const register        = require("./auth/register");
-const registerMentor  = require("./auth/registerMentor");
 
 passport.use('user_strat', new LocalStrategy({
     usernameField: 'email',
@@ -32,7 +31,6 @@ function (req, email, password, done) {
         }
         if (user === null || !user.validPassword(password)) {
             return done(null, false, function () {
-                req.flash('email', email);
                 req.flash('error', 'Incorrect username or email.');
             }());
         }
@@ -95,10 +93,6 @@ module.exports = function (io) {
             return next();
         }
     }, middle.requireRegistrationOpen, register.post);
-
-    // Registration (Mentor)
-    router.get('/mentorregistration',  registerMentor.get);
-    router.post('/mentorregistration', registerMentor.post.bind(io));
 
     return router;
 };
