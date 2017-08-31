@@ -22,10 +22,8 @@ passport.use('user_strat', new LocalStrategy({
     passReqToCallback: true
 },
 function (req, email, password, done) {
-    if (email) {
-        email = email.toLowerCase();
-    }
-    User.findOne({email: email}, function (err, user) {
+    let sanitizedEmail = email ? email.trim().toLowerCase() : email;
+    User.findOne({email: sanitizedEmail}, function (err, user) {
         if (err) {
             return done(err);
         }

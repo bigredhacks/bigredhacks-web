@@ -331,7 +331,8 @@ userSchema.statics.removeFromTeam = function (user_id, callback) {
  * @param callback
  */
 userSchema.statics.validEmail = function (email, callback) {
-    User.findOne({email: email}, function (err, user) {
+    let sanitizedEmail = email ? email.trim().toLowerCase() : email;
+    User.findOne({email: sanitizedEmail}, function (err, user) {
         return callback(err, user != null);
     });
 };
