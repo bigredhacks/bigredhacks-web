@@ -39,8 +39,8 @@ block append content
                     .alert.alert-danger(role="alert") #{messages.error[0]}
                 //- form validation errors
                 if errors
-                    each err in errors
-                        .alert.alert-danger(role="alert") #{err.msg}
+                    each err in errors[1]
+                        .alert.alert-danger(role="alert")= err.msg
 
                 //- registration description
                 block description

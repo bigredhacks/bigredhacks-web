@@ -98,7 +98,7 @@ $('document').ready(function () {
                 required: true,
                 email: true,
                 emailNotCornell: $("#email").hasClass("not-cornell"),
-                remote: mentorRegistration === true ? "/api/validEmailMentor" : "/api/validEmail"
+                remote: typeof mentorRegistration !== "undefined" && mentorRegistration === true ? "/api/validEmailMentor" : "/api/validEmail"
             },
             password: {
                 minlength: 6,
