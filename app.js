@@ -42,7 +42,7 @@ var passport = require("passport");
 
 //mongoose setup
 var mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
+mongoose.createConnection(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
   useMongoClient: true,
   /* other options */
 });
