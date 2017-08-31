@@ -19,7 +19,6 @@ const util = require('../util/util');
  */
 router.get('/', function (req, res, next) {
     let ev = req.flash();
-    console.log(ev);
     res.render('index', {
         title: 'Cornell\'s Ultimate Hackathon',
         messages: ev
