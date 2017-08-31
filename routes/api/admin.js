@@ -94,7 +94,7 @@ router.post('/makeEvent', makeEvent);
  * @apiParam {string="Rejected","Waitlisted","Accepted"} status New status to set
  * */
 function setUserStatus(req, res, next) {
-    User.findOne({pubid: req.params.pubid}, function (err, user) {
+    User.findOne({ pubid: req.params.pubid }, function (err, user) {
         if (err || !user) {
             console.log('Error: ' + err);
             return res.sendStatus(500);
@@ -126,7 +126,7 @@ function setUserStatus(req, res, next) {
  * @apiParam {String} pubid
  */
 function removeUser(req, res, next) {
-    User.findOne({pubid: req.body.pubid}, function (err, user) {
+    User.findOne({ pubid: req.body.pubid }, function (err, user) {
         if (err) {
             console.error(err);
             req.flash('error', 'An error occurred while finding the user');
@@ -137,14 +137,14 @@ function removeUser(req, res, next) {
             return res.status(500).send('User not found! ');
         }
         else {
-            user.remove({'pubid': req.body.pubid}, function (err) {
+            user.remove({ 'pubid': req.body.pubid }, function (err) {
                 if (err) {
                     console.error('Remove error: ' + err);
                     return res.sendStatus(500);
                 }
                 else {
                     console.log('Success: removed user ' + req.body.pubid);
-                    req.flash('success', 'Successfully removed user '+ req.body.pubid);
+                    req.flash('success', 'Successfully removed user ' + req.body.pubid);
                     res.sendStatus(200);
                 }
             });
@@ -206,7 +206,8 @@ function setTeamStatus(req, res, next) {
  * @apiParam {string="user","admin"} role New role to set
  * */
 function setUserRole(req, res, next) {
-    User.findOne({email: req.params.email}, function (err, user) {
+    let sanitizedEmail = req.params.email ? req.params.email.trim().toLowerCase() : req.params.email;
+    User.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err || !user) {
             return res.sendStatus(500);
         }
@@ -227,7 +228,7 @@ function makeRollingAnnouncement(req, res, next) {
     const DAYS_TO_RSVP = Number(config.admin.days_to_rsvp);
     const WAITLIST_ID = config.mailchimp.l_cornell_waitlisted;
     const ACCEPTED_ID = config.mailchimp.l_cornell_accepted;
-    User.find({$and: [{$where: "this.internal.notificationStatus != this.internal.status"}, {"internal.status": {$ne: "Pending"}}]}, function (err, recipient) {
+    User.find({ $and: [{ $where: "this.internal.notificationStatus != this.internal.status" }, { "internal.status": { $ne: "Pending" } }] }, function (err, recipient) {
         if (err) console.log(err);
         else {
             // Do not want to overload by doing too many requests, so this will limit the async
@@ -332,7 +333,7 @@ function setNoParticipation(req, res, next) {
  * @apiError (500) BusDoesntExist
  */
 function removeBus(req, res, next) {
-    Bus.remove({_id: req.body.busid}, function (err) {
+    Bus.remove({ _id: req.body.busid }, function (err) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -358,7 +359,7 @@ function removeBus(req, res, next) {
  */
 function busConfirmationHandler(confirm) {
     return function (req, res, next) {
-        Bus.findOne({_id: req.body.busid}, function (err, bus) {
+        Bus.findOne({ _id: req.body.busid }, function (err, bus) {
             if (err) {
                 console.error(err);
                 return res.sendStatus(500);
@@ -381,7 +382,7 @@ function busConfirmationHandler(confirm) {
  * @apiError BusNotFound
  */
 function updateBus(req, res, next) {
-    Bus.findOne({_id: req.body.busid}, function (err, bus) {
+    Bus.findOne({ _id: req.body.busid }, function (err, bus) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -419,10 +420,10 @@ function setBusCaptain(req, res, next) {
 
     async.series({
         captain: function (callback) {
-            User.findOne({"email": email}, callback);
+            User.findOne({ "email": email }, callback);
         },
         bus: function (callback) {
-            Bus.findOne({"name": routeName}, callback);
+            Bus.findOne({ "name": routeName }, callback);
         }
     }, function assignCaptain(err, results) {
         if (err) {
@@ -480,10 +481,10 @@ function deleteBusCaptain(req, res, next) {
 
     async.series({
         captain: function (callback) {
-            User.findOne({"email": email}, callback);
+            User.findOne({ "email": email }, callback);
         },
         bus: function (callback) {
-            Bus.findOne({"captain.email": email}, callback);
+            Bus.findOne({ "captain.email": email }, callback);
         }
     }, function removeCaptain(err, results) {
         if (err) {
@@ -540,7 +541,7 @@ function setBusOverride(req, res, next) {
         return res.status(500).send('Missing email or route name');
     }
 
-    User.findOne({"email": email}, function (err, user) {
+    User.findOne({ "email": email }, function (err, user) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -557,7 +558,7 @@ function setBusOverride(req, res, next) {
         }
 
         // Confirm bus exists
-        Bus.findOne({name: req.body.routeName}, function (err, bus) {
+        Bus.findOne({ name: req.body.routeName }, function (err, bus) {
             if (err) {
                 console.error(err);
                 return res.sendStatus(500);
@@ -587,7 +588,7 @@ function deleteBusOverride(req, res, next) {
         return res.status(500).send('Missing email');
     }
 
-    User.findOne({"email": email}, function (err, user) {
+    User.findOne({ "email": email }, function (err, user) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -622,7 +623,7 @@ function deleteBusOverride(req, res, next) {
  * @apiError (500) FailureToSave
  */
 function schoolReimbursementsPost(req, res) {
-    Reimbursements.findOne({'college.id': req.body.collegeid}, function (err, rem) {
+    Reimbursements.findOne({ 'college.id': req.body.collegeid }, function (err, rem) {
         console.log(req.body);
         if (err) {
             console.error(err);
@@ -666,7 +667,7 @@ function schoolReimbursementsPost(req, res) {
  * @apiError (404) NoInfoInRequestBody
  */
 function schoolReimbursementsPatch(req, res) {
-    Reimbursements.findOne({"college.id": req.body.collegeid}, function (err, rem) {
+    Reimbursements.findOne({ "college.id": req.body.collegeid }, function (err, rem) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -699,7 +700,7 @@ function schoolReimbursementsPatch(req, res) {
  * @apiError (500) CouldNotFind
  */
 function schoolReimbursementsDelete(req, res) {
-    Reimbursements.remove({'college.id': req.body.collegeid}, function (err, rem) {
+    Reimbursements.remove({ 'college.id': req.body.collegeid }, function (err, rem) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -722,7 +723,7 @@ function setRSVP(req, res) {
     }
 
     //todo only allow changing if user is accepted
-    User.findOne({pubid: req.params.pubid}, function (err, user) {
+    User.findOne({ pubid: req.params.pubid }, function (err, user) {
         if (err || !user) {
             return res.sendStatus(500);
         }
@@ -744,7 +745,7 @@ function setRSVP(req, res) {
  * @apiParam checkedIn True if user has checked into the hackathon.
  */
 function checkInUser(req, res, next) {
-    User.findOne({pubid: req.params.pubid}, function (err, user) {
+    User.findOne({ pubid: req.params.pubid }, function (err, user) {
         if (err || !user) {
             return res.sendStatus(500);
         }
@@ -769,7 +770,7 @@ function checkInUser(req, res, next) {
  */
 function getUsersPlanningToAttend(req, res, next) {
     var project = "name pubid email school internal.checkedin";
-    User.find({$or: [{"internal.status": {$ne: "Rejected"}}, {"internal.going": {$ne: false}},{"internal.cornell_applicant": true}]}).select(project).exec(function (err, users) {
+    User.find({ $or: [{ "internal.status": { $ne: "Rejected" } }, { "internal.going": { $ne: false } }, { "internal.cornell_applicant": true }] }).select(project).exec(function (err, users) {
         if (err) {
             res.status(500).send(null);
         }
@@ -820,13 +821,13 @@ function postAnnouncement(req, res, next) {
                 var fcm = new FCM(serverkey);
 
                 var message = {
-                    to : '/topics/cats',
-                    notification : {
-                        title : req.body.message
+                    to: '/topics/cats',
+                    notification: {
+                        title: req.body.message
                     }
                 };
 
-                fcm.send(message, function(err,response){
+                fcm.send(message, function (err, response) {
                 });
             }
 
@@ -840,7 +841,7 @@ function postAnnouncement(req, res, next) {
                     null);
                 oauth2.getOAuthAccessToken(
                     '',
-                    {'grant_type': 'client_credentials'},
+                    { 'grant_type': 'client_credentials' },
                     function (e, access_token, refresh_token, results) {
                         if (e) {
                             console.log('Twitter OAuth Error: ' + e);
@@ -851,7 +852,7 @@ function postAnnouncement(req, res, next) {
                                 access_token_key: config.twitter.tw_access_token,
                                 access_token_secret: config.twitter.tw_token_secret
                             });
-                            twitter_client.post('statuses/update', {status: req.body.message}, function (error, tweet, response) {
+                            twitter_client.post('statuses/update', { status: req.body.message }, function (error, tweet, response) {
                                 if (error) {
                                     console.log('Tweeting error: ' + error);
                                     console.log(tweet);
@@ -876,7 +877,7 @@ function postAnnouncement(req, res, next) {
  * @apiParam {String} _id The unique mongo id for the announcement
  */
 function deleteAnnouncement(req, res, next) {
-    Announcement.remove({_id: req.body._id}, function (err) {
+    Announcement.remove({ _id: req.body._id }, function (err) {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -922,7 +923,8 @@ function annotate(req, res, next) {
  * @apiParam {Number} amount
  */
 function studentReimbursementsPost(req, res, next) {
-    User.findOne({email: req.body.email}, function (err, user) {
+    let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
+    User.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
             console.log('Reimbursement Error: ' + err); // If null, check amount
             res.status(500).send('Reimbursement Error: ' + err);
@@ -956,7 +958,8 @@ function studentReimbursementsDelete(req, res, next) {
         return res.status(500).send("Email required");
     }
 
-    User.findOne({email: req.body.email}, function (err, user) {
+    let sanitizedEmail = req.body.email.trim().toLowerCase();
+    User.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
             console.log('ERROR on delete: ' + err);
             res.status(500).send("Error on delete: " + err)
@@ -991,7 +994,8 @@ function rsvpDeadlineOverride(req, res, next) {
         return res.status(500).send('Need positive daysToRSVP value');
     }
 
-    User.findOne({email: req.body.email}, function (err, user) {
+    let sanitizedEmail = req.body.email.trim().toLowerCase();
+    User.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
             return res.status(500).send(err);
         } else if (!user) {
@@ -1021,7 +1025,7 @@ function setInventory(req, res, next) {
     }
 
     if (body.quantity <= 0) {
-        Inventory.find({name: body.name}).remove(function (err, result) {
+        Inventory.find({ name: body.name }).remove(function (err, result) {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -1029,7 +1033,7 @@ function setInventory(req, res, next) {
             return res.redirect('/admin/hardware');
         });
     } else {
-        Inventory.findOne({name: body.name}, function (err, item) {
+        Inventory.findOne({ name: body.name }, function (err, item) {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -1079,10 +1083,11 @@ function transactHardware(req, res, next) {
 
     async.parallel({
         student: function (cb) {
-            User.findOne({email: body.email}, cb);
+            let sanitizedEmail = body.email ? body.email.trim().toLowerCase() : body.email;
+            User.findOne({ email: sanitizedEmail }, cb);
         },
         item: function (cb) {
-            Inventory.findOne({name: body.name}, cb);
+            Inventory.findOne({ name: body.name }, cb);
         }
     }, function (err, result) {
         if (err) {
@@ -1230,9 +1235,9 @@ function cornellLottery(req, res, next) {
     // Find all non-accepted Cornell students
     User.find({
         $and: [
-            {'internal.cornell_applicant': true},
-            {'internal.status': {$ne: 'Accepted'}},
-            {'internal.status': {$ne: 'Rejected'}}
+            { 'internal.cornell_applicant': true },
+            { 'internal.status': { $ne: 'Accepted' } },
+            { 'internal.status': { $ne: 'Rejected' } }
         ]
     }, function (err, pendings) {
         if (err) {
@@ -1322,11 +1327,11 @@ function cornellWaitlist(req, res, next) {
 
     User.find({
         $and: [
-            {'internal.cornell_applicant': true},
-            {'internal.status': {$ne: 'Accepted'}},
-            {'internal.status': {$ne: 'Rejected'}}
+            { 'internal.cornell_applicant': true },
+            { 'internal.status': { $ne: 'Accepted' } },
+            { 'internal.status': { $ne: 'Rejected' } }
         ]
-    }).sort({'created_at': 'asc'}).exec(function (err, pendings) {
+    }).sort({ 'created_at': 'asc' }).exec(function (err, pendings) {
         let numAccepted = 0;
         pendings.forEach(function (student) {
             if (numAccepted < req.body.numberToAccept) {
@@ -1359,21 +1364,21 @@ function cornellWaitlist(req, res, next) {
  **/
 function csvBus(req, res, next) {
     let query = [
-        {'internal.status': 'Accepted'},
-        {'internal.cornell_applicant': false}
+        { 'internal.status': 'Accepted' },
+        { 'internal.cornell_applicant': false }
     ];
 
     if (req.body.optInOnly) {
-        query.push({'internal.busid': {$ne: null}});
+        query.push({ 'internal.busid': { $ne: null } });
     }
 
     if (req.body.rsvpOnly) {
-        query.push({'internal.going': true});
+        query.push({ 'internal.going': true });
     }
 
     async.parallel({
         students: function students(cb) {
-            User.find({$and: query}, cb);
+            User.find({ $and: query }, cb);
         },
         buses: function bus(cb) {
             Bus.find({}, cb);
@@ -1454,11 +1459,11 @@ function makeKey(req, res, next) {
 
     //Check whether the key already exists and save it
     MentorAuthorizationKey.findOneAndUpdate(
-        {'key': key}, //queries to see if it exists
-        {'key': key}, //rewrites it if it does (does not make a new one)
-        {upsert: true}, //if it doesn't exist, it makes a creates a new one
-        function(err){
-            if(err){
+        { 'key': key }, //queries to see if it exists
+        { 'key': key }, //rewrites it if it does (does not make a new one)
+        { upsert: true }, //if it doesn't exist, it makes a creates a new one
+        function (err) {
+            if (err) {
                 req.flash('error', 'An error occurred');
                 return res.redirect('/admin/dashboard');
             }
@@ -1473,84 +1478,85 @@ function makeKey(req, res, next) {
  * A qr scan (or manual entry) for checkin-based events.
  */
 function scanQR(req, res, next) {
-  let pubid = req.body.pubid;
-  let email = req.body.email;
-  let scanEventId = req.body.scanEventId;
+    let pubid = req.body.pubid;
+    let email = req.body.email;
+    let scanEventId = req.body.scanEventId;
 
-  if (!pubid && !email) {
-      return res.status(500).send('missing pubid or email');
-  }
-
-  if (!scanEventId) {
-    return res.status(500).send('missing scanEventId');
-  }
-
-  async.parallel({
-    user: function(cb) {
-        if (pubid) {
-          User.findOne({pubid:pubid},cb);
-        } else {
-          User.findOne({email:email},cb);
-        }
-    },
-    scanEvent: function(cb) {
-        ScanEvent.findOne({name: scanEventId}, cb);
-    }
-  }, function(err,data) {
-    if (!data.user) {
-      return res.status(500).send('No such user.');
+    if (!pubid && !email) {
+        return res.status(500).send('missing pubid or email');
     }
 
-    if (!data.scanEvent) {
-      return res.status(500).send('No such event: ' + scanEventId);
+    if (!scanEventId) {
+        return res.status(500).send('missing scanEventId');
     }
 
-    for (let i = 0; i < data.scanEvent.attendees.length; i++) {
-        let person = data.scanEvent.attendees[i];
-        if ( (person.reference + "") == (data.user._id + "")) {
-            return res.status(200).send('Sorry! ' + data.user.name.full + ' is already checked in for ' + data.scanEvent.name);
-        }
-    }
-
-    data.scanEvent.attendees.push({
-        name: {
-            first: data.user.name.first,
-            last: data.user.name.last
+    async.parallel({
+        user: function (cb) {
+            if (pubid) {
+                User.findOne({ pubid: pubid }, cb);
+            } else {
+                let sanitizedEmail = email ? email.trim().toLowerCase() : email;
+                User.findOne({ email: sanitizedEmail }, cb);
+            }
         },
-        email: data.user.email,
-        reference: data.user.id
-    });
-    data.scanEvent.save(function(err) {
-        if (err) {
-          return res.status(500).send(err);
+        scanEvent: function (cb) {
+            ScanEvent.findOne({ name: scanEventId }, cb);
+        }
+    }, function (err, data) {
+        if (!data.user) {
+            return res.status(500).send('No such user.');
         }
 
-        return res.status(200).send(data.user.name.full + ' is checked in for ' + data.scanEvent.name);
+        if (!data.scanEvent) {
+            return res.status(500).send('No such event: ' + scanEventId);
+        }
+
+        for (let i = 0; i < data.scanEvent.attendees.length; i++) {
+            let person = data.scanEvent.attendees[i];
+            if ((person.reference + "") == (data.user._id + "")) {
+                return res.status(200).send('Sorry! ' + data.user.name.full + ' is already checked in for ' + data.scanEvent.name);
+            }
+        }
+
+        data.scanEvent.attendees.push({
+            name: {
+                first: data.user.name.first,
+                last: data.user.name.last
+            },
+            email: data.user.email,
+            reference: data.user.id
+        });
+        data.scanEvent.save(function (err) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            return res.status(200).send(data.user.name.full + ' is checked in for ' + data.scanEvent.name);
+        });
     });
-  });
 }
 
 /**
  * Makes a scanEvent.
  */
 function makeEvent(req, res, next) {
-  var name = req.body.name;
+    var name = req.body.name;
 
-  //Check whether the key already exists and save it
-  ScanEvent.findOneAndUpdate(
-    {'name': name}, //queries to see if it exists
-    {'name': name, attendees: []}, //rewrites it if it does (does not make a new one)
-    {upsert: true}, //if it doesn't exist, it makes a creates a new one
-    function(err){
-      if(err){
-        req.flash('error', 'An error occurred');
-        return res.redirect('/admin/qrscan');
-      }
+    //Check whether the key already exists and save it
+    ScanEvent.findOneAndUpdate(
+        { 'name': name }, //queries to see if it exists
+        { 'name': name, attendees: [] }, //rewrites it if it does (does not make a new one)
+        { upsert: true }, //if it doesn't exist, it makes a creates a new one
+        function (err) {
+            if (err) {
+                req.flash('error', 'An error occurred');
+                return res.redirect('/admin/qrscan');
+            }
 
-      req.flash('success', 'Successfully made a new event');
-      return res.redirect('/admin/qrscan');
-    }
-  );
+            req.flash('success', 'Successfully made a new event');
+            return res.redirect('/admin/qrscan');
+        }
+    );
 }
 
 /**

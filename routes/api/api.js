@@ -1,18 +1,18 @@
 "use strict";
 
-const express     = require('express');
-const email       = require('../../util/email');
-const middle      = require('../middleware');
-let   router      = express.Router();
-const socketutil  = require('../../util/socketutil');
-const util        = require('../../util/util');
+const express = require('express');
+const email = require('../../util/email');
+const middle = require('../middleware');
+let router = express.Router();
+const socketutil = require('../../util/socketutil');
+const util = require('../../util/util');
 
-let Announcement  = require('../../models/announcement');
-let Colleges      = require('../../models/college');
-let Hardware      = require('../../models/hardware');
-let Mentor        = require('../../models/mentor');
+let Announcement = require('../../models/announcement');
+let Colleges = require('../../models/college');
+let Hardware = require('../../models/hardware');
+let Mentor = require('../../models/mentor');
 let MentorRequest = require('../../models/mentor_request');
-let User          = require('../../models/user');
+let User = require('../../models/user');
 
 /**
  * @api {get} /api/colleges Request a full list of known colleges
@@ -46,7 +46,8 @@ router.get('/hardware', function (req, res, next) {
  * @apiSuccess (200) {String} error Request for valid email.
  */
 router.get('/validEmail', function (req, res) {
-    User.findOne({email: req.query.email}, function (err, user) {
+    let sanitizedEmail = req.query.email ? req.query.email.trim().toLowerCase() : req.query.email;
+    User.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
             return res.send("Please enter a valid email.");
         }
@@ -65,7 +66,8 @@ router.get('/validEmail', function (req, res) {
  * @apiSuccess (200) {String} error Request for valid email.
  */
 router.get('/validEmailMentor', function (req, res) {
-    Mentor.findOne({email: req.query.email}, function (err, user) {
+    let sanitizedEmail = req.query.email ? req.query.email.trim().toLowerCase() : req.query.email;
+    Mentor.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
             return res.send("Please enter a valid email.");
         }
@@ -185,7 +187,7 @@ router.post('/RequestMentor', function (req, res, next) {
         req.body.tableNumber = 'Unknown';
     }
 
-    User.findOne({'email':req.body.email}, function(err,user) {
+    User.findOne({ 'email': req.body.email }, function (err, user) {
         if (err) {
             console.error(err);
             return res.status(500);
@@ -195,17 +197,17 @@ router.post('/RequestMentor', function (req, res, next) {
             return res.status(500).send('Email not found.');
         }
 
-        MentorRequest.generateRequest(user._id, req.body.request, req.body.tableNumber, function(err) {
+        MentorRequest.generateRequest(user._id, req.body.request, req.body.tableNumber, function (err) {
             if (err) {
                 console.error(err);
                 return res.status(500);
             }
 
-            email.sendRequestMadeEmail(user.email, user.name, function(err) {
+            email.sendRequestMadeEmail(user.email, user.name, function (err) {
                 if (err) {
                     console.error(err);
                 }
-                MentorRequest.find({}, function(err, requests) {
+                MentorRequest.find({}, function (err, requests) {
                     socketutil.updateRequests(requests);
                     return res.status(200).send('Request made!');
                 });
