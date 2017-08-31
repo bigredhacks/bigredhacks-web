@@ -80,6 +80,9 @@ let validator = function () {
         location: function (req) {
             req.assert('location', 'Please specify your current location.').notEmpty().len(1, 70);
         },
+        github: function (req) {
+            req.assert('location', 'Please specify your GitHub account name.').notEmpty().len(1, 70);
+        },
     };
 
 
