@@ -130,6 +130,7 @@ function registerPost (req, res) {
                         return cb(err || "College does not exist.");
                     }
                     else {
+                        console.log(config.admin.cornell_reg_open)
                         if (config.admin.cornell_reg_open !== true &&
                             (authHelp._isCornellian(college) || req.body.email.split("@")[1].split(".")[0] === "cornell")) {
                             return cb("We aren't accepting applications from Cornell University students right now. Subscribe to our email list for more info.");
@@ -141,6 +142,7 @@ function registerPost (req, res) {
                 });
             }
             else {
+                console.log(config.admin.cornell_reg_open)
                 if (config.admin.cornell_reg_open !== true &&
                     (req.body.email.split("@")[1].split(".")[0] === "cornell" || req.body.college.indexOf("Cornell University") !== -1)) {
                     return cb("We aren't accepting applications from Cornell University students right now. Subscribe to our email list for more info.");
