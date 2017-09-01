@@ -53,7 +53,8 @@ function registerGet (req, res) {
                 error:    req.flash('error'),
                 limit:    config.admin.cornell_auto_accept,
                 title:    collegeName || "BigRed//Hacks | Register",
-                urlparam: collegeParam
+                urlparam: collegeParam,
+                cornellOpen: config.admin.cornell_reg_open
             });
         }
         else {
@@ -298,7 +299,8 @@ function registerPost (req, res) {
                 error:  req.flash('error'),
                 errors: err,
                 input:  req.body,
-                title:  "BigRed//Hacks | Register"
+                title:  "BigRed//Hacks | Register",
+                cornellOpen: config.admin.cornell_reg_open
             });
         }
     });
