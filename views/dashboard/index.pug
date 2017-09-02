@@ -4,7 +4,7 @@
 extends _layout-dashboard
 block vars
     - status = user.internal.notificationStatus.toLowerCase();
-    - cornellian = user.internal.cornell_applicant;
+    - cornellian = user.email.includes("@cornell.edu") || user.school.name.includes("Cornell University");
 
 block dashboard_content
     unless input
