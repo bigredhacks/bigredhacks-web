@@ -73,7 +73,8 @@ function registerGet (req, res) {
 function registerPost (req, res) {
     async.waterfall([
         (cb) => {
-            User.findOne({email: req.body.email}).exec((err, user) => {
+            let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
+            User.findOne({email: sanitizedEmail}).exec((err, user) => {
                 if (!err) {
                     if (typeof user !== "undefined" && user) {
                         return cb("A user with this email address has already registered!");
