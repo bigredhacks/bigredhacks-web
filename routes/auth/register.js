@@ -53,7 +53,8 @@ function registerGet (req, res) {
                 error:    req.flash('error'),
                 limit:    config.admin.cornell_auto_accept,
                 title:    collegeName || "BigRed//Hacks | Register",
-                urlparam: collegeParam
+                urlparam: collegeParam,
+                cornellOpen: config.admin.cornell_reg_open
             });
         }
         else {
@@ -72,7 +73,8 @@ function registerGet (req, res) {
 function registerPost (req, res) {
     async.waterfall([
         (cb) => {
-            User.findOne({email: req.body.email}).exec((err, user) => {
+            let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
+            User.findOne({email: sanitizedEmail}).exec((err, user) => {
                 if (!err) {
                     if (typeof user !== "undefined" && user) {
                         return cb("A user with this email address has already registered!");
@@ -298,7 +300,8 @@ function registerPost (req, res) {
                 error:  req.flash('error'),
                 errors: err,
                 input:  req.body,
-                title:  "BigRed//Hacks | Register"
+                title:  "BigRed//Hacks | Register",
+                cornellOpen: config.admin.cornell_reg_open
             });
         }
     });

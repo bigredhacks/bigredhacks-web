@@ -67,7 +67,8 @@ function registerMentorPost (req, res) {
             async.parallel({
                 existingMentor: (cb) => {
                     // Check for an existing mentor
-                    Mentor.findOne({email: req.body.email}).exec((err, user) => {
+                    let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
+                    Mentor.findOne({email: sanitizedEmail}).exec((err, user) => {
                         if (!err) {
                             if (typeof user !== "undefined" && user) {
                                 return cb("A mentor with this email address has already registered!");

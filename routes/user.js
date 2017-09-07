@@ -432,8 +432,13 @@ module.exports = function (io) {
                     if (bus === null && !req.user.internal.cornell_applicant) {
                         //fail if no receipt uploaded
                         if (!receipt) {
-                            req.flash('error', "Please upload a travel receipt.");
-                            return res.redirect('/user/dashboard');
+                            if(req.user.email.includes("@cornell.edu") || req.user.school.name.includes("Cornell")){
+                                return _saveAndSubscribe();
+                            }
+                            else{
+                                req.flash('error', "Please upload a travel receipt.");
+                                return res.redirect('/user/dashboard');
+                            }    
                         }
 
                         helper.uploadFile(receipt, {type: "receipt"}, function (err, file) {

@@ -23,7 +23,8 @@ function forgotPasswordGet (req, res) {
  * @apiGroup Auth
  */
 function forgotPasswordPost (req, res) {
-    User.findOne({email: req.body.email}, function (err, user) {
+    let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
+    User.findOne({email: sanitizedEmail}, function (err, user) {
         if (user === null) {
             req.flash('error', 'No account is associated with that email.');
             res.redirect('/forgotpassword');

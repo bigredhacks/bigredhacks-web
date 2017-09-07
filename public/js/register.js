@@ -97,7 +97,7 @@ $('document').ready(function () {
             email: {
                 required: true,
                 email: true,
-                emailNotCornell: $("#email").hasClass("not-cornell"),
+                emailNotCornell: !cornellOpen,
                 remote: typeof mentorRegistration !== "undefined" && mentorRegistration === true ? "/api/validEmailMentor" : "/api/validEmail"
             },
             password: {
@@ -124,7 +124,7 @@ $('document').ready(function () {
             },
             college: {
                 notEmpty: ['college', 'collegeid'],
-                schoolNotCornell: true
+                schoolNotCornell: !cornellOpen
             },
             major: {
                 required: true,
