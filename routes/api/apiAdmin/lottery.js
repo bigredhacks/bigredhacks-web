@@ -1,6 +1,6 @@
 const async = require("async");
 
-let User = require("../../models/user.js");
+let User = require("../../../models/user.js");
 
 module.exports.cornellLottery = (req, res) => {
     if (!req.body.numberToAccept || req.body.numberToAccept < 0) {

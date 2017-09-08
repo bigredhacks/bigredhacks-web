@@ -93,28 +93,7 @@ router.post('/makeEvent', makeEvent);
  *
  * @apiParam {string="Rejected","Waitlisted","Accepted"} status New status to set
  * */
-function setUserStatus(req, res, next) {
-    User.findOne({ pubid: req.params.pubid }, function (err, user) {
-        if (err || !user) {
-            console.log('Error: ' + err);
-            return res.sendStatus(500);
-        }
-        else {
-            user.internal.status = req.body.status;
 
-            // Redirect to home page
-            user.save(function (err) {
-                if (err) {
-                    console.log(err);
-                    return res.sendStatus(500);
-                } else {
-                    return res.sendStatus(200);
-                }
-            });
-
-        }
-    });
-}
 
 
 /**
@@ -125,32 +104,7 @@ function setUserStatus(req, res, next) {
  *
  * @apiParam {String} pubid
  */
-function removeUser(req, res, next) {
-    User.findOne({ pubid: req.body.pubid }, function (err, user) {
-        if (err) {
-            console.error(err);
-            req.flash('error', 'An error occurred while finding the user');
-            return res.status(500).send(err);
-        }
-        if (!user) {
-            req.flash('error', 'Cannot find user with this pubid');
-            return res.status(500).send('User not found! ');
-        }
-        else {
-            user.remove({ 'pubid': req.body.pubid }, function (err) {
-                if (err) {
-                    console.error('Remove error: ' + err);
-                    return res.sendStatus(500);
-                }
-                else {
-                    console.log('Success: removed user ' + req.body.pubid);
-                    req.flash('success', 'Successfully removed user ' + req.body.pubid);
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-}
+
 
 
 /**
@@ -160,43 +114,7 @@ function removeUser(req, res, next) {
  *
  * @apiParam {string="Rejected","Waitlisted","Accepted"} status New status to set
  * */
-function setTeamStatus(req, res, next) {
-    var id = mongoose.Types.ObjectId(req.params.teamid);
-    Team.findById(id, function (err, team) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        if (!team) {
-            console.log("No such team found.");
-            return res.sendStatus(500);
-        }
-        else {
-            team.populate('members.id', function (err, team) {
-                if (err) {
-                    console.log(err);
-                    return res.sendStatus(500);
-                }
-                else {
-                    async.each(team.members, function (user, callback) {
-                        user = user.id;
-                        user.internal.status = req.body.status;
-                        user.save(function (err) {
-                            callback(err);
-                        });
-                    }, function (err) {
-                        if (err) {
-                            console.log(err);
-                            return res.sendStatus(500);
-                        }
-                        else return res.sendStatus(200);
-                    });
 
-                }
-            })
-        }
-    });
-}
 
 /**
  * @api {POST} /api/admin/user/:email/setRole Set role of a single user
@@ -205,100 +123,12 @@ function setTeamStatus(req, res, next) {
  *
  * @apiParam {string="user","admin"} role New role to set
  * */
-function setUserRole(req, res, next) {
-    let sanitizedEmail = req.params.email ? req.params.email.trim().toLowerCase() : req.params.email;
-    User.findOne({ email: sanitizedEmail }, function (err, user) {
-        if (err || !user) {
-            return res.sendStatus(500);
-        }
-        else {
-            user.role = req.body.role.toLowerCase();
-            user.save(function (err) {
-                if (err) return res.sendStatus(500);
-                else return res.sendStatus(200);
-            });
-        }
-    });
-}
+
 
 /**
  * @api {PATCH} /api/admin/rollingDecision Publish decisions to all who have had one made and not received it yet.
  */
-function makeRollingAnnouncement(req, res, next) {
-    const DAYS_TO_RSVP = Number(config.admin.days_to_rsvp);
-    const WAITLIST_ID = config.mailchimp.l_cornell_waitlisted;
-    const ACCEPTED_ID = config.mailchimp.l_cornell_accepted;
-    User.find({ $and: [{ $where: "this.internal.notificationStatus != this.internal.status" }, { "internal.status": { $ne: "Pending" } }] }, function (err, recipient) {
-        if (err) console.log(err);
-        else {
-            // Do not want to overload by doing too many requests, so this will limit the async
-            const maxRequestsAtATime = 3;
-            async.eachLimit(recipient, maxRequestsAtATime, function (recip, callback) {
-                var config = {
-                    "from_email": "info@bigredhacks.com",
-                    "from_name": "BigRed//Hacks",
-                    "to": {
-                        "email": recip.email,
-                        "name": recip.name.first + " " + recip.name.last
-                    }
-                };
 
-                email.sendDecisionEmail(recip.name.first, recip.internal.notificationStatus, recip.internal.status, config, function (err) {
-                    if (err) {
-                        return callback(err);
-                    } else {
-                        recip.internal.notificationStatus = recip.internal.status;
-                        recip.internal.lastNotifiedAt = Date.now();
-                        recip.internal.daysToRSVP = DAYS_TO_RSVP;
-
-                        async.parallel([
-                            function saveUser(cb) {
-                                recip.save(cb);
-                            },
-                            function offWaitlist(cb) {
-                                if (recip.internal.cornell_applicant && recip.internal.status == 'Accepted') {
-                                    // We can get errors for non-termination reasons, so callback will only log error
-                                    helper.removeSubscriber(WAITLIST_ID, recip.email, function (err) {
-                                        if (err) {
-                                            console.error(err);
-                                        }
-                                        cb();
-                                    });
-                                } else {
-                                    cb();
-                                }
-                            },
-                            function onAcceptedList(cb) {
-                                if (recip.internal.cornell_applicant && recip.internal.status == 'Accepted') {
-                                    // We can get errors for non-termination reasons, so callback will only log error
-                                    helper.addSubscriber(ACCEPTED_ID, recip.email, recip.name.first, recip.name.last, function (err) {
-                                        if (err) {
-                                            console.error(err);
-                                        }
-                                        cb();
-                                    });
-                                } else {
-                                    cb();
-                                }
-                            }
-                        ], function (err) {
-                            return void callback(err);
-                        });
-                    }
-                })
-            }, function (err) {
-                if (err) {
-                    console.error('An error occurred with decision emails. Decision sending was terminated. See the log for remediation: ' + err);
-                    req.flash('error', 'An error occurred. Check the logs!');
-                    res.sendStatus(500);
-                } else {
-                    req.flash('success', 'All transactional decision emails successfully sent!');
-                    return res.redirect('/admin/dashboard');
-                }
-            });
-        }
-    });
-}
 
 /**
  * @api {GET} /api/np Checks whether a user is in no-participation mode
@@ -308,9 +138,6 @@ function makeRollingAnnouncement(req, res, next) {
  * @apiSuccess (200) {Boolean} true
  * @apiError (200) {Boolean} false
  */
-function getNoParticipation(req, res, next) {
-    res.send(req.session.np);
-}
 
 /**
  * @api {POST} /api/admin/np/set Enable/disable no participation mode
@@ -320,10 +147,6 @@ function getNoParticipation(req, res, next) {
  * @apiParam {boolean} state New np state to set
  *
  */
-function setNoParticipation(req, res, next) {
-    req.session.np = req.body.state;
-    res.sendStatus(200);
-}
 
 /**
  * @api {DELETE} /api/admin/removeBus Remove bus from list of buses.
@@ -332,15 +155,7 @@ function setNoParticipation(req, res, next) {
  *
  * @apiError (500) BusDoesntExist
  */
-function removeBus(req, res, next) {
-    Bus.remove({ _id: req.body.busid }, function (err) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        else return res.sendStatus(200);
-    });
-}
+
 
 /**
  * @api {POST} /api/admin/confirmBus Set a route to confirmed.
@@ -357,21 +172,7 @@ function removeBus(req, res, next) {
  * @apiParam {String} busid
  * @apiError (500) BusDoesntExist
  */
-function busConfirmationHandler(confirm) {
-    return function (req, res, next) {
-        Bus.findOne({ _id: req.body.busid }, function (err, bus) {
-            if (err) {
-                console.error(err);
-                return res.sendStatus(500);
-            } else if (!bus) {
-                return res.status(500).send('Bus not found!');
-            }
 
-            bus.confirmed = confirm;
-            bus.save(util.dbSaveCallback(res));
-        });
-    };
-}
 
 /**
  * @api {POST} /api/admin/updateBus update bus in list of buses.
@@ -381,26 +182,7 @@ function busConfirmationHandler(confirm) {
  * @apiError DBError
  * @apiError BusNotFound
  */
-function updateBus(req, res, next) {
-    Bus.findOne({ _id: req.body.busid }, function (err, bus) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
 
-        bus.name = req.body.busname; //bus route name
-        bus.stops = req.body.stops;
-        bus.capacity = parseInt(req.body.buscapacity);
-        bus.customMessage = req.body.customMessage;
-        bus.save(function (err) {
-            if (err) {
-                console.error(err);
-                return res.sendStatus(500);
-            }
-            else return res.sendStatus(200);
-        });
-    });
-}
 
 /**
  * @api {POST} /api/admin/busCaptain Set the captain of a bus.
@@ -410,60 +192,7 @@ function updateBus(req, res, next) {
  * @apiParam {String} email The email of the captain.
  * @apiParam {String} routeName The name of the bus route.
  */
-function setBusCaptain(req, res, next) {
-    const email = req.body.email;
-    const routeName = req.body.routeName;
 
-    if (!email || !routeName) {
-        return res.sendStatus(500);
-    }
-
-    async.series({
-        captain: function (callback) {
-            User.findOne({ "email": email }, callback);
-        },
-        bus: function (callback) {
-            Bus.findOne({ "name": routeName }, callback);
-        }
-    }, function assignCaptain(err, results) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-
-        let captain = results.captain;
-        let bus = results.bus;
-
-        if (bus.captain.name) {
-            res.status(500).send('Bus already has a captain');
-        } else if (captain && captain.internal.busid != bus.id) {
-            res.status(500).send('User has not signed up for that bus');
-        } else {
-            bus.captain.name = captain.name.first + " " + captain.name.last;
-            bus.captain.email = captain.email;
-            bus.captain.college = captain.school.name;
-            bus.captain.id = captain.id;
-
-            captain.internal.busCaptain = true;
-
-            bus.save(function (err) {
-                if (err) {
-                    console.error(err);
-                    res.sendStatus(500);
-                } else {
-                    captain.save(function (err) {
-                        if (err) {
-                            console.error(err);
-                            res.sendStatus(500);
-                        } else {
-                            res.redirect('/admin/businfo');
-                        }
-                    });
-                }
-            });
-        }
-    });
-}
 
 /**
  * @api {DELETE} /api/admin/busCaptain Unset the captain of a bus.
@@ -472,57 +201,6 @@ function setBusCaptain(req, res, next) {
  *
  * @apiParam {String} email The email of the captain.
  */
-function deleteBusCaptain(req, res, next) {
-    const email = req.body.email;
-
-    if (!email) {
-        return res.status(500).send('Missing email');
-    }
-
-    async.series({
-        captain: function (callback) {
-            User.findOne({ "email": email }, callback);
-        },
-        bus: function (callback) {
-            Bus.findOne({ "captain.email": email }, callback);
-        }
-    }, function removeCaptain(err, results) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-
-        if (!results.bus || !results.captain) {
-            return res.status(500).send('Could not find bus or captain');
-        }
-
-        var captain = results.captain;
-        var bus = results.bus;
-
-        bus.captain.name = null;
-        bus.captain.email = null;
-        bus.captain.college = null;
-        bus.captain.id = null;
-
-        captain.internal.busCaptain = false;
-
-        bus.save(function (err) {
-            if (err) {
-                console.error(err);
-                return res.sendStatus(500);
-            } else {
-                captain.save(function (err) {
-                    if (err) {
-                        console.error(err);
-                        return res.sendStatus(500);
-                    } else {
-                        return res.sendStatus(200);
-                    }
-                });
-            }
-        });
-    });
-}
 
 /**
  * @api {PUT} /api/admin/busOverride Override the bus associated with a rider. If the rider is already signed up for a bus,
@@ -533,44 +211,6 @@ function deleteBusCaptain(req, res, next) {
  * @apiParam {String} email The email of the rider.
  * @apiParam {String} routeName The name of the new route for the user
  */
-function setBusOverride(req, res, next) {
-    const email = req.body.email;
-    const routeName = req.body.routeName;
-
-    if (!email || !routeName) {
-        return res.status(500).send('Missing email or route name');
-    }
-
-    User.findOne({ "email": email }, function (err, user) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        } else if (!user) {
-            return res.status(500).send('No such user');
-        }
-
-        if (user.internal.busid) {
-            // User has already RSVP'd for a bus, undo this
-            var fakeRes = {};
-            fakeRes.sendStatus = function (status) {
-            }; // FIXME: Refactor to not use a void function
-            util.removeUserFromBus(Bus, req, fakeRes, user);
-        }
-
-        // Confirm bus exists
-        Bus.findOne({ name: req.body.routeName }, function (err, bus) {
-            if (err) {
-                console.error(err);
-                return res.sendStatus(500);
-            } else if (!bus) {
-                return res.status(500).send('No such bus route');
-            }
-
-            user.internal.busOverride = bus._id;
-            user.save(util.dbSaveCallback(res));
-        });
-    });
-}
 
 /**
  * @api {DELETE} /api/admin/busOverride Unset the override for a bus rider. If the rider is already signed up for a bus,
@@ -581,33 +221,7 @@ function setBusOverride(req, res, next) {
  *
  * @apiParam {String} email The email of the rider.
  */
-function deleteBusOverride(req, res, next) {
-    const email = req.body.email;
 
-    if (!email) {
-        return res.status(500).send('Missing email');
-    }
-
-    User.findOne({ "email": email }, function (err, user) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        } else if (!user) {
-            return res.status(500).send('No such user');
-        }
-
-        if (user.internal.busid) {
-            // User has already RSVP'd for a bus, undo this
-            var fakeRes = {};
-            fakeRes.sendStatus = function (status) {
-            }; // FIXME: Refactor to not use a void function
-            util.removeUserFromBus(Bus, req, fakeRes, user);
-        }
-
-        user.internal.busOverride = null;
-        user.save(util.dbSaveCallback(res));
-    });
-}
 
 /**
  * @api {POST} /api/admin/reimbursements/school Sets a reimbursement for the school.
@@ -622,37 +236,7 @@ function deleteBusOverride(req, res, next) {
  * @apiError (500) EntryAlreadyExists
  * @apiError (500) FailureToSave
  */
-function schoolReimbursementsPost(req, res) {
-    Reimbursements.findOne({ 'college.id': req.body.collegeid }, function (err, rem) {
-        console.log(req.body);
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        if (rem) {
-            console.log("Entry already exists.");
-            return res.sendStatus(500);
-        }
-        else {
-            //todo couple these
-            var newRem = new Reimbursements({
-                college: {
-                    id: req.body.collegeid,
-                    name: req.body.college
-                },
-                mode: req.body.travel,
-                amount: req.body.amount
-            });
-            newRem.save(function (err) {
-                if (err) {
-                    console.log(err);
-                    return res.sendStatus(500);
-                }
-                else return res.sendStatus(200);
-            })
-        }
-    })
-}
+
 
 /**
  * @api {PATCH} /api/admin/reimbursements/school Sets a reimbursement for the school.
@@ -666,29 +250,7 @@ function schoolReimbursementsPost(req, res) {
  * @apiError (500) EntryAlreadyExists
  * @apiError (404) NoInfoInRequestBody
  */
-function schoolReimbursementsPatch(req, res) {
-    Reimbursements.findOne({ "college.id": req.body.collegeid }, function (err, rem) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        if (res == null) {
-            return res.sendStatus(404);
-        }
-        rem.mode = req.body.travel;
-        rem.amount = req.body.amount;
-        rem.save(function (err, rem) {
-            if (err) {
-                console.error(err);
-                return res.sendStatus(500);
-            }
-            else {
-                return res.sendStatus(200);
-            }
-        });
 
-    })
-}
 
 /**
  * @api {DELETE} /api/admin/reimbursements/school Delete reimbursements for a school
@@ -699,15 +261,7 @@ function schoolReimbursementsPatch(req, res) {
  *
  * @apiError (500) CouldNotFind
  */
-function schoolReimbursementsDelete(req, res) {
-    Reimbursements.remove({ 'college.id': req.body.collegeid }, function (err, rem) {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        return res.sendStatus(200);
-    })
-}
+
 
 /**
  * @api {PATCH} /api/admin/user/:pubid/setRSVP Sets the RSVP status of the user in params.pubid to body.going.
@@ -922,29 +476,7 @@ function annotate(req, res, next) {
  * @apiParam {String} email
  * @apiParam {Number} amount
  */
-function studentReimbursementsPost(req, res, next) {
-    let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
-    User.findOne({ email: sanitizedEmail }, function (err, user) {
-        if (err) {
-            console.log('Reimbursement Error: ' + err); // If null, check amount
-            res.status(500).send('Reimbursement Error: ' + err);
-        } else if (!req.body.amount || req.body.amount < 0) {
-            res.status(500).send("Missing amount or amount is less than zero");
-        } else if (!user) {
-            res.status(500).send("No such user");
-        } else {
-            user.internal.reimbursement_override = req.body.amount;
-            user.save(function (err) {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send("Could not save user");
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-}
+
 
 /**
  * @api {DELETE} /api/admin/reimbursements/student Reset a student reimbursement to school default
@@ -953,31 +485,7 @@ function studentReimbursementsPost(req, res, next) {
  *
  * @apiParam {String} email
  */
-function studentReimbursementsDelete(req, res, next) {
-    if (!req.body.email) {
-        return res.status(500).send("Email required");
-    }
 
-    let sanitizedEmail = req.body.email.trim().toLowerCase();
-    User.findOne({ email: sanitizedEmail }, function (err, user) {
-        if (err) {
-            console.log('ERROR on delete: ' + err);
-            res.status(500).send("Error on delete: " + err)
-        } else if (!user) {
-            res.status(500).send("No such user");
-        } else {
-            user.internal.reimbursement_override = 0;
-            user.save(function (err) {
-                if (err) {
-                    console.log('Error saving user: ' + err);
-                    res.status(500).send('Error saving user: ' + err);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
-    });
-}
 
 /**
  * @api {POST} /api/admin/rsvpDeadlineOverride Override the RSVP deadline of the given user
@@ -987,236 +495,9 @@ function studentReimbursementsDelete(req, res, next) {
  * @apiParam {String} email
  * @apiParam {Number} daysToRSVP
  **/
-function rsvpDeadlineOverride(req, res, next) {
-    if (!req.body.email || !req.body.daysToRSVP) {
-        return res.status(500).send('Need email and daysToRSVP');
-    } else if (req.body.daysToRSVP <= 0) {
-        return res.status(500).send('Need positive daysToRSVP value');
-    }
 
-    let sanitizedEmail = req.body.email.trim().toLowerCase();
-    User.findOne({ email: sanitizedEmail }, function (err, user) {
-        if (err) {
-            return res.status(500).send(err);
-        } else if (!user) {
-            return res.status(500).send('No such user');
-        }
 
-        user.internal.daysToRSVP = req.body.daysToRSVP;
-        user.save(util.dbSaveCallback(res));
-    });
-}
 
-/**
- * @api {POST} /api/admin/hardware/inventory Set our internal hardware inventory.
- * @apiname TransactHardware
- * @apigroup Admin
- *
- * TODO: This method is a bit messy. Should be refactored in the future. (#178)
- *
- * @apiParam {Number} quantity The quantity of hardware we own
- * @apiParam {String} name The unique name of the hardware
- **/
-function setInventory(req, res, next) {
-    let body = req.body;
-    body.quantity = Number(body.quantity);
-    if (!body || body.quantity === undefined || !body.name || isNaN(body.quantity)) {
-        return res.status(500).send('Missing quantity or name');
-    }
-
-    if (body.quantity <= 0) {
-        Inventory.find({ name: body.name }).remove(function (err, result) {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            return res.redirect('/admin/hardware');
-        });
-    } else {
-        Inventory.findOne({ name: body.name }, function (err, item) {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            if (!item) {
-                item = new Inventory({
-                    name: body.name,
-                    quantityAvailable: body.quantity,
-                    quantityOwned: body.quantity
-                });
-            }
-
-            item.modifyOwnedQuantity(body.quantity, function (err) {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-
-                return res.redirect('/admin/hardware');
-            });
-        });
-    }
-}
-
-/**
- * @api {POST} /api/admin/hardware/transaction Check in or out hardware
- * @apiname TransactHardware
- * @apigroup Admin
- *
- * @apiParam {Boolean} checkingOut true if checking out, false if checking in
- * @apiParam {String} email Email of the student for the transaction
- * @apiParam {Number} quantity The quantity of hardware to transact
- * @apiParam {String} name The unique name of the hardware being transacted
- **/
-function transactHardware(req, res, next) {
-    var body = req.body;
-    if (!body.email || body.quantity === undefined || !body.name) {
-        return res.status(500).send('Missing a parameter, check the API!');
-    }
-
-    body.checkingOut = body.checkingOut !== undefined;
-
-    body.quantity = Number(body.quantity); // This formats as a string by default
-
-    if (body.quantity < 1 || isNaN(body.quantity)) {
-        return res.status(500).send('Please send a positive quantity');
-    }
-
-    async.parallel({
-        student: function (cb) {
-            let sanitizedEmail = body.email ? body.email.trim().toLowerCase() : body.email;
-            User.findOne({ email: sanitizedEmail }, cb);
-        },
-        item: function (cb) {
-            Inventory.findOne({ name: body.name }, cb);
-        }
-    }, function (err, result) {
-        if (err) {
-            return res.status(500).send(err);
-        } else if (!result.student) {
-            return res.status(500).send('No such user');
-        } else if (!result.item) {
-            return res.status(500).send('No such item');
-        }
-
-        InventoryTransaction.findOne({
-            student_id: result.student.id,
-            inventory_id: result.item.id
-        }, function (err, transaction) {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            if (body.checkingOut) {
-                if (result.item.quantityAvailable - body.quantity >= 0) {
-                    if (!transaction) {
-                        transaction = new InventoryTransaction({
-                            student_id: result.student.id,
-                            inventory_id: result.item.id,
-                            quantity: 0
-                        });
-                    }
-
-                    transaction.quantity += body.quantity;
-
-                    result.item.addQuantity(-body.quantity, function (err) {
-                        if (err) {
-                            return res.status(500).send(err);
-                        }
-
-                        transaction.save(function (err) {
-                            if (err) {
-                                return res.status(500).send('Error: could not save transaction');
-                            }
-
-                            email.sendHardwareEmail(
-                                true,
-                                body.quantity,
-                                result.item.name,
-                                result.student.name.first,
-                                result.student.name.last,
-                                result.student.email,
-                                function (err) {
-                                    if (err) {
-                                        return res.status(500).send('Error: could not send hardware transaction email');
-                                    }
-
-                                    HardwareItemTransaction.make(result.item.name, result.student._id, body.quantity, true, function (err) {
-                                        if (err) {
-                                            return res.status(500).send('Error: Could not store hardware transaction. Please log on paper');
-                                        }
-
-                                        req.flash('success', 'Checked out ' + body.quantity + ' ' + result.item.name);
-                                        return res.redirect('/admin/hardware');
-                                    });
-                                });
-                        });
-                    });
-                } else {
-                    return res.status(500).send('Quantity exceeds availability');
-                }
-            } else {
-                if (!transaction) {
-                    return res.status(500).send('User has no transactions for that item.');
-                } else if (body.quantity > transaction.quantity) {
-                    return res.status(500).send('User has not checked out that many items of that type!');
-                }
-
-                transaction.quantity -= body.quantity;
-
-                result.item.addQuantity(body.quantity, function (err) {
-                    if (err) {
-                        console.error(err);
-                        return res.status(500).send('Could not save item');
-                    }
-                    email.sendHardwareEmail(
-                        false,
-                        body.quantity,
-                        result.item.name,
-                        result.student.name.first,
-                        result.student.name.last,
-                        result.student.email,
-                        function (err) {
-                            if (err) {
-                                return res.status(500).send('Error: could not send hardware transaction email');
-                            }
-
-                            if (transaction.quantity == 0) {
-                                transaction.remove(function (err) {
-                                    if (err) {
-                                        return res.status(500).send('Error: could not remove transaction');
-                                    }
-
-                                    HardwareItemTransaction.make(result.item.name, result.student._id, body.quantity, false, function (err) {
-                                        if (err) {
-                                            return res.status(500).send('Error: Could not store hardware transaction. Please log on paper');
-                                        }
-
-                                        req.flash('success', 'Returned ' + body.quantity + ' ' + result.item.name);
-                                        return res.redirect('/admin/hardware');
-                                    });
-                                });
-                            } else {
-                                transaction.save(function (err) {
-                                    if (err) {
-                                        return res.status(500).send('Error: could not save transaction');
-                                    }
-
-                                    HardwareItemTransaction.make(result.item.name, result.student._id, body.quantity, false, function (err) {
-                                        if (err) {
-                                            return res.status(500).send('Error: Could not store hardware transaction. Please log on paper');
-                                        }
-
-                                        req.flash('success', 'Returned ' + body.quantity + ' ' + result.item.name);
-                                        return res.redirect('/admin/hardware');
-                                    });
-                                });
-                            }
-                        });
-                });
-            }
-        });
-    });
-}
 
 /**
  * @api {POST} /api/admin/cornellLottery Executes a gender-balanced (50-50) lottery for Cornell students, but does not send decision emails.
