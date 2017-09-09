@@ -1,3 +1,5 @@
+"use strict";
+
 const async = require("async");
 
 let User = require("../../../models/user.js");
@@ -13,7 +15,7 @@ module.exports.cornellLottery = (req, res) => {
             { "internal.status": { $ne: "Accepted" } },
             { "internal.status": { $ne: "Rejected" } }
         ]
-    }, function (err, pendings) {
+    }, (err, pendings) => {
         if (err) {
             console.error(err);
             return res.status(500).send(err);
@@ -31,9 +33,13 @@ module.exports.cornellLottery = (req, res) => {
                 }
             });
 
+            console.log(pendings);
+            console.log(female);
+            console.log(notFemale);
+
             let accepted = [];
             while (accepted.length < req.body.numberToAccept && (female.length || notFemale.length)) {
-                let _drawLottery = function _drawLottery(pool) {
+                let _drawLottery = function (pool) {
                     if (pool.length > 0) {
                         let randomIndex = Math.floor((Math.random() * pool.length));
                         let winner = pool[randomIndex];
@@ -52,33 +58,21 @@ module.exports.cornellLottery = (req, res) => {
             // Save decisions
             async.parallel([
                 (cb) => {
-                    accepted.forEach(curHacker => curHacker.internal.status = "Accepted");
-                    return cb(null);
-                },
-                (cb) => {
-                    notFemale.forEach(curHacker => curHacker.internal.status = "Waitlisted");
-                    return cb(null);
-                },
-                (cb) => {
-                    female.forEach(curHacker => curHacker.internal.status = "Waitlisted");
-                    return cb(null);
-                }
-            ]);
-
-            async.parallel([
-                (cb) => {
-                    async.each(accepted, function (user, callback) {
-                        user.save(callback);
+                    async.each(accepted, (curHacker, cb) => {
+                        curHacker.internal.status = "Accepted";
+                        curHacker.save(cb);
                     }, cb);
                 },
                 (cb) => {
-                    async.each(notFemale, function (user, callback) {
-                        user.save(callback);
+                    async.each(notFemale, (curHacker, cb) => {
+                        curHacker.internal.status = "Waitlisted";
+                        curHacker.save(cb);
                     }, cb);
                 },
                 (cb) => {
-                    async.each(female, function (user, callback) {
-                        user.save(callback);
+                    async.each(female, (curHacker, cb) => {
+                        curHacker.internal.status = "Waitlisted";
+                        curHacker.save(cb);
                     }, cb);
                 }
             ], (err) => {
@@ -96,7 +90,7 @@ module.exports.cornellLottery = (req, res) => {
     });
 };
 
-module.exports.cornellWaitlist = (req, res, next) => {
+module.exports.cornellWaitlist = (req, res) => {
     // Find all non-accepted Cornell students
     if (!req.body.numberToAccept || req.body.numberToAccept <= 0) {
         return res.status(500).send("Need a positive numberToAccept");

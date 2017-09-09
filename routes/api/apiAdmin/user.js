@@ -1,6 +1,8 @@
+"use strict";
+
 let User = require("../../../models/user.js");
 
-module.exports.removeUser = (req, res, next) => {
+module.exports.removeUser = (req, res) => {
     User.findOne({ pubid: req.body.pubid }, (err, user) => {
         if (err) {
             console.error(err);
@@ -64,7 +66,8 @@ module.exports.setUserStatus = (req, res) => {
                 if (err) {
                     console.log(err);
                     return res.sendStatus(500);
-                } else {
+                }
+                else {
                     return res.sendStatus(200);
                 }
             });

@@ -1,3 +1,5 @@
+"use strict";
+
 const async    = require("async");
 const mongoose = require("mongoose");
 let Team       = require("../../../models/team.js");

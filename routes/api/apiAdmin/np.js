@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports.getNoParticipation = (req, res) => {
     return res.send(req.session.np);
 };
