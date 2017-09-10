@@ -8,14 +8,15 @@ module.exports.cornellLottery = (req, res) => {
     if (!req.body.numberToAccept || req.body.numberToAccept < 0) {
         return res.status(500).send("Please provide a numberToAccept >= 0");
     }
+
     // Find all non-accepted Cornell students
     User.find({
         $and: [
-            { "internal.cornell_applicant": true },
+            { "school.name": /Cornell University/g},
             { "internal.status": { $ne: "Accepted" } },
             { "internal.status": { $ne: "Rejected" } }
         ]
-    }, (err, pendings) => {
+    }).exec((err, pendings) => {
         if (err) {
             console.error(err);
             return res.status(500).send(err);
@@ -32,10 +33,6 @@ module.exports.cornellLottery = (req, res) => {
                     notFemale.push(user);
                 }
             });
-
-            console.log(pendings);
-            console.log(female);
-            console.log(notFemale);
 
             let accepted = [];
             while (accepted.length < req.body.numberToAccept && (female.length || notFemale.length)) {
@@ -102,24 +99,24 @@ module.exports.cornellWaitlist = (req, res) => {
             { "internal.status": { $ne: "Accepted" } },
             { "internal.status": { $ne: "Rejected" } }
         ]
-    }).sort({ "created_at": "asc" }).exec(function (err, pendings) {
+    }).sort({ "created_at": "asc" }).exec((err, pendings) => {
         let numAccepted = 0;
-        pendings.forEach(function (student) {
+        pendings.forEach((student) => {
             if (numAccepted < req.body.numberToAccept) {
                 student.internal.status = "Accepted";
                 numAccepted++;
             }
         });
 
-        async.each(pendings, function (student, cb) {
+        async.each(pendings, (student, cb) => {
             student.save(cb);
-        }, function (err, result) {
+        }, (err) => {
             if (err) {
                 console.error(err);
                 return res.status(500).send(err);
             }
 
-            req.flash("success", "Successfully moved " + numAccepted + " students off the waitlist!");
+            req.flash("success", `Successfully moved ${numAccepted} students off the waitlist!`);
             return res.redirect("/admin/dashboard");
         });
     });
