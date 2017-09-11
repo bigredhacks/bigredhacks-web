@@ -337,4 +337,9 @@ userSchema.statics.validEmail = function (email, callback) {
     });
 };
 
-module.exports = mongoose.model("User", userSchema);
+try {
+    module.exports = mongoose.model("User", userSchema);
+}
+catch (e) {
+    module.exports = mongoose.model("User");
+}
