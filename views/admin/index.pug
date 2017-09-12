@@ -145,14 +145,14 @@ block append admin_content
                 p Run a gender-balanced lottery for Cornell students.
                 form#lottery-form(method='post', action='/api/admin/cornellLottery')
                     .form-group.np-enabled
-                        input#lottery-amount(type='Number' name='numberToAccept' placeholder='amount')
+                        input#lottery-amount(type='Number' name='numberToAccept' placeholder='amount to accept')
                         button#lottery-make.btn.btn-success(type='submit' onclick="return confirm('Are you sure?')") Run Lottery
             .waitlist-section
                 h2 Accept off of Waitlist
                 p Accept Cornell students off the waitlist based on application date.
                 form#waitlist-form(method='post', action='/api/admin/cornellWaitlist')
                     .form-group.np-enabled
-                        input#waitlist-amount(type='Number' name='numberToAccept' placeholder='amount')
+                        input#waitlist-amount(type='Number' name='numberToAccept' placeholder='amount to accept')
                         button#waitlist-make.btn.btn-success(type='submit' onclick="return confirm('Are you sure?')") Move Off Waitlist
         #rsvp-override.tab-pane(role='tabpanel')
             h2 Per-User RSVP Override
@@ -180,4 +180,3 @@ block append admin_content
                             td= mentor.company
                             td= mentor.email
                             td= mentor.skills.join(", ")
-                - console.log(mentors);

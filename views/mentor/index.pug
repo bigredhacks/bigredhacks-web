@@ -4,7 +4,6 @@ extends _layout-mentor
 
 block mentor_content
     +contentHeading("dashboard home")
-    - console.log(messages);
     +showMessages(messages)
     p Welcome back, #{mentor.name.first}
     +contentHeading("Mentor Requests Queue")
