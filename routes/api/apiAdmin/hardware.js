@@ -1,7 +1,7 @@
 "use strict";
 
 const async  = require("async");
-const email  = require("../../../util/email");
+const email  = require("../../../util/email.js");
 
 let HardwareItemTransaction = require("../../../models/hardware_item_transaction.js");
 let Inventory               = require("../../../models/hardware_item.js");
