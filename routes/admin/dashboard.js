@@ -1,9 +1,9 @@
 const async        = require("async");
-const helper       = require('../../util/helpers/admin');
-let Mentor         = require('../../models/mentor');
-let Reimbursements = require('../../models/reimbursements.js');
-let User           = require('../../models/user.js');
-const util         = require('../../util/util.js');
+const helper       = require("../../util/helpers/admin");
+let Mentor         = require("../../models/mentor");
+let Reimbursements = require("../../models/reimbursements.js");
+let User           = require("../../models/user.js");
+const util         = require("../../util/util.js");
 
 const USER_FILTER = {role: "user"};
 
@@ -158,8 +158,8 @@ module.exports = (req, res, next) => {
         let potentialMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, false), 0);
         let reimburse = {currentMax, potentialMax};
 
-        return res.render('admin/index', {
-            title: 'Admin Dashboard',
+        return res.render("admin/index", {
+            title: "Admin Dashboard",
             applicants: result.applicants,
             schools: result.schools,
             rsvps: result.rsvps,
