@@ -12,7 +12,6 @@ module.exports.checkInUser = (req, res) => {
         else {
             user.internal.checkedin = normalize_bool(req.body.checkedin);
             user.internal.going = true;
-            console.log(user.internal.checkedin);
             user.save((err) => {
                 if (err) {
                     console.error(err);

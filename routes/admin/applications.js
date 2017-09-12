@@ -1,11 +1,11 @@
 // Node Modules and utilities
 const async  = require("async");
-const helper = require('../../util/helpers/admin');
-const util   = require('../../util/util.js');
+const helper = require("../../util/helpers/admin");
+const util   = require("../../util/util.js");
 
 // Mongo models
 let Reimbursements = require("../../models/reimbursements");
-let User           = require('../../models/user.js');
+let User           = require("../../models/user.js");
 
 const USER_FILTER = {role: "user"};
 
@@ -18,7 +18,7 @@ function search (req, res, next) {
     let queryKeys = Object.keys(req.query);
     if (queryKeys.length === 0 || (queryKeys.length === 1 && queryKeys[0] === "render")) {
         // .limit(50)
-        User.find().sort('name.first').exec((err, applicants) => {
+        User.find().sort("name.first").exec((err, applicants) => {
             if (req.query.render === "table") {
                 //dont need to populate for tableview
                 endOfCall(err, applicants);
@@ -43,16 +43,16 @@ function search (req, res, next) {
     });
 
     function endOfCall(err, applicants) {
-        if (err) console.error(err);
-        let emailCsv = '';
+        if (err) {
+            console.error(err);
+        }
+        let emailCsv = "";
         for (let app of applicants){
-            emailCsv += app.email + ', ';
+            emailCsv += `${app.email}, `;
         }
 
-        console.log(applicants);
-
-        return res.render('admin/search/search', {
-            title: 'Admin Dashboard - Search',
+        return res.render("admin/search/search", {
+            title: "Admin Dashboard - Search",
             applicants: JSON.stringify(applicants),
             params: req.query,
             render: req.query.render, //table, box
@@ -67,7 +67,7 @@ function search (req, res, next) {
  * @apiGroup AdminAuth
  */
 function review (req, res, next) {
-    let query = {'internal.status': "Pending"};
+    let query = {"internal.status": "Pending"};
     query = {$and: [query, USER_FILTER]};
     User.count(query, (err, count) => {
         if (err) {
@@ -76,7 +76,7 @@ function review (req, res, next) {
 
         //redirect if no applicants left to review
         if (count === 0) {
-            return res.redirect('/admin');
+            return res.redirect("/admin");
         }
         else {
             const rand = Math.floor(Math.random() * count);
@@ -87,8 +87,8 @@ function review (req, res, next) {
                     if (err) {
                         console.error(err);
                     }
-                    return res.render('admin/review', {
-                        title: 'Admin Dashboard - Review',
+                    return res.render("admin/review", {
+                        title: "Admin Dashboard - Review",
                         currentUser: user,
                         stats: stats
                     });
@@ -125,8 +125,8 @@ function viewApplicant (req, res, next) {
                     console.error(err);
                     return res.sendStatus(500);
                 }
-                return res.render('admin/user', {
-                    title: 'Review User',
+                return res.render("admin/user", {
+                    title: "Review User",
                     currentUser: user,
                     stats: info.stats,
                     reimbursement: util.calculateReimbursement(info.reimbursements, user, false)
@@ -142,9 +142,9 @@ function viewApplicant (req, res, next) {
  * @apiGroup AdminAuth
  */
 function viewTeam (req, res, next) {
-    User.find({'internal.teamid': req.params.teamid}).exec((err, teamMembers) => {
-        return res.render('admin/team', {
-            title: 'Review Team',
+    User.find({"internal.teamid": req.params.teamid}).exec((err, teamMembers) => {
+        return res.render("admin/team", {
+            title: "Review Team",
             teamMembers: teamMembers
         });
     });
