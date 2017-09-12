@@ -2,7 +2,7 @@
 
 const util  = require("../../../util/util.js");
 
-let User    = require("../../../models/User.js");
+let User    = require("../../../models/user.js");
 
 module.exports.checkInUser = (req, res) => {
     User.findOne({ pubid: req.params.pubid }, (err, user) => {

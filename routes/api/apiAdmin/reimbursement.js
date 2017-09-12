@@ -3,7 +3,7 @@
 const async = require("async");
 
 let Reimbursements = require("../../../models/reimbursements.js");
-let User           = require("../../../models/User.js");
+let User           = require("../../../models/user.js");
 
 module.exports.schoolReimbursementsDelete = (req, res) => {
     Reimbursements.remove({ "college.id": req.body.collegeid }, (err) => {
