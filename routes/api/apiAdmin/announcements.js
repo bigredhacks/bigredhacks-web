@@ -2,11 +2,11 @@
 
 const async      = require("async");
 const config     = require("../../../config.js");
-const email      = require("../../../util/email");
+const email      = require("../../../util/email.js");
 const FCM        = require("fcm-push");
 const helper     = require("../../../util/routes_helper.js");
 const OAuth      = require("oauth");
-const socketutil = require("../../../util/socketutil");
+const socketutil = require("../../../util/socketutil.js");
 const Twitter    = require("twitter");
 
 let Announcement   = require("../../../models/announcement.js");
