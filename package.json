@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./bin/www.js",
     "postinstall": "grunt heroku",
-    "test": "grunt test"
+    "test": "grunt test",
+    "resumedump": "node ./bin/resume_dump.js"
   },
   "engines": {
     "node": "latest",
