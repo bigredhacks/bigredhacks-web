@@ -1,26 +1,26 @@
 "use strict";
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const validator = require('../library/validations.js');
-const helper = require('../util/routes_helper');
-const middle = require('./middleware.js');
-const async = require('async');
-const Announcement = require ('../models/announcement.js');
-const Inventory = require ('../models/hardware_item.js');
+const validator = require("../library/validations.js");
+const helper = require("../util/routes_helper");
+const middle = require("./middleware.js");
+const async = require("async");
+const Announcement = require ("../models/announcement.js");
+const Inventory = require ("../models/hardware_item.js");
 
-const config = require('../config.js');
-const util = require('../util/util');
+const config = require("../config.js");
+const util = require("../util/util");
 
 /**
  * @api {GET} /index Home page.
  * @apiName Index
  * @apiGroup Index
  */
-router.get('/', function (req, res, next) {
+router.get("/", function (req, res, next) {
     let ev = req.flash();
-    res.render('index', {
-        title: 'Cornell\'s Ultimate Hackathon',
+    res.render("index", {
+        title: "Cornell's Ultimate Hackathon",
         messages: ev
     });
 });
@@ -32,9 +32,9 @@ router.get('/', function (req, res, next) {
  * @params isCornell- is the student from Cornell or not?
  * @params cornellEmail or email- the email to subscribe
  */
-router.get('/subscribe', function (req, res, next) {
-    req = validator.validate(req, ['email']);
-    var email = req.query['email'];
+router.get("/subscribe", function (req, res, next) {
+    req = validator.validate(req, ["email"]);
+    var email = req.query["email"];
     if (req.validationErrors()) {
         console.log(req.validationErrors());
         res.send({status: false, message: "Please enter a valid email"});
@@ -62,29 +62,30 @@ router.get('/subscribe', function (req, res, next) {
  * @apiName DayOf
  * @apiGroup Index
  */
-router.get('/live',function (req, res, next) {
+router.get("/live",function (req, res, next) {
     async.parallel({
-        announcements: function announcements(callback) {
-            const PROJECTION = 'message time';
+        announcements: (callback) => {
+            const PROJECTION = "message time";
             Announcement.find({}, PROJECTION, callback);
         },
-        calendar: function calendar(callback) {
+        calendar: (callback) => {
             util.grabCalendar(callback);
         },
-        inventory: function inventory(cb) {
-            Inventory.find({}, null, {sort: {name: 'asc'}}, cb);
+        inventory: (cb) => {
+            Inventory.find({}, null, {sort: {name: "asc"}}, cb);
         }
-    }, function (err, result) {
+    }, (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500); // Do not expose error to users
         }
-
-        return res.render('live', {
-            title: 'Live',
-            announcements: result.announcements,
-            calendar: result.calendar
-        });
+        else {
+            return res.render("live", {
+                title: "Live",
+                announcements: result.announcements,
+                calendar: result.calendar
+            });
+        }
     });
 });
 

@@ -3,7 +3,7 @@
 const global_config = require("../config");
 const moment = require("moment");
 // Can be used as a constant since all accepted use the current config let at the time of announcement
-const rsvpTime = moment.duration(Number(global_config.admin.days_to_rsvp), 'days');
+const rsvpTime = moment.duration(Number(global_config.admin.days_to_rsvp), "days");
 const sendgrid = require("sendgrid")(global_config.setup.sendgrid_api_key);
 const year = new Date().getFullYear();
 
@@ -15,7 +15,7 @@ const year = new Date().getFullYear();
 const ACCEPTED_SUBJECT             = `You've been accepted to BigRed//Hacks ${year}!`;
 const ACCEPTED_TO_REJECTED_SUBJECT = `BigRed//Hacks ${year} RSVP Deadline Passed`;
 const DEADLINE_WARNING_SUBJECT     = "One day left to RSVP to BigRed//Hacks!";
-const HARDWARE_TRANSACTION_SUBJECT = 'BigRed//Hacks Hardware Transaction';
+const HARDWARE_TRANSACTION_SUBJECT = "BigRed//Hacks Hardware Transaction";
 const REJECTED_SUBJECT             = `BigRed//Hacks ${year} Decision Status`;
 const WAITLISTED_SUBJECT           = `BigRed//Hacks ${year} Decision Status`;
 
@@ -36,7 +36,7 @@ const ACCEPTED_BODY               = `<p>Congratulations, you have been accepted 
 const ACCEPTED_TO_REJECTED_BODY   =  "<p>Because you did not RSVP within the time frame we requested, we are " +
                                      "rescinding your acceptance. We want to be fair to our applicants and ensure that " +
                                      "everyone who wants to attend has the opportunity. If you still want to come, please email " +
-                                     '<a href="mailto:info@bigredhacks.com?subject=Rejection Appeal" target="_blank">info@bigredhacks.com</a> ' +
+                                     "<a href=\"mailto:info@bigredhacks.com?subject=Rejection Appeal\" target=\"_blank\">info@bigredhacks.com</a> " +
                                      "immediately, though we cannot guarantee that we will be able to offer you a spot again.</p>" +
                                      "<p>All the best for the future, and keep on hacking!</p>" +
                                      "<p>BigRed//Hacks Team</p>";
@@ -79,8 +79,8 @@ function sendCustomEmail (bodyText, config, callback) {
     // Generate the SendGrid request (as per Web API 3.0)
     // https://sendgrid.com/docs/API_Reference/Web_API_v3/Mail/index.html
     let request = sendgrid.emptyRequest({
-        method: 'POST',
-        path: '/v3/mail/send',
+        method: "POST",
+        path: "/v3/mail/send",
         body: {
             personalizations: [
                 {
@@ -98,7 +98,7 @@ function sendCustomEmail (bodyText, config, callback) {
             },
             content: [
                 {
-                    type: 'text/html',
+                    type: "text/html",
                     value: bodyText
                 }
             ],
@@ -121,10 +121,12 @@ module.exports.sendDecisionEmail = function (name, notifyStatus, newStatus, conf
     if (notifyStatus === "Waitlisted" && newStatus === "Accepted") {
         config.subject = ACCEPTED_SUBJECT;
         sendCustomEmail(`<p>Hey ${name},</p>` + WAITLISTED_TO_ACCEPTED_BODY, config, callback);
-    } else if (notifyStatus === "Accepted" && newStatus === "Rejected") {
+    }
+    else if (notifyStatus === "Accepted" && newStatus === "Rejected") {
         config.subject = ACCEPTED_TO_REJECTED_SUBJECT;
         sendCustomEmail(`<p>Hi ${name},</p>` + ACCEPTED_TO_REJECTED_BODY, config, callback);
-    } else {
+    }
+    else {
         switch (newStatus) {
             case "Accepted":
                 config.subject = ACCEPTED_SUBJECT;
@@ -144,7 +146,7 @@ module.exports.sendDecisionEmail = function (name, notifyStatus, newStatus, conf
                 callback();
                 break;
             default:
-                callback('Error: Saw unknown status in sendDecisionEmail: ' + newStatus);
+                callback("Error: Saw unknown status in sendDecisionEmail: " + newStatus);
                 break;
         }
     }
@@ -166,19 +168,19 @@ module.exports.sendHardwareEmail = function (checkingOut, quantity, itemName, fi
         }
     };
 
-    let body = `<p>Hi '${firstName},</p>` +
-        '<p>This is to confirm that you have ' +
+    let body = `<p>Hi ${firstName},</p>` +
+        "<p>This is to confirm that you have " +
         `${checkingOut ? "checked out " : "returned "}` +
-        `${quantity} ${itemName}</p>` +
-        '<p>Cheers</p>' +
-        '<p>BigRed//Hacks Team</p>';
+        `${quantity} ${itemName}${quantity > 2 ? "s" : ""}!</p>` +
+        "<p>Cheers</p>" +
+        "<p>BigRed//Hacks Team</p>";
 
-    sendCustomEmail(body, config, callback);
+    return sendCustomEmail(body, config, callback);
 };
 
 module.exports.sendRequestMadeEmail = function (email, name, callback) {
     let config = {
-        "subject": 'Mentorship Request Created',
+        "subject": "Mentorship Request Created",
         "from_email": "info@bigredhacks.com",
         "from_name": "BigRed//Hacks",
         "to": {
@@ -188,18 +190,18 @@ module.exports.sendRequestMadeEmail = function (email, name, callback) {
     };
 
     let body = `<p>Hi ${name.first},</p>` +
-        '<p>This is to confirm that you have created a request for a mentor. The mentors will ' +
-        'view your request, and someone will respond shortly. Please make sure you are at the location that ' +
-        'you provided in your request!</p>' +
-        '<p>Cheers</p>' +
-        '<p>BigRed//Hacks Team</p>';
+        "<p>This is to confirm that you have created a request for a mentor. The mentors will " +
+        "view your request, and someone will respond shortly. Please make sure you are at the location that " +
+        "you provided in your request!</p>" +
+        "<p>Cheers</p>" +
+        "<p>BigRed//Hacks Team</p>";
 
     sendCustomEmail(body, config, callback);
 };
 
 module.exports.sendRequestClaimedStudentEmail = function (email, studentName, mentorName, callback) {
     let config = {
-        "subject": 'Mentorship Request Claimed',
+        "subject": "Mentorship Request Claimed",
         "from_email": "info@bigredhacks.com",
         "from_name": "BigRed//Hacks",
         "to": {
@@ -210,17 +212,17 @@ module.exports.sendRequestClaimedStudentEmail = function (email, studentName, me
 
     let body = `<p>Hi ${studentName.first},</p>` +
         `<p>A mentor ${mentorName.first} ${mentorName.last} has claimed your request!</p>` +
-        '<p>Please be on the lookout for your mentor, and make sure you are at the location you specified ' +
-        'in your request!</p>' +
-        '<p>Cheers</p>' +
-        '<p>BigRed//Hacks Team</p>';
+        "<p>Please be on the lookout for your mentor, and make sure you are at the location you specified " +
+        "in your request!</p>" +
+        "<p>Cheers</p>" +
+        "<p>BigRed//Hacks Team</p>";
 
     sendCustomEmail(body, config, callback);
 };
 
 module.exports.sendRequestClaimedMentorEmail = function (email, studentName, mentorName, callback) {
     let config = {
-        "subject": 'Mentorship Request Claimed',
+        "subject": "Mentorship Request Claimed",
         "from_email": "info@bigredhacks.com",
         "from_name": "BigRed//Hacks",
         "to": {
@@ -231,15 +233,15 @@ module.exports.sendRequestClaimedMentorEmail = function (email, studentName, men
 
     let body = `<p>Hi ${mentorName.first},</p>` +
         `<p>This is to confirm you have claimed a mentor request from ${studentName.first} ${studentName.last}.</p>` +
-        '<p>Cheers</p>' +
-        '<p>BigRed//Hacks Team</p>';
+        "<p>Cheers</p>" +
+        "<p>BigRed//Hacks Team</p>";
 
     sendCustomEmail(body, config, callback);
 };
 
 module.exports.sendNewMentorRequestEmail = function (mentor, mentorRequest, studentName, callback) {
     let config = {
-        "subject": 'New Mentorship Request',
+        "subject": "New Mentorship Request",
         "from_email": "info@bigredhacks.com",
         "from_name": "BigRed//Hacks",
         "to": {
@@ -256,8 +258,8 @@ module.exports.sendNewMentorRequestEmail = function (mentor, mentorRequest, stud
         `<p><b>Location</b>: ${mentorRequest.location}</p>` +
         `<p>If you want to claim this request, head to <a href="https://bigredhacks.com/mentor/dashboard">the dashboard</a> ` +
         `and click "Claim".</p>` +
-        '<p>Cheers</p>' +
-        '<p>BigRed//Hacks Team</p>';
+        "<p>Cheers</p>" +
+        "<p>BigRed//Hacks Team</p>";
 
     sendCustomEmail(body, config, callback);
 };

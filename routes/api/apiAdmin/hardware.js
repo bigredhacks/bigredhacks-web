@@ -92,20 +92,20 @@ module.exports.transactHardware = (req, res) => {
                     let sanitizedEmail = body.email
                         ? body.email.trim().toLowerCase()
                         : body.email;
-                    User.findOne({email: sanitizedEmail}, cb);
+                    User.findOne({email: sanitizedEmail}).exec(cb);
                 },
                 item: (cb) => {
-                    Inventory.findOne({name: body.name}, cb);
+                    Inventory.findOne({name: body.name}).exec(cb);
                 }
-            }, function (err, result) {
+            }, (err, result) => {
                 if (err) {
-                    return res.status(500).send(err);
+                    return cb(err);
                 }
                 else if (!result.student) {
-                    return res.status(500).send("No such user");
+                    return cb("No such user.");
                 }
                 else if (!result.item) {
-                    return res.status(500).send("No such item");
+                    return cb("No such item.");
                 }
                 else {
                     return cb(null, result.student, result.item);
@@ -130,6 +130,7 @@ module.exports.transactHardware = (req, res) => {
                     else {
                         // Tells us what sort of success message to show
                         return cb(null, {
+                            item: item,
                             returnType: "checkout"
                         });
                     }
@@ -144,6 +145,7 @@ module.exports.transactHardware = (req, res) => {
                     else {
                         // Tells us what sort of success message to show
                         return cb(null, {
+                            item: item,
                             returnType: "return"
                         });
                     }
@@ -153,16 +155,20 @@ module.exports.transactHardware = (req, res) => {
     ], (err, results) => {
         if (err) {
             if (typeof err === "string") {
-                return res.status(500).send(err);
+                req.flash("error", err);
             }
             else {
                 console.error(err);
-                return res.sendStatus(500);
             }
+            return res.redirect("/admin/hardware");
         }
         else {
             if (results.returnType && results.returnType === "checkout") {
-                req.flash("success", `Checked out ${body.quantity} ${item.name}`);
+                req.flash("success", `Checked out ${body.quantity} ${results.item.name}${body.quantity > 2 ? "s" : ""}`);
+                return res.redirect("/admin/hardware");
+            }
+            else {
+                req.flash("success", `Returned ${body.quantity} ${results.item.name}${body.quantity > 2 ? "s" : ""}`);
                 return res.redirect("/admin/hardware");
             }
         }
@@ -183,12 +189,12 @@ function checkoutItem (body, item, student, transaction, cb) {
 
         item.addQuantity(-body.quantity, (err) => {
             if (err) {
-                return res.status(500).send(err);
+                return cb(err);
             }
 
             transaction.save(function (err) {
                 if (err) {
-                    return res.status(500).send("Error: could not save transaction");
+                    return cb("Error: could not save transaction");
                 }
 
                 email.sendHardwareEmail(
@@ -238,21 +244,28 @@ function returnItem (body, item, student, transaction, cb) {
             transaction.quantity -= body.quantity;
             item.addQuantity(body.quantity, cb);
         },
-        (cb) => {
+        (item, quantity, cb) => {
             email.sendHardwareEmail(false, body.quantity, item.name, student.name.first, student.name.last, student.email, (err) => {
                 if (err) {
                     return cb("Error: could not send hardware transaction email");
                 }
                 if (transaction.quantity === 0) {
-                    transaction.remove(cb);
+                    console.log(cb, 1);
+                    transaction.remove((err) => {
+                        return cb(err);
+                    });
                 }
                 else {
-                    transaction.save(cb);
+                    transaction.save((err) => {
+                        return cb(err);
+                    });
                 }
             });
         },
         (cb) => {
             HardwareItemTransaction.make(item.name, student._id, body.quantity, false, cb);
         }
-    ], cb);
+    ], (err) => {
+        return cb(err);
+    });
 }

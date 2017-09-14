@@ -1,26 +1,26 @@
 "use strict";
-var express = require('express');
-var AWS = require('aws-sdk');
-var async = require('async');
-var _ = require('underscore');
-var multiparty = require('multiparty');
+var express = require("express");
+var AWS = require("aws-sdk");
+var async = require("async");
+var _ = require("underscore");
+var multiparty = require("multiparty");
 var moment = require("moment");
 
-var enums = require('../models/enum.js');
-var helper = require('../util/routes_helper.js');
-const config = require('../config.js');
-var validator = require('../library/validations.js');
-var middle = require('../routes/middleware.js');
-var util = require('../util/util.js');
+var enums = require("../models/enum.js");
+var helper = require("../util/routes_helper.js");
+const config = require("../config.js");
+var validator = require("../library/validations.js");
+var middle = require("../routes/middleware.js");
+var util = require("../util/util.js");
 
-var Bus = require('../models/bus.js');
-var User = require('../models/user.js');
-var Mentor = require('../models/mentor.js');
-var College = require('../models/college.js');
-var Event = require('../models/event.js');
-var uid = require('uid2');
-var MentorRequest = require('../models/mentor_request');
-var Reimbursement = require('../models/reimbursements.js');
+var Bus = require("../models/bus.js");
+var User = require("../models/user.js");
+var Mentor = require("../models/mentor.js");
+var College = require("../models/college.js");
+var Event = require("../models/event.js");
+var uid = require("uid2");
+var MentorRequest = require("../models/mentor_request");
+var Reimbursement = require("../models/reimbursements.js");
 
 var MAX_FILE_SIZE = 1024 * 1024 * 15;
 var MAX_BUS_PROXIMITY = 50; //miles
@@ -36,8 +36,8 @@ module.exports = function (io) {
      * @apiName User
      * @apiGroup User
      */
-    router.get('/', function(req,res,next) {
-        res.redirect('user/dashboard');
+    router.get("/", function(req,res,next) {
+        res.redirect("user/dashboard");
     });
 
     /**
@@ -45,9 +45,9 @@ module.exports = function (io) {
      * @apiName Dashboard
      * @apiGroup User
      */
-    router.get('/dashboard', function (req, res, next) {
+    router.get("/dashboard", function (req, res, next) {
 
-        var params = {Bucket: config.setup.AWS_S3_bucket, Key: 'resume/' + req.user.app.resume};
+        var params = {Bucket: config.setup.AWS_S3_bucket, Key: "resume/" + req.user.app.resume};
 
         async.parallel({
             resumeLink: function (done) {
@@ -68,7 +68,7 @@ module.exports = function (io) {
                         members = user.internal.teamid.members;
                     }
                     return done(err, members);
-                })
+                });
             },
             // Priority is user-override, then school-override, then default
             reimbursement: function (done) {
@@ -87,11 +87,11 @@ module.exports = function (io) {
                 });
             },
             bus: function (done) {
-                _findAssignedOrNearestBus(req, done)
+                _findAssignedOrNearestBus(req, done);
             },
             deadline: function(done) {
                 var notified = req.user.internal.lastNotifiedAt;
-                const rsvpTime = moment.duration(req.user.internal.daysToRSVP, 'days');
+                const rsvpTime = moment.duration(req.user.internal.daysToRSVP, "days");
                 if (notified) {
                     const mNotified = moment(notified).add(rsvpTime);
                     return done(null, {
@@ -120,8 +120,8 @@ module.exports = function (io) {
                 fbLink: config.yearly.facebook ? config.yearly.facebook : "fb.com/bigredhacks"
             };
 
-            return res.render('dashboard/index', render_data);
-        })
+            return res.render("dashboard/index", render_data);
+        });
     });
 
     /**
@@ -129,9 +129,9 @@ module.exports = function (io) {
      * @apiName Edit
      * @apiGroup User
      */
-    router.get('/dashboard/edit', function (req, res, next) {
-        var user = _.omit(req.user, 'password'.split(' '));
-        res.render('dashboard/edit_app', {
+    router.get("/dashboard/edit", function (req, res, next) {
+        var user = _.omit(req.user, "password".split(" "));
+        res.render("dashboard/edit_app", {
             user: user,
             enums: enums,
             title: "Edit Application"
@@ -144,19 +144,19 @@ module.exports = function (io) {
      * @apiName Edit
      * @apiGroup User
      */
-    router.post('/dashboard/edit', middle.requireRegistrationOpen, function (req, res, next) {
+    router.post("/dashboard/edit", middle.requireRegistrationOpen, function (req, res, next) {
 
         var user = req.user;
 
         req = validator.validate(req, [
-            'passwordOptional', 'phonenumber', 'dietary', 'tshirt', 'yearDropdown', 'major', 'linkedin', 'q1', 'q2', 'anythingelse', 'hackathonsAttended'
+            "passwordOptional", "phonenumber", "dietary", "tshirt", "yearDropdown", "major", "linkedin", "q1", "q2", "anythingelse", "hackathonsAttended"
         ]);
         var errors = req.validationErrors();
         if (errors) {
-            res.render('dashboard/edit_app', {
+            res.render("dashboard/edit_app", {
                 user: user,
-                title: 'Edit Application',
-                message: 'The following errors occurred',
+                title: "Edit Application",
+                message: "The following errors occurred",
                 errors: errors,
                 enums: enums
             });
@@ -181,12 +181,12 @@ module.exports = function (io) {
                     // If it failed, return error
                     console.log(err);
                     req.flash("error", "An error occurred.");
-                    return res.redirect('/dashboard/edit')
+                    return res.redirect("/dashboard/edit");
                 }
                 else {
                     //redirect to dashboard home
                     req.flash("success", "Application successfully updated!");
-                    res.redirect('/user/dashboard');
+                    res.redirect("/user/dashboard");
                 }
             });
         }
@@ -197,7 +197,7 @@ module.exports = function (io) {
      * @apiName Add
      * @apiGroup User
      */
-    router.post('/team/add', middle.requireAnyRegistrationOpen, function (req, res, next) {
+    router.post("/team/add", middle.requireAnyRegistrationOpen, function (req, res, next) {
         var pubid = req.body.userid;
         var user = req.user;
 
@@ -214,8 +214,8 @@ module.exports = function (io) {
                     req.flash("success", "Successfully joined team."); //todo substitute user with name
                 }
             }
-            res.redirect('/user/dashboard');
-        })
+            res.redirect("/user/dashboard");
+        });
 
     });
 
@@ -224,7 +224,7 @@ module.exports = function (io) {
      * @apiName Leave
      * @apiGroup User
      */
-    router.get('/team/leave', middle.requireAnyRegistrationOpen, function (req, res, next) {
+    router.get("/team/leave", middle.requireAnyRegistrationOpen, function (req, res, next) {
         req.user.leaveTeam(function (err, resMsg) {
             if (err) {
                 console.log(err);
@@ -235,20 +235,20 @@ module.exports = function (io) {
                     req.flash("error", res);
                 }
                 else {
-                    req.flash("success", "Successfully left team.")
+                    req.flash("success", "Successfully left team.");
                 }
             }
-            res.redirect('/user/dashboard');
-        })
+            res.redirect("/user/dashboard");
+        });
     });
-//fixme both add and leave share similar callback function
+    //fixme both add and leave share similar callback function
 
     /**
      * @api {POST} /user/team/cornell Toggle whether the team includes cornell students.
      * @apiName TeamWithCornell
      * @apiGroup User
      */
-    router.post('/team/cornell', function (req, res, next) {
+    router.post("/team/cornell", function (req, res, next) {
         var checked = (req.body.checked === "true");
         var user = req.user;
         user.internal.teamwithcornell = checked;
@@ -266,7 +266,7 @@ module.exports = function (io) {
      * @apiName UpdateResume
      * @apiGroup User
      */
-    router.post('/updateresume', function (req, res, next) {
+    router.post("/updateresume", function (req, res, next) {
 
         var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
 
@@ -276,8 +276,8 @@ module.exports = function (io) {
                 if (err.toString() === "Error: maximum file length exceeded") {
                     err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
                 }
-                req.flash('error', err);
-                return res.redirect('/user/dashboard');
+                req.flash("error", err);
+                return res.redirect("/user/dashboard");
             }
 
             var resume = files.resumeinput[0];
@@ -291,11 +291,12 @@ module.exports = function (io) {
             helper.uploadFile(resume, options, function (err, file) {
                 if (err) {
                     console.error(err);
-                    req.flash('error', "File upload failed.");
-                    return res.redirect('/user/dashboard');
-                } else if (typeof file === "string") {
-                    req.flash('error', file);
-                    return res.redirect('/user/dashboard');
+                    req.flash("error", "File upload failed.");
+                    return res.redirect("/user/dashboard");
+                }
+                else if (typeof file === "string") {
+                    req.flash("error", file);
+                    return res.redirect("/user/dashboard");
                 }
 
                 // Actually update user's resume
@@ -305,17 +306,18 @@ module.exports = function (io) {
                     user.save ( function (err) {
                         if (err)  {
                             console.error(err);
-                            req.flash('error', 'Error in saving resume');
-                            return res.redirect('/user/dashboard');
+                            req.flash("error", "Error in saving resume");
+                            return res.redirect("/user/dashboard");
                         }
 
-                        req.flash('success', 'Resume successfully updated');
-                        return res.redirect('/user/dashboard');
+                        req.flash("success", "Resume successfully updated");
+                        return res.redirect("/user/dashboard");
                     });
-                } else {
-                    console.error('No user sent, can\'t update resume!');
-                    req.flash('error', 'Error in user validation');
-                    return res.redirect('/user/dashboard');
+                }
+                else {
+                    console.error("No user sent, can't update resume!");
+                    req.flash("error", "Error in user validation");
+                    return res.redirect("/user/dashboard");
                 }
             });
         });
@@ -328,7 +330,7 @@ module.exports = function (io) {
      *
      * @apiParam {String} decision Either signup or optout
      */
-    router.post('/busdecision', middle.requireAccepted, function (req, res) {
+    router.post("/busdecision", middle.requireAccepted, function (req, res) {
         var user = req.user;
         if (req.body.decision === "signup") {
             Bus.findOne({_id: req.body.busid}, function (err, bus) {
@@ -342,13 +344,13 @@ module.exports = function (io) {
                     });
                     bus.save(function (err) {
                         if (err) {
-                            console.log('Bus Save Error: ' + err);
+                            console.log("Bus Save Error: " + err);
                             return res.sendStatus(500);
                         }
                         else {
                             user.save(function (err) {
                                 if (err) {
-                                    console.log('User Save Error: ' + err);
+                                    console.log("User Save Error: " + err);
                                     return res.sendStatus(500);
                                 }
                                 else {
@@ -376,7 +378,7 @@ module.exports = function (io) {
      * @apiName RSVP
      * @apiGroup User
      */
-    router.post('/rsvp', middle.requireAccepted,function (req, res) {
+    router.post("/rsvp", middle.requireAccepted,function (req, res) {
         var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
 
         form.parse(req, function (err, fields, files) {
@@ -385,8 +387,8 @@ module.exports = function (io) {
                 if (err.toString() === "Error: maximum file length exceeded") {
                     err = "Your resume is too big. Please decrease the size to below 10 MB, and try again.";
                 }
-                req.flash('error', err);
-                return res.redirect('/user/dashboard');
+                req.flash("error", err);
+                return res.redirect("/user/dashboard");
             }
 
             //console.log(files);
@@ -412,19 +414,21 @@ module.exports = function (io) {
                             function(cb) {
                                 if (!req.user.internal.cornell_applicant) {
                                     helper.addSubscriber(config.mailchimp.l_external_rsvpd, req.user.email, req.user.name.first, req.user.name.last, cb);
-                                } else {
+                                }
+                                else {
                                     cb();
                                 }
                             }
                         ], function(err, result) {
                             if (err) {
                                 console.error(err);
-                                req.flash('error', 'An internal error has occurred.');
-                            } else {
-                                req.flash('success', 'We have received your response!');
+                                req.flash("error", "An internal error has occurred.");
+                            }
+                            else {
+                                req.flash("success", "We have received your response!");
                             }
 
-                            return res.redirect('/user/dashboard');
+                            return res.redirect("/user/dashboard");
                         });
                     };
 
@@ -436,40 +440,43 @@ module.exports = function (io) {
                                 return _saveAndSubscribe();
                             }
                             else{
-                                req.flash('error', "Please upload a travel receipt.");
-                                return res.redirect('/user/dashboard');
+                                req.flash("error", "Please upload a travel receipt.");
+                                return res.redirect("/user/dashboard");
                             }    
                         }
 
                         helper.uploadFile(receipt, {type: "receipt"}, function (err, file) {
                             if (err) {
                                 console.log(err);
-                                req.flash('error', "File upload failed. :(");
-                                return res.redirect('/user/dashboard');
+                                req.flash("error", "File upload failed. :(");
+                                return res.redirect("/user/dashboard");
                             }
 
                             if (typeof file === "string") {
-                                req.flash('error', file);
-                                return res.redirect('/user/dashboard');
-                            } else {
+                                req.flash("error", file);
+                                return res.redirect("/user/dashboard");
+                            }
+                            else {
                                 return _saveAndSubscribe();
                             }
                         });
-                    } else {
+                    }
+                    else {
                         return _saveAndSubscribe();
                     }
                 });
-            } else {
+            }
+            else {
                 req.user.internal.going = false;
-                req.flash('success', 'We have received your decision not to attend.');
+                req.flash("success", "We have received your decision not to attend.");
                 req.user.save(function (err) {
                     if (err) {
                         console.log(err);
                     }
-                    return res.redirect('/user/dashboard');
+                    return res.redirect("/user/dashboard");
                 });
             }
-        })
+        });
     });
 
     /**
@@ -477,8 +484,8 @@ module.exports = function (io) {
      * @apiName Travel
      * @apiGroup User
      */
-    router.get('/travel', middle.requireAccepted, function (req, res, next) {
-        res.render('dashboard/travel', {
+    router.get("/travel", middle.requireAccepted, function (req, res, next) {
+        res.render("dashboard/travel", {
             title: "Travel Information"
         });
     });
@@ -488,56 +495,14 @@ module.exports = function (io) {
      * @apiName Travel
      * @apiGroup User
      */
-    router.get('/travel', middle.requireResultsReleased, function (req, res, next) {
-        res.render('dashboard/travel', {
+    router.get("/travel", middle.requireResultsReleased, function (req, res, next) {
+        res.render("dashboard/travel", {
             user: req.user,
             title: "Travel Information"
         });
     });
 
-    /* GET mentor list page */
-    /**
-     * @api {GET} /user/dashboard/mentorlist Returns a list of mentors page.
-     * @apiName MentorList
-     * @apiGroup User
-     */
-    router.get('/dashboard/mentorlist', function (req, res) {
-        Mentor.find().sort("mentorinfo.company").exec(function (err, mentors) {
-            _getSortedCompanyImages(req, function (sortedCompanyList, sortedCompanyImageList) {
-                var companyCount = []; //will contain the number of mentors for each company
-                async.eachSeries(sortedCompanyList, function (company, callback) {
-                    Mentor.aggregate([
-                        {$match: {'company': company}},
-                        {$group: {_id: null, count: {$sum: 1}}}
-                    ], function (err, result) {
-                        if (err) {
-                            console.error(err);
-                        }
-                        if (result.length === 0) {
-                            companyCount.push(0);
-                        } else {
-                            companyCount.push(result[0].count);
-                        }
-                        callback(null);
-                    });
-                }, function (err) {
-                    if (err) {
-                        console.error(err);
-                    }
-                    res.render('dashboard/mentor_list', {
-                        title: "Mentor List",
-                        mentors: mentors,
-                        companyCount: companyCount,
-                        companyList: sortedCompanyList,
-                        companyImages: sortedCompanyImageList,
-                        user: req.user
-                    });
-                });
-            });
-        });
-    });
-
-    router.get("/dashboard/requestmentor", requestMentor.get);
+    router.get("/dashboard/requestmentor",  requestMentor.get);
     router.post("/dashboard/requestmentor", requestMentor.post.bind(io));
 
     /**
@@ -545,8 +510,8 @@ module.exports = function (io) {
      * @apiName Schedule
      * @apiGroup User
      */
-    router.get('/dashboard/schedule', middle.requireDayof, function (req, res) {
-        res.render('dashboard/schedule', {
+    router.get("/dashboard/schedule", middle.requireDayof, function (req, res) {
+        res.render("dashboard/schedule", {
             title: "Schedule",
             user: req.user
         });
@@ -557,7 +522,7 @@ module.exports = function (io) {
      * @apiName NotificationShown
      * @apiGroup User
      */
-    router.post('/notificationshown', function (req, res) {
+    router.post("/notificationshown", function (req, res) {
         Event.findOne({_id: req.body.eventId}, function (err, event) {
             event.notificationShown = true;
             event.save(function (err) {
@@ -576,9 +541,9 @@ module.exports = function (io) {
      * @apiName Logout
      * @apiGroup User
      */
-    router.get('/logout', function (req, res) {
+    router.get("/logout", function (req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect("/");
     });
 
     /**
@@ -590,7 +555,7 @@ module.exports = function (io) {
         var companyList = enums.mentor.companyname.slice(0);
         var companyToImage = {}; //dictionary with mappings from each company's name to their image
         for (var i = 0; i < companyList.length; i++) {
-            companyToImage[companyList[i]] = req.protocol + '://' + req.get('host') + "/img/logos/" + companyImages[i];
+            companyToImage[companyList[i]] = req.protocol + "://" + req.get("host") + "/img/logos/" + companyImages[i];
         }
         var sortedCompanyList = companyList.sort();
         var sortedCompanyImages = [];
@@ -651,13 +616,16 @@ module.exports = function (io) {
             Bus.findOne({_id : req.user.internal.busOverride }, function (err,bus) {
                 if (err) {
                     console.error(err);
-                } else if (bus) {
+                }
+                else if (bus) {
                     done(null, bus);
-                } else {
-                    console.error('ERROR: Missing bus on an overridden user');
+                }
+                else {
+                    console.error("ERROR: Missing bus on an overridden user");
                 }
             });
-        } else {
+        }
+        else {
             Bus.find({}).exec(function (err, buses) {
                 if (err) {
                     console.log(err);
@@ -665,7 +633,7 @@ module.exports = function (io) {
                 //todo optimize this (see if it's possible to perform this operation in a single aggregation
                 async.each(buses, function (bus, callback) {
                     async.each(bus.stops, function (stop, inner_callback) {
-                        College.find({$or: [{'_id': stop.collegeid}, {'_id': req.user.school.id}]},
+                        College.find({$or: [{"_id": stop.collegeid}, {"_id": req.user.school.id}]},
                             function (err, colleges) {
                                 //The case when the query returns only one college because the college of the bus's stop
                                 //is the same as the user's college
@@ -701,7 +669,8 @@ module.exports = function (io) {
                     if (err) {
                         console.log(err);
                         done(err, userbus);
-                    } else {
+                    }
+                    else {
                         done(null, userbus);
                     }
                     //temporarily disable
