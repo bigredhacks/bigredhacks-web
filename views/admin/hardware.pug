@@ -42,8 +42,9 @@ block append admin_content
                 .form-group
                     input.form-control(type='number', name='quantity', placeholder='quantity', value=1)
                 .form-group
-                    label(for='checkingOut') Checking Out?&nbsp;
-                        input#checkingOut(type='checkbox', value='', name='checkingOut')
+                    input#checkingOut(type='checkbox' value='' name='checkingOut')
+                    label(for='checkingOut') Check this box if you are #[b checking this item out]; leave unchecked if returning
+
                 button#checkout-hardware-btn.btn.btn-primary(type='submit') Submit
         #checkouts.tab-pane(role='tabpanel')
             h2 Hardware Currently Checked out
@@ -57,7 +58,7 @@ block append admin_content
                     tr
                         th #{checkout.inventory_id.name}
                         th #{checkout.quantity}
-                        th #{checkout.student_id.name.first} #{checkout.student_id.name.first}
+                        th #{checkout.student_id.name.first} #{checkout.student_id.name.last}
                         th #{checkout.student_id.email}
         #transactions.tab-pane(role='tabpanel')
             h2 All Hardware Transactions

@@ -6,9 +6,9 @@ const email        = require("../../util/email");
 const mentorSkills = require("../../util/mentor_skills");
 const socketutil   = require("../../util/socketutil");
 
-let enums         = require('../../models/enum');
-let MentorRequest = require('../../models/mentor_request');
-let Mentor        = require('../../models/mentor.js');
+let enums         = require("../../models/enum");
+let MentorRequest = require("../../models/mentor_request");
+let Mentor        = require("../../models/mentor.js");
 
 function requestMentorGet (req, res) {
     MentorRequest.find({user: req.user}).populate("mentor user").exec((err, mentorRequests) => {
@@ -55,7 +55,7 @@ function requestMentorPost (req, res) {
                 req.flash("success", `Request successfully ${req.body.completerequest ? "completed" : "deleted"}!`);
             }
             return res.render("dashboard/request_mentor", {
-                title: 'Mentor Registration',
+                title: "Mentor Registration",
                 input: req.body,
                 enums: enums,
                 mentorRequests: mentorRequests
@@ -144,30 +144,30 @@ function requestMentorPost (req, res) {
                             req.flash("error", curErr.msg);
                         });
                     }
-                    return res.render('dashboard/request_mentor', {
-                        title: 'Mentor Registration',
+                    return res.render("dashboard/request_mentor", {
+                        title: "Mentor Registration",
                         input: req.body,
                         enums: enums,
                         errors: err.errors,
-                        error: req.flash('error'),
+                        error: req.flash("error"),
                         mentorRequests: results.mentorRequests
                     });
                 }
                 else {
                     req.flash("error", "An unexpected error occurred.");
-                    return res.render('dashboard/request_mentor', {
-                        title: 'Mentor Registration',
+                    return res.render("dashboard/request_mentor", {
+                        title: "Mentor Registration",
                         input: req.body,
                         enums: enums,
-                        error: req.flash('error'),
+                        error: req.flash("error"),
                         mentorRequests: results.mentorRequests
                     });
                 }
             }
             else {
                 req.flash("success", "Mentor request successfully submitted! Hang tight!");
-                return res.render('dashboard/request_mentor', {
-                    title: 'Mentor Registration',
+                return res.render("dashboard/request_mentor", {
+                    title: "Mentor Registration",
                     enums: enums,
                     mentorRequests: results.mentorRequests
                 });

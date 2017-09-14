@@ -3,11 +3,11 @@
  * Common helper functions
  */
 
-var async = require('async');
-var icalendar = require('icalendar');
-var request = require('request');
-var config = require('../config');
-var moment = require('moment');
+var async = require("async");
+var icalendar = require("icalendar");
+var request = require("request");
+var config = require("../config");
+var moment = require("moment");
 var util = {};
 
 // Callback for most saves
@@ -26,37 +26,40 @@ util.dbSaveCallback = function (res) {
  * Removes user from its current bus, factored out for reuse
  * @param user
  */
-util.removeUserFromBus = function (Bus, req, res,user) {
+util.removeUserFromBus = (Bus, req, res,user) => {
     Bus.findOne({_id: req.body.busid}, function (err, bus) {
-        if (user.internal.busid == req.body.busid) {
+        if (user.internal.busid === req.body.busid) {
             user.internal.busid = null;
             var newmembers = [];
             // Remake user list without the user being removed included
             async.each(bus.members, function (member, callback) {
-                if (member.id != user.id) {
+                if (member.id !== user.id) {
                     newmembers.push(member);
                 }
 
                 callback();
-            }, function (err) {
+            }, (err) => {
                 bus.members = newmembers;
                 bus.save(function (err) {
                     if (err) {
                         console.error(err);
                         return res.sendStatus(500);
-                    } else {
+                    }
+                    else {
                         user.save(function (err) {
                             if (err) {
                                 console.error(err);
                                 return res.sendStatus(500);
-                            } else {
+                            }
+                            else {
                                 return res.sendStatus(200);
                             }
                         });
                     }
-                })
+                });
             });
-        } else {
+        }
+        else {
             user.internal.busid = null;
             user.save(function (err) {
                 if (err) {
@@ -90,40 +93,43 @@ util.grabCalendar = function grabCalendar(callback) {
         // This serves as a lock so that we do not repeat requests. While this occurs, stale calendar data will
         // be fed temporarily to subsequent requests.
         lastCalendarUpdate = Date.now();
-        request(config.setup.ical, function(err, response, ical) {
+        request(config.setup.ical, (err, response, ical) => {
             if (err) {
-                callback(err);
-            } else if (response.statusCode != 200) {
-                callback('ERROR: Bad response on calendar request!');
-            } else {
-                var calendar = icalendar.parse_calendar(ical);
+                return callback(err);
+            }
+            else if (response.statusCode !== 200) {
+                return callback("ERROR: Bad response on calendar request!");
+            }
+            else {
+                let calendar = icalendar.parse_calendar(ical);
 
-                var calendarEvents = calendar.events().map(element => {
+                let calendarEvents = calendar.events().map(element => {
                     return {
                         event: element.properties.SUMMARY[0].value,
                         start: element.properties.DTSTART[0].value - 60*60*1000*4,
                         end: element.properties.DTEND[0].value - (60*60*1000*4),
                         location: element.properties.LOCATION[0].value,
                         description: element.properties.DESCRIPTION[0].value
-                    }
+                    };
                 });
 
-                calendarEvents = calendarEvents.sort( function(x,y){
-                    //console.log(x);
-                    var formatted = moment(x.start).format("'MMMM Do YYYY, h:mm:ss a");
-                    //console.log('x' + formatted);
-                    var formattedy = moment(y.start).format("'MMMM Do YYYY, h:mm:ss a");
-                    //console.log('y' + formattedy);
-                    return x.start<y.start  ? -1 : x.start> y.start? 1 : 0;
+                calendarEvents = calendarEvents.sort((x,y) => {
+                    // let formatted = moment(x.start).format("'MMMM Do YYYY, h:mm:ss a");
+                    // let formattedy = moment(y.start).format("'MMMM Do YYYY, h:mm:ss a");
+                    return x.start < y.start
+                        ? -1
+                        : x.start> y.start
+                            ? 1
+                            : 0;
                 });
-
 
                 // Update cache
                 updateCached(calendarEvents);
-                callback(null, calendarEvents);
+                return callback(null, calendarEvents);
             }
         });
-    } else {
+    }
+    else {
         callback(null, cachedCalendar);
     }
 };
@@ -136,13 +142,13 @@ util.grabCalendar = function grabCalendar(callback) {
  * @returns {number} represents distance in miles between the two colleges
  */
 util.distanceBetweenPointsInMiles = function distanceBetweenPointsInMiles(coordinate1, coordinate2) {
-    var radius = 3958.754641; // Radius of the earth in miles
-    var dLat = (Math.PI / 180) * (coordinate2[1] - coordinate1[1]);
-    var dLon = (Math.PI / 180) * (coordinate2[0] - coordinate1[0]);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((Math.PI / 180) * (coordinate1[1])) *
+    let radius = 3958.754641; // Radius of the earth in miles
+    let dLat = (Math.PI / 180) * (coordinate2[1] - coordinate1[1]);
+    let dLon = (Math.PI / 180) * (coordinate2[0] - coordinate1[0]);
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((Math.PI / 180) * (coordinate1[1])) *
         Math.cos((Math.PI / 180) * (coordinate2[1])) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var distance = radius * c; // Distance in miles
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    let distance = radius * c; // Distance in miles
     return distance;
 };
 
@@ -152,7 +158,7 @@ util.calculateReimbursement = function calculateReimbursement(reimbursements, us
     let _filterSchoolReimbursement = function _filterSchoolReimbursement(user) {
         for (let i = 0; i < reimbursements.length; i++) {
             let x = reimbursements[i];
-            if (x.college.id == user.school.id) {
+            if (x.college.id === user.school.id) {
                 return x.amount;
             }
         }
@@ -160,7 +166,7 @@ util.calculateReimbursement = function calculateReimbursement(reimbursements, us
         return -1;
     };
 
-    if (user.internal.going == false || (rsvpOnly && !user.internal.going)) {
+    if (user.internal.going === false || (rsvpOnly && !user.internal.going)) {
         return 0;
     }
 
@@ -169,7 +175,7 @@ util.calculateReimbursement = function calculateReimbursement(reimbursements, us
     }
 
     let school_override = _filterSchoolReimbursement(user);
-    return (school_override == -1) ? Number(config.admin.default_reimbursement) : school_override;
+    return (school_override === -1) ? Number(config.admin.default_reimbursement) : school_override;
 };
 
 module.exports = util;
