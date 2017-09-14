@@ -3,7 +3,7 @@
  * Holds inventory information for a hardware item
  */
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 var hardwareItemSchema = new mongoose.Schema({
     name: {type: String, required: true, index: true},
@@ -18,7 +18,7 @@ hardwareItemSchema.methods.modifyOwnedQuantity = function modifyOwnedQuantity(ne
     this.quantityAvailable = this.quantityOwned - itemsOut;
 
     if (this.quantityOwned < this.quantityAvailable) {
-        return callback('Quantity available exceeds quantity owned!');
+        return callback("Quantity available exceeds quantity owned!");
     }
     this.save(callback);
 };
@@ -26,18 +26,19 @@ hardwareItemSchema.methods.modifyOwnedQuantity = function modifyOwnedQuantity(ne
 hardwareItemSchema.methods.addQuantity = function changeQuantity(changeInQuantity, callback) {
     this.quantityAvailable += changeInQuantity;
     if (this.quantityAvailable > this.quantityOwned) {
-        return callback('Quantity available exceeds quantity owned!');
-    } else if (this.quantityAvailable < 0) {
-        return callback('Negative quantity available!');
+        return callback("Quantity available exceeds quantity owned!");
+    }
+    else if (this.quantityAvailable < 0) {
+        return callback("Negative quantity available!");
     }
 
     this.save(callback);
 };
 
 // Hooks
-hardwareItemSchema.pre('save', function checkQuantityInvariant(next) {
+hardwareItemSchema.pre("save", function checkQuantityInvariant(next) {
     if (this.quantityAvailable > this.quantityOwned) {
-        return next(new Error('Quantity Available Exceeds Quantity Owned'));
+        return next(new Error("Quantity Available Exceeds Quantity Owned"));
     }
 
     return next();
