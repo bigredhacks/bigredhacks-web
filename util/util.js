@@ -3,12 +3,12 @@
  * Common helper functions
  */
 
-var async = require("async");
-var icalendar = require("icalendar");
-var request = require("request");
-var config = require("../config");
-var moment = require("moment");
-var util = {};
+const async = require("async");
+const icalendar = require("icalendar");
+const request = require("request");
+const config = require("../config");
+const moment = require("moment");
+let util = {};
 
 // Callback for most saves
 util.dbSaveCallback = function (res) {
@@ -104,18 +104,14 @@ util.grabCalendar = function grabCalendar(callback) {
                 let calendar = icalendar.parse_calendar(ical);
 
                 let calendarEvents = calendar.events().map(element => {
-                    console.log(element.properties.SUMMARY[0].value);
-                    console.log("string");
-                    console.log(element.properties.DTSTART[0].value, element.properties.DTEND[0].value);
-                    console.log("date:");
-                    console.log(new Date(element.properties.DTSTART[0].value), new Date(element.properties.DTEND[0].value));
-                    console.log("==");
+                    let startTime = moment(element.properties.DTSTART[0].value).utcOffset("-4:00");
+                    let endTime   = moment(element.properties.DTEND[0].value).utcOffset("-4:00");
                     return {
                         description: element.properties.DESCRIPTION[0].value,
-                        end:         Date.parse(new Date(element.properties.DTEND[0].value)),
+                        end:         endTime,
                         event:       element.properties.SUMMARY[0].value,
                         location:    element.properties.LOCATION[0].value,
-                        start:       Date.parse(new Date(element.properties.DTSTART[0].value)),
+                        start:       startTime
                     };
                 });
 
