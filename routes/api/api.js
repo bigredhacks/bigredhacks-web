@@ -1,18 +1,21 @@
 "use strict";
 
-const express = require('express');
-const email = require('../../util/email');
-const middle = require('../middleware');
-let router = express.Router();
-const socketutil = require('../../util/socketutil');
-const util = require('../../util/util');
+const async = require("async");
+const express = require("express");
+const email = require("../../util/email");
+const mentorSkills = require("../../util/mentor_skills");
+const middle = require("../middleware");
+const socketutil = require("../../util/socketutil");
+const util = require("../../util/util");
 
-let Announcement = require('../../models/announcement');
-let Colleges = require('../../models/college');
-let Hardware = require('../../models/hardware');
-let Mentor = require('../../models/mentor');
-let MentorRequest = require('../../models/mentor_request');
-let User = require('../../models/user');
+let router = express.Router();
+
+let Announcement = require("../../models/announcement");
+let Colleges = require("../../models/college");
+let Hardware = require("../../models/hardware");
+let Mentor = require("../../models/mentor");
+let MentorRequest = require("../../models/mentor_request");
+let User = require("../../models/user");
 
 /**
  * @api {get} /api/colleges Request a full list of known colleges
@@ -21,14 +24,14 @@ let User = require('../../models/user');
  *
  * @apiSuccess {String[]} colleges A list of our colleges.
  */
-router.get('/colleges', function (req, res, next) {
+router.get("/colleges", function (req, res, next) {
     Colleges.getAll(function (err, data) {
         if (err) console.log(err);
         else res.send(data);
     });
 });
 
-router.get('/hardware', function (req, res, next) {
+router.get("/hardware", function (req, res, next) {
     Hardware.getAll(function (err, data) {
         if (err) console.log(err);
         else res.send(data);
@@ -45,7 +48,7 @@ router.get('/hardware', function (req, res, next) {
  * @apiSuccess (200) {Boolean} valid True if the email isn't taken, false otherwise.
  * @apiSuccess (200) {String} error Request for valid email.
  */
-router.get('/validEmail', function (req, res) {
+router.get("/validEmail", function (req, res) {
     let sanitizedEmail = req.query.email ? req.query.email.trim().toLowerCase() : req.query.email;
     User.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
@@ -65,7 +68,7 @@ router.get('/validEmail', function (req, res) {
  * @apiSuccess (200) {Boolean} valid True if the email isn't taken, false otherwise.
  * @apiSuccess (200) {String} error Request for valid email.
  */
-router.get('/validEmailMentor', function (req, res) {
+router.get("/validEmailMentor", function (req, res) {
     let sanitizedEmail = req.query.email ? req.query.email.trim().toLowerCase() : req.query.email;
     Mentor.findOne({ email: sanitizedEmail }, function (err, user) {
         if (err) {
@@ -84,7 +87,7 @@ router.get('/validEmailMentor', function (req, res) {
  *
  * @apiError UserError Could not save RSVP info for user.
  */
-router.post('/rsvp/notinterested', middle.requireResultsReleased, function (req, res, next) {
+router.post("/rsvp/notinterested", middle.requireResultsReleased, function (req, res, next) {
     var checked = (req.body.checked === "true");
     var user = req.user;
     if (user.internal.status == "Waitlisted") {
@@ -106,7 +109,7 @@ router.post('/rsvp/notinterested', middle.requireResultsReleased, function (req,
  * @apiError UserError Could not save RSVP info for user.
  * @apiError NotCornell
  */
-router.patch('/rsvp/cornellstudent', middle.requireResultsReleased, function (req, res, next) {
+router.patch("/rsvp/cornellstudent", middle.requireResultsReleased, function (req, res, next) {
     var checked = (req.body.checked === "true");
     var user = req.user;
     if (user.internal.cornell_applicant) {
@@ -131,11 +134,12 @@ router.patch('/rsvp/cornellstudent', middle.requireResultsReleased, function (re
  * @apiSuccess {Date} announcements.time Time the announcement was made
  *
  */
-router.get('/announcements', function (req, res, next) {
+router.get("/announcements", function (req, res, next) {
     Announcement.find({}, "message time", function (err, ann) {
         if (err) {
             console.error(err);
-        } else {
+        }
+        else {
             res.send({
                 announcements: ann
             });
@@ -155,7 +159,7 @@ router.get('/announcements', function (req, res, next) {
  * @apiSuccess {String} calendarEvents.location Location of the event or "" if not specified
  * @apiSuccess {String} calendarEvents.description Description of the event or "" if not specified
  */
-router.get('/calendar', function (req, res, next) {
+router.get("/calendar", function (req, res, next) {
     util.grabCalendar(function (err, cal) {
         if (err) {
             console.error(err);
@@ -176,43 +180,80 @@ router.get('/calendar', function (req, res, next) {
  * @apiSuccess {String request A description of the help needed for the request
  * @apiSuccess {String} tableNumber Where the requester is located, usually a table number
  */
-router.post('/RequestMentor', function (req, res, next) {
-    console.log(req.body);
-    if (!req.body.email || !req.body.request) {
-        return res.status(500).send('Missing email or request.');
-    }
-
-    if (!req.body.tableNumber) {
-        // This API was given without location originally, so this supports requests without location
-        req.body.tableNumber = 'Unknown';
-    }
-
-    User.findOne({ 'email': req.body.email }, function (err, user) {
-        if (err) {
-            console.error(err);
-            return res.status(500);
-        }
-
-        if (!user) {
-            return res.status(500).send('Email not found.');
-        }
-
-        MentorRequest.generateRequest(user._id, req.body.request, req.body.tableNumber, function (err) {
-            if (err) {
-                console.error(err);
-                return res.status(500);
+router.post("/RequestMentor", function (req, res) {
+    async.waterfall([
+        (cb) => {
+            if (!req.body.tableNumber) {
+                // This API was given without location originally, so this supports requests without location
+                req.body.tableNumber = "Unknown";
             }
-
-            email.sendRequestMadeEmail(user.email, user.name, function (err) {
-                if (err) {
-                    console.error(err);
-                }
-                MentorRequest.find({}, function (err, requests) {
-                    socketutil.updateRequests(requests);
-                    return res.status(200).send('Request made!');
-                });
+            let newMentorRequest = new MentorRequest({
+                description: req.body.request,
+                skills:      req.body.skills,
+                user:        req.user._id.toString(),
+                status:      "Unclaimed",
+                location:    req.body.tableNumber
             });
-        });
+            newMentorRequest.save((err) => {
+                if (err) {
+                    return cb(err);
+                }
+                else {
+                    return cb(null, newMentorRequest);
+                }
+            });
+        },
+        (newMentorRequest, cb) => {
+            async.parallel({
+                mentorSkill: (cb) => {
+                    // Update this mentor request with info on other mentors' skillsets
+                    return mentorSkills(null, newMentorRequest, cb);
+                },
+                sendRequestMadeEmail: (cb) => {
+                    // Email the hacker who submitted the request
+                    return email.sendRequestMadeEmail(req.user.email, req.user.name, cb);
+                },
+                sendNewMentorRequestEmail: (cb) => {
+                    // Email mentors who wanted to be emailed
+                    Mentor.find({emailNewReq: true}).exec((err, mentors) => {
+                        if (err) {
+                            return cb(err);
+                        }
+                        else {
+                            async.each(mentors, (curMentor, cb) => {
+                                email.sendNewMentorRequestEmail(curMentor, newMentorRequest, req.user.name, cb);
+                            }, cb);
+                        }
+                    });
+                },
+                mentorRequests: (cb) => {
+                    // Send websocket update to everyone and grab new MentorRequests
+                    MentorRequest.find({}).populate("mentor user").exec((err, mentorRequests) => {
+                        if (err) {
+                            return cb(err);
+                        }
+                        else {
+                            socketutil.updateRequests(mentorRequests);
+                            mentorRequests = mentorRequests.filter(request => req.user._id.toString() === request.user._id.toString());
+                            return cb(null, mentorRequests);
+                        }
+                    });
+                }
+            }, cb);
+        },
+    ], (err) => {
+        if (err) {
+            if (typeof err === "string") {
+                return res.status(200).send(err);
+            }
+            else {
+                console.error(err);
+                return res.status(200).send("An unexpected error occurred.");
+            }
+        }
+        else {
+            return res.status(200).send("Request made!");
+        }
     });
 });
 

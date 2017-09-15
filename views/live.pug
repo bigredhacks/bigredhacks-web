@@ -11,7 +11,7 @@ mixin calendarEvents(event)
 block header
     link(rel="stylesheet", href="/css/live.css")
     link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-    //- link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css")
+    link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css")
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")
     link(href="/css/index.css", rel="stylesheet")
     
@@ -19,135 +19,122 @@ block append main_content
     h1#live-title Live Page
     .container
         .row
-            .col-md-3.col-md-offset-1
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Info
-                        .panel.panel-default
-                            .wifi
-                                h4 wifi: Cornell-Visitor
-                                h4 hacking ends: 3/25, 11:30 am
-                                h4 campus police: (607) 255-1111
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Hacking ends in
-                        .countdown
-                            #clockdiv
-                                div
-                                    span.days
-                                    .smalltext Days
-                                div
-                                    span.hours
-                                    .smalltext Hours
-                                div
-                                    span.minutes
-                                    .smalltext Minutes
-                                div
-                                    span.seconds
-                                    .smalltext Seconds
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Twitter
-                        .twitter-feed
-                            a.twitter-timeline(href='https://twitter.com/BigRedHacks') Tweets by BigRedHacks
-            //-.col-md-3.col-md-offset-1
-            //-    .row
-            //-        .panel.panel-default
-            //-            .panel-heading
-            //-                h3.panel-title Request a Mentor
-            //-                .mentor-request
-            //-                    #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
-            //-                        label#mentor-label You must use the email you registered with
-            //-                    form
-            //-                        .form-group
-            //-                            label email
-            //-                            input#mentor-req-email.form-control(type='text' name='email' placeholder='ex. abc@cornell.edu')
-            //-                        .form-group
-            //-                            label problem
-            //-                            input#mentor-req-text.form-control(type='text' name='request' placeholder='ex. need help with Javascript')
-            //-                        .form-group
-            //-                            label table number
-            //-                            input#mentor-req-table.form-control(type='text' name='tableNumber' placeholder='ex. 4')
-            //-                        button#request-mentor-btn.btn.btn-primary request mentor
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Schedule
-                        .calendar
-                            .schedule-tab
-                                .heading
-                                    h3 fri, 3/24
-                                for event in calendar
-                                    if moment(event.start).format("ddd").toLowerCase() == "fri"
-                                        +calendarEvents(event)
-                                .heading
-                                    h3 sat, 3/25
-                                for event in calendar
-                                    if moment(event.start).format("ddd").toLowerCase() == "sat"
-                                        +calendarEvents(event)
-                                //- .heading
-                                //-         h3 sun, 9/18
-                                //- for event in calendar
-                                //-         if moment(event.start).format("ddd").toLowerCase() == "sun"
-                                //-             +calendarEvents(event)
-            .col-md-3.col-md-offset-1
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Announcements
-                        .table-responsive.announcements
-                            table#announcements-table.table.table-hover
-                                thead
-                                    tr
-                                        th Message
-                                        th Time
-                                tbody
-                                for announcement in announcements.reverse()
-                                    tr
-                                        .message
-                                            td #{announcement.message}
-                                        .time
-                                            td.time #{moment(announcement.time).from()}
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title program
-                        .program
-                            a(href="//docs.google.com/spreadsheets/d/1SLBX9h_j0h0pUVewNDfGovfCfDlNuj62F4plWuRMnWw/edit#gid=0") program schedule
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Devpost
-                        .submit
-                            a(href="//brh-sp2017.devpost.com/") submit projects here
-                .row
-                    .panel.panel-default
-                        .panel-heading
-                            h3.panel-title Social Media
-                        .social-media
-                            a(href="//facebook.com/BigRedHacks")
-                                i.fa.fa-facebook-square.fa-3x(aria-hidden='true')
-                            a(href="//twitter.com/BigRedHacks")
-                                i.fa.fa-twitter-square.fa-3x(aria-hidden='true')
-                            a(href="//instagram.com/BigRedHacks")
-                                i.fa.fa-instagram.fa-3x(aria-hidden='true')
-                //- .row
-                //-     .panel.panel-default
-                //-         .panel-heading
-                //-             h3.panel-title Hardware
-                //-         .program
-                //-             a(href="https://hardware.mlh.io/events/bigred-hacks") hardware
-                //- .row
-                //-     .panel.panel-default
-                //-         .panel-heading
-                //-             h3.panel-title Android App
-                //-         .program
-                //-             a(href="https://play.google.com/store/apps/details?id=edu.bigredhacks.android") android app
+            .col-md-4
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Info
+                    .panel-body
+                        .wifi
+                            h4 wifi: Cornell-Visitor
+                            h4 hacking ends: 9/17, 8:00 AM
+                            h4 campus police: (607) 255-1111
+            .col-md-4
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Announcements
+                    .table-responsive.announcements
+                        table#announcements-table.table.table-hover
+                            thead
+                                tr
+                                    th Message
+                                    th Time
+                            tbody
+                            for announcement in announcements.reverse()
+                                tr
+                                    .message
+                                        td #{announcement.message}
+                                    .time
+                                        td.time #{moment(announcement.time).from()}
+            .col-md-4
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Hacking ends in
+                    .countdown.panel-body
+                        #clockdiv
+                            div
+                                span.days
+                                .smalltext Days
+                            div
+                                span.hours
+                                .smalltext Hours
+                            div
+                                span.minutes
+                                .smalltext Minutes
+                            div
+                                span.seconds
+                                .smalltext Seconds
+        .row
+            .col-md-4
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Devpost
+                    .submit
+                        a(href="//brh-sp2017.devpost.com/") submit projects here
+
+            .col-md-4
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Social Media
+                    .social-media
+                        a(href="//facebook.com/BigRedHacks")
+                            i.fa.fa-facebook-square.fa-3x(aria-hidden='true')
+                        a(href="//twitter.com/BigRedHacks")
+                            i.fa.fa-twitter-square.fa-3x(aria-hidden='true')
+                        a(href="//instagram.com/BigRedHacks")
+                            i.fa.fa-instagram.fa-3x(aria-hidden='true')
+
+            .col-md-4
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Slack
+                    .submit
+                        a(href="//brh2017.slack.com/") join the slack team
+        if isUser
+            .row
+                .panel.panel-default
+                    .panel-heading
+                        h3.panel-title Request a Mentor
+                        .mentor-request
+                            #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
+
+                                label#mentor-label You must use the email you registered with
+                            form
+                                .form-group
+                                    label problem
+                                    input#mentor-req-text.form-control(type='text' name='request' placeholder='ex. need help with Javascript')
+                                .form-group
+                                    label desired skills
+                                    input#mentor-req-text.form-control(type='text' name='skills' placeholder='javascript, html, css...')
+                                .form-group
+                                    label table number or location
+                                    input#mentor-req-table.form-control(type='text' name='tableNumber' placeholder='ex. 4')
+                                button#request-mentor-btn.btn.btn-primary request mentor
+        .row
+            .panel.panel-default
+                .panel-heading
+                    h3.panel-title Schedule
+                .calendar
+                    .schedule-tab
+                        .heading
+                            h3 fri, 9/15
+                            for event in calendar
+                                - var eventStartFri = moment(event.start);
+                                if eventStartFri.format("ddd").toLowerCase() === "fri" && eventStartFri.isAfter(new moment())
+                                    +calendarEvents(event)
+                        .heading
+                            h3 sat, 9/16
+                            for event in calendar
+                                - var eventStartSat = moment(event.start);
+                                if eventStartSat.format("ddd").toLowerCase() === "sat" && eventStartSat.isAfter(new moment())
+                                    +calendarEvents(event)
+                        .heading
+                            h3 sun, 9/17
+                            for event in calendar
+                                - var eventStartSun = moment(event.start);
+                                if eventStartSun.format("ddd").toLowerCase() === "sun" && eventStartSun.isAfter(new moment())
+                                    +calendarEvents(event)
 block footer
-    script(src="https://code.jquery.com/jquery-1.10.2.min.js")
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
     script(src="/socket.io/socket.io.js")
     script(src="/js/live.js")
-    script(async='' src='//platform.twitter.com/widgets.js' charset='utf-8')
+    script(src='//platform.twitter.com/widgets.js' charset='utf-8' async='')

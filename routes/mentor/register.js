@@ -100,7 +100,7 @@ function registerMentorPost (req, res) {
                 },
             }, cb);
         },
-        (cb) => {
+        (ignore, cb) => {
             // Register this new mentor
             let newMentor = new Mentor({
                 name: {

@@ -2,8 +2,8 @@
 
 const async       = require("async");
 const authHelp    = require("./helpers/auth");
-let Mentor        = require('../models/mentor');
-let MentorRequest = require('../models/mentor_request');
+let Mentor        = require("../models/mentor");
+let MentorRequest = require("../models/mentor_request");
 let User          = require("../models/user");
 
 /**
@@ -50,7 +50,7 @@ module.exports = (io, mentorRequest, mainCB) => {
                     return eachRequestCB(err);
                 }
                 else {
-                    User.findOne({_id: curRequest.user._id.toString()}).exec((err, user) => {
+                    User.findOne({_id: curRequest.user.toString()}).exec((err, user) => {
                         if (err) {
                             return eachRequestCB(err);
                         }
@@ -59,7 +59,9 @@ module.exports = (io, mentorRequest, mainCB) => {
                                 mentorRequestPubid: curRequest.pubid,
                                 nummatchingmentors: numMatchingMentors
                             };
-                            io.sockets.emit(`New number of mentors ${user.pubid}`, currentMentorRequest);
+                            if (io && typeof io !== "undefined") {
+                                io.sockets.emit(`New number of mentors ${user.pubid}`, currentMentorRequest);
+                            }
                             return eachRequestCB(null);
                         }
                     });

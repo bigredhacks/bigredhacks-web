@@ -1,13 +1,13 @@
-const config = require('../../config.js');
+const config = require("../../config.js");
 
 /**
  * @api {GET} /login Render the login page.
  * @apiName Login
  * @apiGroup Auth
  */
-function loginGet (req, res, next) {
-    res.render('login', {
-        title: 'Login',
+function loginGet (req, res) {
+    return res.render("login", {
+        title: "Login",
         user: req.user
     });
 }
@@ -24,13 +24,13 @@ function loginPost (req, res) {
     // successful auth, user is set at req.user.  redirect as necessary.
     if (req.user.role === "admin" || req.user.email === config.admin.email) {
         req.session.np = true; //enable no participation mode
-        return res.redirect('/admin');
+        return res.redirect("/admin");
     }
     else if (req.user.role === "mentor") {
-        return res.redirect('/mentor/dashboard');
+        return res.redirect("/mentor/dashboard");
     }
     else {
-        return res.redirect('/user');
+        return res.redirect("/user");
     }
 }
 
