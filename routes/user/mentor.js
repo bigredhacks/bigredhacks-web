@@ -129,7 +129,6 @@ function requestMentorPost (req, res) {
                                 return cb(null, mentorRequests);
                             }
                             else {
-                                console.log("mentorRequests error");
                                 return cb(err);
                             }
                         });

@@ -28,7 +28,6 @@ mentorRequestSchema.statics.generateRequest = function(userId, descrip, loc, cal
         description: descrip,
         location: loc
     });
-
     request.save(callback);
 };
 

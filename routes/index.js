@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 const validator = require("../library/validations.js");
 const helper = require("../util/routes_helper");
-const middle = require("./middleware.js");
 const async = require("async");
 const Announcement = require ("../models/announcement.js");
 const Inventory = require ("../models/hardware_item.js");
@@ -17,7 +16,7 @@ const util = require("../util/util");
  * @apiName Index
  * @apiGroup Index
  */
-router.get("/", function (req, res, next) {
+router.get("/", function (req, res) {
     let ev = req.flash();
     res.render("index", {
         title: "Cornell's Ultimate Hackathon",
@@ -32,9 +31,9 @@ router.get("/", function (req, res, next) {
  * @params isCornell- is the student from Cornell or not?
  * @params cornellEmail or email- the email to subscribe
  */
-router.get("/subscribe", function (req, res, next) {
+router.get("/subscribe", function (req, res) {
     req = validator.validate(req, ["email"]);
-    var email = req.query["email"];
+    let email = req.query["email"];
     if (req.validationErrors()) {
         console.log(req.validationErrors());
         res.send({status: false, message: "Please enter a valid email"});
@@ -81,9 +80,9 @@ router.get("/live",function (req, res, next) {
         }
         else {
             return res.render("live", {
-                title: "Live",
+                title:         "Live",
                 announcements: result.announcements,
-                calendar: result.calendar
+                calendar:      result.calendar
             });
         }
     });
