@@ -59,7 +59,9 @@ module.exports = (io, mentorRequest, mainCB) => {
                                 mentorRequestPubid: curRequest.pubid,
                                 nummatchingmentors: numMatchingMentors
                             };
-                            io.sockets.emit(`New number of mentors ${user.pubid}`, currentMentorRequest);
+                            if (io && typeof io !== "undefined") {
+                                io.sockets.emit(`New number of mentors ${user.pubid}`, currentMentorRequest);
+                            }
                             return eachRequestCB(null);
                         }
                     });

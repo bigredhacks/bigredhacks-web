@@ -21,6 +21,7 @@ block mentor_content
     legend Would you like to receive emails on new Mentor Requests?
     | Yes #[input(type="radio" name="opt-in-toggle" value="true" checked=mentor.emailNewReq)]
     | No #[input(type="radio" name="opt-in-toggle" value="false" checked=!mentor.emailNewReq)]
+    #success-msg
 
     .header-wrapper
         .mentorRequests(data-mentor=mentor.id)
