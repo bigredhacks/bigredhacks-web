@@ -104,12 +104,18 @@ util.grabCalendar = function grabCalendar(callback) {
                 let calendar = icalendar.parse_calendar(ical);
 
                 let calendarEvents = calendar.events().map(element => {
+                    console.log(element.properties.SUMMARY[0].value);
+                    console.log("string");
+                    console.log(element.properties.DTSTART[0].value, element.properties.DTEND[0].value);
+                    console.log("date:");
+                    console.log(new Date(element.properties.DTSTART[0].value), new Date(element.properties.DTEND[0].value));
+                    console.log("==");
                     return {
                         description: element.properties.DESCRIPTION[0].value,
-                        end:         new Date(element.properties.DTEND[0].value),
+                        end:         Date.parse(new Date(element.properties.DTEND[0].value)),
                         event:       element.properties.SUMMARY[0].value,
                         location:    element.properties.LOCATION[0].value,
-                        start:       new Date(element.properties.DTSTART[0].value),
+                        start:       Date.parse(new Date(element.properties.DTSTART[0].value)),
                     };
                 });
 
