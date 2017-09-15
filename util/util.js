@@ -105,17 +105,15 @@ util.grabCalendar = function grabCalendar(callback) {
 
                 let calendarEvents = calendar.events().map(element => {
                     return {
-                        event: element.properties.SUMMARY[0].value,
-                        start: element.properties.DTSTART[0].value - 60*60*1000*4,
-                        end: element.properties.DTEND[0].value - (60*60*1000*4),
-                        location: element.properties.LOCATION[0].value,
-                        description: element.properties.DESCRIPTION[0].value
+                        description: element.properties.DESCRIPTION[0].value,
+                        end:         new Date(element.properties.DTEND[0].value),
+                        event:       element.properties.SUMMARY[0].value,
+                        location:    element.properties.LOCATION[0].value,
+                        start:       new Date(element.properties.DTSTART[0].value),
                     };
                 });
 
                 calendarEvents = calendarEvents.sort((x,y) => {
-                    // let formatted = moment(x.start).format("'MMMM Do YYYY, h:mm:ss a");
-                    // let formattedy = moment(y.start).format("'MMMM Do YYYY, h:mm:ss a");
                     return x.start < y.start
                         ? -1
                         : x.start> y.start

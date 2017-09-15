@@ -17,7 +17,7 @@ $(document).ready(function () {
                 newVal: newVal
             },
             dataType: "json",
-            success: function (data) {
+            success: function () {
                 if (newVal === true) {
                     $("#success-msg").text("Successfully opted into mentor request emails!");
                 }
