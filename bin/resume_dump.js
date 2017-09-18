@@ -1,60 +1,51 @@
-"use strict";
-
-let AWS = require('aws-sdk');
-let uid = require('uid2');
 let fs = require('fs');
 let async = require('async');
-
 let mongoose = require('mongoose');
-mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || 'mongodb://localhost/bigredhacks', {
-  useMongoClient: true,
-  /* other options */
+let https = require('https');
+
+// Function to Download from a single URL
+let download = function(url, dest, cb) {
+  var file = fs.createWriteStream(dest);
+  var request = https.get(url, function(response) {
+    response.pipe(file);
+    file.on('finish', function() {
+      file.close(cb);  // close() is async, call cb after close completes.
+    });
+  }).on('error', function(err) { // Handle errors
+    fs.unlink(dest); // Delete the file async. (But we don't check the result)
+    if (cb) cb(err.message);
+  });
+};
+
+// Replace this with the production MongoDB URL
+let connectUrl = 'mongodb://productionaccess:granolapianist921@ds151662.mlab.com:51662/bigredhacks2017';
+mongoose.connect(connectUrl, {
+    useMongoClient: true,
+    /* other options */
 });
-//mongoose.connect('mongodb://localhost/bigredhacks');
-let config = require('../config.js');
 let User = require('../models/user.js');
+let config = require('../config.js');
 
 let RESUME_DEST = 'resume/';
-let RECEIPT_DEST = 'travel/';
+// Replace this with the path that you want
+let LOCAL_DEST = 'c:/Users/aliu/r/bigredhacks-web/resumes/';
 
-let LOCAL_DEST = 'D:/resumes/';
-
-let s3 = new AWS.S3({
-    accessKeyId: config.setup.AWS_access_key,
-    secretAccessKey: config.setup.AWS_secret_key
-});
-
-var query = {"internal.status": "Accepted"};
+let query = {"internal.status": "Accepted"};
     //{ "internal.going": true};
-/*
-    "$or": [
-        {"internal.going": true},
-        {
-            "$and": [
-                {"internal.cornell_applicant": true},
-                {"internal.status": "Accepted"}
-            ]
-        }
-    ]
-};
-*/
 
-User.find(query, function (err, users) {
+User.find(query,  function (err, users) {
     if (err) {
         console.error("Error getting users.");
     }
     else {
         console.log("Starting resume dump.");
         async.each(users, function (user, done) {
-            let save_name = LOCAL_DEST + user.name.first + "_" + user.name.last + "_" + uid(2) + ".pdf";
+            let save_name = LOCAL_DEST + user.name.first + "_" + user.name.last + ".pdf";
             let filename = user.app.resume;
-            console.log(filename, save_name);
-            let params = {Bucket: "files.bigredhacks.com", Key: RESUME_DEST + filename};
-            //console.log(params);
-            let file = fs.createWriteStream(save_name);
-            let r = s3.getObject(params).createReadStream().pipe(file);
-            r.on("error", function(err) {console.log(err)});
-            r.on('finish', done);
+            // Hand check these resume links if anything breaks
+            let resumeLink = "https://files.bigredhacks.com/" + RESUME_DEST + filename;
+            console.log(filename, save_name, resumeLink);
+            download(resumeLink, save_name, done);
         }, function (err, res) {
             console.log(err, "Finished!");
             process.exit();
