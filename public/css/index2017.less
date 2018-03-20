@@ -1,0 +1,622 @@
+@import "_global";
+@import "_fontawesome-custom";
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Overpass+Mono');
+
+@main-header-size: 68pt;
+@body-line-height: 1.6em;
+@body-size: 16px;
+
+@nav-purple: lighten(fade(@purple, 70%), 20%);
+@nav-blue: rgba(178, 223, 244, 0.7);
+@nav-orange: fade(@orange, 70%);
+
+@landing-box-margin: 150px;
+@content-padding-left: 0%;
+@content-width: 50%;
+
+.noselect {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+img {
+  .noselect;
+}
+
+body {
+  //width: 100%;
+  //height: 100%;
+  font-family: @2017-font;
+  font-weight: @weight-normal;
+  background-color: @2017-background;
+  padding: 0;
+  margin: 0;
+  color: @2017-text-gray
+}
+@media (max-width: 768px){
+  .navbar-fixed-top {
+    position: relative;
+    top: auto;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: @weight-normal;
+  z-index: 999999;
+}
+
+p {
+  text-align: left;
+  margin: 0 0 20px;
+  .lead {
+    font-weight: @weight-bold;
+  }
+  .footer {
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+p{
+  font-size: @body-size;
+  line-height: @body-line-height;
+}
+
+.light {
+  font-weight: 400;
+}
+
+.navbar {
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .3);
+  background: @2017-background !important;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  height: 40px;
+  padding: 5px 15px 0 50px;
+  font-size: 18px;
+  line-height: 1em;
+  h1 {
+    font-size: 20px;
+    line-height: 40px;
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+.fade-heading {
+  padding-top: 85px;
+}
+
+.fade-img {
+  display: inherit;
+  position: absolute;
+  left: 0%;
+  width: 800px;
+  height: 85px;
+}
+
+// ===========================
+//--- General sections
+//============================
+
+section {
+  .container {
+    width: @content-width;
+    padding-left: @content-padding-left;
+  }
+}
+
+.img-block {
+  position: absolute;
+  padding-top: 30px;
+  padding-left: 25px;
+}
+.big-heading h2 {
+  font-size: 32px;
+  padding-top: 25px;
+  margin-bottom: 18px;
+  font-family: 'Overpass Mono', sans-serif;
+}
+
+.user-action-group {
+  margin-left: 75px;
+  .btn-default {
+    margin-right: 100px;
+    margin-left: 0px;
+  }
+}
+
+.center-date {
+  width: 80%;
+  left: 30%;
+}
+
+.big-heading2 h2 {
+  font-size: 13px;
+  font-family: 'Overpass Mono', sans-serif;
+  text-align: left;
+  padding-bottom: 25px;
+}
+#date{
+  padding-bottom: 0px;
+}
+#caption{
+  padding-top: 0px;
+  margin-top:0px;
+}
+.home-section {
+  padding-top: 10px;
+  padding-bottom: 100px;
+  display: block;
+  position: relative;
+  z-index: 120;
+  &:nth-child(even) {
+    background: #f9f6d9
+  }
+}
+
+.section-heading {
+  &.right {
+    text-align: right;
+    margin-right: 7%;
+  }
+  &.left {
+    text-align: left;
+    margin-left: 7%;
+  }
+}
+
+.transparent {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  //background: rgba(0, 0, 0, 0.3);
+  background: @white;
+}
+
+// ===========================
+//--- Footer
+//============================
+
+footer {
+  padding: 50px;
+  background-color: #242C37;
+  bottom: 0;
+  width: 100%;
+  margin-top: 30px;
+
+  .container{
+    width: 80%;
+  }
+}
+
+footer p {
+  text-align: left;
+}
+
+// ===========================
+//--- Elements
+//============================
+
+.btn {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  margin: 9px 15px;
+  z-index: 600;
+  position: relative;
+
+  &.fixed-width {
+    width: 90px;
+  }
+
+  &:active, &:focus {
+    box-shadow: none;
+    outline: 1px solid red;
+  }
+}
+
+// sponsors
+.logos {
+  //width: 800px; //todo width based on screen
+  width: 100%;
+  //margin: 0 auto 30px auto;
+  text-align: center;
+}
+
+.logos li {
+  list-style-type: none;
+  display: inline;
+}
+
+.logo-4 img {
+  max-width: 50%;
+  margin: 0 0 3% 0;
+  max-height: 165px;
+}
+
+.logo-3 img {
+  max-width: 40%;
+  margin: 0 4% 3% 0;
+  max-height: 120px;
+}
+
+.logo-2 img {
+  max-width: 23%;
+  margin: 2% 7% 3% 5%;
+  max-height: 100px;
+}
+
+.logo-1 img
+{
+  max-width: 23%;
+  margin: 3% 3% 0 3%;
+  max-height: 60px;
+}
+
+// ===========================
+//--- Main Site 2017
+//============================
+#frontPage2017{
+  @triangle-val: 150px;
+
+  .layer{
+    display: block;
+  }
+
+  & > div > h1:nth-of-type(odd) {
+    h1{
+      text-align: right;
+      margin-right: 7%;
+    }
+  }
+
+  h1{
+    margin-bottom: 35px;
+    font-size: 55px;
+    letter-spacing: -3.4px;
+  }
+
+  h3{
+    margin-top: 15px;
+    font-size: 20px;
+    letter-spacing: -1px;
+    color: @2017-red;
+  }
+
+  a{
+    color: @2017-red;
+    font-size: 25px;
+  }
+
+  p{
+    color: @2017-text-gray;
+  }
+
+  .btn{
+    padding: 0;
+    margin-left: 0;
+  }
+
+  .paddedSection{
+    margin: 0 15% 0 15%;
+  }
+
+  #mainDiv{
+    position: relative;
+    height: 100vh;
+    padding-top: 10vh;
+    z-index: 3;
+    // For the BigRed//Hacks text
+    #bigred, #hacks{
+      display: inline;
+    }
+
+    #squiggles{
+      display: inline;
+      font-weight: 400 !important;
+    }
+
+    // padding-bottom: @triangle-val;
+
+    #headerText{
+      display: inline-block;
+      position:absolute;
+      top: 25vh;
+      h3{
+        display: inline-block;
+      }
+    }
+
+    #headerImg{
+      text-align: right;
+      padding-top: 30vh;
+
+      img{
+        width: 45%;
+        margin-right: 5%;
+
+      }
+    }
+  }
+
+  #aboutDiv{
+    background-color: @2017-light-gray;
+    position:relative;
+
+    z-index: 2;
+
+    .innerContent{
+      margin-top: -@triangle-val;
+    }
+
+    .paddedSection{
+      margin-top: 5%;
+    }
+
+    #A{
+      height: 0%;
+      padding-bottom: 10%;
+      img{
+        margin-left: 10%;
+        width: 10%;
+      }
+    }
+
+    #B{
+      position: absolute;
+      bottom: -20%;
+      left: 16%;
+      width: 12%;
+    }
+
+    #C{
+      position: absolute;
+      bottom: -30%;
+      left: 30%;
+      width: 12%;
+    }
+  }
+
+  #aboutDiv:before {
+    display: inline-block;
+    margin: 0;
+    margin-top: -@triangle-val;
+    margin-left: -@triangle-val;
+    content: '';
+    border: @triangle-val solid transparent;
+    border-right: 100vw solid @2017-light-gray;
+    z-index: 1;
+  }
+
+  #scheduleDiv{
+    padding-bottom: @triangle-val;
+    text-align: center;
+    position: relative;
+
+    #schedule{
+      overflow:auto;
+
+      h4{
+        margin-bottom: 45px;
+      }
+
+      b{
+        text-transform: uppercase;
+      }
+
+      p{
+        margin-bottom: 3px;
+      }
+    }
+  }
+
+  #faqDiv{
+    background-color: @2017-light-gray;
+    position: relative;
+
+    #question{
+      text-align: right;
+      margin-bottom: 10%;
+      height: 0%;
+      img{
+        width: 30%;
+        top: -@triangle-val;
+      }
+ 
+    }
+
+    .innerContent{
+      margin-top: -@triangle-val;
+      padding-bottom: @triangle-val;
+    }
+  }
+
+  #faqDiv:before{
+    display: inline-block;
+    margin: 0;
+    margin-top: -@triangle-val;
+    margin-right: -@triangle-val;
+    content: '';
+    border: @triangle-val solid transparent;
+    border-left: 100vw solid @2017-light-gray;
+    border-right: 0;
+  }
+
+  dt{
+    margin-top: 15px;
+  }
+
+  #sponsorsDiv{
+    position: relative;
+    margin-bottom: 10%;
+    text-align: right;
+
+
+    .paddedSection{
+      margin-top: 5%;
+      margin-bottom: 5%;
+    }
+
+    #heart{
+      text-align: left;
+      img{
+        margin-left: 5%;
+        height: 70%;
+      }
+    }
+
+    .layer{
+      z-index: -1;
+    }
+
+    //-------CSS for all of the logos------------
+    #two_sigma{
+      max-width:none;
+      margin-bottom: 5%;
+      width: 60%;
+    }
+
+    #bloomberg {
+      margin-right: 10%;
+      margin-bottom: 5%;
+      width: 55%;
+    }
+
+    #a16z {
+      width: 14%;
+      margin-bottom: 5%;
+    }
+
+    #lutron{
+      max-width:none;
+      width: 33%;
+      margin-top: 3%;
+      margin-right: 10%;
+      margin-bottom: 7%;
+    }
+
+    #wayfair{
+      margin-top: -0.3%;
+      margin-left: -1%;
+      margin-bottom: 7%;
+      max-width: none;
+      width: 30%;
+    }
+
+    #de_shaw{
+      max-width: none;
+      width: 20%;
+      margin-top: -1%;
+    }
+
+    #mlh{
+      max-width: none;
+      width: 12%;
+    }
+
+    #datto{
+      margin-top: 3%;
+      width: 25%;
+    }
+
+    // -----------------------------------------
+  }
+
+  // Animations
+
+  /* Pulse */
+  @-webkit-keyframes hvr-pulse {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+    75% {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+  }
+  @keyframes hvr-pulse {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+    75% {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+  }
+  .hvr-pulse{
+    -webkit-animation-name: hvr-pulse;
+    animation-name: hvr-pulse;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+  }
+}
+
+/* Media queries */
+@media (min-width: 767px) {
+  .red{
+    color: red;
+  }
+  .navbar {
+    padding: 20px 0;
+    letter-spacing: 2px;
+    background: 0 0;
+    border-color: transparent;
+  }
+
+  .navbar-default .navbar-text {
+    margin-left: 60px;
+    padding-top: 15px;
+    font-size: 16px;
+  }
+
+  .intro {
+    min-height: 110wh;
+  }
+
+  .brand-heading {
+    font-size: 100px;
+  }
+
+  .intro-text {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 900px) {
+  dt, dd, p {
+    margin: 5%;
+  }
+  #frontPage2017 {
+    h1 {
+      font-size: 50px;
+    }
+    .paddedSection {
+      margin: 0;
+    }
+    #mainDiv {
+      #headerText {
+        margin-left: 3%;
+      }
+    }
+  }
+  #sponsorsDiv {
+    #heart img {
+      width: 30%;
+    }
+  }
+}
