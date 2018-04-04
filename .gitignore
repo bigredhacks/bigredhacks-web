@@ -7,7 +7,7 @@ buildES6
 Thumbs.db
 
 # CSS files generated from LESS
-*.css
+# *.css
 
 # Config that will contain secrets
 config.json
