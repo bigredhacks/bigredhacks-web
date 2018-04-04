@@ -7,7 +7,7 @@ buildES6
 Thumbs.db
 
 # CSS files generated from LESS
-# *.css
+*.css
 
 # Config that will contain secrets
 config.json
@@ -45,7 +45,7 @@ node_modules
 /public/css/admin.css
 /public/css/_global.css
 /public/css/dashboard.css
-# /public/css/index.css
+/public/css/index.css
 /public/css/login.css
 /public/css/vendor/animate.css
 /public/css/_fontawesome-custom.css
