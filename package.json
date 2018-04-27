@@ -9,8 +9,8 @@
     "test": "grunt test"
   },
   "engines": {
-    "node": "latest",
-    "npm": "latest"
+    "node": "8.9.4",
+    "npm": "5.6.0"
   },
   "dependencies": {
     "async": "^2.5.0",
