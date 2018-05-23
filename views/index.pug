@@ -11,10 +11,8 @@ block append content
         div#mainDiv
             div#headerText.paddedSection
                 .home2018Column-text
-                    h2 April 27 - 28, 2018
+                    h2 October 19 - 21
                     h3 Cornell University
-                    h4
-                        a(href="https://goo.gl/forms/obf2QNeMcNQYKQa82" class="register-now" target="_blank") Register Now
                 .home2018Column-img
                     img(src="/img/2018/brh-horizontal-white.png" class="home-2018-towers")
         div#aboutDiv
@@ -22,14 +20,10 @@ block append content
                 div.paddedSection
                     h1.section-heading.left About_
                     p BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
-                    p Across two days, Cornell University students will gather to build the coolest and most innovative projects, meet amazing people, and win some prizes along the way!
-                    
-                    p BigRed//Hacks is back at it again with our Spring Event! This Cornell-exclusive Hackathon keeps everything in-house as every hacker will be your fellow Bingalee Dingalees! And just like the Fall Event there will be food, swag, prizes, and a whole lotta creativity.
-                    
-                    p First Hackathon? Don't even sweat it. This Spring Event we're partnering with Cornell AppDev to make sure that there will be plenty of mentors to keep you as competitive as the Hackers who may have been Hacking for a while. We encourage all developers regardless of technical ability or hackathon experience to apply. Admission and food is free for all hackers.
-                    
-                    p So come one, come all (preferably more on the 'all' side) to the BigRed//Hacks Spring Hackathon!
-
+                    p
+                        | Across three days, Cornell University students will gather to build the coolest
+                        | and most innovative projects, meet amazing people, and win some prizes along
+                        | the way!
         //- div#scheduleDiv
         //-     h1.section-heading.right Schedule_
         //-     div#schedule.paddedSection
@@ -138,13 +132,36 @@ block append content
                             | Even if you've never been to a hackathon before, please apply!
                         dt Have more questions?
                         dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
+        #scheduleDiv
+            div.innerContent
+                div.paddedSection
+                    h1.section-heading.right Interested?_
+                    p Join our email list to get the first scoop when registration opens!
+                    .interestForm
+                        .field
+                            label(for="firstName") First Name
+                            input(type="text" name="firstName" id="firstName" required)
+
+                        .field
+                            label(for="lastName") Last Name
+                            input(type="text" name="lastName" id="lastName" required)
+
+                        .field
+                            label(for="fname") Email
+                            input(type="email" name="email" id="email" required)
+                        
+                    .btnContainer
+                        button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
+                    .msgContainer.error
         div#sponsorsDiv
             div.innerContent
                 div.paddedSection(style="position:absolute")
                     h1.section-heading.right Sponsors_
+                    p Want to sponsor us? 
+                    p Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
                     //- TODO: add company logos. Higher tiers = bigger logos
                     //- Issue #263
-                    div#logos
+                    //- div#logos
                         //- div.logo-3
                         //-     //- Microsoft (3)
                         //-     a(href="//www.microsoft.com/")
@@ -168,22 +185,63 @@ block append content
                         //-     //- Wayfair (2)
                         //-     a(href="//www.wayfair.com/")
                         //-         img#wayfair(src="/img/logos/wayfair.png" alt="WayFair Logo")
-                        div.logo-1
-                            a(href="//eship.cornell.edu")
-                                img#eship(src="/img/2018/eship.jpg" alt="Entrepeneurship at Cornell Logo")
-                            a(href="//www.jetbrains.com")
-                                img#jetbrains(src="/img/2018/jetbrains.png" alt="Jetbrains Logo")
-                            a(href="//www.wolframalpha.com")
-                                img#wolfram(src="/img/2018/wolframalpha.png" alt="WolframAlpha Logo")
-                            a(href="//www.datto.com")
-                                img#wolfram(src="/img/2018/datto.png" alt="Datto Logo")
-                            a(href="//www.ghostery.com")
-                                img#wolfram(src="/img/2018/ghostery.png" alt="Ghostery Logo")
-                            a(href="//openbci.com")
-                                img#openbci(src="/img/2018/openbci.png" alt="OpenBCI Logo")
+                        //- div.logo-1
+                        //-     a(href="//eship.cornell.edu")
+                        //-         img#eship(src="/img/2018/eship.jpg" alt="Entrepeneurship at Cornell Logo")
+                        //-     a(href="//www.jetbrains.com")
+                        //-         img#jetbrains(src="/img/2018/jetbrains.png" alt="Jetbrains Logo")
+                        //-     a(href="//www.wolframalpha.com")
+                        //-         img#wolfram(src="/img/2018/wolframalpha.png" alt="WolframAlpha Logo")
+                        //-     a(href="//www.datto.com")
+                        //-         img#wolfram(src="/img/2018/datto.png" alt="Datto Logo")
+                        //-     a(href="//www.ghostery.com")
+                        //-         img#wolfram(src="/img/2018/ghostery.png" alt="Ghostery Logo")
+                        //-     a(href="//openbci.com")
+                        //-         img#openbci(src="/img/2018/openbci.png" alt="OpenBCI Logo")
 
-//- block footer
-//-     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+block footer
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+    script.
+        var msgContainer = $(".msgContainer");
+        var submitForm = $("#submitForm");
+        submitForm.click(function () {
+            msgContainer.removeClass("active err success");
+            msgContainer.hide();
+            submitForm.text("Sending...");
+
+            var email = $("input#email").val();
+            var fName = $("input#firstName").val();
+            var lName = $("input#lastName").val();
+
+            if ((!(email.length > 0)) || (!(fName.length > 0) || (!(lName.length > 0)))) {
+                msgContainer.addClass("active err");
+                msgContainer.show();
+                msgContainer.text("Please fill out all fields and try again!");
+            }
+            else {
+                $.ajax({
+                method: "POST",
+                url: "/subscribe",
+                data: {
+                    email: email,
+                    fName: fName,
+                    lName: lName
+                },
+                success: function (data) {
+                    msgContainer.addClass("active success");
+                    msgContainer.show();
+                    msgContainer.text(data.responseJSON.message);
+                    submitForm.text("Submit");
+                },
+                error: function (data) {
+                    msgContainer.addClass("active err");
+                    msgContainer.show();
+                    msgContainer.text(data.responseJSON.message);
+                    submitForm.text("Submit");
+                }
+            });
+            }
+        });
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
 //-     script(src="/js/jquery.validate.options.js")
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/parallax/2.1.3/parallax.min.js")

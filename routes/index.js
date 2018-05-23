@@ -25,11 +25,9 @@ router.get("/", function (req, res) {
 });
 
 /**
- * @api {POST} /subscribe subscribe a student to the mailing list
+ * @api {GET} /subscribe subscribe a student to the mailing list
  * @apiName Subscribe
  * @apiGroup Index
- * @params isCornell- is the student from Cornell or not?
- * @params cornellEmail or email- the email to subscribe
  */
 router.get("/subscribe", function (req, res) {
     req = validator.validate(req, ["email"]);
@@ -51,6 +49,54 @@ router.get("/subscribe", function (req, res) {
             }
             else {
                 res.send({status: true, message: "Your email has been added to the mailing list!"});
+            }  
+        });
+    }
+});
+
+/**
+ * @api {POST} /subscribe subscribe a student to the mailing list
+ * @apiName Subscribe
+ * @apiGroup Index
+ */
+router.post("/subscribe", function (req, res) {
+    if (!req.body) {
+        return res.status(500).json({
+            status: false,
+            message: "Bad parameters!"
+        });
+    }
+    else if (!req.body.email || !req.body.fName || !req.body.lName) {
+        return res.status(500).json({
+            status: false,
+            message: "Please submit all required fields, and try again!"
+        });
+    }
+    else {
+        const email = req.body.email;
+        const fname = req.body.fname;
+        const lname = req.body.lname;
+        helper.addSubscriber(config.mailchimp.l_interested, email, fname, lname, function (err) {
+            if (err) {
+                if (err.name === "List_AlreadySubscribed") {
+                    return res.status(500).json({
+                        status: false,
+                        message: "You're already subscribed!"
+                    });
+                }
+                else {
+                    console.log(err);
+                    return res.status(500).json({
+                        status: false,
+                        message: "There was an error adding your email to the list."
+                    });
+                }
+            }
+            else {
+                return res.status(200).json({
+                    status: true,
+                    message: "Your email has been added to the mailing list!"
+                });
             }  
         });
     }
