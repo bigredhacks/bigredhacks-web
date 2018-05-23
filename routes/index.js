@@ -76,11 +76,11 @@ router.post("/emailListAdd", function (req, res) {
         const checkVar = (str) => typeof str === "string" && str.length > 0;
 
         const email = req.body.email;
-        const fname = req.body.fname;
-        const lname = req.body.lname;
+        const fName = req.body.fName;
+        const lName = req.body.lName;
 
-        if (checkVar(email) && checkVar(fname) && checkVar(lname)) {
-            helper.addSubscriber("9ac9a1da0e", email, fname, lname, function (err) {
+        if (checkVar(email) && checkVar(fName) && checkVar(lName)) {
+            helper.addSubscriber("9ac9a1da0e", email, fName, lName, function (err) {
                 if (err) {
                     console.log(err, "error2");
                     if (err.name === "List_AlreadySubscribed") {
@@ -106,7 +106,6 @@ router.post("/emailListAdd", function (req, res) {
             });
         }
         else {
-            console.log(err, "error1");
             return res.status(500).json({
                 status: false,
                 message: "There was an error adding your email to the list."
