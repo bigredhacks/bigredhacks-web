@@ -82,6 +82,7 @@ router.post("/subscribe", function (req, res) {
         if (checkVar(email) && checkVar(fname) && checkVar(lname)) {
             helper.addSubscriber("9ac9a1da0e", email, fname, lname, function (err) {
                 if (err) {
+                    console.log(err, "error2");
                     if (err.name === "List_AlreadySubscribed") {
                         return res.status(500).json({
                             status: false,
@@ -105,7 +106,7 @@ router.post("/subscribe", function (req, res) {
             });
         }
         else {
-            console.log(err);
+            console.log(err, "error1");
             return res.status(500).json({
                 status: false,
                 message: "There was an error adding your email to the list."

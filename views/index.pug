@@ -227,14 +227,16 @@ block footer
                     lName: lName
                 },
                 success: function (data) {
+                    console.err(data);
                     msgContainer.addClass("active success");
                     msgContainer.show();
                     msgContainer.text(data.message);
                 },
                 error: function (data) {
+                    console.err(data);
                     msgContainer.addClass("active err");
                     msgContainer.show();
-                    msgContainer.text(data.responseJSON.message);
+                    msgContainer.text(data.message);
                 }
             });
             }
