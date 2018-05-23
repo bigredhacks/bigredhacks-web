@@ -236,7 +236,7 @@ block footer
                         console.log(data);
                         msgContainer.addClass("active err");
                         msgContainer.show();
-                        msgContainer.text(data.message);
+                        msgContainer.text(data.responseJSON.message);
                     }
                 });
             }
