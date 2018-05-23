@@ -73,32 +73,44 @@ router.post("/subscribe", function (req, res) {
         });
     }
     else {
+        const checkVar = (str) => typeof str === "string" && str.length > 0;
+
         const email = req.body.email;
         const fname = req.body.fname;
         const lname = req.body.lname;
-        helper.addSubscriber(config.mailchimp.l_interested, email, fname, lname, function (err) {
-            if (err) {
-                if (err.name === "List_AlreadySubscribed") {
-                    return res.status(500).json({
-                        status: false,
-                        message: "You're already subscribed!"
-                    });
+
+        if (checkVar(email) && checkVar(fname) && checkVar(lname)) {
+            helper.addSubscriber("9ac9a1da0e", email, fname, lname, function (err) {
+                if (err) {
+                    if (err.name === "List_AlreadySubscribed") {
+                        return res.status(500).json({
+                            status: false,
+                            message: "You're already subscribed!"
+                        });
+                    }
+                    else {
+                        console.log(err);
+                        return res.status(500).json({
+                            status: false,
+                            message: "There was an error adding your email to the list."
+                        });
+                    }
                 }
                 else {
-                    console.log(err);
-                    return res.status(500).json({
-                        status: false,
-                        message: "There was an error adding your email to the list."
+                    return res.status(200).json({
+                        status: true,
+                        message: "Your email has been added to the mailing list!"
                     });
-                }
-            }
-            else {
-                return res.status(200).json({
-                    status: true,
-                    message: "Your email has been added to the mailing list!"
-                });
-            }  
-        });
+                }  
+            });
+        }
+        else {
+            console.log(err);
+            return res.status(500).json({
+                status: false,
+                message: "There was an error adding your email to the list."
+            });
+        }
     }
 });
 

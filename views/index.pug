@@ -207,7 +207,6 @@ block footer
         submitForm.click(function () {
             msgContainer.removeClass("active err success");
             msgContainer.hide();
-            submitForm.text("Sending...");
 
             var email = $("input#email").val();
             var fName = $("input#firstName").val();
@@ -230,14 +229,12 @@ block footer
                 success: function (data) {
                     msgContainer.addClass("active success");
                     msgContainer.show();
-                    msgContainer.text(data.responseJSON.message);
-                    submitForm.text("Submit");
+                    msgContainer.text(data.message);
                 },
                 error: function (data) {
                     msgContainer.addClass("active err");
                     msgContainer.show();
                     msgContainer.text(data.responseJSON.message);
-                    submitForm.text("Submit");
                 }
             });
             }
