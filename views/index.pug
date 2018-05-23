@@ -219,26 +219,26 @@ block footer
             }
             else {
                 $.ajax({
-                method: "POST",
-                url: "/subscribe",
-                data: {
-                    email: email,
-                    fName: fName,
-                    lName: lName
-                },
-                success: function (data) {
-                    console.err(data);
-                    msgContainer.addClass("active success");
-                    msgContainer.show();
-                    msgContainer.text(data.message);
-                },
-                error: function (data) {
-                    console.err(data);
-                    msgContainer.addClass("active err");
-                    msgContainer.show();
-                    msgContainer.text(data.message);
-                }
-            });
+                    method: "POST",
+                    url: "/subscribe",
+                    data: {
+                        email: email,
+                        fName: fName,
+                        lName: lName
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        msgContainer.addClass("active success");
+                        msgContainer.show();
+                        msgContainer.text(data.message);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        msgContainer.addClass("active err");
+                        msgContainer.show();
+                        msgContainer.text(data.message);
+                    }
+                });
             }
         });
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
