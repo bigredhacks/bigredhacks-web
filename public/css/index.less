@@ -175,3 +175,61 @@ a.register-now {
     }
   }
 }
+
+.interestForm {
+  display: flex;
+
+  label {
+    padding-right: 5px;
+  }
+  input, button {
+    border: none;
+    border-width: 0;
+    align-self: center;
+    height: 40px;
+  }
+
+  input {
+    border: 1px solid black;
+    color: rgb(114, 88, 88);
+    margin-right: 5%;
+    padding: 0 0 0 5px;
+  }
+
+  .field {
+    flex-grow: 1;
+  }
+}
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button.interestFormBtn {
+    font-size: 15px;
+    margin-top: 10px;
+    width: 30%;
+  }
+
+}
+
+.msgContainer {
+  display: none;
+  font-size: 20px;
+  margin-top: 10px;
+  padding: 1%;
+  text-align: center;
+  width: 100%;
+  
+  &.active {
+    display: block;
+  }
+
+  &.err {
+    background-color: rgba(255, 0, 0, .6);
+  }
+
+  &.success {
+    background-color: rgba(0, 255, 0, 0.6); 
+  }
+}
