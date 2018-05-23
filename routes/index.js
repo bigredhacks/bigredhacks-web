@@ -59,7 +59,7 @@ router.get("/subscribe", function (req, res) {
  * @apiName Subscribe
  * @apiGroup Index
  */
-router.post("/subscribe", function (req, res) {
+router.post("/emailListAdd", function (req, res) {
     if (!req.body) {
         return res.status(500).json({
             status: false,
