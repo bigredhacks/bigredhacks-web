@@ -178,9 +178,10 @@ a.register-now {
 
 .interestForm {
   display: flex;
+  flex-flow: row wrap;
 
   label {
-    padding-right: 5px;
+    padding: 5px 5px 0 0;
   }
   input, button {
     border: none;
@@ -232,4 +233,15 @@ a.register-now {
   &.success {
     background-color: rgba(0, 255, 0, 0.6); 
   }
+}
+
+#mlh-trust-badge {
+  display:block;
+  max-width:100px;
+  min-width:60px;
+  position:fixed;
+  right:50px;
+  top:0;
+  width:10%;
+  z-index:10000
 }
