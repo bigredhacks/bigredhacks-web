@@ -4,7 +4,7 @@ block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
     //- MLH Badge
-    a(id="mlh-trust-badge" style="display:block;max-width:100px;min-width:60px;position:fixed;right:50px;top:0;width:10%;z-index:10000" href="//https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank")
+    a(id="mlh-trust-badge" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank")
         img(src="//s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg" alt="Major League Hacking 2019 Hackathon Season" style="width:100%")
 
     div#frontPage2017
@@ -147,7 +147,7 @@ block append content
                             input(type="text" name="lastName" id="lastName" required)
 
                         .field
-                            label(for="fname") Email
+                            label(for="fname") Email Address
                             input(type="email" name="email" id="email" required)
                         
                     .btnContainer
