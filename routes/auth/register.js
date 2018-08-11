@@ -21,6 +21,7 @@ const MAX_FILE_SIZE = 1024 * 1024 * 15;
  * @apiGroup Auth
  */
 function registerGet (req, res) {
+    return res.redirect("/");
     async.series({
         college: (cb) => {
             if (req.params && req.params.name) {
