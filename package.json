@@ -1,5 +1,5 @@
 {
-  "name": "BigRedHacks",
+  "name": "bigredhacks",
   "version": "0.0.0",
   "private": true,
   "main": "./bin/www.js",
