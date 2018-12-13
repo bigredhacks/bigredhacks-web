@@ -17,14 +17,14 @@
     "aws-sdk": "^2.81.0",
     "babel-preset-env": "^1.6.0",
     "bcrypt-nodejs": "0.0.3",
-    "body-parser": "~1.17.2",
+    "body-parser": "^1.18.3",
     "compression": "^1.6.2",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^1.2.0",
     "cron": "^1.2.1",
     "csvtojson": "^1.1.7",
     "debug": "~3.0.1",
-    "express": "~4.15.3",
+    "express": "^4.16.4",
     "express-flash": "0.0.2",
     "express-validator": "^4.1.0",
     "fcm-push": "^1.0.7",
@@ -37,7 +37,7 @@
     "mailchimp-api": "^2.0.7",
     "moment": "^2.18.1",
     "mongoose": "^4.11.1",
-    "morgan": "~1.8.2",
+    "morgan": "^1.9.1",
     "multiparty": "^4.1.2",
     "oauth": "^0.9.15",
     "passport": "^0.4.0",
@@ -47,7 +47,7 @@
     "redis": "^2.6.2",
     "request": "^2.81.0",
     "sendgrid": "^5.1.2",
-    "serve-favicon": "~2.3.0",
+    "serve-favicon": "^2.5.0",
     "socket.io": "^2.0.3",
     "socket.io-redis": "^5.2.0",
     "subdomain": "^1.2.0",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "chai": "^4.1.1",
     "grunt-mocha-test": "^0.12.7",
-    "mocha": "^3.4.2"
+    "mocha": "^5.2.0"
   },
   "apidoc": {
     "name": "BigRedHacks",
