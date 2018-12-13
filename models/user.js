@@ -1,8 +1,8 @@
 "use strict";
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
-var uid = require('uid2');
-var async = require('async');
+var mongoose = require("mongoose");
+var bcrypt = require("bcrypt-nodejs");
+var uid = require("uid2");
+var async = require("async");
 
 var College = require("./college.js");
 var Team = require("./team.js");
@@ -74,18 +74,18 @@ var userSchema = new mongoose.Schema({
     }
 });
 
-userSchema.path('internal.status').set(function (newStatus) {
+userSchema.path("internal.status").set(function (newStatus) {
     this.internal.previousStatus = this.internal.status;
     return newStatus;
 });
 
 // Full name of user
-userSchema.virtual('name.full').get(function () {
+userSchema.virtual("name.full").get(function () {
     return `${this.name.first} ${this.name.last}`;
 });
 
 //todo validate existence of college
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
     var _this = this;
 
     //add a public uid for the user
@@ -103,7 +103,7 @@ userSchema.pre('save', function (next) {
     _this.email = _this.email.toLowerCase();
 
     //verify password is present
-    if (!_this.isModified('password')) return next();
+    if (!_this.isModified("password")) return next();
 
     bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
         if (err) return next(err);
@@ -164,7 +164,7 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                         if (err) {
                             return callback(err);
                         }
-                        if (typeof newteam == 'string') {
+                        if (typeof newteam == "string") {
                             return callback(null, newteam);
                         }
                         else {
@@ -176,11 +176,11 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                                 else {
                                     return callback(null, res);
                                 }
-                            })
+                            });
                         }
-                    })
+                    });
                 }
-            })
+            });
         }
         //current user doesn't have a team
         else if (_this.internal.teamid === null) {
@@ -189,7 +189,7 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                 if (err) {
                     return callback(err);
                 }
-                if (typeof newteam == 'string') {
+                if (typeof newteam == "string") {
                     return callback(null, newteam);
                 }
                 else {
@@ -197,25 +197,25 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                         if (err) {
                             return callback(err);
                         }
-                        if (typeof newteam == 'string') {
+                        if (typeof newteam == "string") {
                             return callback(null, newteam);
                         }
                         else {
                             other.internal.teamid = newteam._id;
                             _this.internal.teamid = newteam._id;
                             async.parallel([
-                                    function (done) {
-                                        _this.save(done)
-                                    },
-                                    function (done) {
-                                        other.save(done)
-                                    }],
-                                function (err) {
-                                    if (err) {
-                                        console.log(err)
-                                    }
-                                    callback(err, res);
-                                });
+                                function (done) {
+                                    _this.save(done);
+                                },
+                                function (done) {
+                                    other.save(done);
+                                }],
+                            function (err) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                callback(err, res);
+                            });
                         }
                     });
                 }
@@ -232,7 +232,7 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                         if (err) {
                             return callback(err);
                         }
-                        if (typeof newteam == 'string') {
+                        if (typeof newteam == "string") {
                             return callback(null, newteam);
                         }
                         else {
@@ -242,11 +242,11 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                                     return callback(err);
                                 }
                                 else return callback(null, res);
-                            })
+                            });
                         }
                     });
                 }
-            })
+            });
         }
     });
 };
@@ -279,12 +279,12 @@ userSchema.methods.leaveTeam = function (callback) {
                             return callback(null, true);
                         }
                     });
-                })
+                });
             }
             catch (err) {
                 callback("userSchema.methods.leaveTeam: " + err);
             }
-        })
+        });
     }
 };
 
@@ -316,13 +316,13 @@ userSchema.statics.removeFromTeam = function (user_id, callback) {
                             user.save(function (err) {
                                 if (err) return callback(err);
                                 else return callback(true);
-                            })
+                            });
                         }
-                    })
+                    });
                 }
-            })
+            });
         }
-    })
+    });
 };
 
 /**
