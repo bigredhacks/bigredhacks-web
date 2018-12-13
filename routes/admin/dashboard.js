@@ -152,12 +152,13 @@ module.exports = (req, res, next) => {
         if (err) {
             console.log(err);
         }
-
-        // Assumes charterbus reimbursements have been set
-        let currentMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, true), 0);
-        let potentialMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, false), 0);
-        let reimburse = {currentMax, potentialMax};
-
+        let currentMax = 0, potentialMax = 0, reimburse = 0;
+        if (result) {
+            // Assumes charterbus reimbursements have been set
+            currentMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, true), 0);
+            potentialMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, false), 0);
+            reimburse = {currentMax, potentialMax};
+        }
         return res.render("admin/index", {
             title: "Admin Dashboard",
             applicants: result.applicants,
@@ -167,5 +168,7 @@ module.exports = (req, res, next) => {
             reimburse,
             mentors: result.mentors
         });
+
+        
     });
 };
