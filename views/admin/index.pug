@@ -50,6 +50,23 @@ block append admin_content
                 li RSVP'd: $#{reimburse.currentMax}
                 li All Accepted (including RSVP'd): $#{reimburse.potentialMax}
 
+            h2 Logistics
+            span Dietary restrictions and shirt sizes collected for the #{rsvps.true} RSVP'd students we have:
+            
+            h3 Dietary Perferences
+            ul
+                li No restrictions: #{logistics.dietary.none}
+                li Vegetarian: #{logistics.dietary.vegetarian}
+                li Gluten-Free: #{logistics.dietary["gluten-free"]}
+            
+            h3 T-Shirt Sizes
+            ul
+                li XS: #{logistics.tshirt.xs}
+                li S: #{logistics.tshirt.s}
+                li M: #{logistics.tshirt.m}
+                li L: #{logistics.tshirt.l}
+                li XL: #{logistics.tshirt.xl}
+
         #top-schools.tab-pane(role='tabpanel')
             table.table.table-striped
                 tr
