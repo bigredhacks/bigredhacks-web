@@ -23,7 +23,7 @@
     "cookie-session": "^1.2.0",
     "cron": "^1.2.1",
     "csvtojson": "^1.1.7",
-    "debug": "~3.0.1",
+    "debug": "^3.1.0",
     "express": "^4.16.4",
     "express-flash": "0.0.2",
     "express-validator": "^4.1.0",
