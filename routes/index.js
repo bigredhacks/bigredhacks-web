@@ -5,8 +5,8 @@ const router = express.Router();
 const validator = require("../library/validations.js");
 const helper = require("../util/routes_helper");
 const async = require("async");
-const Announcement = require ("../models/announcement.js");
-const Inventory = require ("../models/hardware_item.js");
+const Announcement = require("../models/announcement.js");
+const Inventory = require("../models/hardware_item.js");
 
 const config = require("../config.js");
 const util = require("../util/util");
@@ -34,22 +34,22 @@ router.get("/subscribe", function (req, res) {
     let email = req.query["email"];
     if (req.validationErrors()) {
         console.log(req.validationErrors());
-        res.send({status: false, message: "Please enter a valid email"});
+        res.send({ status: false, message: "Please enter a valid email" });
     }
     else {
         helper.addSubscriber(config.mailchimp.l_interested, email, "", "", function (err, result) {
             if (err) {
                 if (err.name === "List_AlreadySubscribed") {
-                    res.send({status: false, message: "You're already subscribed!"});
+                    res.send({ status: false, message: "You're already subscribed!" });
                 }
                 else {
                     console.log(err);
-                    res.send({status: false, message: "There was an error adding your email to the list."});
+                    res.send({ status: false, message: "There was an error adding your email to the list." });
                 }
             }
             else {
-                res.send({status: true, message: "Your email has been added to the mailing list!"});
-            }  
+                res.send({ status: true, message: "Your email has been added to the mailing list!" });
+            }
         });
     }
 });
@@ -102,7 +102,7 @@ router.post("/emailListAdd", function (req, res) {
                         status: true,
                         message: "Your email has been added to the mailing list!"
                     });
-                }  
+                }
             });
         }
         else {
@@ -119,7 +119,7 @@ router.post("/emailListAdd", function (req, res) {
  * @apiName DayOf
  * @apiGroup Index
  */
-router.get("/live",function (req, res, next) {
+router.get("/live", function (req, res, next) {
     async.parallel({
         announcements: (callback) => {
             const PROJECTION = "message time";
@@ -129,7 +129,7 @@ router.get("/live",function (req, res, next) {
             util.grabCalendar(callback);
         },
         inventory: (cb) => {
-            Inventory.find({}, null, {sort: {name: "asc"}}, cb);
+            Inventory.find({}, null, { sort: { name: "asc" } }, cb);
         }
     }, (err, result) => {
         if (err) {
@@ -138,9 +138,9 @@ router.get("/live",function (req, res, next) {
         }
         else {
             return res.render("live", {
-                title:         "Live",
+                title: "Live",
                 announcements: result.announcements,
-                calendar:      result.calendar
+                calendar: result.calendar
             });
         }
     });
