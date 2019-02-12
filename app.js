@@ -26,6 +26,7 @@ if (config.setup.use_redis) {
 }
 var subdomain = require("subdomain");
 var routes = require("./routes/index");
+var test = require("./routes/test");
 var user = require("./routes/user")(app.io);
 var mentor = require("./routes/mentor")(app.io);
 var sponsors = require("./routes/sponsors")(app.io);
@@ -60,7 +61,7 @@ app.use(compression());
 app.use(favicon(__dirname + "/public/favicon.ico"));
 app.use(logger("dev"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 //@todo expressValidator does support isMobilePhone, but their dependencies are out of date. Rather than using npm shrinkwrap, I opted for a custom validator.
 //this should be removed once expressValidator uses validator version >3.38.0
 app.use(expressValidator({
@@ -89,23 +90,25 @@ app.use(require("less-middleware")(path.join(__dirname, "public")));
 
 if (app.get("env") === "production") {
     var oneDay = 86400000;
-    app.use(express.static(path.join(__dirname, "build"), {maxAge: oneDay}));
-    app.use(express.static(path.join(__dirname, "public"), {maxAge: oneDay}));
+    app.use(express.static(path.join(__dirname, "build"), { maxAge: oneDay }));
+    app.use(express.static(path.join(__dirname, "public"), { maxAge: oneDay }));
 
 }
 else {
     app.use(express.static(path.join(__dirname, "public")));
 }
 
-app.use(subdomain({base: config.setup.url}));
+app.use(subdomain({ base: config.setup.url }));
 
 //generic middleware function
 app.use(middle.allRequests);
 
 //setup routes
 //requireAuthentication must come before requireNoAuthentication to prevent redirect loops
-app.use("/", routes);
-app.use("/api/admin", middle.requireAdmin, apiAdminRoute);
+app.use("/test", test);
+app.use("/", routes); app.use("/api/admin", middle.requireAdmin, apiAdminRoute);
+app.use("/", test); app.use("/api/admin", middle.requireAdmin, apiAdminRoute);
+
 app.use("/api", apiRoute);
 
 app.use("/admin", middle.requireAdmin, admin);
@@ -120,7 +123,7 @@ app.use("/", authRoute); //todo mount on separate route to allow use of noAuth w
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     res.status(400);
-    res.render("404.pug", {title: "404: File Not Found"});
+    res.render("404.pug", { title: "404: File Not Found" });
 });
 
 // error handlers

@@ -3,18 +3,18 @@
 let helper = {};
 
 // Node Modules and utilities
-const AWS          = require('aws-sdk');
-const config       = require('../config.js');
-const fs           = require('fs');
-const mcapi        = require('mailchimp-api');
+const AWS = require('aws-sdk');
+const config = require('../config.js');
+const fs = require('fs');
+const mcapi = require('mailchimp-api');
 
-const qs           = require('qs');
-const uid          = require('uid2');
+const qs = require('qs');
+const uid = require('uid2');
 
 // Variables
-const MAX_RESUME_SIZE  = 1024 * 1024 * 10; // 10 mb limit
+const MAX_RESUME_SIZE = 1024 * 1024 * 10; // 10 mb limit
 const MAX_RECEIPT_SIZE = 1024 * 1024 * 15; // 15 mb limit
-const MIN_SIZE         = 50; // 50 byte minimum to ensure non-null uploads
+const MIN_SIZE = 50; // 50 byte minimum to ensure non-null uploads
 
 const RESUME_DEST = 'resume/';
 const RECEIPT_DEST = 'travel/';
@@ -159,7 +159,7 @@ helper.deleteResume = function deleteResume(location, callback) {
     };
     s3.deleteObject(params, function (err, data) {
         if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
+        else console.log(data);           // successful response
     });
 };
 
@@ -174,7 +174,7 @@ helper.deleteResume = function deleteResume(location, callback) {
 helper.addSubscriber = function (listid, email, fname, lname, callback) {
     var mcReq = {
         id: listid,
-        email: {email: email},
+        email: { email: email },
         double_optin: false,
         merge_vars: {
             EMAIL: email,
@@ -200,7 +200,7 @@ helper.addSubscriber = function (listid, email, fname, lname, callback) {
 helper.removeSubscriber = function (listid, email, callback) {
     var mcReq = {
         id: listid,
-        email: {email: email},
+        email: { email: email },
         double_optin: false,
         merge_vars: {
             EMAIL: email,
