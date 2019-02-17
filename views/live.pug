@@ -14,7 +14,7 @@ block header
     link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.0.0/css/bootcards-desktop.min.css")
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css")
     link(href="/css/index.css", rel="stylesheet")
-    
+
 block append main_content
     h1#live-title Live Page
     .container
@@ -128,22 +128,34 @@ block append main_content
                         .schedule-tab
                             .heading
                                 h3 fri, 9/15
-                                for event in calendar
-                                    - var eventStartFri = moment(event.start);
-                                    if eventStartFri.format("ddd").toLowerCase() === "fri" && eventStartFri.isAfter(new moment())
-                                        +calendarEvents(event)
+                                if calendar !== null
+                                  for event in calendar
+                                      - var eventStartFri = moment(event.start);
+                                      if eventStartFri.format("ddd").toLowerCase() === "fri" && eventStartFri.isAfter(new moment())
+                                          +calendarEvents(event)
+                                else
+                                    p no events to be displayed
+
                             .heading
                                 h3 sat, 9/16
-                                for event in calendar
-                                    - var eventStartSat = moment(event.start);
-                                    if eventStartSat.format("ddd").toLowerCase() === "sat" && eventStartSat.isAfter(new moment())
-                                        +calendarEvents(event)
+                                if calendar !== null
+                                  for event in calendar
+                                      - var eventStartSat = moment(event.start);
+                                      if eventStartSat.format("ddd").toLowerCase() === "sat" && eventStartSat.isAfter(new moment())
+                                          +calendarEvents(event)
+                                else
+                                    p no events to be displayed
+
+
                             .heading
                                 h3 sun, 9/17
-                                for event in calendar
-                                    - var eventStartSun = moment(event.start);
-                                    if eventStartSun.format("ddd").toLowerCase() === "sun" && eventStartSun.isAfter(new moment())
-                                        +calendarEvents(event)
+                                if calendar !== null
+                                  for event in calendar
+                                      - var eventStartSun = moment(event.start);
+                                      if eventStartSun.format("ddd").toLowerCase() === "sun" && eventStartSun.isAfter(new moment())
+                                          +calendarEvents(event)
+                                else
+                                    p no events to be displayed
 block footer
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
     script(src="/socket.io/socket.io.js")
