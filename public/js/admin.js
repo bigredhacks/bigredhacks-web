@@ -47,6 +47,61 @@ $('document').ready(function () {
     var npCheckbox = $("[name='np-toggle-checkbox']");
     npCheckbox.bootstrapSwitch();
 
+		var npCheckbox2 = $("[name='np-toggle-checkbox2']");
+    npCheckbox2.bootstrapSwitch();
+
+		/****************************
+		 * Live Mode switch***
+		 ***************************/
+
+		var toggle;
+
+		var setNp2 = function (state) {
+        $.ajax({
+            type: "POST",
+            url: "/api/admin/np2/set",
+            data: {
+                state: state
+            },
+            success: function (data) {
+                if (state == true) {
+										toggle = true;
+                }
+								else {
+										toggle = false;
+}
+            },
+            error: function (e) {
+                console.log("Unable to set live page");
+            }
+        })
+    };
+
+		npCheckbox2.on('switchChange.bootstrapSwitch', function (event, state) {
+        setNp2(state);
+    });
+
+		var getNp2 = function () {
+        $.ajax({
+            type: "GET",
+            url: "/api/admin/np2",
+            success: function (data) {
+                if (data == "true") {
+										npCheckbox2.bootstrapSwitch("state", true);
+                }
+                else {
+										toggle = false;
+                }
+            },
+            error: function (e) {
+                console.log("Unable to determine Live Page mode.");
+            }
+        })
+    };
+
+		getNp2();
+		// module.exports.toggle = toggle;
+
     /****************************
      * No participation switch***
      ***************************/
