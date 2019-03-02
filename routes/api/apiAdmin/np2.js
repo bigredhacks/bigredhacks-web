@@ -13,5 +13,6 @@ module.exports.setNoLive = (req, res) => {
     return res.sendStatus(200);
 };
 
-// module.exports.toggle = toggle;
-// global.golbalString = toogle;
+module.exports.toggle = function() {
+    return toggle;
+};

@@ -100,7 +100,6 @@ $('document').ready(function () {
     };
 
 		getNp2();
-		// module.exports.toggle = toggle;
 
     /****************************
      * No participation switch***

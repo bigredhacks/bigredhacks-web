@@ -7,7 +7,7 @@ const helper = require("../util/routes_helper");
 const async = require("async");
 const Announcement = require("../models/announcement.js");
 const Inventory = require("../models/hardware_item.js");
-// get toogle var from another file
+const toggleVar = require("./api/apiAdmin/np2.js"); // get toogle var's value from np2.js
 const config = require("../config.js");
 const util = require("../util/util");
 
@@ -121,7 +121,10 @@ router.post("/emailListAdd", function (req, res) {
  */
 
 router.get("/live", function (req, res, next) {
-		if(toggle){
+		var toggle = toggleVar.toggle();
+		console.log(toggle)
+		console.log("Testing 123")
+		if(toggle == "true"){
 	    async.parallel({
 	        announcements: (callback) => {
 	            const PROJECTION = "message time";
@@ -154,8 +157,6 @@ router.get("/live", function (req, res, next) {
 				messages: ev
 			});
 }
-// console.log(toggle)
-console.log("Testing")
 });
 
 module.exports = router;
