@@ -131,11 +131,8 @@ module.exports.makeRollingAnnouncement = (req, res) => {
 };
 
 module.exports.postAnnouncement = (req, res) => {
-    console.log(req.body);
     async.waterfall([
         (cb) => {
-            console.log("twitter check cb\n", cb);
-            console.log(typeof cb);
             const message = req.body.message;
             let newAnnouncement = new Announcement({
                 message: message
@@ -145,27 +142,21 @@ module.exports.postAnnouncement = (req, res) => {
                 return cb("Character length exceeds 140 and you wanted to post to Twitter.");
             }
             else {
-                console.log("twitter check pass cb\n", cb);
-                newAnnouncement.save(cb);
-                return cb(null, newAnnouncement);
+                newAnnouncement.save().then((announcement) => {
+                    return cb(null, announcement);
+                });
             }
         },
         (newAnnouncement, cb) => {
-            console.log("newannc ", newAnnouncement);
-            console.log("newannc cb\n", cb);
-            console.log("newannc cb type", typeof cb);
             async.parallel([
                 (cb) => {
-                    console.log("web annc cb\n", cb);
                     if (req.body.web) {
                         socketutil.announceWeb(req.body.message);
                     }
                     return cb(null);
                 },
                 (cb) => {
-                    console.log("twitter annc cb\n", cb, req.body.twitter);
                     if (req.body.twitter) {
-                        console.log("tweeting");
                         let OAuth2 = OAuth.OAuth2;
                         let oauth2 = new OAuth2(
                             config.twitter.tw_consumer_key,
@@ -196,7 +187,6 @@ module.exports.postAnnouncement = (req, res) => {
                         );
                     }
                     else {
-                        console.log("no twit annc cb\n", cb);
                         return cb(null);
                     }
                 }
@@ -212,11 +202,9 @@ module.exports.postAnnouncement = (req, res) => {
                     }
                 }
             });
-            // ], cb);
-            return cb(null);
+            return cb(null, "success");
         }
     ], (err) => {
-        console.log("error", err);
         if (err) {
             console.error(err);
             if (typeof err === "string") {
@@ -228,7 +216,6 @@ module.exports.postAnnouncement = (req, res) => {
             }
         }
         else {
-            console.log("sucess");
             req.flash("success", "Announcement posted!");
             return res.redirect("/admin/dashboard");
         }
