@@ -147,7 +147,7 @@ module.exports.postAnnouncement = (req, res) => {
             else {
                 console.log("twitter check pass cb\n", cb);
                 newAnnouncement.save(cb);
-                return cb(null);
+                return cb(null, newAnnouncement);
             }
         },
         (newAnnouncement, cb) => {
