@@ -131,10 +131,12 @@ module.exports.makeRollingAnnouncement = (req, res) => {
 };
 
 module.exports.postAnnouncement = (req, res) => {
+    console.log(req.body);
     async.waterfall([
         (cb) => {
+            console.log("twitter check cb\n", cb);
+            console.log(typeof cb);
             const message = req.body.message;
-
             let newAnnouncement = new Announcement({
                 message: message
             });
@@ -143,37 +145,27 @@ module.exports.postAnnouncement = (req, res) => {
                 return cb("Character length exceeds 140 and you wanted to post to Twitter.");
             }
             else {
+                console.log("twitter check pass cb\n", cb);
                 newAnnouncement.save(cb);
+                return cb(null);
             }
         },
         (newAnnouncement, cb) => {
+            console.log("newannc ", newAnnouncement);
+            console.log("newannc cb\n", cb);
+            console.log("newannc cb type", typeof cb);
             async.parallel([
                 (cb) => {
-                    if (req.body.mobile) {
-                        const serverkey = config.firebase.key;
-                        let fcm = new FCM(serverkey);
-
-                        let message = {
-                            to: "/topics/cats",
-                            notification: {
-                                title: req.body.message
-                            }
-                        };
-
-                        fcm.send(message, cb);
-                    }
-                    else {
-                        return cb(null);
-                    }
-                },
-                (cb) => {
+                    console.log("web annc cb\n", cb);
                     if (req.body.web) {
                         socketutil.announceWeb(req.body.message);
                     }
                     return cb(null);
                 },
                 (cb) => {
+                    console.log("twitter annc cb\n", cb, req.body.twitter);
                     if (req.body.twitter) {
+                        console.log("tweeting");
                         let OAuth2 = OAuth.OAuth2;
                         let oauth2 = new OAuth2(
                             config.twitter.tw_consumer_key,
@@ -191,6 +183,7 @@ module.exports.postAnnouncement = (req, res) => {
                                     return cb(`Twitter OAuth Error: ${err}`);
                                 }
                                 else {
+                                    console.log("no twitter error");
                                     let twitter_client = new Twitter({
                                         consumer_key:        config.twitter.tw_consumer_key,
                                         consumer_secret:     config.twitter.tw_consumer_secret,
@@ -202,10 +195,28 @@ module.exports.postAnnouncement = (req, res) => {
                             }
                         );
                     }
+                    else {
+                        console.log("no twit annc cb\n", cb);
+                        return cb(null);
+                    }
                 }
-            ], cb);
+            ], (err) => {
+                if (err) {
+                    console.error(err);
+                    if (typeof err === "string") {
+                        req.flash("error", err);
+                        return res.sendStatus(500);
+                    }
+                    else {
+                        return res.status(500).send(err);
+                    }
+                }
+            });
+            // ], cb);
+            return cb(null);
         }
     ], (err) => {
+        console.log("error", err);
         if (err) {
             console.error(err);
             if (typeof err === "string") {
@@ -217,6 +228,7 @@ module.exports.postAnnouncement = (req, res) => {
             }
         }
         else {
+            console.log("sucess");
             req.flash("success", "Announcement posted!");
             return res.redirect("/admin/dashboard");
         }
