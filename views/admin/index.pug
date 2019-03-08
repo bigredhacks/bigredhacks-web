@@ -109,6 +109,13 @@ block append admin_content
                         input#twitter(type='checkbox', name='twitter', value='true', checked=false)
                         | &nbsp;Twitter
                     br
+                    label
+                        input#slack(type='checkbox', name='slack', value='true', checked=false)
+                        | &nbsp;Slack
+                    br
+                    label
+                        input#sms(type='checkbox', name='sms', value='true', checked=false)
+                        | &nbsp;SMS
                 .form-group
                     button#announcementMake.btn.btn-success(onclick="return confirm('Are you sure?')") Announce
         #decisions.tab-pane(role='tabpanel')
