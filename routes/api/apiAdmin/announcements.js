@@ -188,6 +188,12 @@ module.exports.postAnnouncement = (req, res) => {
                     else {
                         return cb(null);
                     }
+                },
+                (cb) => {
+                    if (req.body.slack) {
+                        // placeholder
+                        cb(null);
+                    }
                 }
             ], (err) => {
                 if (err) {
