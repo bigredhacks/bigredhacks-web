@@ -134,7 +134,6 @@ module.exports.postAnnouncement = (req, res) => {
     async.waterfall([
         (cb) => {
             const message = req.body.message;
-
             let newAnnouncement = new Announcement({
                 message: message
             });
@@ -143,29 +142,13 @@ module.exports.postAnnouncement = (req, res) => {
                 return cb("Character length exceeds 140 and you wanted to post to Twitter.");
             }
             else {
-                newAnnouncement.save(cb);
+                newAnnouncement.save().then((announcement) => {
+                    return cb(null, announcement);
+                });
             }
         },
         (newAnnouncement, cb) => {
             async.parallel([
-                (cb) => {
-                    if (req.body.mobile) {
-                        const serverkey = config.firebase.key;
-                        let fcm = new FCM(serverkey);
-
-                        let message = {
-                            to: "/topics/cats",
-                            notification: {
-                                title: req.body.message
-                            }
-                        };
-
-                        fcm.send(message, cb);
-                    }
-                    else {
-                        return cb(null);
-                    }
-                },
                 (cb) => {
                     if (req.body.web) {
                         socketutil.announceWeb(req.body.message);
@@ -202,8 +185,23 @@ module.exports.postAnnouncement = (req, res) => {
                             }
                         );
                     }
+                    else {
+                        return cb(null);
+                    }
                 }
-            ], cb);
+            ], (err) => {
+                if (err) {
+                    console.error(err);
+                    if (typeof err === "string") {
+                        req.flash("error", err);
+                        return res.sendStatus(500);
+                    }
+                    else {
+                        return res.status(500).send(err);
+                    }
+                }
+            });
+            return cb(null, "success");
         }
     ], (err) => {
         if (err) {
