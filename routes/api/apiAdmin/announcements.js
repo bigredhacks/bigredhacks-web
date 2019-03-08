@@ -174,7 +174,6 @@ module.exports.postAnnouncement = (req, res) => {
                                     return cb(`Twitter OAuth Error: ${err}`);
                                 }
                                 else {
-                                    console.log("no twitter error");
                                     let twitter_client = new Twitter({
                                         consumer_key:        config.twitter.tw_consumer_key,
                                         consumer_secret:     config.twitter.tw_consumer_secret,
