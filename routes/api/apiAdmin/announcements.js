@@ -1,9 +1,9 @@
 "use strict";
 
 const async      = require("async");
+const fetch      = require("node-fetch");
 const config     = require("../../../config.js");
 const email      = require("../../../util/email.js");
-const FCM        = require("fcm-push");
 const helper     = require("../../../util/routes_helper.js");
 const OAuth      = require("oauth");
 const socketutil = require("../../../util/socketutil.js");
@@ -185,14 +185,32 @@ module.exports.postAnnouncement = (req, res) => {
                             }
                         );
                     }
-                    else {
-                        return cb(null);
-                    }
+                    return cb(null);
                 },
                 (cb) => {
                     if (req.body.slack) {
-                        // placeholder
-                        cb(null);
+                        fetch("https://hooks.slack.com/services/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", {
+                            headers: {
+                                "Content-type": "application/json"
+                            },
+                            body: JSON.stringify({ "text": req.body.message }),
+                            method: "POST"
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    /* TODO
+                                       If an error happens, we get UnhandledPromiseRejectionWarning: Error: Callback was already called,
+                                       UnhandledPromiseRejectionWarning: Unhandled promise rejection
+                                       Originates from catch statement */
+                                    throw new Error(`${response.status}, ${response.statusText}`);
+                                }
+                            })
+                            .catch(error => {
+                                return cb(`Slack webhook error: ${error.message}`);
+                            });
+                    }
+                    else {
+                        return cb(null);
                     }
                 }
             ], (err) => {
