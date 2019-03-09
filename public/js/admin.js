@@ -44,62 +44,49 @@ function updateRole(email, newRole, callback) {
 
 $('document').ready(function () {
 
-    var npCheckbox = $("[name='np-toggle-checkbox']");
+    var npCheckbox = $("[name='np-toggle-checkbox']"); // no particpation mode toggle
     npCheckbox.bootstrapSwitch();
 
-		var npCheckbox2 = $("[name='np-toggle-checkbox2']");
-    npCheckbox2.bootstrapSwitch();
+    var liveCheckbox = $("[name='live-toggle-checkbox']"); // live page toggle
+    liveCheckbox.bootstrapSwitch();
 
-		/****************************
-		 * Live Mode switch***
-		 ***************************/
+    /****************************
+    * Live Mode switch*** 
+    ***************************/
 
-		var toggle;
-
-		var setNp2 = function (state) {
+    var setLiveToggle = function (state) { // set api value
         $.ajax({
-            type: "POST",
-            url: "/api/admin/np2/set",
-            data: {
-                state: state
-            },
-            success: function (data) {
-                if (state == true) {
-										toggle = true;
-                }
-								else {
-										toggle = false;
-}
-            },
-            error: function (e) {
-                console.log("Unable to set live page");
-            }
-        })
+	    type: "POST",
+	    url: "/api/admin/liveToggle/set",
+	    data: {
+	        state: state
+	    },
+	    error: function (e) {
+	        console.log("Unable to set live page");
+	    }
+	})
     };
 
-		npCheckbox2.on('switchChange.bootstrapSwitch', function (event, state) {
-        setNp2(state);
+    liveCheckbox.on('switchChange.bootstrapSwitch', function (event, state) {
+        setLiveToggle(state);
     });
 
-		var getNp2 = function () {
+    var getLiveToggle = function () { // get api value
         $.ajax({
-            type: "GET",
-            url: "/api/admin/np2",
-            success: function (data) {
-                if (data == "true") {
-										npCheckbox2.bootstrapSwitch("state", true);
-                }
-                else {
-										toggle = false;
-                }
-            },
-            error: function (e) {
-                console.log("Unable to determine Live Page mode.");
-            }
+	    type: "GET",
+	    url: "/api/admin/liveToggle",
+	    success: function (data) {
+	        if (data == "true") {
+		    liveCheckbox.bootstrapSwitch("state", true);
+		}
+	    },
+	    error: function (e) {
+	        console.log("Unable to determine Live Page mode.");
+	    }
         })
     };
 
-		getNp2();
+    getLiveToggle(); // initialize get api value to set state of toggle button
 
     /****************************
      * No participation switch***

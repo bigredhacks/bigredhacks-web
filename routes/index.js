@@ -7,7 +7,7 @@ const helper = require("../util/routes_helper");
 const async = require("async");
 const Announcement = require("../models/announcement.js");
 const Inventory = require("../models/hardware_item.js");
-const toggleVar = require("./api/apiAdmin/np2.js"); // get toogle var's value from np2.js
+const toggleVar = require("./api/apiAdmin/liveToggle.js"); // get toogle var's value from liveToggle.js
 const config = require("../config.js");
 const util = require("../util/util");
 
@@ -120,43 +120,40 @@ router.post("/emailListAdd", function (req, res) {
  * @apiGroup Index
  */
 
-router.get("/live", function (req, res, next) {
-		var toggle = toggleVar.toggle();
-		console.log(toggle)
-		console.log("Testing 123")
-		if(toggle == "true"){
-	    async.parallel({
-	        announcements: (callback) => {
-	            const PROJECTION = "message time";
-	            Announcement.find({}, PROJECTION, callback);
-	        },
-	        calendar: (callback) => {
-	            util.grabCalendar(callback);
-	        },
-	        inventory: (cb) => {
-	            Inventory.find({}, null, { sort: { name: "asc" } }, cb);
-	        }
-	    }, (err, result) => {
-	        if (err) {
-	            console.error(err);
-	            return res.status(500); // Do not expose error to users
-	        }
-	        else {
-	            return res.render("live", {
-	                title: "Live",
-	                announcements: result.announcements,
-	                calendar: result.calendar
-	            });
-	        }
-	    });
-		}
-		else{
-			let ev = req.flash();
-			res.render("test", {
-				title: "TEST",
-				messages: ev
-			});
-}
-});
+ router.get("/live", function (req, res, next) {
+     var toggle = toggleVar.toggle();
+     if(toggle == "true"){
+         async.parallel({
+	     announcements: (callback) => {
+	         const PROJECTION = "message time";
+		 Announcement.find({}, PROJECTION, callback);
+	     },
+	     calendar: (callback) => {
+	         util.grabCalendar(callback);
+	     },
+	     inventory: (cb) => {
+	         Inventory.find({}, null, { sort: { name: "asc" } }, cb);
+	     }
+	 }, 
+         (err, result) => {
+             if (err) {
+	         console.error(err);
+	         return res.status(500);
+	     }
+	     else {
+	         return res.render("live", {
+		     title: "Live",
+		     announcements: result.announcements,
+		     calendar: result.calendar
+		 });
+	     }
+	 });
+     }
+     else{
+         res.render("liveDisabled", {
+	     title: "Live Page Disabled"
+	 });
+     }
+ });
 
 module.exports = router;
