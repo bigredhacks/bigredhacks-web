@@ -189,7 +189,7 @@ module.exports.postAnnouncement = (req, res) => {
                 },
                 (cb) => {
                     if (req.body.slack) {
-                        fetch("https://hooks.slack.com/services/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", {
+                        fetch(config.slack.webhook_url, {
                             headers: {
                                 "Content-type": "application/json"
                             },
