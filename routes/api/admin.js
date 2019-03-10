@@ -11,6 +11,7 @@ const event         = require("./apiAdmin/event");
 const hardware      = require("./apiAdmin/hardware");
 const lottery       = require("./apiAdmin/lottery");
 const np            = require("./apiAdmin/np");
+const liveToggle    = require("./apiAdmin/liveToggle");
 const reimbursement = require("./apiAdmin/reimbursement");
 const rsvp          = require("./apiAdmin/rsvp");
 const team          = require("./apiAdmin/team");
@@ -49,6 +50,10 @@ router.post("/cornellWaitlist",          lottery.cornellWaitlist);
 // No Participation Routes
 router.get("/np",                        np.getNoParticipation);
 router.post("/np/set",                   np.setNoParticipation);
+
+// Live Page Toggle Routes
+router.get("/liveToggle",                        liveToggle.getNoLive);
+router.post("/liveToggle/set",                   liveToggle.setNoLive);
 
 // Reimbursement Routes
 router.post("/reimbursements/school",    reimbursement.schoolReimbursementsPost);

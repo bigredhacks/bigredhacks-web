@@ -44,8 +44,49 @@ function updateRole(email, newRole, callback) {
 
 $('document').ready(function () {
 
-    var npCheckbox = $("[name='np-toggle-checkbox']");
+    var npCheckbox = $("[name='np-toggle-checkbox']"); // no particpation mode toggle
     npCheckbox.bootstrapSwitch();
+
+    var liveCheckbox = $("[name='live-toggle-checkbox']"); // live page toggle
+    liveCheckbox.bootstrapSwitch();
+
+    /****************************
+    * Live Mode switch*** 
+    ***************************/
+
+    var setLiveToggle = function (state) { // set api value
+        $.ajax({
+	    type: "POST",
+	    url: "/api/admin/liveToggle/set",
+	    data: {
+	        state: state
+	    },
+	    error: function (e) {
+	        console.log("Unable to set live page");
+	    }
+	})
+    };
+
+    liveCheckbox.on('switchChange.bootstrapSwitch', function (event, state) {
+        setLiveToggle(state);
+    });
+
+    var getLiveToggle = function () { // get api value
+        $.ajax({
+	    type: "GET",
+	    url: "/api/admin/liveToggle",
+	    success: function (data) {
+	        if (data == "true") {
+		    liveCheckbox.bootstrapSwitch("state", true);
+		}
+	    },
+	    error: function (e) {
+	        console.log("Unable to determine Live Page mode.");
+	    }
+        })
+    };
+
+    getLiveToggle(); // initialize get api value to set state of toggle button
 
     /****************************
      * No participation switch***
