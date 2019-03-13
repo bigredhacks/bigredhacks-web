@@ -132,31 +132,34 @@ module.exports.makeRollingAnnouncement = (req, res) => {
 
 module.exports.postAnnouncement = (req, res) => {
     async.waterfall([
-        (cb) => {
+        (waterfallCb) => {
             const message = req.body.message;
             let newAnnouncement = new Announcement({
                 message: message
             });
 
             if (message.length > 140 && req.body.twitter) {
-                return cb("Character length exceeds 140 and you wanted to post to Twitter.");
+                return waterfallCb("Character length exceeds 140 and you wanted to post to Twitter.");
             }
             else {
                 newAnnouncement.save().then((announcement) => {
-                    return cb(null, announcement);
+                    return waterfallCb(null, announcement);
                 });
             }
         },
-        (newAnnouncement, cb) => {
+        (newAnnouncement, waterfallCb) => {
             async.parallel([
-                (cb) => {
+                (parallelCb) => {
                     if (req.body.web) {
                         socketutil.announceWeb(req.body.message);
                     }
-                    return cb(null);
+                    return parallelCb(null);
                 },
-                (cb) => {
+                (parallelCb) => {
+                    console.log("POST TO TWITTER?");
+                    console.log(parallelCb);
                     if (req.body.twitter) {
+                        console.log("TWITTER POST TRUE");
                         let OAuth2 = OAuth.OAuth2;
                         let oauth2 = new OAuth2(
                             config.twitter.tw_consumer_key,
@@ -170,30 +173,39 @@ module.exports.postAnnouncement = (req, res) => {
                             "",
                             { "grant_type": "client_credentials" },
                             (err, access_token, refresh_token, results) => {
+                                console.log(err);
                                 if (err) {
-                                    return cb(`Twitter OAuth Error: ${err}`);
+                                    return parallelCb(`Twitter OAuth Error: ${err}`);
                                 }
                                 else {
+                                    console.log("NO ERRORS");
+                                    console.log(parallelCb);
                                     let twitter_client = new Twitter({
                                         consumer_key:        config.twitter.tw_consumer_key,
                                         consumer_secret:     config.twitter.tw_consumer_secret,
                                         access_token_key:    config.twitter.tw_access_token,
                                         access_token_secret: config.twitter.tw_token_secret
                                     });
-                                    twitter_client.post("statuses/update", { status: req.body.message }, cb);
+                                    twitter_client.post("statuses/update", { status: req.body.message }, parallelCb);
                                 }
                             }
                         );
                     }
-                    return cb(null);
+                    else {
+                        console.log("Returnig again here?");
+                        return parallelCb(null);
+                    }
                 },
-                (cb) => {
+                (parallelCb) => {
                     if (req.body.slack) {
                         fetch(config.slack.webhook_url, {
                             headers: {
                                 "Content-type": "application/json"
                             },
-                            body: JSON.stringify({ "text": req.body.message }),
+                            // body: JSON.stringify({ "text": req.body.message }),
+                            // this is just purposely doing a malformed request to
+                            // test slack announcement error handling. above is correct
+                            body: { "text": req.body.message },
                             method: "POST"
                         })
                             .then(response => {
@@ -206,26 +218,15 @@ module.exports.postAnnouncement = (req, res) => {
                                 }
                             })
                             .catch(error => {
-                                return cb(`Slack webhook error: ${error.message}`);
+                                return parallelCb(`Slack webhook error: ${error.message}`);
                             });
                     }
                     else {
-                        return cb(null);
+                        return parallelCb(null);
                     }
                 }
-            ], (err) => {
-                if (err) {
-                    console.error(err);
-                    if (typeof err === "string") {
-                        req.flash("error", err);
-                        return res.sendStatus(500);
-                    }
-                    else {
-                        return res.status(500).send(err);
-                    }
-                }
-            });
-            return cb(null, "success");
+            ], (err) => waterfallCb(err));
+            return waterfallCb(null, "success");
         }
     ], (err) => {
         if (err) {
