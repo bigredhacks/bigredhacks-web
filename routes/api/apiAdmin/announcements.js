@@ -1,7 +1,7 @@
 "use strict";
 
 const async = require("async");
-const fetch = require("node-fetch");
+const request = require("request");
 const config = require("../../../config.js");
 const email = require("../../../util/email.js");
 const helper = require("../../../util/routes_helper.js");
@@ -195,12 +195,8 @@ module.exports.postAnnouncement = (req, res) => {
                 (slackCb) => {
                     if (req.body.slack) {
                         console.log("Posting message to slack!")
-                        fetch(config.slack.webhook_url, {
-                            method: "POST",
-                            headers: {
-                                "Content-type": "application/json"
-                            },
-                            body: JSON.stringify({ "text": req.body.message })
+                        request.post(config.slack.webhook_url, {
+                            json: { "text": req.body.message }
                         }).then((response) => {
                             if (!response.ok) {
                                 throw new Error(`${response.status}, ${response.statusText}`);
