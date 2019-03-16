@@ -27,7 +27,6 @@
     "express": "^4.16.4",
     "express-flash": "0.0.2",
     "express-validator": "^4.1.0",
-    "fcm-push": "^1.0.7",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
     "grunt-cli": "^1.2.0",
