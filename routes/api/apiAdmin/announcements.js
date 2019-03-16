@@ -1,17 +1,17 @@
 "use strict";
 
-const async      = require("async");
-const fetch      = require("node-fetch");
-const config     = require("../../../config.js");
-const email      = require("../../../util/email.js");
-const helper     = require("../../../util/routes_helper.js");
-const OAuth      = require("oauth");
+const async = require("async");
+const fetch = require("node-fetch");
+const config = require("../../../config.js");
+const email = require("../../../util/email.js");
+const helper = require("../../../util/routes_helper.js");
+const OAuth = require("oauth");
 const socketutil = require("../../../util/socketutil.js");
-const Twitter    = require("twitter");
+const Twitter = require("twitter");
 
-let Announcement   = require("../../../models/announcement.js");
+let Announcement = require("../../../models/announcement.js");
 let TimeAnnotation = require("../../../models/time_annotation.js");
-let User           = require("../../../models/user.js");
+let User = require("../../../models/user.js");
 
 module.exports.annotate = (req, res) => {
     // format the date
@@ -132,32 +132,30 @@ module.exports.makeRollingAnnouncement = (req, res) => {
 
 module.exports.postAnnouncement = (req, res) => {
     async.waterfall([
-        (waterfallCb) => {
+        (charCb) => {
             const message = req.body.message;
             let newAnnouncement = new Announcement({
                 message: message
             });
 
             if (message.length > 140 && req.body.twitter) {
-                return waterfallCb("Character length exceeds 140 and you wanted to post to Twitter.");
+                charCb("Character length exceeds 140 and you wanted to post to Twitter.");
             }
             else {
                 newAnnouncement.save().then((announcement) => {
-                    return waterfallCb(null, announcement);
+                    charCb(null);
                 });
             }
         },
-        (newAnnouncement, waterfallCb) => {
+        (broadcastCb) => {
             async.parallel([
-                (parallelCb) => {
+                (liveNotifCb) => {
                     if (req.body.web) {
                         socketutil.announceWeb(req.body.message);
                     }
-                    return parallelCb(null);
+                    liveNotifCb(null);
                 },
-                (parallelCb) => {
-                    console.log("POST TO TWITTER?");
-                    console.log(parallelCb);
+                (twitterCb) => {
                     if (req.body.twitter) {
                         console.log("TWITTER POST TRUE");
                         let OAuth2 = OAuth.OAuth2;
@@ -173,60 +171,53 @@ module.exports.postAnnouncement = (req, res) => {
                             "",
                             { "grant_type": "client_credentials" },
                             (err, access_token, refresh_token, results) => {
-                                console.log(err);
                                 if (err) {
-                                    return parallelCb(`Twitter OAuth Error: ${err}`);
+                                    twitterCb(`Twitter OAuth Error: ${err}`);
                                 }
                                 else {
-                                    console.log("NO ERRORS");
-                                    console.log(parallelCb);
                                     let twitter_client = new Twitter({
-                                        consumer_key:        config.twitter.tw_consumer_key,
-                                        consumer_secret:     config.twitter.tw_consumer_secret,
-                                        access_token_key:    config.twitter.tw_access_token,
+                                        consumer_key: config.twitter.tw_consumer_key,
+                                        consumer_secret: config.twitter.tw_consumer_secret,
+                                        access_token_key: config.twitter.tw_access_token,
                                         access_token_secret: config.twitter.tw_token_secret
                                     });
-                                    twitter_client.post("statuses/update", { status: req.body.message }, parallelCb);
+                                    twitter_client.post("statuses/update", { status: req.body.message }).then(
+                                        (response) => { twitterCb(null) }
+                                    ).catch((err) => { twitterCb(`Twitter POST error: ${err}`) });
                                 }
                             }
                         );
                     }
                     else {
-                        console.log("Returnig again here?");
-                        return parallelCb(null);
+                        twitterCb(null);
                     }
                 },
-                (parallelCb) => {
+                (slackCb) => {
                     if (req.body.slack) {
+                        console.log("Posting message to slack!")
                         fetch(config.slack.webhook_url, {
+                            method: "POST",
                             headers: {
                                 "Content-type": "application/json"
                             },
-                            // body: JSON.stringify({ "text": req.body.message }),
-                            // this is just purposely doing a malformed request to
-                            // test slack announcement error handling. above is correct
-                            body: { "text": req.body.message },
-                            method: "POST"
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    /* TODO
-                                       If an error happens, we get UnhandledPromiseRejectionWarning: Error: Callback was already called,
-                                       UnhandledPromiseRejectionWarning: Unhandled promise rejection
-                                       Originates from catch statement */
-                                    throw new Error(`${response.status}, ${response.statusText}`);
-                                }
-                            })
-                            .catch(error => {
-                                return parallelCb(`Slack webhook error: ${error.message}`);
-                            });
+                            body: JSON.stringify({ "text": req.body.message })
+                        }).then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`${response.status}, ${response.statusText}`);
+                            }
+                            slackCb(null);
+                        }).catch((error) => {
+                            console.error("Something went wrong with Slack: " + error);
+                            slackCb(`Slack webhook error: ${error.message}`);
+                        });
                     }
                     else {
-                        return parallelCb(null);
+                        slackCb(null);
                     }
                 }
-            ], (err) => waterfallCb(err));
-            return waterfallCb(null, "success");
+            ], (err, results) => {
+                broadcastCb(null);
+            });
         }
     ], (err) => {
         if (err) {
