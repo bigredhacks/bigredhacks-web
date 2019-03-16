@@ -1,17 +1,17 @@
 "use strict";
 
-const async      = require("async");
-const config     = require("../../../config.js");
-const email      = require("../../../util/email.js");
-const FCM        = require("fcm-push");
-const helper     = require("../../../util/routes_helper.js");
-const OAuth      = require("oauth");
+const async = require("async");
+const request = require("request");
+const config = require("../../../config.js");
+const email = require("../../../util/email.js");
+const helper = require("../../../util/routes_helper.js");
+const OAuth = require("oauth");
 const socketutil = require("../../../util/socketutil.js");
-const Twitter    = require("twitter");
+const Twitter = require("twitter");
 
-let Announcement   = require("../../../models/announcement.js");
+let Announcement = require("../../../models/announcement.js");
 let TimeAnnotation = require("../../../models/time_annotation.js");
-let User           = require("../../../models/user.js");
+let User = require("../../../models/user.js");
 
 module.exports.annotate = (req, res) => {
     // format the date
@@ -132,31 +132,32 @@ module.exports.makeRollingAnnouncement = (req, res) => {
 
 module.exports.postAnnouncement = (req, res) => {
     async.waterfall([
-        (cb) => {
+        (charCb) => {
             const message = req.body.message;
             let newAnnouncement = new Announcement({
                 message: message
             });
 
             if (message.length > 140 && req.body.twitter) {
-                return cb("Character length exceeds 140 and you wanted to post to Twitter.");
+                charCb("Character length exceeds 140 and you wanted to post to Twitter.");
             }
             else {
                 newAnnouncement.save().then((announcement) => {
-                    return cb(null, announcement);
+                    charCb(null);
                 });
             }
         },
-        (newAnnouncement, cb) => {
+        (broadcastCb) => {
             async.parallel([
-                (cb) => {
+                (liveNotifCb) => {
                     if (req.body.web) {
                         socketutil.announceWeb(req.body.message);
                     }
-                    return cb(null);
+                    liveNotifCb(null);
                 },
-                (cb) => {
+                (twitterCb) => {
                     if (req.body.twitter) {
+                        console.log("TWITTER POST TRUE");
                         let OAuth2 = OAuth.OAuth2;
                         let oauth2 = new OAuth2(
                             config.twitter.tw_consumer_key,
@@ -171,37 +172,48 @@ module.exports.postAnnouncement = (req, res) => {
                             { "grant_type": "client_credentials" },
                             (err, access_token, refresh_token, results) => {
                                 if (err) {
-                                    return cb(`Twitter OAuth Error: ${err}`);
+                                    twitterCb(`Twitter OAuth Error: ${err}`);
                                 }
                                 else {
                                     let twitter_client = new Twitter({
-                                        consumer_key:        config.twitter.tw_consumer_key,
-                                        consumer_secret:     config.twitter.tw_consumer_secret,
-                                        access_token_key:    config.twitter.tw_access_token,
+                                        consumer_key: config.twitter.tw_consumer_key,
+                                        consumer_secret: config.twitter.tw_consumer_secret,
+                                        access_token_key: config.twitter.tw_access_token,
                                         access_token_secret: config.twitter.tw_token_secret
                                     });
-                                    twitter_client.post("statuses/update", { status: req.body.message }, cb);
+                                    twitter_client.post("statuses/update", { status: req.body.message }).then(
+                                        (response) => { twitterCb(null) }
+                                    ).catch((err) => { twitterCb(`Twitter POST error: ${err}`) });
                                 }
                             }
                         );
                     }
                     else {
-                        return cb(null);
+                        twitterCb(null);
                     }
-                }
-            ], (err) => {
-                if (err) {
-                    console.error(err);
-                    if (typeof err === "string") {
-                        req.flash("error", err);
-                        return res.sendStatus(500);
+                },
+                (slackCb) => {
+                    if (req.body.slack) {
+                        console.log("Posting message to slack!")
+                        request.post(config.slack.webhook_url, {
+                            json: { "text": req.body.message }
+                        }).then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`${response.status}, ${response.statusText}`);
+                            }
+                            slackCb(null);
+                        }).catch((error) => {
+                            console.error("Something went wrong with Slack: " + error);
+                            slackCb(`Slack webhook error: ${error.message}`);
+                        });
                     }
                     else {
-                        return res.status(500).send(err);
+                        slackCb(null);
                     }
                 }
+            ], (err, results) => {
+                broadcastCb(null);
             });
-            return cb(null, "success");
         }
     ], (err) => {
         if (err) {

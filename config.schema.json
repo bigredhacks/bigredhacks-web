@@ -46,6 +46,9 @@
     "tw_access_token": {"type": "String"},
     "tw_token_secret": {"type": "String"}
   },
+  "slack": {
+    "webhook_url": {"type": "String"}
+  },
   "yearly": {
     "facebook": {"type": "String"},
     "sponsorshipProspectus": {"type": "String"}

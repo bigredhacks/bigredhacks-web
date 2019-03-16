@@ -103,12 +103,19 @@ block append admin_content
                     br
                     label
                         input#web(type='checkbox', name='web', value='true', checked=true)
-                        | &nbsp;Live Page
+                        | &nbsp;Live Page Web Notification
                     br
                     label
                         input#twitter(type='checkbox', name='twitter', value='true', checked=false)
                         | &nbsp;Twitter
                     br
+                    label
+                        input#slack(type='checkbox', name='slack', value='true', checked=false)
+                        | &nbsp;Slack
+                    br
+                    label
+                        input#sms(type='checkbox', name='sms', value='true', checked=false)
+                        | &nbsp;SMS
                 .form-group
                     button#announcementMake.btn.btn-success(onclick="return confirm('Are you sure?')") Announce
         #decisions.tab-pane(role='tabpanel')
