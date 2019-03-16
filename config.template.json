@@ -41,6 +41,9 @@
     "tw_access_token": "",
     "tw_token_secret": ""
   },
+  "slack": {
+    "webhook_url": ""
+  },
   "firebase": {
     "app_id":"",
     "key":"",
