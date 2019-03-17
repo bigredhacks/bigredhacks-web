@@ -197,10 +197,16 @@ module.exports.postAnnouncement = (req, res) => {
                         console.log("Posting message to slack!");
                         request.post(config.slack.webhook_url, {
                             json: { "text": "<!channel> " + req.body.message }
+<<<<<<< HEAD
                         }, (err, response, body) => {
                             if (err) {
                                 console.error("Something went wrong with Slack: " + err);
                                 slackCb(null);
+=======
+                        }).then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`${response.status}, ${response.statusText}`);
+>>>>>>> merge
                             }
                             console.log("Successfully posted to Slack!");
                             slackCb(null);
