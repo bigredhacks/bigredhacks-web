@@ -100,26 +100,30 @@ block append main_content
                         h4 PSB Map
                         img(src="/img/PSB_Zone_Map.png" style="width: 100%;")
             .col-md-4
-                if isUser
-                    .row
-                        .panel.panel-default
-                            .panel-heading
-                                h3.panel-title Request a Mentor
-                                .mentor-request
-                                    #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
+                .row
+                    .panel.panel-default
+                        .panel-heading
+                            h3.panel-title Request a Mentor
+                        if isUser
+                            .mentor-request
+                                #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
 
-                                        label#mentor-label You must use the email you registered with
-                                    form
-                                        .form-group
-                                            label problem
-                                            input#mentor-req-text.form-control(type='text' name='request' placeholder='ex. need help with Javascript')
-                                        .form-group
-                                            label desired skills
-                                            input#mentor-req-text.form-control(type='text' name='skills' placeholder='javascript, html, css...')
-                                        .form-group
-                                            label table number or location
-                                            input#mentor-req-table.form-control(type='text' name='tableNumber' placeholder='ex. 4')
-                                        button#request-mentor-btn.btn.btn-primary request mentor
+                                    label#mentor-label You must use the email you registered with
+                            .panel-body
+                                form
+                                    .form-group
+                                        label problem
+                                        input#mentor-req-text.form-control(type='text' name='request' placeholder='ex. need help with Javascript')
+                                    .form-group
+                                        label desired skills
+                                        input#mentor-req-text.form-control(type='text' name='skills' placeholder='javascript, html, css...')
+                                    .form-group
+                                        label table number or location
+                                        input#mentor-req-table.form-control(type='text' name='tableNumber' placeholder='ex. 4')
+                                    button#request-mentor-btn.btn.btn-primary request mentor
+                        else
+                            .submit
+                                h4 Please #[a(href="/login") login] to request a mentor!
             .col-md-4
                 .panel.panel-default
                     .panel-heading
