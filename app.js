@@ -26,7 +26,6 @@ if (config.setup.use_redis) {
 }
 var subdomain = require("subdomain");
 var routes = require("./routes/index");
-var test = require("./routes/test");
 var user = require("./routes/user")(app.io);
 var mentor = require("./routes/mentor")(app.io);
 var sponsors = require("./routes/sponsors")(app.io);
@@ -105,9 +104,8 @@ app.use(middle.allRequests);
 
 //setup routes
 //requireAuthentication must come before requireNoAuthentication to prevent redirect loops
-app.use("/test", test);
-app.use("/", routes); app.use("/api/admin", middle.requireAdmin, apiAdminRoute);
-app.use("/", test); app.use("/api/admin", middle.requireAdmin, apiAdminRoute);
+app.use("/", routes);
+app.use("/api/admin", middle.requireAdmin, apiAdminRoute);
 
 app.use("/api", apiRoute);
 
