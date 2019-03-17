@@ -104,8 +104,31 @@ block append main_content
                     .panel.panel-default
                         .panel-heading
                             h3.panel-title Request a Mentor
+<<<<<<< HEAD
                         .submit
                             h4 Join the <b>#mentor-requests</b> channel on the #[a(href="https://slack.com/") slack] to request a mentor!
+=======
+                        if isUser
+                            .mentor-request
+                                #mentor-req-alert.alert.alert-danger.not-display(style="visibility:hidden",role="alert")
+
+                                    label#mentor-label You must use the email you registered with
+                            .panel-body
+                                form
+                                    .form-group
+                                        label problem
+                                        input#mentor-req-text.form-control(type='text' name='request' placeholder='ex. need help with Javascript')
+                                    .form-group
+                                        label desired skills
+                                        input#mentor-req-text.form-control(type='text' name='skills' placeholder='javascript, html, css...')
+                                    .form-group
+                                        label table number or location
+                                        input#mentor-req-table.form-control(type='text' name='tableNumber' placeholder='ex. 4')
+                                    button#request-mentor-btn.btn.btn-primary request mentor
+                        else
+                            .submit
+                                h4 Please #[a(href="/login") login] to request a mentor!
+>>>>>>> merge
             .col-md-4
                 .panel.panel-default
                     .panel-heading
