@@ -197,14 +197,13 @@ module.exports.postAnnouncement = (req, res) => {
                         console.log("Posting message to slack!");
                         request.post(config.slack.webhook_url, {
                             json: { "text": "<!channel> " + req.body.message }
-                        }).then((response) => {
-                            if (!response.ok) {
-                                throw new Error(`${response.status}, ${response.statusText}`);
+                        }, (err, response, body) => {
+                            if (err) {
+                                console.error("Something went wrong with Slack: " + err);
+                                slackCb(null);
                             }
+                            console.log("Successfully posted to Slack!");
                             slackCb(null);
-                        }).catch((error) => {
-                            console.error("Something went wrong with Slack: " + error);
-                            slackCb(`Slack webhook error: ${error.message}`);
                         });
                     }
                     else {
@@ -212,6 +211,7 @@ module.exports.postAnnouncement = (req, res) => {
                     }
                 }
             ], (err, results) => {
+                console.log("Finished broadcasting");
                 broadcastCb(null);
             });
         }
