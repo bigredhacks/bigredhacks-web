@@ -16,7 +16,7 @@ for app in applicants
                         for member in app.team
                             if member.pubid != app.pubid
                                 li: a(href="/admin/user/"+member.pubid)
-            li: a(href="http://files.bigredhacks.com/resume/"+app.app.resume) Resume
+            li: a(href="http://" + s3Bucket + ".s3.amazonaws.com/resume/"+app.app.resume) Resume
         .decisionbuttons
             span.status-text= app.internal.status
             br/

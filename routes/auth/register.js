@@ -1,15 +1,15 @@
 // Node Modules and utilities
-const _          = require("underscore");
-const async      = require("async");
-const authHelp   = require("../../util/helpers/auth");
-const config     = require('../../config.js');
-const email      = require('../../util/email');
-const helper     = require("../../util/routes_helper");
+const _ = require("underscore");
+const async = require("async");
+const authHelp = require("../../util/helpers/auth");
+const config = require('../../config.js');
+const email = require('../../util/email');
+const helper = require("../../util/routes_helper");
 const multiparty = require('multiparty');
 
 // Mongo Models
-let enums   = require('../../models/enum.js');
-let User    = require("../../models/user");
+let enums = require('../../models/enum.js');
+let User = require("../../models/user");
 
 // Variables
 const ALWAYS_OMIT = 'password confirmpassword'.split('');
@@ -20,8 +20,8 @@ const MAX_FILE_SIZE = 1024 * 1024 * 15;
  * @apiName Register
  * @apiGroup Auth
  */
-function registerGet (req, res) {
-    return res.redirect("/");
+function registerGet(req, res) {
+    // return res.redirect("/");
     async.series({
         college: (cb) => {
             if (req.params && req.params.name) {
@@ -44,16 +44,16 @@ function registerGet (req, res) {
         if (!err) {
             let college = null, collegeName = null, collegeParam = null;
             if (req.params && req.params.name && result.college) {
-                college =      result.college;
-                collegeName =  result.college.name;
+                college = result.college;
+                collegeName = result.college.name;
                 collegeParam = req.params.name;
             }
             return res.render("register_general", {
-                college:  college,
-                enums:    enums,
-                error:    req.flash('error'),
-                limit:    config.admin.cornell_auto_accept,
-                title:    collegeName || "BigRed//Hacks | Register",
+                college: college,
+                enums: enums,
+                error: req.flash('error'),
+                limit: config.admin.cornell_auto_accept,
+                title: collegeName || "BigRed//Hacks | Register",
                 urlparam: collegeParam,
                 cornellOpen: config.admin.cornell_reg_open
             });
@@ -71,11 +71,11 @@ function registerGet (req, res) {
  * @apiName Register
  * @apiGroup Auth
  */
-function registerPost (req, res) {
+function registerPost(req, res) {
     async.waterfall([
         (cb) => {
             let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
-            User.findOne({email: sanitizedEmail}).exec((err, user) => {
+            User.findOne({ email: sanitizedEmail }).exec((err, user) => {
                 if (!err) {
                     if (typeof user !== "undefined" && user) {
                         return cb("A user with this email address has already registered!");
@@ -91,7 +91,7 @@ function registerPost (req, res) {
         },
         (cb) => {
             // Parse the resume
-            const form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
+            const form = new multiparty.Form({ maxFilesSize: MAX_FILE_SIZE });
             form.parse(req, function (err, fields, files) {
                 if (err) {
                     return cb(err);
@@ -150,7 +150,7 @@ function registerPost (req, res) {
                 }
                 else {
                     let college = {
-                        _id:     req.body.collegeid,
+                        _id: req.body.collegeid,
                         display: req.body.college
                     };
                     return cb(null, college, resume);
@@ -162,30 +162,30 @@ function registerPost (req, res) {
             let newUser = new User({
                 name: {
                     first: req.body.firstname,
-                    last:  req.body.lastname
+                    last: req.body.lastname
                 },
-                email:     req.body.email,
-                password:  req.body.password,
-                gender:    req.body.genderDropdown,
-                phone:     req.body.phonenumber,
+                email: req.body.email,
+                password: req.body.password,
+                gender: req.body.genderDropdown,
+                phone: req.body.phonenumber,
                 logistics: {
-                    dietary:      req.body.dietary,
-                    tshirt:       req.body.tshirt,
+                    dietary: req.body.dietary,
+                    tshirt: req.body.tshirt,
                     anythingelse: req.body.anythingelse
                 },
                 school: {
-                    id:    college._id,
-                    name:  college.display,
-                    year:  req.body.yearDropdown,
+                    id: college._id,
+                    name: college.display,
+                    year: req.body.yearDropdown,
                     major: req.body.major
                 },
                 internal: {
                     cornell_applicant: authHelp._isCornellian(college)
                 },
                 app: {
-                    github:             req.body.github,
-                    linkedin:           req.body.linkedin,
-                    resume:             resume.filename,
+                    github: req.body.github,
+                    linkedin: req.body.linkedin,
+                    resume: resume.filename,
                     hackathonsAttended: req.body.hackathonsAttended,
                     questions: {
                         q1: req.body.q1,
@@ -297,11 +297,11 @@ function registerPost (req, res) {
             console.error(err);
             req.flash("error", err);
             return res.render('register_general', {
-                enums:  enums,
-                error:  req.flash('error'),
+                enums: enums,
+                error: req.flash('error'),
                 errors: err,
-                input:  req.body,
-                title:  "BigRed//Hacks | Register",
+                input: req.body,
+                title: "BigRed//Hacks | Register",
                 cornellOpen: config.admin.cornell_reg_open
             });
         }
@@ -309,6 +309,6 @@ function registerPost (req, res) {
 }
 
 module.exports = {
-    get:  registerGet,
+    get: registerGet,
     post: registerPost
 };

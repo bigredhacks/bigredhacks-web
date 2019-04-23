@@ -442,7 +442,7 @@ module.exports = function (io) {
                             else{
                                 req.flash("error", "Please upload a travel receipt.");
                                 return res.redirect("/user/dashboard");
-                            }    
+                            }
                         }
 
                         helper.uploadFile(receipt, {type: "receipt"}, function (err, file) {
