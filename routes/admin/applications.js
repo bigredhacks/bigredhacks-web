@@ -1,20 +1,22 @@
 // Node Modules and utilities
-const async  = require("async");
+const async = require("async");
 const helper = require("../../util/helpers/admin");
-const util   = require("../../util/util.js");
+const util = require("../../util/util.js");
 
 // Mongo models
 let Reimbursements = require("../../models/reimbursements");
-let User           = require("../../models/user.js");
+let User = require("../../models/user.js");
 
-const USER_FILTER = {role: "user"};
+const config = require("../../config");
+
+const USER_FILTER = { role: "user" };
 
 /**
  * @api {GET} /admin/user/:pubid Search page to find applicants.
  * @apiName Search
  * @apiGroup AdminAuth
  */
-function search (req, res, next) {
+function search(req, res, next) {
     let queryKeys = Object.keys(req.query);
     if (queryKeys.length === 0 || (queryKeys.length === 1 && queryKeys[0] === "render")) {
         // .limit(50)
@@ -47,7 +49,7 @@ function search (req, res, next) {
             console.error(err);
         }
         let emailCsv = "";
-        for (let app of applicants){
+        for (let app of applicants) {
             emailCsv += `${app.email}, `;
         }
 
@@ -56,7 +58,8 @@ function search (req, res, next) {
             applicants: JSON.stringify(applicants),
             params: req.query,
             render: req.query.render, //table, box
-            emailCsv: emailCsv
+            emailCsv: emailCsv,
+            s3Bucket: config.setup.AWS_S3_bucket
         });
     }
 }
@@ -66,9 +69,9 @@ function search (req, res, next) {
  * @apiName Review
  * @apiGroup AdminAuth
  */
-function review (req, res, next) {
-    let query = {"internal.status": "Pending"};
-    query = {$and: [query, USER_FILTER]};
+function review(req, res, next) {
+    let query = { "internal.status": "Pending" };
+    query = { $and: [query, USER_FILTER] };
     User.count(query, (err, count) => {
         if (err) {
             console.log(err);
@@ -90,7 +93,8 @@ function review (req, res, next) {
                     return res.render("admin/review", {
                         title: "Admin Dashboard - Review",
                         currentUser: user,
-                        stats: stats
+                        stats: stats,
+                        s3Bucket: config.setup.AWS_S3_bucket
                     });
                 });
             });
@@ -103,8 +107,8 @@ function review (req, res, next) {
  * @apiName UserInfo
  * @apiGroup AdminAuth
  */
-function viewApplicant (req, res, next) {
-    User.where({pubid: req.params.pubid}).findOne((err, user) => {
+function viewApplicant(req, res, next) {
+    User.where({ pubid: req.params.pubid }).findOne((err, user) => {
         if (err) {
             console.log(err);
             //todo return on error
@@ -129,7 +133,8 @@ function viewApplicant (req, res, next) {
                     title: "Review User",
                     currentUser: user,
                     stats: info.stats,
-                    reimbursement: util.calculateReimbursement(info.reimbursements, user, false)
+                    reimbursement: util.calculateReimbursement(info.reimbursements, user, false),
+                    s3Bucket: config.setup.AWS_S3_bucket
                 });
             });
         }
@@ -141,18 +146,19 @@ function viewApplicant (req, res, next) {
  * @apiName TeamInfo
  * @apiGroup AdminAuth
  */
-function viewTeam (req, res, next) {
-    User.find({"internal.teamid": req.params.teamid}).exec((err, teamMembers) => {
+function viewTeam(req, res, next) {
+    User.find({ "internal.teamid": req.params.teamid }).exec((err, teamMembers) => {
         return res.render("admin/team", {
             title: "Review Team",
-            teamMembers: teamMembers
+            teamMembers: teamMembers,
+            s3Bucket: config.setup.AWS_S3_bucket
         });
     });
 }
 
 module.exports = {
-    review:        review,
-    search:        search,
+    review: review,
+    search: search,
     viewApplicant: viewApplicant,
-    viewTeam:      viewTeam
+    viewTeam: viewTeam
 };
