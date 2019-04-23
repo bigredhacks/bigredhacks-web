@@ -50,16 +50,16 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
                 } else {
                     lk_url = "https://" + linkedin;
                 }
-        a.btn.btn-default(type="button", href="http://files.bigredhacks.com/resume/"+user.app.resume,
+        a.btn.btn-default(type="button", href="http://"+ s3Bucket + ".s3.amazonaws.com/resume/"+user.app.resume,
         target="_blank") #[i.fa.fa-file-pdf-o] Resume
         a.btn.btn-default(type="button",href=gh_url,target="_blank",disabled=gh_disabled) #[i.fa.fa-github] Github
         a.btn.btn-default(type="button",href=lk_url,target="_blank",disabled=lk_disabled) #[i.fa.my-fa-linkedin-square] Linkedin
         if (user.internal.travel_receipt)
-            a.btn.btn-default(type="button", href="http://files.bigredhacks.com/travel/" + user.internal.travel_receipt,
-        target="_blank") #[i.fa.fa-file-pdf-o] Travel Receipt
+            a.btn.btn-default(type="button", href="http://" +s3Bucket + ".s3.amazonaws.com/travel/" + user.internal.travel_receipt,
+        target="_blank") #[i.fa.fa-file-pdf-o] Travel Receipt    
         br
         br
-        div: embed.center-block(src="//files.bigredhacks.com/resume/"+user.app.resume, width="75%", height="400",type='application/pdf')
+        div: embed.center-block(src="//" + s3Bucket +".s3.amazonaws.com/resume/"+user.app.resume, width="75%", height="400",type='application/pdf')
         br
         br
 

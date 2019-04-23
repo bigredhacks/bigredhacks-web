@@ -35,7 +35,7 @@ block admin_content
                             li #[b Email: ] #{member.email}
                             li #[b School: ] #{member.school.name}
                             li #[b Year: ] #{member.school.year}
-                            li: a(href="http://files.bigredhacks.com/resume/"+member.app.resume) Resume
+                            li: a(href="http://" + s3Bucket + ".s3.amazonaws.com/resume/"+member.app.resume) Resume
             -
                 if (teamMembers[i].internal.status != teamMembers[0].internal.status)
                     teamdecision = "Pending";

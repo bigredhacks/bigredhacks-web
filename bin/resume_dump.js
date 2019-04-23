@@ -49,7 +49,7 @@ User.find(query, function (err, users) {
             let save_name = LOCAL_DEST + user.name.first + "_" + user.name.last + "_" + uid(2) + ".pdf";
             let filename = user.app.resume;
             console.log(filename, save_name);
-            let params = {Bucket: "files.bigredhacks.com", Key: RESUME_DEST + filename};
+            let params = {Bucket: config.setup.AWS_S3_bucket, Key: RESUME_DEST + filename};
             //console.log(params);
             let file = fs.createWriteStream(save_name);
             let r = s3.getObject(params).createReadStream().pipe(file);
