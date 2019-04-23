@@ -76,7 +76,7 @@ helper.s3url = function s3url() {
         return "http://files.bigredhacks.com";
     }
     else {
-        return "https://" + config.setup.AWS_S3_bucket;
+        return "https://" + config.setup.AWS_S3_bucket + ".s3.amazonaws.com";
     }
 };
 
