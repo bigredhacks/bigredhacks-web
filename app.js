@@ -111,9 +111,9 @@ app.use("/api", apiRoute);
 
 app.use("/admin", middle.requireAdmin, admin);
 app.use("/user", middle.requireAuthentication, user);
-app.use("/mentor", mentor);
+// app.use("/mentor", mentor);
 
-app.use("/sponsors", sponsors);
+// app.use("/sponsors", sponsors);
 
 app.use("/", authRoute); //todo mount on separate route to allow use of noAuth without disabling 404 pages
 
