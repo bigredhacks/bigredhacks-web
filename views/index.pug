@@ -8,40 +8,64 @@ block append content
         img(src="//s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg" alt="Major League Hacking 2019 Hackathon Season" style="width:100%")
     
     div(id="nav-desktop")
-        ul
-            li#nav-home.nav-item
-                a(href='#home')
-                    | Home
-                div.nav-circle      
+        div#nav-home.nav-item.active
+            a(href='#home')
+                | Home
+            div.nav-circle      
 
-            li#nav-about.nav-item
-                a(href='#about')
-                    | About
-                div.nav-circle
+        div#nav-about.nav-item
+            a(href='#about')
+                | About
+            div.nav-circle
 
-            li#nav-faq.nav-item
-                a(href='#faq')
-                    | FAQ
-                div.nav-circle
+        div#nav-team.nav-item
+            a(href='#team')
+                | Team
+            div.nav-circle
 
-            li#nav-sponsors.nav-item
-                a(href='#sponsors')
-                    | Sponsors
-                div.nav-circle
+        div#nav-faq.nav-item
+            a(href='#faq')
+                | FAQ
+            div.nav-circle
 
-    div(data-spy="scroll" data-target="#nav-desktop")
+        div#nav-sponsors.nav-item
+            a(href='#sponsors')
+                | Sponsors
+            div.nav-circle
+
+    div
         //- img(src="/img/2018/dash.jpg" class="home-2018-towers")
         div#home
+            div.home-content
+                h2 Cornell University, Ithaca, NY
 
-        div#about
+
+        img(src="/img/homeframe.svg" class="home-frame" draggable="false")
+        div#about    
             div.innerContent
                 div.paddedSection
-                    h1.section-heading.left About_
-                    p BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
-                    p
-                        | Across three days, Cornell University students will gather to build the coolest
-                        | and most innovative projects, meet amazing people, and win some prizes along
-                        | the way!
+                    h1.section-header#about-header 
+                        div.rect
+                        | Who we are
+                        div.rect
+                    .container-fluid
+                        .row
+                            .col-md-6
+                                img(src="/img/brh_about.jpg").img-responsive
+                            .col-md-6
+                                div.text-container
+                                    p.text
+                                        | BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
+                                    p.text
+                                        | Across three days, Cornell and non-Cornell students alike gather to build the coolest
+                                        | and most innovative projects, meet amazing people, and win some prizes along
+                                        | the way!
+                                div.btn-social-group
+                                    p.text.bold Follow us on Facebook and Twitter!
+                                    a.btn.btn-social.facebook(href="https://facebook.com/bigredhacks" target="_blank")
+                                        span.fa.fa-facebook-square
+                                    a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
+                                        span.fa.fa-twitter
         //- div#scheduleDiv
         //-     h1.section-heading.right Schedule_
         //-     div#schedule.paddedSection
@@ -108,10 +132,37 @@ block append content
         //-                         tr
         //-                             td.col-xs-3 3:30p
         //-                             td.col-xs-9 Buses Depart
+        div#team
+            div.innerContent
+                div.paddedSection
+                    h1.section-header
+                        div.rect
+                        | Big Red Team
+                        div.rect
+                    p.text.text-center
+                        | Big Red Hacks is made possible by a team of Cornell undergraduate
+                        | students passionate about hackathons, innovation, and fun!
+                    div.container-fluid
+                        .row
+                            .col-md-3 Co-president
+                            .col-md-3 Co-president
+                            .col-md-3 Logistics
+                            .col-md-3 Marketing
+                        .row
+                            .col-md-3 Sponsorship
+                            .col-md-3 Finance
+                            .col-md-3 Design
+                            .col-md-3 Web Development
+                    
+                    h2.section-subheader Member Spotlight
+                    
         div#faq
             div.innerContent
                 div.paddedSection
-                    h1.section-heading.left FAQ
+                    h1.section-header
+                        div.rect
+                        | FAQ
+                        div.rect
                     .container
                     dl
                         dt Who is eligible to participate?
@@ -173,10 +224,13 @@ block append content
         //-             .msgContainer.error
         div#sponsors
             div.innerContent
-                div.paddedSection(style="position:absolute")
-                    h1.section-heading.right Sponsors_
-                    p Want to sponsor us? 
-                    p Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
+                div.paddedSection
+                    h1.section-header
+                        div.rect
+                        | Sponsors
+                        div.rect
+                    p.text Want to sponsor us? 
+                    p.text Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
                     //- TODO: add company logos. Higher tiers = bigger logos
                     //- Issue #263
                     //- div#logos
