@@ -6,49 +6,37 @@ block append content
     //- MLH Badge
     a(id="mlh-trust-badge" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank")
         img(src="//s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg" alt="Major League Hacking 2019 Hackathon Season" style="width:100%")
-
-    .nav(id="nav-trust-badge")
+    
+    div(id="nav-desktop")
         ul
-            li.active
-            a(href='#about')
-                .hider
-                    #about-hide
-                        .about-dot
-                            | About
-                    .about-dot
-                        |  •
-            li
-            a(href='#faq')
-                .hider
-                    #faq-hide
-                        .faq-dot
-                            | FAQ
-                    .faq-dot
-                        |  •
-            li
-            a(href='#interested')
-                .hider
-                    #interested-hide
-                        .interested-dot
-                            | Interested
-                    .interested-dot
-                        |  •
-            li
-            a(href='#sponsors')
-                .hider
-                    #sponsors-hide
-                        .sponsors-dot
-                            | Sponsors
-                    .sponsors-dot
-                        |  •
+            li#nav-home.nav-item
+                a(href='#home')
+                    | Home
+                div.nav-circle      
 
-    div#frontPage2017
-        img(src="/img/2018/dash.jpg" class="home-2018-towers")
+            li#nav-about.nav-item
+                a(href='#about')
+                    | About
+                div.nav-circle
 
-        div#aboutDiv
+            li#nav-faq.nav-item
+                a(href='#faq')
+                    | FAQ
+                div.nav-circle
+
+            li#nav-sponsors.nav-item
+                a(href='#sponsors')
+                    | Sponsors
+                div.nav-circle
+
+    div(data-spy="scroll" data-target="#nav-desktop")
+        //- img(src="/img/2018/dash.jpg" class="home-2018-towers")
+        div#home
+
+        div#about
             div.innerContent
                 div.paddedSection
-                    h1.section-heading.left(id="about") About_
+                    h1.section-heading.left About_
                     p BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
                     p
                         | Across three days, Cornell University students will gather to build the coolest
@@ -120,10 +108,10 @@ block append content
         //-                         tr
         //-                             td.col-xs-3 3:30p
         //-                             td.col-xs-9 Buses Depart
-        div#faqDiv
+        div#faq
             div.innerContent
                 div.paddedSection
-                    h1.section-heading.left(id="faq") FAQ
+                    h1.section-heading.left FAQ
                     .container
                     dl
                         dt Who is eligible to participate?
@@ -162,31 +150,31 @@ block append content
                             | Even if you've never been to a hackathon before, please apply!
                         dt Have more questions?
                         dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
-        #scheduleDiv
-            div.innerContent
-                div.paddedSection
-                    h1.section-heading.right(id="interested") Interested?_
-                    p Join our email list to get the first scoop when registration opens!
-                    .interestForm
-                        .field
-                            label(for="firstName") First Name
-                            input(type="text" name="firstName" id="firstName" required)
+        //- #scheduleDiv
+        //-     div.innerContent
+        //-         div.paddedSection
+        //-             h1.section-heading.right(id="interested") Interested?_
+        //-             p Join our email list to get the first scoop when registration opens!
+        //-             .interestForm
+        //-                 .field
+        //-                     label(for="firstName") First Name
+        //-                     input(type="text" name="firstName" id="firstName" required)
 
-                        .field
-                            label(for="lastName") Last Name
-                            input(type="text" name="lastName" id="lastName" required)
+        //-                 .field
+        //-                     label(for="lastName") Last Name
+        //-                     input(type="text" name="lastName" id="lastName" required)
 
-                        .field
-                            label(for="fname") Email Address
-                            input(type="email" name="email" id="email" required)
+        //-                 .field
+        //-                     label(for="fname") Email Address
+        //-                     input(type="email" name="email" id="email" required)
                         
-                    .btnContainer
-                        button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
-                    .msgContainer.error
-        div#sponsorsDiv
+        //-             .btnContainer
+        //-                 button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
+        //-             .msgContainer.error
+        div#sponsors
             div.innerContent
                 div.paddedSection(style="position:absolute")
-                    h1.section-heading.right(id="sponsors") Sponsors_
+                    h1.section-heading.right Sponsors_
                     p Want to sponsor us? 
                     p Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
                     //- TODO: add company logos. Higher tiers = bigger logos
@@ -231,6 +219,7 @@ block append content
 
 block footer
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+    script(src="/js/index.js")
     script.
         var msgContainer = $(".msgContainer");
         var submitForm = $("#submitForm");
@@ -274,4 +263,4 @@ block footer
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
 //-     script(src="/js/jquery.validate.options.js")
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/parallax/2.1.3/parallax.min.js")
-//-     script(src="/js/index.js")
+    
