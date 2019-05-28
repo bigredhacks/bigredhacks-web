@@ -160,14 +160,15 @@ a.register-now {
   }
 }
 
-#frontPage2017 {
-  h2, h3, h4 {
-    font-weight: bold;
-    margin: 20px 0;
-  }
+#home {
+  background-image: url("../img/2018/dash.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
 }
 
-#sponsorsDiv {
+#sponsors {
   #logos {
     & > div {
       display: block;
@@ -251,24 +252,57 @@ a.register-now {
   right:50px;
   top:0;
   width:10%;
-  z-index:10000
+  z-index:10000;
 }
 
-#nav-trust-badge {
+#nav-desktop {
   display:block;
-  max-width:125px;
-  min-width:60px;
   position:fixed;
-  right:50px;
-  top:45%;
-  width:10%;
-  z-index:10000
+  min-width: 200px;
+  right:25px;
+  top:50%;
+  width:15%;
+  z-index:10000;
+  text-align: right;
+  padding: 0 10px 0 0;
 }
 
-.hider {
-  display: inline;
-}
+.nav-item {
+  font-size: 18px;
+  padding: 10px 0 10px 0;
+  white-space: nowrap;
+  a {
+    color: #555555;
+    text-decoration: none;
+    // text-transform: uppercase;
+    font-family: "Open Sans", "Arial", sans-serif;
+    font-weight: bold;
+    background-color: #ffffff;
+    padding: 3px 15px;
+    border-radius: 3px;
+    margin-right: 10px;
+    text-transform: uppercase;
+    &:hover {
+      color: #ff0000;
+      transition: 0.1s;
+      background-color: #f1f2f6;
+    }
+    
+  }
 
-.about-dot, .faq-dot, .interested-dot, .sponsors-dot {
-  display: inline;
+  &.active {
+    color: #ff0000;
+    .nav-circle{
+      background-color: #ff0000;
+    }
+  }
+  .nav-circle {
+    height: 15px;
+    width: 15px;
+    background-color: #f1f2f6;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+  }
+  
 }
