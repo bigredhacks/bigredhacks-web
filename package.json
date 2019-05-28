@@ -8,7 +8,7 @@
     "postinstall": "grunt heroku",
     "test": "grunt test",
     "dev": "nodemon ./bin/www.js"
-   },
+  },
   "engines": {
     "node": "9.11.1",
     "npm": "5.10.0"
@@ -28,7 +28,7 @@
     "express": "^4.16.4",
     "express-flash": "0.0.2",
     "express-validator": "^4.1.0",
-    "grunt": "^1.0.1",
+    "grunt": "^1.0.4",
     "grunt-babel": "^6.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-uglify": "^3.0.1",
