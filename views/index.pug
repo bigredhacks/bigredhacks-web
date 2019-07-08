@@ -40,7 +40,7 @@ block append content
                 h2 Cornell University, Ithaca, NY
 
 
-        img(src="/img/homeframe.svg" class="home-frame" draggable="false")
+        img(src="/img/home/homeframe.svg" class="home-frame" draggable="false")
         div#about    
             div.innerContent
                 div.paddedSection
@@ -51,7 +51,7 @@ block append content
                     .container-fluid
                         .row
                             .col-md-6
-                                img(src="/img/brh_about.jpg").img-responsive
+                                img(src="/img/home/brh_about.jpg").img-responsive
                             .col-md-6
                                 div.text-container
                                     p.text
@@ -142,20 +142,59 @@ block append content
                     p.text.text-center
                         | Big Red Hacks is made possible by a team of Cornell undergraduate
                         | students passionate about hackathons, innovation, and fun!
+                    h2.text-title.text-center Team Leads
+                    br
                     div.container-fluid
-                        .row
-                            .col-md-3 Co-president
-                            .col-md-3 Co-president
-                            .col-md-3 Logistics
-                            .col-md-3 Marketing
-                        .row
-                            .col-md-3 Sponsorship
-                            .col-md-3 Finance
-                            .col-md-3 Design
-                            .col-md-3 Web Development
+                        .row.team-row
+                            .col-md-3.text-center 
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Co-president
+                              p.text First Last
+                            .col-md-3.text-center
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Co-president
+                              p.text First Last
+                            .col-md-3.text-center 
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Logistics
+                              p.text First Last
+                            .col-md-3.text-center
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Marketing
+                              p.text First Last
+                        .row.team-row
+                            .col-md-3.text-center
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Sponsorship
+                              p.text First Last
+                            .col-md-3.text-center 
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Finance
+                              p.text First Last
+                            .col-md-3.text-center
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                              h3.text-title Design
+                              p.text First Last
+                            .col-md-3.text-center
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false") 
+                              h3.text-title Web Dev
+                              p.text First Last
+
+                    p.text.text-center
+                        | Interested in joining Big Red Hacks? Check back in the fall!
                     
-                    h2.section-subheader Member Spotlight
-                    
+                    h2.section-subheader.text-center Member Spotlight
+                    br
+                    .container-fluid
+                      .row
+                        .col-md-6.text-center
+                          img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
+                        .col-md-6
+                          h3.section-subheader First Last
+                          h4.section-subheader Position
+                          p.text
+                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan finibus tortor. Ut luctus ut libero vel scelerisque. Fusce viverra arcu et libero varius, vel porta neque facilisis. Quisque faucibus maximus libero non consectetur. Nullam faucibus eros ut nunc cursus semper. Ut at rhoncus tellus. Vivamus maximus quam id finibus tincidunt. Vestibulum blandit dolor eget tincidunt sodales. Integer diam nisi, interdum sed orci sed, cursus maximus nunc. Cras sollicitudin scelerisque euismod. Pellentesque ultricies euismod rutrum. Curabitur tempus, quam sed aliquam rhoncus, leo ex eleifend turpis, vel semper eros dui quis risus. Quisque et nisl vel ipsum bibendum scelerisque. 
+                    br
         div#faq
             div.innerContent
                 div.paddedSection
@@ -165,42 +204,50 @@ block append content
                         div.rect
                     .container
                     dl
-                        dt Who is eligible to participate?
-                        dd
-                            | We are inviting all undergraduate and graduate students to participate in our hackathon.
-                            | You don't need any past experience.
-                            | You don't even need to be a computer science major!
-                            | Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
-                        dt What will I need to bring?
-                        dd
-                            | Bring your school ID for registration.
-                            | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
-                            | You may also want to bring a sleeping bag, change of clothes, and toothbrush.
-                        dt Do I have to sign up with a team?
-                        dd
-                            | You don't have to sign up with a team, but it's certainly more fun!
-                            | We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event.
-                            | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
-                        dt Are you providing food?
-                        dd
-                            | Don't worry, there will be lots of delicious food and beverages at our event, complementary to all participants.
-                            | We'll have vegetarian options as well.
-                        dt Are hardware hacks allowed?
-                        dd
-                            | We will be providing a dedicated hardware lab with sensors, microcontrollers, and basic components.
-                            | Some of our sponsors are bringing hardware to loan, but we still suggest that you bring your own equipment if you know that you'll absolutely need it.
-                        dt What are the rules?
-                        dd
-                            | We want BigRed//Hacks to be fun and fair for everyone.
-                            | Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
-                            | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
-                        dt Why is there an application?
-                        dd
-                            | We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate.
-                            | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
-                            | Even if you've never been to a hackathon before, please apply!
-                        dt Have more questions?
-                        dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
+                        .faq-box
+                          dt Who is eligible to participate?
+                          dd
+                              | We are inviting all undergraduate and graduate students to participate in our hackathon.
+                              | You don't need any past experience.
+                              | You don't even need to be a computer science major!
+                              | Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
+                        .faq-box
+                          dt What will I need to bring?
+                          dd
+                              | Bring your school ID for registration.
+                              | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
+                              | You may also want to bring a sleeping bag, change of clothes, and toothbrush.
+                        .faq-box
+                          dt Do I have to sign up with a team?
+                          dd
+                              | You don't have to sign up with a team, but it's certainly more fun!
+                              | We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event.
+                              | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
+                        .faq-box
+                          dt Are you providing food?
+                          dd
+                              | Don't worry, there will be lots of delicious food and beverages at our event, complementary to all participants.
+                              | We'll have vegetarian options as well.
+                        .faq-box
+                          dt Are hardware hacks allowed?
+                          dd
+                              | We will be providing a dedicated hardware lab with sensors, microcontrollers, and basic components.
+                              | Some of our sponsors are bringing hardware to loan, but we still suggest that you bring your own equipment if you know that you'll absolutely need it.
+                        .faq-box
+                          dt What are the rules?
+                          dd
+                              | We want BigRed//Hacks to be fun and fair for everyone.
+                              | Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
+                              | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
+                        .faq-box
+                          dt Why is there an application?
+                          dd
+                              | We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate.
+                              | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
+                              | Even if you've never been to a hackathon before, please apply!
+                        .faq-box
+                          dt Have more questions?
+                          dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
         //- #scheduleDiv
         //-     div.innerContent
         //-         div.paddedSection
@@ -229,47 +276,48 @@ block append content
                         div.rect
                         | Sponsors
                         div.rect
-                    p.text Want to sponsor us? 
-                    p.text Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
-                    //- TODO: add company logos. Higher tiers = bigger logos
-                    //- Issue #263
-                    //- div#logos
-                        //- div.logo-3
-                        //-     //- Microsoft (3)
-                        //-     a(href="//www.microsoft.com/")
-                        //-         img#microsoft(src="/img/logos/microsoft.jpg" alt="Microsoft Logo")    
-                        //- div.logo-2
-                        //-     //- JPMC (2)
-                        //-     a(href="//www.jpmorganchase.com/")
-                        //-         img#jpmc(src="/img/logos/jpmc.png" alt="JPMorgan Chase")
-                        //-     //- Oracle (2)
-                        //-     a(href="//www.oracle.com/index.html")
-                        //-         img#oracle(src="/img/logos/oracle.png" alt="Oracle")
-                        //-     //- Entrepreneurship @ Cornell (2)
-                        //-     a(href="//eship.cornell.edu/")
-                        //-         img#eship(src="/img/logos/eship.png" alt="Entrepreneurship @ Cornell")
-                        //-     //- Blackstone (2)
-                        //-     a(href="//www.blackstone.com/")
-                        //-         img#blackstone(src="/img/logos/blackstone.png" alt="Blackstone Logo")
-                        //-     //- Lutron (2)
-                        //-     a(href="//www.lutron.com")
-                        //-         img#lutron(src="/img/logos/lutron.png" alt="Lutron Logo")
-                        //-     //- Wayfair (2)
-                        //-     a(href="//www.wayfair.com/")
-                        //-         img#wayfair(src="/img/logos/wayfair.png" alt="WayFair Logo")
-                        //- div.logo-1
-                        //-     a(href="//eship.cornell.edu")
-                        //-         img#eship(src="/img/2018/eship.jpg" alt="Entrepeneurship at Cornell Logo")
-                        //-     a(href="//www.jetbrains.com")
-                        //-         img#jetbrains(src="/img/2018/jetbrains.png" alt="Jetbrains Logo")
-                        //-     a(href="//www.wolframalpha.com")
-                        //-         img#wolfram(src="/img/2018/wolframalpha.png" alt="WolframAlpha Logo")
-                        //-     a(href="//www.datto.com")
-                        //-         img#wolfram(src="/img/2018/datto.png" alt="Datto Logo")
-                        //-     a(href="//www.ghostery.com")
-                        //-         img#wolfram(src="/img/2018/ghostery.png" alt="Ghostery Logo")
-                        //-     a(href="//openbci.com")
-                        //-         img#openbci(src="/img/2018/openbci.png" alt="OpenBCI Logo")
+                    
+                    div#logos
+                        div.logo-3
+                            //- Microsoft (3)
+                            a(href="//www.microsoft.com/")
+                                img#microsoft(src="/img/logos/microsoft.jpg" alt="Microsoft Logo")    
+                        div.logo-2
+                            //- JPMC (2)
+                            a(href="//www.jpmorganchase.com/")
+                                img#jpmc(src="/img/logos/jpmc.png" alt="JPMorgan Chase")
+                            //- Oracle (2)
+                            a(href="//www.oracle.com/index.html")
+                                img#oracle(src="/img/logos/oracle.png" alt="Oracle")
+                            //- Entrepreneurship @ Cornell (2)
+                            a(href="//eship.cornell.edu/")
+                                img#eship(src="/img/logos/eship.png" alt="Entrepreneurship @ Cornell")
+                            //- Blackstone (2)
+                            a(href="//www.blackstone.com/")
+                                img#blackstone(src="/img/logos/blackstone.png" alt="Blackstone Logo")
+                            //- Lutron (2)
+                            a(href="//www.lutron.com")
+                                img#lutron(src="/img/logos/lutron.png" alt="Lutron Logo")
+                            //- Wayfair (2)
+                            a(href="//www.wayfair.com/")
+                                img#wayfair(src="/img/logos/wayfair.png" alt="WayFair Logo")
+                        div.logo-1
+                            a(href="//eship.cornell.edu")
+                                img#eship(src="/img/2018/eship.jpg" alt="Entrepeneurship at Cornell Logo")
+                            a(href="//www.jetbrains.com")
+                                img#jetbrains(src="/img/2018/jetbrains.png" alt="Jetbrains Logo")
+                            a(href="//www.wolframalpha.com")
+                                img#wolfram(src="/img/2018/wolframalpha.png" alt="WolframAlpha Logo")
+                            a(href="//www.datto.com")
+                                img#wolfram(src="/img/2018/datto.png" alt="Datto Logo")
+                            a(href="//www.ghostery.com")
+                                img#wolfram(src="/img/2018/ghostery.png" alt="Ghostery Logo")
+                            a(href="//openbci.com")
+                                img#openbci(src="/img/2018/openbci.png" alt="OpenBCI Logo")
+
+                    h2.section-subheader.text-center Want to sponsor us? 
+                    p.text.text-center Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
+
 
 block footer
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
