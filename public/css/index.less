@@ -92,7 +92,6 @@ a.register-now {
 }
 
 .section-header {
-  text-align: center;
   text-transform: uppercase;
   font-family: "Roboto Condensed", "Arial", sans-serif;
   display: inline-flex;
@@ -108,7 +107,11 @@ a.register-now {
     }
 }
 .section-subheader {
-  text-align: center;
+  text-transform: uppercase;
+  font-family: "Roboto Condensed", "Arial", sans-serif;
+}
+
+.text-title {
   text-transform: uppercase;
   font-family: "Roboto Condensed", "Arial", sans-serif;
 }
@@ -157,7 +160,11 @@ a.register-now {
 }
 
 .text{
-  font-size: 2rem;
+  font-size: 1.85rem;
+}
+p.text {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #home {
@@ -180,36 +187,77 @@ a.register-now {
 
 .home-frame{
   position: absolute;
-  max-width: 100vw;
+  width: 100vw;
   z-index: -10000;
 }
 
 #about {
   min-height: 100vh;
+  padding-bottom: 30px;
 }
 
 #team {
   min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+.team-photo {
+  width: 70%;
+  height: auto;
+  border-radius: 50%;
+  display: inline-block;
+}
+.team-row {
+  padding-bottom: 15px;
 }
 
 #faq{
   min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+.faq-box {
+	padding: 1.2%;
+	border-width: 10px;
+	border-style: solid;
+  border-color: #FFD0D0;
+  margin-bottom: 10px;
+  dt {
+    font-family: "Roboto Condensed", "Arial", sans-serif;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+  }
+  dd {
+    font-size: 1.85rem;
+  }
 }
 
 #sponsors {
   min-height: 100vh;
+  padding-bottom: 30px;
   #logos {
+    text-align: center;
     & > div {
-      display: block;
+      display: inline-block;
       margin: 0 auto;
     }
-    .logo-1 {
-      width: 70%;
-
-      a img {
-        padding: 0 1.5%;
-        width: 30.333%;
-      }
+    
+    .logo-3 img {
+      max-width: 40%;
+      margin: 0 4% 3% 0;
+      max-height: 200px;
+    }
+    
+    .logo-2 img {
+      max-width: 23%;
+      margin: 2% 7% 3% 5%;
+      max-height: 150px;
+    }
+    .logo-1 img
+    {
+      max-width: 23%;
+      margin: 3% 3% 0 3%;
+      max-height: 50px;
     }
   }
 }
