@@ -93,6 +93,7 @@ a.register-now {
 
 .section-header {
   text-transform: uppercase;
+  text-align: center;
   font-family: "Roboto Condensed", "Arial", sans-serif;
   display: inline-flex;
     width: 100%;
@@ -138,6 +139,7 @@ a.register-now {
   align-items: center;
   justify-content: center;
   margin-right: 10px;
+  font-size: 2.5rem;
   &:visited{
     color: white;
   }
@@ -155,6 +157,12 @@ a.register-now {
     background-color: #00acee;
     &:hover {
       background-color: #2bc4ff;
+    }
+  }
+  &.email {
+    background-color: #b23121;
+    &:hover {
+      background-color: #d44638;
     }
   }
 }
@@ -198,7 +206,7 @@ p.text {
 
 #team {
   min-height: 100vh;
-  padding-bottom: 30px;
+  padding-bottom: 30px;  
 }
 
 .team-photo {
@@ -206,12 +214,16 @@ p.text {
   height: auto;
   border-radius: 50%;
   display: inline-block;
+  @media screen and (max-width: 991px){
+    width: 60%;
+  }
 }
 .team-row {
   padding-bottom: 15px;
 }
 
 #faq{
+  border-top: #34495e solid 50px;
   min-height: 100vh;
   padding-bottom: 30px;
 }
@@ -234,7 +246,8 @@ p.text {
 
 #sponsors {
   min-height: 100vh;
-  padding-bottom: 30px;
+  padding-bottom: 100px;
+  border-top: #34495e solid 50px;
   #logos {
     text-align: center;
     & > div {
@@ -300,6 +313,21 @@ p.text {
 
 }
 
+.footer {
+  padding: 20px;
+  background-color: #34495e;
+  color: #ffffff;
+  text-align: center;
+  img {
+    max-height: 80px;
+    display: inline-block;
+  }
+  .btn-social-group {
+    display: inline-block;
+    margin-top: 15px;
+  }
+}
+
 .msgContainer {
   display: none;
   font-size: 20px;
@@ -330,9 +358,65 @@ p.text {
   top:0;
   width:10%;
   z-index:10000;
+  @media screen and (max-width: 991px) {
+    top: 51px;
+    right: 2%;
+  }
 }
 
+#nav-mobile {
+  @media screen and (min-width: 992px) {
+    display: none;
+  }
+  display: block;
+  .navbar-default {
+    background-color: #e74c3c;
+    margin-bottom: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999999;
+    .nav-logo {
+      max-height: 50px;
+      padding: 3px;
+    }
+    .navbar-toggle:hover{
+      background-color: #c0392b;
+    }
+    .navbar-toggle .icon-bar {
+      background-color: #ffffff;
+    }
+    .navbar-header {
+      text-align: left;
+      border: none;
+    }
+    .navbar-brand {
+      display: block;
+      padding: 0;
+    }
+  }
+  #mobile-nav-links {
+    border: none;
+    ul {
+      a {
+        color: #ffffff;
+        font-size: 2rem;
+      }
+      li {
+        border-top: 0.5px solid #c0392b;
+        border-bottom: 0.5px solid #c0392b;
+      }
+      li:hover {
+        background-color: #c0392b;
+      }
+    }   
+  }
+}
 #nav-desktop {
+  @media screen and (max-width: 991px){
+    display: none;
+  }
   display:block;
   position:fixed;
   min-width: 200px;
