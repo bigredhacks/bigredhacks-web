@@ -36,7 +36,7 @@ module.exports = function (io) {
      * @apiName User
      * @apiGroup User
      */
-    router.get("/", function(req,res,next) {
+    router.get("/", function (req, res, next) {
         res.redirect("user/dashboard");
     });
 
@@ -47,7 +47,7 @@ module.exports = function (io) {
      */
     router.get("/dashboard", function (req, res, next) {
 
-        var params = {Bucket: config.setup.AWS_S3_bucket, Key: "resume/" + req.user.app.resume};
+        var params = { Bucket: config.setup.AWS_S3_bucket, Key: "resume/" + req.user.app.resume };
 
         async.parallel({
             resumeLink: function (done) {
@@ -76,7 +76,7 @@ module.exports = function (io) {
                     return done(null, { amount: req.user.internal.reimbursement_override });
                 }
 
-                Reimbursement.findOne({"college.id": req.user.school.id}, function (err, rem) {
+                Reimbursement.findOne({ "college.id": req.user.school.id }, function (err, rem) {
                     if (rem == null) {
                         var default_rem = {};
                         default_rem.amount = config.admin.default_reimbursement;
@@ -89,7 +89,7 @@ module.exports = function (io) {
             bus: function (done) {
                 _findAssignedOrNearestBus(req, done);
             },
-            deadline: function(done) {
+            deadline: function (done) {
                 var notified = req.user.internal.lastNotifiedAt;
                 const rsvpTime = moment.duration(req.user.internal.daysToRSVP, "days");
                 if (notified) {
@@ -175,8 +175,9 @@ module.exports = function (io) {
             user.logistics.dietary = req.body.dietary;
             user.logistics.tshirt = req.body.tshirt;
             user.logistics.anythingelse = req.body.anythingelse;
-            user.logistics.hardware = req.body.hardware;
+            user.app.questions.hardware = req.body.hardware.split(",");
             user.save(function (err, doc) {
+                console.log("Save?")
                 if (err) {
                     // If it failed, return error
                     console.log(err);
@@ -268,7 +269,7 @@ module.exports = function (io) {
      */
     router.post("/updateresume", function (req, res, next) {
 
-        var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
+        var form = new multiparty.Form({ maxFilesSize: MAX_FILE_SIZE });
 
         form.parse(req, function (err, fields, files) {
             if (err) {
@@ -303,8 +304,8 @@ module.exports = function (io) {
                 var user = req.user;
                 if (user) {
                     user.app.resume = file.filename; // TODO: We may need to validate before saving here
-                    user.save ( function (err) {
-                        if (err)  {
+                    user.save(function (err) {
+                        if (err) {
                             console.error(err);
                             req.flash("error", "Error in saving resume");
                             return res.redirect("/user/dashboard");
@@ -333,7 +334,7 @@ module.exports = function (io) {
     router.post("/busdecision", middle.requireAccepted, function (req, res) {
         var user = req.user;
         if (req.body.decision === "signup") {
-            Bus.findOne({_id: req.body.busid}, function (err, bus) {
+            Bus.findOne({ _id: req.body.busid }, function (err, bus) {
                 if (bus.members.length < bus.capacity && user.internal.busid !== req.body.busid) {
                     user.internal.busid = req.body.busid;
                     bus.members.push({
@@ -378,8 +379,8 @@ module.exports = function (io) {
      * @apiName RSVP
      * @apiGroup User
      */
-    router.post("/rsvp", middle.requireAccepted,function (req, res) {
-        var form = new multiparty.Form({maxFilesSize: MAX_FILE_SIZE});
+    router.post("/rsvp", middle.requireAccepted, function (req, res) {
+        var form = new multiparty.Form({ maxFilesSize: MAX_FILE_SIZE });
 
         form.parse(req, function (err, fields, files) {
             if (err) {
@@ -408,10 +409,10 @@ module.exports = function (io) {
                     // Shared function between control flow
                     let _saveAndSubscribe = function _saveAndSubscribe() {
                         async.parallel([
-                            function(cb) {
+                            function (cb) {
                                 req.user.save(cb);
                             },
-                            function(cb) {
+                            function (cb) {
                                 if (!req.user.internal.cornell_applicant) {
                                     helper.addSubscriber(config.mailchimp.l_external_rsvpd, req.user.email, req.user.name.first, req.user.name.last, cb);
                                 }
@@ -419,7 +420,7 @@ module.exports = function (io) {
                                     cb();
                                 }
                             }
-                        ], function(err, result) {
+                        ], function (err, result) {
                             if (err) {
                                 console.error(err);
                                 req.flash("error", "An internal error has occurred.");
@@ -436,16 +437,16 @@ module.exports = function (io) {
                     if (bus === null && !req.user.internal.cornell_applicant) {
                         //fail if no receipt uploaded
                         if (!receipt) {
-                            if(req.user.email.includes("@cornell.edu") || req.user.school.name.includes("Cornell")){
+                            if (req.user.email.includes("@cornell.edu") || req.user.school.name.includes("Cornell")) {
                                 return _saveAndSubscribe();
                             }
-                            else{
+                            else {
                                 req.flash("error", "Please upload a travel receipt.");
                                 return res.redirect("/user/dashboard");
                             }
                         }
 
-                        helper.uploadFile(receipt, {type: "receipt"}, function (err, file) {
+                        helper.uploadFile(receipt, { type: "receipt" }, function (err, file) {
                             if (err) {
                                 console.log(err);
                                 req.flash("error", "File upload failed. :(");
@@ -502,7 +503,7 @@ module.exports = function (io) {
         });
     });
 
-    router.get("/dashboard/requestmentor",  requestMentor.get);
+    router.get("/dashboard/requestmentor", requestMentor.get);
     router.post("/dashboard/requestmentor", requestMentor.post.bind(io));
 
     /**
@@ -523,7 +524,7 @@ module.exports = function (io) {
      * @apiGroup User
      */
     router.post("/notificationshown", function (req, res) {
-        Event.findOne({_id: req.body.eventId}, function (err, event) {
+        Event.findOne({ _id: req.body.eventId }, function (err, event) {
             event.notificationShown = true;
             event.save(function (err) {
                 if (err) {
@@ -613,7 +614,7 @@ module.exports = function (io) {
         var userbus = null;
         var closestdistance = null;
         if (req.user.internal.busOverride) {
-            Bus.findOne({_id : req.user.internal.busOverride }, function (err,bus) {
+            Bus.findOne({ _id: req.user.internal.busOverride }, function (err, bus) {
                 if (err) {
                     console.error(err);
                 }
@@ -633,7 +634,7 @@ module.exports = function (io) {
                 //todo optimize this (see if it's possible to perform this operation in a single aggregation
                 async.each(buses, function (bus, callback) {
                     async.each(bus.stops, function (stop, inner_callback) {
-                        College.find({$or: [{"_id": stop.collegeid}, {"_id": req.user.school.id}]},
+                        College.find({ $or: [{ "_id": stop.collegeid }, { "_id": req.user.school.id }] },
                             function (err, colleges) {
                                 //The case when the query returns only one college because the college of the bus's stop
                                 //is the same as the user's college
@@ -653,7 +654,7 @@ module.exports = function (io) {
                                             userbus = bus;
                                             //properly round to two decimal points
                                             var roundedDistance = Math.round((distanceBetweenColleges + 0.00001) *
-                                                    100) / 100;
+                                                100) / 100;
                                             userbus.message = `a bus stops near your school at ${stop.collegename} ` +
                                                 ` (roughly ${roundedDistance} miles away):`;
                                             closestdistance = distanceBetweenColleges;

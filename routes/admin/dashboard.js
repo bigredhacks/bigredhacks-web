@@ -1,4 +1,5 @@
 const async = require("async");
+const _ = require("lodash");
 const helper = require("../../util/helpers/admin");
 let Mentor = require("../../models/mentor");
 let Reimbursements = require("../../models/reimbursements.js");
@@ -15,6 +16,8 @@ const USER_FILTER = { role: "user" };
 module.exports = (req, res, next) => {
     async.parallel({
         applicants: helper.aggregate.applicants.byMatch(USER_FILTER),
+        cornell: helper.aggregate.applicants.cornell(),
+        gender: helper.aggregate.applicants.gender(),
         schools: (done) => {
             User.aggregate([
                 {
@@ -121,6 +124,34 @@ module.exports = (req, res, next) => {
                         l: 0,
                         xl: 0
                     });
+
+                    done(null, result);
+                }
+            });
+        },
+        logisticsHardware: (done) => {
+            User.aggregate([
+                { $unwind: "$app.questions.hardware" },
+                { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
+                { $group: { _id: "$app.questions.hardware", total: { $sum: 1 } } }
+            ], (err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+
+                    result = helper.objectAndDefault(res, {
+                        "smart home": 0,
+                        "vr": 0,
+                        "robotics": 0,
+                        "wearables": 0
+                    })
+
+                    result.total = _.reduce(result, function (a, b) {
+                        return a + b;
+                    });
+                    result.smartHome = result["smart home"];
+                    delete result["smart home"];
+
                     done(null, result);
                 }
             });
@@ -199,11 +230,14 @@ module.exports = (req, res, next) => {
         return res.render("admin/index", {
             title: "Admin Dashboard",
             applicants: result.applicants,
+            cornell: result.cornell,
+            gender: result.gender,
             schools: result.schools,
             rsvps: result.rsvps,
             logistics: {
                 dietary: result.logisticsDietary,
-                tshirt: result.logisticsTshirt
+                tshirt: result.logisticsTshirt,
+                hardware: result.logisticsHardware
             },
             decisionAnnounces: result.decisionAnnounces,
             reimburse,
