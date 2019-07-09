@@ -20,7 +20,7 @@ Some notes:
  * @param callback
  */
 collegeLoader.loadOnce = function loadOnce(callback) {
-    College.findOne({}, function(err, res) {
+    College.findOne({}, function (err, res) {
         if (err) {
             console.log(err);
             return callback(err);
@@ -34,7 +34,7 @@ collegeLoader.loadOnce = function loadOnce(callback) {
                 return callback();
             }
         }
-        });
+    });
 };
 
 /**
@@ -49,7 +49,7 @@ collegeLoader.load = function load(callback) {
 var hardwareLoader = {};
 
 hardwareLoader.loadOnce = function loadOnce(callback) {
-    Hardware.findOne({}, function(err, res) {
+    Hardware.findOne({}, function (err, res) {
         if (err) {
             console.log(err);
             return callback(err);
@@ -114,7 +114,7 @@ function _loadFromFile(callback) {
 function _addColleges(filepath, done) {
     var fileStream = fs.createReadStream(filepath);
     //new converter instance
-    var csvConverter = new Converter({constructResult: true});
+    var csvConverter = new Converter({ constructResult: true });
 
     //read from file
     fileStream.pipe(csvConverter);
@@ -144,22 +144,22 @@ function _addColleges(filepath, done) {
 function _addHardware(filepath, done) {
     var fileStream = fs.createReadStream(filepath);
     //new converter instance
-    var csvConverter = new Converter({constructResult: true});
+    var csvConverter = new Converter({ constructResult: true });
 
     //read from file
     fileStream.pipe(csvConverter);
 
     csvConverter.on("record_parsed", function (res, rawRow, rowIndex) {
         Hardware.add(
-                    res.name,
-                    0,
-                    0,
-                    function (err) {
-                        if (err) {
-                            console.log(err);
-                            done(err + " " + filepath + " " + rowIndex);
-                        }
-                     });
+            res.name,
+            0,
+            0,
+            function (err) {
+                if (err) {
+                    console.log(err);
+                    done(err + " " + filepath + " " + rowIndex);
+                }
+            });
     });
 
     //end_parsed will be emitted once parsing finished
