@@ -14,58 +14,139 @@ block append admin_content
     //- Nav tabs
     ul.nav.nav-tabs(role='tablist')
         li.active(role='presentation')
-            a(href='#summary', aria-controls='summary', role='tab', data-toggle='tab') Summary
+            a(href='#summary', aria-controls='summary', role='tab', data-toggle='tab') 📊 Summary + Stats
         li(role='presentation')
-            a(href='#top-schools', aria-controls='top-schools', role='tab', data-toggle='tab') Top Schools
+            a(href='#top-schools', aria-controls='top-schools', role='tab', data-toggle='tab') 🎓 Top Schools
         li(role='presentation')
-            a(href='#announcements', aria-controls='announcements', role='tab', data-toggle='tab') Announcements
+            a(href='#announcements', aria-controls='announcements', role='tab', data-toggle='tab') 📣 Announcements
         li(role='presentation')
-            a(href='#decisions', aria-controls='decisions', role='tab', data-toggle='tab') Decisions
+            a(href='#decisions', aria-controls='decisions', role='tab', data-toggle='tab') ✅ Decisions
         li(role='presentation')
-            a(href='#rsvp-override', aria-controls='rsvp-override', role='tab', data-toggle='tab') RSVP Override
-        li(role='presentation')
-            a(href='#mentors', aria-controls='mentors', role='tab', data-toggle='tab') Mentors
+            a(href='#rsvp-override', aria-controls='rsvp-override', role='tab', data-toggle='tab') 📅 RSVP Override
+        //- li(role='presentation')
+        //-     a(href='#mentors', aria-controls='mentors', role='tab', data-toggle='tab') Mentors
 
     //- Tab panes
     .tab-content
         #summary.tab-pane.active(role='tabpanel')
-            h2 Applicants
-            h5 Welcome back! There are currently
-            ul
-                li #{applicants.pending} pending review
-                li #{applicants.accepted} accepted
-                li #{applicants.waitlisted} waitlisted
-                li #{applicants.rejected} rejected
-            //- Our max capacity is 410 people. With an estimated 10% attrition rate, we should accept 450 people.
-            h2 Attendees
-            span Out of #{applicants.accepted} we accepted:
-                ul
-                    li #{rsvps.true} accepted their invitations
-                    li #{rsvps.false} declined their invitations
-                    li #{rsvps.null} have not responded
+            .container-fluid
+                .col-sm-6.col-lg-4
+                    h2 Applicants
+                    span #{applicants.total} 
+                        span.bold total 
+                        | applicants
+                    ul
+                        li 📝 #{applicants.pending} 
+                            span.bold pending 
+                            | review
+                        li ✅ #{applicants.accepted} 
+                            span.bold accepted
+                        li ⏰ #{applicants.waitlisted} 
+                            span.bold waitlisted
+                        li 🚫 #{applicants.rejected} 
+                            span.bold rejected 
 
-            h2 Reimbursements
-            span Our maximum reimbursement costs are:
-            ul
-                li RSVP'd: $#{reimburse.currentMax}
-                li All Accepted (including RSVP'd): $#{reimburse.potentialMax}
+                    h4 Cornell applicants
+                    span #{cornell.total} 
+                        span.bold total 
+                        | Cornell applicants
+                    ul
+                        li 📝 #{cornell.pending} 
+                            span.bold pending 
+                            | review
+                        li ✅ #{cornell.accepted} 
+                            span.bold accepted
+                        li ⏰ #{cornell.waitlisted} 
+                            span.bold waitlisted
+                        li 🚫 #{cornell.rejected} 
+                            span.bold rejected 
 
-            h2 Logistics
-            span Dietary restrictions and shirt sizes collected for the #{rsvps.true} RSVP'd students we have:
-            
-            h3 Dietary Perferences
-            ul
-                li No restrictions: #{logistics.dietary.none}
-                li Vegetarian: #{logistics.dietary.vegetarian}
-                li Gluten-Free: #{logistics.dietary["gluten-free"]}
-            
-            h3 T-Shirt Sizes
-            ul
-                li XS: #{logistics.tshirt.xs}
-                li S: #{logistics.tshirt.s}
-                li M: #{logistics.tshirt.m}
-                li L: #{logistics.tshirt.l}
-                li XL: #{logistics.tshirt.xl}
+                .col-sm-6.col-lg-4
+                    h2 Attendees
+                    span Out of #{applicants.accepted} 
+                        span.bold accepted 
+                        | applicants:
+                        ul
+                            li ✅ #{rsvps.true} 
+                                span.bold confirmed 
+                                | their invitations
+                            li 🚫 #{rsvps.false} 
+                                span.bold declined 
+                                | their invitations
+                            li ⏰ #{rsvps.null} have 
+                                span.bold not responded
+
+                    h4 Attendee Gender Breakdown
+                    ul
+                        li ♂️ #{gender.male}% 
+                            span.bold male
+                        li ♀️ #{gender.female}% 
+                            span.bold female
+                        li 🏳️‍🌈 #{gender.other}% 
+                            span.bold other
+
+                    h2 Reimbursements
+                    span Our maximum reimbursement costs are:
+                    ul
+                        li 
+                            span.bold RSVP'd: 
+                            | $#{reimburse.currentMax}
+                        li
+                            span.bold All Accepted (including RSVP'd): 
+                            | $#{reimburse.potentialMax}
+                
+                .col-sm-6.col-lg-4
+                    h2 Logistics
+                    span Dietary restrictions and shirt sizes collected for the #{rsvps.true} RSVP'd students we have:
+                    
+                    h4 Dietary Preferences 🍽
+                    ul
+                        li 🍖 
+                            span.bold No restrictions
+                            | : #{logistics.dietary.none}
+                        li 🥦 
+                            span.bold Vegetarian
+                            | : #{logistics.dietary.vegetarian}
+                        li 🍞 
+                            span.bold Gluten-Free
+                            | : #{logistics.dietary["gluten-free"]}
+                    
+                    h4 T-Shirt Sizes 👕
+                    ul
+                        li 
+                            span.bold XS
+                            | : #{logistics.tshirt.xs}
+                        li 
+                            span.bold S
+                            | : #{logistics.tshirt.s}
+                        li
+                            span.bold M
+                            | : #{logistics.tshirt.m}
+                        li 
+                            span.bold L
+                            | : #{logistics.tshirt.l}
+                        li 
+                            span.bold XL
+                            | : #{logistics.tshirt.xl}
+
+                    h4 Hardware Requests 🔨
+                    span #{logistics.hardware.total} 
+                        span.bold total
+                        |  requests
+                    ul
+                        li
+                            span.bold VR
+                            | : #{logistics.hardware.vr} requests
+                        li
+                            span.bold Smart Home
+                            | : #{logistics.hardware.smartHome} requests
+                        li
+                            span.bold Robotics
+                            | : #{logistics.hardware.robotics} requests
+                        li
+                            span.bold Wearables
+                            | : #{logistics.hardware.wearables} requests
+                        
 
         #top-schools.tab-pane(role='tabpanel')
             table.table.table-striped
@@ -112,10 +193,6 @@ block append admin_content
                     label
                         input#slack(type='checkbox', name='slack', value='true', checked=false)
                         | &nbsp;Slack
-                    br
-                    label
-                        input#sms(type='checkbox', name='sms', value='true', checked=false)
-                        | &nbsp;SMS
                 .form-group
                     button#announcementMake.btn.btn-success(onclick="return confirm('Are you sure?')") Announce
         #decisions.tab-pane(role='tabpanel')

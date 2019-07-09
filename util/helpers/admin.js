@@ -1,6 +1,6 @@
 // Node Modules and utilities
-const _            = require("underscore");
-const async        = require("async");
+const _ = require("underscore");
+const async = require("async");
 const queryBuilder = require('../search_query_builder.js');
 
 // Mongo models
@@ -8,16 +8,16 @@ let Team = require('../../models/team.js');
 let User = require('../../models/user.js');
 
 // Variables
-let helper        = {};
-const USER_FILTER = {role: "user"}; //filter out admin users in aggregate queries.
+let helper = {};
+const USER_FILTER = { role: "user" }; //filter out admin users in aggregate queries.
 
 // Returns an object of stats related to the user
 helper._getStats = function (user, callback) {
     async.parallel({
-        overall:  helper.aggregate.applicants.byMatch(USER_FILTER),
-        school:   helper.aggregate.applicants.byMatch(_.extend(_.clone(USER_FILTER), {"school.id": user.school.id})),
-        bus_expl: helper.aggregate.applicants.byMatch(_.extend(_.clone(USER_FILTER), {"internal.busid": user.internal.busid})), //explicit bus assignment
-        gender:   helper.aggregate.applicants.gender()
+        overall: helper.aggregate.applicants.byMatch(USER_FILTER),
+        school: helper.aggregate.applicants.byMatch(_.extend(_.clone(USER_FILTER), { "school.id": user.school.id })),
+        bus_expl: helper.aggregate.applicants.byMatch(_.extend(_.clone(USER_FILTER), { "internal.busid": user.internal.busid })), //explicit bus assignment
+        gender: helper.aggregate.applicants.gender()
     }, callback);
 };
 
@@ -64,10 +64,10 @@ helper._fillTeamMembers = function (applicants, callback) {
  * @param teamid id of team to get members of
  * @param callback
  */
-helper._getUsersFromTeamId = function(teamid, callback) {
+helper._getUsersFromTeamId = function (teamid, callback) {
     var teamMembers = [];
     if (teamid === null) return callback(null, teamMembers);
-    Team.findOne({_id: teamid}, function (err, team) {
+    Team.findOne({ _id: teamid }, function (err, team) {
         team.populate('members.id', function (err, team) {
             if (err) console.error(err);
             team.members.forEach(function (val, ind) {
@@ -125,8 +125,8 @@ helper.aggregate = {
         byMatch: function (match) {
             return function (done) {
                 User.aggregate([
-                    {$match: match},
-                    {$group: {_id: "$internal.status", total: {$sum: 1}}}
+                    { $match: match },
+                    { $group: { _id: "$internal.status", total: { $sum: 1 } } }
                 ], function (err, result) {
                     if (err) {
                         done(err);
@@ -149,24 +149,48 @@ helper.aggregate = {
                 });
             };
         },
+        cornell: function () {
+            return function (done) {
+                User.aggregate([
+                    { $match: { "school.id": "190415" } },
+                    { $group: { _id: "$internal.status", total: { $sum: 1 } } }
+                ], function (err, result) {
+                    if (err) {
+                        done(err);
+                    } else {
+                        result = helper.objectAndDefault(result, {
+                            null: 0,
+                            accepted: 0,
+                            rejected: 0,
+                            waitlisted: 0,
+                            pending: 0
+                        });
+                        result.total = _.reduce(result, function (a, b) {
+                            return a + b;
+                        });
+                        done(null, result);
+                    }
+                });
+            }
+        },
         school: function (current_user) {
             return function (done) {
                 User.aggregate([
-                    {$match: _.extend(USER_FILTER, {"school.id": current_user.school.id})},
-                    {$group: {_id: "$internal.status", total: {$sum: 1}}}
+                    { $match: _.extend(USER_FILTER, { "school.id": current_user.school.id }) },
+                    { $group: { _id: "$internal.status", total: { $sum: 1 } } }
                 ], function (err, result) {
                     if (err) {
                         done(err);
                     }
                     else {
-                        // What's supposed to go here?
+                        done(null, result);
                     }
                 });
             };
         },
         gender: function () {
             return function (done) {
-                User.count({$and: [{"internal.status": "Accepted"}, USER_FILTER]}, function (err, totalRes) {
+                User.count({ $and: [{ "internal.status": "Accepted" }, USER_FILTER] }, function (err, totalRes) {
                     if (err) {
                         done(err);
                     } else {
@@ -174,13 +198,13 @@ helper.aggregate = {
                             [
                                 {
                                     $match: {
-                                        $and: [{"internal.status": "Accepted"}, USER_FILTER]
+                                        $and: [{ "internal.status": "Accepted" }, USER_FILTER]
                                     }
                                 },
                                 {
                                     $group: {
-                                        _id:           "$gender",
-                                        totalAccepted: {$sum: 1}
+                                        _id: "$gender",
+                                        totalAccepted: { $sum: 1 }
                                     }
                                 }
                             ], function (err, acceptedRes) {
@@ -190,12 +214,14 @@ helper.aggregate = {
 
                                     acceptedRes = helper.objectAndDefault(acceptedRes, {
                                         male: 0,
-                                        female: 0
+                                        female: 0,
+                                        other: 0
                                     });
 
                                     const res = {
                                         male: 100.0 * acceptedRes.male / totalRes,
                                         female: 100.0 * acceptedRes.female / totalRes,
+                                        other: 100.0 * acceptedRes.other / totalRes
                                     };
 
                                     done(null, res);

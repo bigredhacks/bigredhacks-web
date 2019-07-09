@@ -9,6 +9,7 @@ mixin contentHeading(name)
 
 block header
     link(href="/css/dashboard.css", rel="stylesheet")
+    link(href="/css/registration.css", rel="stylesheet")
 
 block vars
     - var actionUrl = "/user/dashboard/edit"; //- url the form should submit to
@@ -96,6 +97,9 @@ block append logistics
         select#tshirt.form-control(name='tshirt', required='')
             option(value='') select
             +generateOptions(en.tshirt, {selected: user.logistics.tshirt})
+    .form-group
+        label(for='hardware') is there any kind of hardware that you want to hack on?
+        input#hardware.form-control.typeahead(type='text', name='hardware', placeholder='VR, Smart Home, etc...'  value=user.app.questions.hardware.join(",") || '', data-role="tagsinput")
     .form-group
         label is there anything else you'd like to tell us?
         textarea#anythingelse.form-control(name='anythingelse', rows='2') #{user.logistics.anythingelse}
