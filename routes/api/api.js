@@ -189,10 +189,10 @@ router.post("/RequestMentor", function (req, res) {
             }
             let newMentorRequest = new MentorRequest({
                 description: req.body.request,
-                skills:      req.body.skills,
-                user:        req.user._id.toString(),
-                status:      "Unclaimed",
-                location:    req.body.tableNumber
+                skills: req.body.skills,
+                user: req.user._id.toString(),
+                status: "Unclaimed",
+                location: req.body.tableNumber
             });
             newMentorRequest.save((err) => {
                 if (err) {
@@ -215,7 +215,7 @@ router.post("/RequestMentor", function (req, res) {
                 },
                 sendNewMentorRequestEmail: (cb) => {
                     // Email mentors who wanted to be emailed
-                    Mentor.find({emailNewReq: true}).exec((err, mentors) => {
+                    Mentor.find({ emailNewReq: true }).exec((err, mentors) => {
                         if (err) {
                             return cb(err);
                         }

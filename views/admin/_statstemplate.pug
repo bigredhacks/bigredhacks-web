@@ -5,29 +5,29 @@
 .col-md-3
     h4 Overall:
     ul
-        li Accepted #{stats.overall.accepted}
-        li Waitlisted #{stats.overall.waitlisted}
-        li Rejected #{stats.overall.rejected}
-        li Pending #{stats.overall.pending}
-        li Male Accepted #{roundPercentage(stats.gender.male)}%
-        li Female Accepted #{roundPercentage(stats.gender.female)}%
+        li ✅ Accepted #{stats.overall.accepted}
+        li ⏰ Waitlisted #{stats.overall.waitlisted}
+        li 🚫 Rejected #{stats.overall.rejected}
+        li 📝 Pending #{stats.overall.pending}
+        li ♂️ Male Accepted #{roundPercentage(stats.gender.male)}%
+        li ♀️ Female Accepted #{roundPercentage(stats.gender.female)}%
 .col-md-3
     h4 From School:
     ul
-        li Accepted #{stats.school.accepted}
-        li Waitlisted #{stats.school.waitlisted}
-        li Rejected #{stats.school.rejected}
-        li Pending #{stats.school.pending}
+        li ✅ Accepted #{stats.school.accepted}
+        li ⏰ Waitlisted #{stats.school.waitlisted}
+        li 🚫 Rejected #{stats.school.rejected}
+        li 📝 Pending #{stats.school.pending}
 .col-md-3
     h4 Assigned to bus:
     if user.internal.busid == null
         span *User has not signed up for a bus
     else
         ul
-            li Accepted #{stats.bus_expl.accepted}
-            li Waitlisted #{stats.bus_expl.waitlisted}
-            li Rejected #{stats.bus_expl.rejected}
-            li Pending #{stats.bus_expl.pending}
+            li ✅ Accepted #{stats.bus_expl.accepted}
+            li ⏰ Waitlisted #{stats.bus_expl.waitlisted}
+            li 🚫 Rejected #{stats.bus_expl.rejected}
+            li 📝 Pending #{stats.bus_expl.pending}
 //-
     .col-md-3
         h4 Proximity to bus:
