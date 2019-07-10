@@ -1,8 +1,8 @@
 "use strict";
 
-const util  = require("../../../util/util.js");
+const util = require("../../../util/util.js");
 
-let User    = require("../../../models/user.js");
+let User = require("../../../models/user.js");
 
 module.exports.checkInUser = (req, res) => {
     User.findOne({ pubid: req.params.pubid }, (err, user) => {
@@ -29,8 +29,9 @@ module.exports.getUsersPlanningToAttend = (req, res) => {
     var project = "name pubid email school internal.checkedin";
     User.find({
         $or: [
-            { "internal.status": { $ne: "Rejected" } },
-            { "internal.going": { $ne: false } },
+            { "internal.status": { $eq: "Accepted" } },
+            { "internal.status": { $eq: "Waitlisted" } },
+            { "internal.going": { $eq: true } },
             { "internal.cornell_applicant": true }
         ]
     }).select(project).exec((err, users) => {

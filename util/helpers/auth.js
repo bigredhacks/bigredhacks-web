@@ -1,4 +1,4 @@
-const College   = require("../../models/college");
+const College = require("../../models/college");
 const validator = require("../../library/validations");
 
 let helper = {};
@@ -74,7 +74,7 @@ helper._findCollegeFromFilteredParam = (name, callback) => {
         return callback(null, null);
     }
 
-    College.findOne({name: collegeName}, callback);
+    College.findOne({ name: collegeName }, callback);
 };
 
 /**
@@ -86,7 +86,8 @@ helper._findCollegeFromFilteredParam = (name, callback) => {
  */
 helper._isCornellian = (college) => {
     return typeof college !== "undefined"
-        ? college.name === "Cornell University" || college.display === "Cornell University"
+        ? college.name === "Cornell University" || college.display === "Cornell University - NY"
+        || college._id === "190415" || college._id === "x000001"
         : false;
 };
 
