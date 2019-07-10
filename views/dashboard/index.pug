@@ -18,9 +18,9 @@ block dashboard_content
     br
 
     //- Show QR code if the user has checked in, for quick access.
-    if user.internal.checkedin
-        +sectionHeading("QR Code")
-        #qr-holder(data-pubid=user.pubid)
+    //- if user.internal.checkedin
+    //-     +sectionHeading("QR Code")
+    //-     #qr-holder(data-pubid=user.pubid)
 
     //- +sectionHeading("Status")
     //- TODO: Replace usage of "middlehelp" with a non-middleware function
@@ -228,6 +228,11 @@ block dashboard_content
                             p You must RSVP before you can sign up for the bus.
 
         //Dashboard content for both General and Cornell
+
+        if user.internal.checkedin
+            h3 Check in status
+            p You're checked in!
+
         +sectionHeading("RSVP")
         if (user.internal.going == null)
             form#rsvpForm(method='post', action='/user/rsvp', enctype='multipart/form-data')

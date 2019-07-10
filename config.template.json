@@ -44,18 +44,7 @@
   "slack": {
     "webhook_url": ""
   },
-  "firebase": {
-    "app_id":"",
-    "key":"",
-    "secret":""
-  },
-  "google": {
-    "gcal_client_secret": "",
-    "gcal_client_id": ""
-  },
   "yearly": {
-    "facebook": "",
-    "sponsorshipProspectus": ""
+    "facebook": ""
   }
 }
-

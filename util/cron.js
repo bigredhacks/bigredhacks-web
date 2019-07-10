@@ -10,6 +10,7 @@ var User = require('../models/user.js');
 
 module.exports.go = function go() {
     // Regular decision deadline processing
+    console.log("Cron job initialized.")
     const TIME_ZONE = 'America/New_York';
     const EVERY_EIGHT_HOURS = '00 00 */8 * * *';
 
@@ -21,12 +22,13 @@ module.exports.go = function go() {
     };
 
     new CronJob(EVERY_EIGHT_HOURS, function checkDecisionDeadlines() {
+        console.log("Checking decision deadlines...")
         User.find({
             $and: [
-                {"internal.status": "Accepted"},
-                {"internal.notificationStatus": "Accepted"},
-                {"internal.going": null},
-                {$where: _nearDeadline}
+                { "internal.status": "Accepted" },
+                { "internal.notificationStatus": "Accepted" },
+                { "internal.going": null },
+                { $where: _nearDeadline }
             ]
         }, function (err, users) {
             if (err) {

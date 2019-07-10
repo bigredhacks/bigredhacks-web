@@ -9,6 +9,9 @@ block append vars
 block append admin_content
     div(data-ng-controller='checkin.ctrl')
         +contentHeading("participant checkin")
+        p Accepted students and waitlisted Cornell students who have not yet checked 
+            | in will appear below. Students can only be checked in if the dayof
+            | attribute is set to true in the site's config variables.
         #searchparameters.col-md-12
             form
                 .form-group
