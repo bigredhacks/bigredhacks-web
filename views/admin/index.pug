@@ -184,15 +184,18 @@ block append admin_content
                     br
                     label
                         input#web(type='checkbox', name='web', value='true', checked=true)
-                        | &nbsp;Live Page Web Notification
+                        | &nbsp;Live Page Web Notification 
+                        span.fa.fa-globe
                     br
                     label
                         input#twitter(type='checkbox', name='twitter', value='true', checked=false)
-                        | &nbsp;Twitter
+                        | &nbsp;Twitter 
+                        span.fa.fa-twitter
                     br
                     label
                         input#slack(type='checkbox', name='slack', value='true', checked=false)
-                        | &nbsp;Slack
+                        | &nbsp;Slack 
+                        span.fa.fa-slack
                 .form-group
                     button#announcementMake.btn.btn-success(onclick="return confirm('Are you sure?')") Announce
         #decisions.tab-pane(role='tabpanel')

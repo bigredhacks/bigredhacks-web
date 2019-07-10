@@ -20,6 +20,6 @@ table.table.table-striped#searchresults
             | {{applicant.school.name}}
         td
             form.decision-radio.np-enabled
-                label.radio-inline(v-for="value in ['Accepted', 'Waitlisted', 'Rejected']")
+                label.radio-inline(v-for="value in ['Accepted', 'Waitlisted', 'Rejected', 'Pending']")
                     input(type="radio" name="status" v-bind:value="value" v-bind:checked="value === applicant.internal.status")
                     | {{value.charAt(0)}}

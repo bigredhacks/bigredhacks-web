@@ -27,9 +27,9 @@ function getContactInfo(req, res, next) {
             console.log("Starting user dump.");
             // let stream = fs.createWriteStream("participant_info.csv");
             let result = [];
-            let headers = ["First Name",
+            let headers = ["Email",
+                "First Name",
                 "Last Name",
-                "Email",
                 "Phone Number",
                 "Major",
                 "Gender",
@@ -71,7 +71,7 @@ function getContactInfoExtra(req, res, next) {
         }
         else {
             console.log("Starting user dump.");
-            
+
             let result = [];
             result.push(listToCsv([
                 "First Name",
@@ -86,13 +86,13 @@ function getContactInfoExtra(req, res, next) {
                 "School"]));
             result = result.concat(users.map(user => listToCsv([
                 user.name.first,
-                user.name.last, 
-                user.email, 
-                user.phone, 
-                user.school.major, 
+                user.name.last,
+                user.email,
+                user.phone,
+                user.school.major,
                 user.gender,
-                user.school.year, 
-                (user.app.github ? "https://github.com/" + user.app.github : ""), 
+                user.school.year,
+                (user.app.github ? "https://github.com/" + user.app.github : ""),
                 user.app.linkedin,
                 user.school.name])));
 

@@ -1,14 +1,18 @@
 extends _layout-admin
 
 block admin_content
-    +contentHeading("Sponsor Materials")
+    +contentHeading("Student Contact Info")
+    
     div.media#contactInfo
         div.media-left
             a(href="./sponsors/contactInfo")
                 img.media-object(src="../img/extra/userInfo.png" alt="..." style="width: 80px; height: 80px")
         div.media-body
-            h4.media-heading Contact Info (.csv)
-            p For Tier 2 or special cases! Includes name, email, phone number, major, gender, year!
+            h4.media-heading 
+                a(href="./sponsors/contactInfo") Accepted Student Contact Info (.csv)
+            p For 
+                span.bold Tier 2 or special cases! 
+                | Includes name, email, phone number, major, gender, year!
 
     hr
 
@@ -17,5 +21,14 @@ block admin_content
             a(href="./sponsors/deluxeContactInfo")
                 img.media-object(src="../img/extra/deluxeUserInfo.png" alt="..." style="width: 80px; height: 80px")
         div.media-body
-            h4.media-heading Deluxe Contact Info (.csv)
-            p For Tier 3 and above sponsors! Includes name, email, phone number, major, gender, year, GitHub, LinkedIn.
+            h4.media-heading 
+                a(href="./sponsors/deluxeContactInfo") Accepted Student Contact Info + Extras (.csv)
+            p For 
+                span.bold Tier 3 and above sponsors! 
+                | Includes name, email, phone number, major, gender, year, 
+                span.bold GitHub, LinkedIn.
+
+    hr
+
+    p These .csv files 
+        span.bold can also be used to generate invites in Eventbrite.
