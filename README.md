@@ -31,9 +31,11 @@ In config.template.json, `admin.email` denotes the email address of the first ad
 ### APIs
 The application uses the following APIs:
 
-* AWS S3
-* Mailchimp
-* SendGrid
+* AWS S3 - applicant resume storage
+* Mailchimp - subscription lists
+* SendGrid - sending general emails to applicants
+* Twitter API - announcements tweeted on the @BigRedHacks handle
+* Slack Webhook API - announcements posted in a Slack channel
 
 ### Deployment
 The app is configured to work with Heroku and Openshift hosting services. MongoDB is configured to work with MongoLab (`MONGOLAB_URI`) and Compose (`COMPOSE_URI`).
