@@ -149,7 +149,7 @@ helper.aggregate = {
                 });
             };
         },
-        cornell: function () {
+        applicantsCornell: function () {
             return function (done) {
                 User.aggregate([
                     { $match: { "school.id": "190415" } },
