@@ -72,7 +72,7 @@ block admin_content
             fieldset
                 button#submit.btn.btn-primary(type='submit') search
     #searchresults.col-md-12
-        p#result-count.text-right #{applicants.length} results found.
+        p#result-count.text-right #{applicantsCount} results found.
 
         h6 Emails&nbsp;
             a#email-show-button (show)
@@ -84,7 +84,7 @@ block admin_content
         else if render == 'table'
             include _tableview
 
-        if applicants.length == 0
+        if applicantsCount.length == 0
             p No results found.
 
 

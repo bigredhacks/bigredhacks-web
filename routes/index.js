@@ -37,7 +37,8 @@ router.get("/subscribe", function (req, res) {
         res.send({ status: false, message: "Please enter a valid email" });
     }
     else {
-        helper.addSubscriber(config.mailchimp.l_interested, email, "", "", function (err, result) {
+        helper.addSubscriber(config.mailchimp.l_interested, email, "", "", "", function (err, result) {
+            console.log(config.mailchimp.l_interested)
             if (err) {
                 if (err.name === "List_AlreadySubscribed") {
                     res.send({ status: false, message: "You're already subscribed!" });
@@ -80,7 +81,7 @@ router.post("/emailListAdd", function (req, res) {
         const lName = req.body.lName;
 
         if (checkVar(email) && checkVar(fName) && checkVar(lName)) {
-            helper.addSubscriber("9ac9a1da0e", email, fName, lName, function (err) {
+            helper.addSubscriber(config.mailchimp.l_interested, email, fName, lName, "", function (err) {
                 if (err) {
                     console.log(err, "error2");
                     if (err.name === "List_AlreadySubscribed") {
@@ -120,40 +121,40 @@ router.post("/emailListAdd", function (req, res) {
  * @apiGroup Index
  */
 
- router.get("/live", function (req, res, next) {
-     var toggle = toggleVar.toggle();
-     if(toggle == "true"){
-         async.parallel({
-	     announcements: (callback) => {
-	         const PROJECTION = "message time";
-		 Announcement.find({}, PROJECTION, callback);
-	     },
-	     calendar: (callback) => {
-	         util.grabCalendar(callback);
-	     },
-	     inventory: (cb) => {
-	         Inventory.find({}, null, { sort: { name: "asc" } }, cb);
-	     }
-	 }, 
-         (err, result) => {
-             if (err) {
-	         console.error(err);
-	         return res.status(500);
-	     }
-	     else {
-	         return res.render("live", {
-		     title: "Live",
-		     announcements: result.announcements,
-		     calendar: result.calendar
-		 });
-	     }
-	 });
-     }
-     else{
-         res.render("liveDisabled", {
-	     title: "Live Page Disabled"
-	 });
-     }
- });
+router.get("/live", function (req, res, next) {
+    var toggle = toggleVar.toggle();
+    if (toggle == "true") {
+        async.parallel({
+            announcements: (callback) => {
+                const PROJECTION = "message time";
+                Announcement.find({}, PROJECTION, callback);
+            },
+            calendar: (callback) => {
+                util.grabCalendar(callback);
+            },
+            inventory: (cb) => {
+                Inventory.find({}, null, { sort: { name: "asc" } }, cb);
+            }
+        },
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500);
+                }
+                else {
+                    return res.render("live", {
+                        title: "Live",
+                        announcements: result.announcements,
+                        calendar: result.calendar
+                    });
+                }
+            });
+    }
+    else {
+        res.render("liveDisabled", {
+            title: "Live Page Disabled"
+        });
+    }
+});
 
 module.exports = router;

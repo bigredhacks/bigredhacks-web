@@ -211,24 +211,22 @@ function registerPost(req, res) {
                     // All Cornell students are on the waitlist when registering. The pending status
                     // means that nobody has been accepted yet, since once we run a lottery,
                     // all non-winners are moved onto waitlist.
-                    helper.addSubscriber(config.mailchimp.l_applicants, req.body.email, req.body.firstname, req.body.lastname, (err, result) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                        return cb2(null);
-                    });
-                },
-                (cb2) => {
                     if (newUser.internal.cornell_applicant === true) {
-                        helper.addSubscriber(config.mailchimp.l_cornell_applicants, newUser.email, newUser.name.first, newUser.name.last, (err, result) => {
+                        helper.addSubscriber(
+                            config.mailchimp.l_applicants, newUser.email, newUser.name.first, newUser.name.last,
+                            config.mailchimp.l_cornell_applicants, (err, result) => {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                return cb2(null);
+                            });
+                    } else {
+                        helper.addSubscriber(config.mailchimp.l_applicants, req.body.email, req.body.firstname, req.body.lastname, "", (err, result) => {
                             if (err) {
                                 console.log(err);
                             }
                             return cb2(null);
                         });
-                    }
-                    else {
-                        return cb2(null);
                     }
                 }
             ], (err) => {
