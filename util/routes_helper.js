@@ -169,9 +169,10 @@ helper.deleteResume = function deleteResume(location, callback) {
  * @param email email to send to
  * @param fname first name of recipeint
  * @param lname last name of recipient
+ * @param tags tags to be added to the user
  * @param callback
  */
-helper.addSubscriber = function (listid, email, fname, lname, callback) {
+helper.addSubscriber = function (listid, email, fname, lname, type, callback) {
     var mcReq = {
         id: listid,
         email: { email: email },
@@ -179,7 +180,8 @@ helper.addSubscriber = function (listid, email, fname, lname, callback) {
         merge_vars: {
             EMAIL: email,
             FNAME: fname,
-            LNAME: lname
+            LNAME: lname,
+            TYPE: type
         }
     };
 
@@ -209,6 +211,30 @@ helper.removeSubscriber = function (listid, email, callback) {
 
     // submit subscription request to mail chimp
     mc.lists.unsubscribe(mcReq, function (data) {
+        callback(null, data);
+    }, function (error) {
+        callback(error);
+    });
+};
+
+/** 
+ * update a subscriber type in a mailing list
+ * @param listid mailchimp listid
+ * @param email email to send to
+ * @param callback
+*/
+helper.updateSubscriberType = function (listid, email, type, callback) {
+    var mcReq = {
+        id: listid,
+        email: { email },
+        double_optin: false,
+        merge_vars: {
+            EMAIL: email,
+            TYPE: type
+        }
+    };
+
+    mc.lists.updateMember(mcReq, function (data) {
         callback(null, data);
     }, function (error) {
         callback(error);

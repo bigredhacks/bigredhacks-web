@@ -414,7 +414,7 @@ module.exports = function (io) {
                             },
                             function (cb) {
                                 if (!req.user.internal.cornell_applicant) {
-                                    helper.addSubscriber(config.mailchimp.l_external_rsvpd, req.user.email, req.user.name.first, req.user.name.last, cb);
+                                    helper.updateSubscriberType(config.mailchimp.l_applicants, req.user.email, config.mailchimp.l_external_rsvpd, cb);
                                 }
                                 else {
                                     cb();

@@ -277,27 +277,64 @@ p.text {
 
 .interestForm {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: wrap;
+  width: 100%;
+  padding: 10px 15px 20px 15px;
+  background-color: #34495e;
+  color: white;
+  border-radius: 5px;
 
   label {
     padding: 5px 5px 0 0;
   }
   input, button {
-    border: none;
     border-width: 0;
     align-self: center;
     height: 40px;
   }
-
+  .text-title{
+    margin-bottom: 0;
+    padding-top: 0;
+  }
   input {
-    border: 1px solid black;
-    color: rgb(114, 88, 88);
-    margin-right: 5%;
-    padding: 0 0 0 5px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: 2px solid transparent;
+    color:#34495e;
+    padding: 5px 10px 5px 10px;
+    &:focus {
+      border: 2px solid #3498db;
+      transition: 0.3s ease-in-out;
+    }
+    &:hover {
+      border: 2px solid #bdc3c7;
+      transition: 0.3s ease-in-out;
+    }
   }
 
-  .field {
-    flex-grow: 1;
+  .field-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    @media screen and (max-width: 767px){
+      flex-wrap: wrap;
+    }
+    .field {
+      margin-right: 5px;
+      margin-bottom: 5px;
+      display: inline-block;
+      flex-grow: 1;
+      label {
+        width: 100%;
+        float: left;
+        display: block;
+      }
+      input {
+        float: left;
+        display: block;
+        width: 100%;
+      }
+    }
   }
 }
 .btnContainer {
@@ -308,7 +345,8 @@ p.text {
   button.interestFormBtn {
     font-size: 15px;
     margin-top: 10px;
-    width: 30%;
+    width: 100%;
+    border-radius: 5px;
   }
 
 }
@@ -335,6 +373,7 @@ p.text {
   padding: 1%;
   text-align: center;
   width: 100%;
+  border-radius: 5px;
   
   &.active {
     display: block;
