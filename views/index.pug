@@ -91,6 +91,26 @@ block append content
                                         span.fa.fa-facebook-square
                                     a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
                                         span.fa.fa-twitter
+                                br      
+                                .interestForm
+                                    h2.text-title Interested?
+                                    p.text Join our email list to get the first scoop when registration opens!
+                                    .field-group
+                                        .field
+                                            label(for="firstName") First Name *
+                                            input(type="text" name="firstName" id="firstName" required)
+
+                                        .field
+                                            label(for="lastName") Last Name *
+                                            input(type="text" name="lastName" id="lastName" required)
+                                    .field-group
+                                        .field
+                                            label(for="fname") Email Address *
+                                            input(type="email" name="email" id="email" required)    
+                                    .btnContainer
+                                        button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
+                                    .msgContainer.error
+
         //- div#scheduleDiv
         //-     h1.section-heading.right Schedule_
         //-     div#schedule.paddedSection
@@ -206,7 +226,7 @@ block append content
                               p.text First Last
 
                     p.text.text-center
-                        | Interested in joining Big Red Hacks? Check back in the fall!
+                        | Interested in joining the Big Red Hacks team? Check back in the fall!
                     
                     h2.section-subheader.text-center Member Spotlight
                     br
@@ -251,7 +271,7 @@ block append content
                         .faq-box
                           dt Are you providing food?
                           dd
-                              | Don't worry, there will be lots of delicious food and beverages at our event, complementary to all participants.
+                              | Don't worry, there will be lots of delicious food and beverages at our event, complimentary to all participants.
                               | We'll have vegetarian options as well.
                         .faq-box
                           dt Are hardware hacks allowed?
@@ -273,27 +293,7 @@ block append content
                         .faq-box
                           dt Have more questions?
                           dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
-        //- #scheduleDiv
-        //-     div.innerContent
-        //-         div.paddedSection
-        //-             h1.section-heading.right(id="interested") Interested?_
-        //-             p Join our email list to get the first scoop when registration opens!
-        //-             .interestForm
-        //-                 .field
-        //-                     label(for="firstName") First Name
-        //-                     input(type="text" name="firstName" id="firstName" required)
 
-        //-                 .field
-        //-                     label(for="lastName") Last Name
-        //-                     input(type="text" name="lastName" id="lastName" required)
-
-        //-                 .field
-        //-                     label(for="fname") Email Address
-        //-                     input(type="email" name="email" id="email" required)
-                        
-        //-             .btnContainer
-        //-                 button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
-        //-             .msgContainer.error
         div#sponsors
             div.innerContent
                 div.paddedSection

@@ -52,10 +52,10 @@ function search(req, res, next) {
         for (let app of applicants) {
             emailCsv += `${app.email}, `;
         }
-
         return res.render("admin/search/search", {
             title: "Admin Dashboard - Search",
             applicants: JSON.stringify(applicants),
+            applicantsCount: applicants.length,
             params: req.query,
             render: req.query.render, //table, box
             emailCsv: emailCsv,
