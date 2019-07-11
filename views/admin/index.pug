@@ -47,18 +47,18 @@ block append admin_content
                             span.bold rejected 
 
                     h4 Cornell applicants
-                    span #{cornell.total} 
+                    span #{applicantsCornell.total} 
                         span.bold total 
                         | Cornell applicants
                     ul
-                        li 📝 #{cornell.pending} 
+                        li 📝 #{applicantsCornell.pending} 
                             span.bold pending 
                             | review
-                        li ✅ #{cornell.accepted} 
+                        li ✅ #{applicantsCornell.accepted} 
                             span.bold accepted
-                        li ⏰ #{cornell.waitlisted} 
+                        li ⏰ #{applicantsCornell.waitlisted} 
                             span.bold waitlisted
-                        li 🚫 #{cornell.rejected} 
+                        li 🚫 #{applicantsCornell.rejected} 
                             span.bold rejected 
 
                 .col-sm-6.col-lg-4
@@ -76,14 +76,49 @@ block append admin_content
                             li ⏰ #{rsvps.null} have 
                                 span.bold not responded
 
+                    h4 Cornell Attendees 🌽 
+                    span Out of #{applicantsCornell.accepted} 
+                        span.bold accepted Cornell 
+                        | applicants: 
+                        ul
+                            li ✅ #{rsvpsCornell.true} 
+                                span.bold confirmed 
+                                | their invitations
+                            li 🚫 #{rsvpsCornell.false} 
+                                span.bold declined 
+                                | their invitations
+                            li ⏰ #{rsvpsCornell.null} have 
+                                span.bold not responded
+
                     h4 Attendee Gender Breakdown
                     ul
                         li ♂️ #{gender.male}% 
                             span.bold male
                         li ♀️ #{gender.female}% 
                             span.bold female
-                        li 🏳️‍🌈 #{gender.other}% 
+                        li #{gender.other}% 
                             span.bold other
+
+                    h4 Attendee Age Breakdown
+                    ul
+                        li #{(ages.highSchool * 100 / rsvps.true).toFixed(1)}% 
+                            span.bold high school 
+                            | (#{ages.highSchool})
+                        li #{(ages.freshman * 100 / rsvps.true).toFixed(1)}% 
+                            span.bold freshmen 
+                            | (#{ages.freshman})
+                        li #{(ages.sophomore * 100 / rsvps.true).toFixed(1)}% 
+                            span.bold sophomores 
+                            | (#{ages.sophomore})
+                        li #{(ages.junior * 100 / rsvps.true).toFixed(1)}% 
+                            span.bold juniors 
+                            | (#{ages.junior})
+                        li #{(ages.senior * 100 / rsvps.true).toFixed(1)}% 
+                            span.bold seniors 
+                            | (#{ages.senior})
+                        li #{(ages.graduateStudent * 100/ rsvps.true).toFixed(1)}% 
+                            span.bold graduate students 
+                            | (#{ages.graduateStudent})
 
                     h2 Reimbursements
                     span Our maximum reimbursement costs are:

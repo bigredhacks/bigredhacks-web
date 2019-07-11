@@ -16,7 +16,7 @@ const USER_FILTER = { role: "user" };
 module.exports = (req, res, next) => {
     async.parallel({
         applicants: helper.aggregate.applicants.byMatch(USER_FILTER),
-        cornell: helper.aggregate.applicants.cornell(),
+        applicantsCornell: helper.aggregate.applicants.applicantsCornell(),
         gender: helper.aggregate.applicants.gender(),
         schools: (done) => {
             User.aggregate([
@@ -73,10 +73,50 @@ module.exports = (req, res, next) => {
                 return done(err, res);
             });
         },
+        ages: (done) => {
+            User.aggregate(
+                [
+                    { $match: { $and: [USER_FILTER, { "internal.status": "Accepted" }] } },
+                    { $group: { _id: "$school.year", count: { $sum: 1 } } }
+                ],
+                (err, res) => {
+                    console.log(res);
+                    res = helper.objectAndDefault(res, {
+                        freshman: 0,
+                        sophomore: 0,
+                        junior: 0,
+                        senior: 0,
+                        "high school": 0,
+                        "graduate student": 0
+                    });
+                    res.highSchool = res["high school"];
+                    res.graduateStudent = res["graduate student"];
+                    delete res["high school"];
+                    delete res["graduate student"];
+                    return done(err, res);
+                }
+            );
+        },
         rsvps: (done) => {
             User.aggregate(
                 [
                     { $match: { $and: [USER_FILTER, { "internal.status": "Accepted" }] } },
+                    { $group: { _id: "$internal.going", count: { $sum: 1 } } }
+                ],
+                (err, res) => {
+                    res = helper.objectAndDefault(res, {
+                        true: 0,
+                        false: 0,
+                        null: 0
+                    });
+                    return done(err, res);
+                }
+            );
+        },
+        rsvpsCornell: (done) => {
+            User.aggregate(
+                [
+                    { $match: { $and: [USER_FILTER, { "internal.status": "Accepted" }, { "school.id": "190415" }] } },
                     { $group: { _id: "$internal.going", count: { $sum: 1 } } }
                 ],
                 (err, res) => {
@@ -230,10 +270,12 @@ module.exports = (req, res, next) => {
         return res.render("admin/index", {
             title: "Admin Dashboard",
             applicants: result.applicants,
-            cornell: result.cornell,
+            applicantsCornell: result.applicantsCornell,
             gender: result.gender,
+            ages: result.ages,
             schools: result.schools,
             rsvps: result.rsvps,
+            rsvpsCornell: result.rsvpsCornell,
             logistics: {
                 dietary: result.logisticsDietary,
                 tshirt: result.logisticsTshirt,
