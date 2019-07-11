@@ -56,15 +56,15 @@ $('document').ready(function () {
 
     var setLiveToggle = function (state) { // set api value
         $.ajax({
-	    type: "POST",
-	    url: "/api/admin/liveToggle/set",
-	    data: {
-	        state: state
-	    },
-	    error: function (e) {
-	        console.log("Unable to set live page");
-	    }
-	})
+            type: "POST",
+            url: "/api/admin/liveToggle/set",
+            data: {
+                state: state
+            },
+            error: function (e) {
+                console.log("Unable to set live page");
+            }
+        })
     };
 
     liveCheckbox.on('switchChange.bootstrapSwitch', function (event, state) {
@@ -73,16 +73,16 @@ $('document').ready(function () {
 
     var getLiveToggle = function () { // get api value
         $.ajax({
-	    type: "GET",
-	    url: "/api/admin/liveToggle",
-	    success: function (data) {
-	        if (data == "true") {
-		    liveCheckbox.bootstrapSwitch("state", true);
-		}
-	    },
-	    error: function (e) {
-	        console.log("Unable to determine Live Page mode.");
-	    }
+            type: "GET",
+            url: "/api/admin/liveToggle",
+            success: function (data) {
+                if (data == "true") {
+                    liveCheckbox.bootstrapSwitch("state", true);
+                }
+            },
+            error: function (e) {
+                console.log("Unable to determine Live Page mode.");
+            }
         })
     };
 

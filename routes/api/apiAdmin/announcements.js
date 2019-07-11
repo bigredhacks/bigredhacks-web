@@ -85,21 +85,7 @@ module.exports.makeRollingAnnouncement = (req, res) => {
                             (cb) => {
                                 if (recip.internal.cornell_applicant && recip.internal.status === "Accepted") {
                                     // We can get errors for non-termination reasons, so callback will only log error
-                                    helper.removeSubscriber(WAITLIST_ID, recip.email, function (err) {
-                                        if (err) {
-                                            console.error(err);
-                                        }
-                                        return cb(null);
-                                    });
-                                }
-                                else {
-                                    return cb(null);
-                                }
-                            },
-                            (cb) => {
-                                if (recip.internal.cornell_applicant && recip.internal.status === "Accepted") {
-                                    // We can get errors for non-termination reasons, so callback will only log error
-                                    helper.addSubscriber(ACCEPTED_ID, recip.email, recip.name.first, recip.name.last, function (err) {
+                                    helper.updateSubscriberType(config.mailchimp.l_applicants, recip.email, "Cornell Accepted", function (err) {
                                         if (err) {
                                             console.error(err);
                                         }
