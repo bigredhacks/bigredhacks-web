@@ -15,8 +15,11 @@ block append admin_content
         #searchparameters.col-md-12
             form
                 .form-group
-                    label(for='college') Filter by Name
+                    label(for='search') Filter by Name
                     input#search.form-control(type='text', name='search', ng-model='inputSearch', placeholder='Name', value='')
+                .form-group
+                    label(for='filterCheckedin') Show checked in users? &nbsp;
+                    input#filterCheckedIn(type='checkbox', ng-checked='noFilter', ng-change='toggleFilter', ng-model='noFilter')
         #searchresults.col-md-12
             p#result-count.text-right  {{filtered.length}} results found.
             table.table.table-striped
@@ -36,7 +39,7 @@ block append admin_content
                         .form-inline
                             .checkbox.np-enabled
                                 label
-                                    input.checkbox(type='checkbox', value='true', ng-change='checkinUser(user.pubid)', ng-model='checkin')
+                                    input.checkbox(type='checkbox', value='true', ng-change='checkinUser(user.pubid)', ng-model='checkin', ng-checked='user.internal.checkedin')
 
 block append footer
     script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js')
