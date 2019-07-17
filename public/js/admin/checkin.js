@@ -8,10 +8,14 @@ app.controller('checkin.ctrl', ['$scope', '$http', function ($scope, $http) {
         let name = (user.name.first + " " + user.name.last).toLowerCase();
         return (input == "" || name.indexOf(input) != -1);
     };
-
+    $scope.noFilter = true;
     $scope.filterCheckedIn = function (user) {
+        if ($scope.noFilter) return true;
         return !user.internal.checkedin;
     };
+    $scope.toggleFilter = function () {
+        $scope.noFilter = !$scope.noFilter;
+    }
 
     $scope.loadUsers = function () {
         $http.get('/api/admin/users/checkin')
