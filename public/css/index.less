@@ -13,6 +13,9 @@
 @text-yellow: #FEB617;
 @text-white: #ffffff;
 
+@bg-red: #fe1736;
+
+
 html {
   scroll-behavior: smooth;
 }
@@ -36,7 +39,7 @@ img {
 body {
   //width: 100%;
   //height: 100%;
-  font-family: @2017-font;
+  font-family: "Nunito";
   font-weight: @weight-normal;
   background-color: @2017-background;
   padding: 0;
@@ -222,7 +225,7 @@ p.text {
       border: 5px solid @text-black;
       box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
     }
-    
+
     &:hover {
       text-decoration: none;
       div {
@@ -236,6 +239,16 @@ p.text {
 #about {
   min-height: 100vh;
   padding-bottom: 30px;
+}
+
+#schedule {
+  min-height: 100vh;
+  padding-bottom: 30px;
+  background-image: linear-gradient(180deg, #443F4A 0%, #3A637E 100%);
+  .section-header {
+    color: white;
+    justify-content: center;
+  }
 }
 
 #team {
@@ -257,7 +270,6 @@ p.text {
 }
 
 #faq{
-  border-top: #34495e solid 50px;
   min-height: 100vh;
   padding-bottom: 30px;
 }
@@ -281,7 +293,6 @@ p.text {
 #sponsors {
   min-height: 100vh;
   padding-bottom: 100px;
-  border-top: #34495e solid 50px;
   #logos {
     text-align: center;
     & > div {
@@ -495,7 +506,7 @@ p.text {
   position:fixed;
   min-width: 200px;
   right:25px;
-  top:50%;
+  top:30%;
   width:15%;
   z-index:10000;
   text-align: right;
@@ -505,44 +516,103 @@ p.text {
     font-size: 18px;
     padding: 10px 0 10px 0;
     white-space: nowrap;
-    a {
-      color: #9a9a9a;
-      text-decoration: none;
-      font-family: "Roboto Condensed", "Arial", sans-serif;
-      font-weight: bold;
-      background-color: #ffffff;
-      padding: 2px 15px;
-      border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    .nav-dialog {
+      display: inline-block;
       margin-right: 10px;
-      text-transform: uppercase;
-      &:hover {
-        color: #ff0000;
-        transition: 0.1s;
-        background-color: #f1f2f6;
+      font-weight: bold;
+      text-transform: lowercase;
+      .triangle-border {
+        position:relative;
+        padding:10px;
+        border:4px solid @text-black;
+        background:#fff;
+        margin-right:30px;
+        a {
+          color:#333;
+          text-decoration: none;
+        }
+        &:before {
+          content:"";
+          position:absolute;
+          bottom:-8px; /* value = - border-top-width - border-bottom-width */
+          left:40px; /* controls horizontal position */
+          border-width:20px 20px 0;
+          border-style:solid;
+          border-color:@text-black transparent;
+          /* reduce the damage in FF3.0 */
+          display:block;
+          width:0;
+        }
+        &:after {
+          content:"";
+          position:absolute;
+          bottom:-13px; /* value = - border-top-width - border-bottom-width */
+          left:47px; /* value = (:before left) + (:before border-left) - (:after border-left) */
+          border-width:13px 13px 0;
+          border-style:solid;
+          border-color:#fff transparent;
+          /* reduce the damage in FF3.0 */
+          display:block;
+          width:0;
+        }
       }
-      
+      .triangle-border.right {
+        &:before {
+          top:7px; /* controls vertical position */
+          bottom:auto;
+          left:auto;
+          right:-30px; /* value = - border-left-width - border-right-width */
+          border-width:15px 0 15px 30px;
+          border-color:transparent @text-black;
+        }
+        &:after {
+          top:12px; /* value = (:before top) + (:before border-top) - (:after border-top) */
+          bottom:auto;
+          left:auto;
+          right:-21px; /* value = - border-left-width - border-right-width */
+          border-width:9px 0 9px 21px;
+          border-color:transparent #fff;
+        }
+      }
+      &:hover {
+        .triangle-border.right {
+          background: @bg-red;
+          a {
+            color: @text-black;
+          }
+          &:before {
+            border-width:15px 0 15px 30px;
+            border-style:solid;
+            border-color: transparent @text-black;
+          }
+          &:after {
+            border-width:9px 0 9px 21px;
+            border-style: solid;
+            border-color: transparent @bg-red;
+          }
+        }
+      }
     }
   
-    &.active {
-      color: #ff0000;
-      a {
-        color: #555555;
-      }
-      .nav-circle{
-        background-color: #ff0000;
-        height: 21px;
-        width: 21px;
-      }
-    }
     .nav-circle {
-      height: 16px;
-      width: 16px;
-      background-color: #ff0000;
-      border-radius: 50%;
-      border: 2px solid #ffffff;
+      height: 25px;
+      width: 25px;
+      background-image: url("../img/2019/star.png");
+      background-size: cover;
       display: inline-block;
-      position: absolute;
+      cursor: pointer; 
     }
-    
+    &.active {
+      .nav-dialog {
+        a {
+          color: @bg-red;
+        }
+      }
+      .nav-circle {
+        display: hidden;
+      }
+    }
   }
 }

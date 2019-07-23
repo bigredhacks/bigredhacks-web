@@ -22,7 +22,7 @@ block append content
                 a(href='#') Home
               li
                 a(href='#about') About
-              li
+              //- li
                 a(href='#team') Team
               li
                 a(href='#faq') FAQ
@@ -34,32 +34,54 @@ block append content
     
     div(id="nav-desktop")
         div#nav-home.nav-item.active
-            a(href='#home')
-                | Home
-            div.nav-circle      
+            div.nav-dialog#home-dialog
+                .triangle-border.right
+                    a(href='#home')
+                        | Home
+            a(href='#home')    
+                div.nav-circle#home-star  
 
         div#nav-about.nav-item
+            div.nav-dialog#about-dialog
+                .triangle-border.right
+                    a(href='#about')
+                        | About
             a(href='#about')
-                | About
-            div.nav-circle
+                div.nav-circle#about-star
 
-        div#nav-team.nav-item
-            a(href='#team')
-                | Team
-            div.nav-circle
+        div#nav-schedule.nav-item
+            div.nav-dialog#schedule-dialog
+                .triangle-border.right
+                    a(href='#schedule')
+                        | Schedule
+            a(href='#schedule')
+                div.nav-circle#schedule-star
+                
+        //- div#nav-team.nav-item
+            div.nav-dialog#team-dialog
+                .triangle-border.right
+                    a(href='#team')
+                        | Team
+            a(href="#team")
+                div.nav-circle#team-star
 
         div#nav-faq.nav-item
+            div.nav-dialog#faq-dialog
+                .triangle-border.right
+                    a(href='#faq')
+                        | FAQ
             a(href='#faq')
-                | FAQ
-            div.nav-circle
+                div.nav-circle#faq-star                
 
         div#nav-sponsors.nav-item
+            div.nav-dialog#sponsors-dialog
+                .triangle-border.right
+                    a(href='#sponsors')
+                        | Sponsors
             a(href='#sponsors')
-                | Sponsors
-            div.nav-circle
+                div.nav-circle#sponsors-star                
 
     div
-        //- img(src="/img/2018/dash.jpg" class="home-2018-towers")
         div#home
             div.home-content
                 h2 Cornell University's 
@@ -114,73 +136,13 @@ block append content
                                         button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
                                     .msgContainer.error
 
-        //- div#scheduleDiv
-        //-     h1.section-heading.right Schedule_
-        //-     div#schedule.paddedSection
-        //-         div.col-md-4.col-xs-12
-        //-             h4
-        //-                 b Friday (09/15)
-        //-                 .table-responsive
-        //-                     table.table
-        //-                         tr
-        //-                             td.col-xs-3 4:30p
-        //-                             td.col-xs-9 Participant Registration
-        //-                         tr
-        //-                             td.col-xs-3 6:30p
-        //-                             td.col-xs-9 Opening Ceremony
-        //-                         tr
-        //-                             td.col-xs-3 8:00p
-        //-                             td.col-xs-9 Hacking officially begins
-        //-                         tr
-        //-                             td.col-xs-3 9:00p
-        //-                             td.col-xs-9 Dinner
-        //-                         tr
-        //-                             td.col-xs-3 9:30p
-        //-                             td.col-xs-9 Extended API Demos
-        //-         div.col-md-4.col-xs-12
-        //-             h4
-        //-                 b Saturday (09/16)
-        //-                 .table-responsive
-        //-                     table.table
-        //-                         tr
-        //-                             td.col-xs-3 12:00a
-        //-                             td.col-xs-9 Midnight Snack!
-        //-                         tr
-        //-                             td.col-xs-3 8:00a
-        //-                             td.col-xs-9 Breakfast
-        //-                         tr
-        //-                             td.col-xs-3 12:00p
-        //-                             td.col-xs-9 Lunch
-        //-                         tr
-        //-                             td.col-xs-3 5:30p
-        //-                             td.col-xs-9 Shirt Giveaway
-        //-                         tr
-        //-                             td.col-xs-3 7:00p
-        //-                             td.col-xs-9 Dinner
-        //-         div.col-md-4.col-xs-12
-        //-             h4
-        //-                 b Sunday (09/17)
-        //-                 .table-responsive
-        //-                     table.table
-        //-                         tr
-        //-                             td.col-xs-3 1:00a
-        //-                             td.col-xs-9 Post-Midnight Snack!
-        //-                         tr
-        //-                             td.col-xs-3 7:00a
-        //-                             td.col-xs-9 Breakfast
-        //-                         tr
-        //-                             td.col-xs-3 8:00a
-        //-                             td.col-xs-9 Hacking officially ends
-        //-                         tr
-        //-                             td.col-xs-3 9:00a
-        //-                             td.col-xs-9 Project Expo
-        //-                         tr
-        //-                             td.col-xs-3 12:00p
-        //-                             td.col-xs-9 Closing Ceremony
-        //-                         tr
-        //-                             td.col-xs-3 3:30p
-        //-                             td.col-xs-9 Buses Depart
-        div#team
+        div#schedule
+            div.paddedSection
+                h1.section-header
+                    .rect
+                    | Event Schedule
+                    .rect
+        //- div#team
             div.innerContent
                 div.paddedSection
                     h1.section-header
