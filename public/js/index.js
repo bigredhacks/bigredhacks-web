@@ -10,6 +10,7 @@
 $(document).ready(function () {
     $(window).scroll(function () {
         var scrollPos = $(document).scrollTop();
+        var lastActive = "";
         $('.nav-item').each(function () {
             var currElmt = $(this);
             var currLink = $(this).find("a");
