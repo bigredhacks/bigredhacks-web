@@ -3,6 +3,7 @@ extends _global/_layout
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
+    //- When the BRH event is over, replace the contents of index.pug with this entire file.
     //- MLH Badge
     div(id="nav-mobile")
       nav.navbar.navbar-default
@@ -62,13 +63,10 @@ block append content
         //- img(src="/img/2018/dash.jpg" class="home-2018-towers")
         div#home
             div.home-content
-                h2 Cornell University's 
-                h3 Oldest Hackathon
-                h1 September 20-22
-                
-                a(href="#interested").interest-button
-                    div Subscribe for updates
+                h2 Cornell University, Ithaca, NY
 
+
+        img(src="/img/home/homeframe.svg" class="home-frame" draggable="false")
         div#about    
             div.innerContent
                 div.paddedSection
@@ -96,7 +94,7 @@ block append content
                                         span.fa.fa-twitter
                                 br      
                                 .interestForm
-                                    h2.text-title#interested Interested?
+                                    h2.text-title Interested?
                                     p.text Join our email list to get the first scoop when registration opens!
                                     .field-group
                                         .field
