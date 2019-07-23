@@ -2,16 +2,22 @@
 
 @import "_global";
 @import "_fontawesome-custom";
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Bangers&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Overpass+Mono');
+
+// When the event ends, replace the contents of index.less with this file's contents.
 
 @main-header-size: 68pt;
 @body-line-height: 1.6em;
 @body-size: 16px;
 
-@text-black: #000000;
-@text-yellow: #FEB617;
-@text-white: #ffffff;
+@nav-purple: lighten(fade(@purple, 70%), 20%);
+@nav-blue: rgba(178, 223, 244, 0.7);
+@nav-orange: fade(@orange, 70%);
+
+@landing-box-margin: 150px;
+@content-padding-left: 0%;
+@content-width: 50%;
 
 html {
   scroll-behavior: smooth;
@@ -84,33 +90,33 @@ a.register-now {
 }
 
 #about-header{
-  
+  margin-top: 10vw;
 }
 
 .section-header {
   text-transform: uppercase;
-  font-family: "Bangers", "Arial", sans-serif;
-  font-size: 5rem;
   text-align: center;
+  font-family: "Roboto Condensed", "Arial", sans-serif;
   display: inline-flex;
     width: 100%;
     align-items: center;
+    justify-content: center;
     .rect {
       height: 6px;
       width: 50px;
-      background-color: @text-yellow;
+      background-color: #feb617;
       display: inline-block;
       margin: 0 17px;
     }
 }
 .section-subheader {
   text-transform: uppercase;
-  font-family: "Bangers", "Arial", sans-serif;
+  font-family: "Roboto Condensed", "Arial", sans-serif;
 }
 
 .text-title {
   text-transform: uppercase;
-  font-family: "Bangers", "Arial", sans-serif;
+  font-family: "Roboto Condensed", "Arial", sans-serif;
 }
 
 .text-container {
@@ -172,65 +178,27 @@ p.text {
 }
 
 #home {
-  background-image: url("../img/2019/dash.png");
+  background-image: url("../img/2018/dash.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: flex-end;
   justify-content: center;
 }
 
 .home-content {
-  margin: 5vw;
+  margin-bottom: 30px;
   color: #ffffff;
-  font-family: "Nunito", "Arial", sans-serif;
-  text-transform: uppercase;
-  text-align: center;
-  h2 {
-    color: @text-black;
-    font-weight: 700;
-    font-size: 3rem;
-    margin-bottom: 5px;
-  }
-  h3 {
-    color: @text-black;
-    font-size: 2.5rem;
-    margin-top: 5px;
-  }
-  h1 {
-    color: @text-yellow;
-    font-family: "Bangers";
-    // text-shadow: 2px 2px @text-black;
-    text-shadow:
-    3px 3px 0 @text-black;
-  }
-  a.interest-button {
-    
-    color: @text-white;
-    text-transform: lowercase;
-    font-weight: bold;
-    font-size: 2rem;
-    
-    div {
-      background-color: @text-black;
-      padding: 5px;
-      width: auto;
-      height: 50px;
-      border: 5px solid @text-black;
-      box-shadow: 4px 4px 6px rgba(0,0,0,0.5);
-    }
-    
-    &:hover {
-      text-decoration: none;
-      div {
-        background-color: @text-white;
-        color: @text-black;
-      }
-    }
-  }
+  font-family: "Roboto Condensed", "Arial", sans-serif;
+}
+
+.home-frame{
+  position: absolute;
+  width: 100%;
+  z-index: -10000;
 }
 
 #about {
