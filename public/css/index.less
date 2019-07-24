@@ -181,7 +181,7 @@ p.text {
 }
 
 #home {
-  background-image: url("../img/2019/dash.png");
+  background-image: url("../img/2019/home_bg.svg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -194,6 +194,43 @@ p.text {
   svg.triangle {
     position: absolute;
     bottom: 0;
+  }
+  .logo {
+    width: 50%;
+    height: 50vh;
+    @media screen and (max-width: 767px) {
+      margin-top: 30px;
+      height: 25vh;
+    }
+    background-image: url("../img/2019/logo.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    @keyframes pulse {
+      0% {
+        transform: scale(1)
+      }
+      45% {
+        transform: scale(1.5) rotate(15deg);
+      }
+      55% { 
+        transform: scale(1.5) rotate(15deg);
+      }
+      100% {
+        transform: scale(1)
+      }
+    
+    }
+    animation: pulse 5s infinite;
+    animation-timing-function: ease-in-out;
+  }
+  .home-container {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap-reverse;
   }
 }
 
@@ -337,9 +374,6 @@ p.text {
 #sponsors {
   min-height: 100vh;
   padding-bottom: 100px;
-  .section-header {
-    flex-direction: row-reverse;
-  }
   #logos {
     text-align: center;
     & > div {
@@ -455,6 +489,11 @@ p.text {
   .btn-social-group {
     display: inline-block;
     margin-top: 15px;
+  }
+  p  {
+    font-family: "Open Sans", "Arial", sans-serif;
+    margin-top: 15px;
+    font-weight: bold;
   }
 }
 
