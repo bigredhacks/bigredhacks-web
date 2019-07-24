@@ -25,6 +25,8 @@ block append content
               //- li
                 a(href='#team') Team
               li
+                a(href='#schedule') Schedule
+              li
                 a(href='#faq') FAQ
               li
                 a(href='#sponsors') Sponsors
@@ -90,6 +92,8 @@ block append content
                 
                 a(href="#interested").interest-button
                     div Subscribe for updates
+            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
+                polygon(fill='white', points='0,0 0,100 100,100')
 
         div#about    
             div.innerContent
@@ -135,13 +139,28 @@ block append content
                                     .btnContainer
                                         button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
                                     .msgContainer.error
-
+        
         div#schedule
+            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.top
+                polygon(fill='white', points='0,0 0,100 100,0')
             div.paddedSection
-                h1.section-header
+                h1.section-header.center
                     .rect
                     | Event Schedule
                     .rect
+                //- .container-fluid
+                    .col-sm-4
+                        h2 September 20th
+                    .col-sm-4
+                        h2 September 21st
+                    .col-sm-4
+                        h2 September 22nd
+                .container-fluid
+                    .col-sm-12
+                        h3.text-center The BRH 2019 schedule will be coming here soon!
+            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
+                polygon(fill='#fe1736', points='0,0 0,100 100,100')
+                polygon(fill='#000000', points='0,0 0,5 100,100 100,95')
         //- div#team
             div.innerContent
                 div.paddedSection
@@ -208,57 +227,60 @@ block append content
         div#faq
             div.innerContent
                 div.paddedSection
-                    h1.section-header
+                    h1.section-header.center
                         div.rect
-                        | FAQ
+                        | Frequently Asked Questions
                         div.rect
-                    .container
-                    dl
-                        .faq-box
-                          dt Who is eligible to participate?
-                          dd
-                              | We are inviting all undergraduate and graduate students to participate in our hackathon.
-                              | You don't need any past experience.
-                              | You don't even need to be a computer science major!
-                              | Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
-                        .faq-box
-                          dt What will I need to bring?
-                          dd
-                              | Bring your school ID for registration.
-                              | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
-                              | You may also want to bring a sleeping bag, change of clothes, and toothbrush.
-                        .faq-box
-                          dt Do I have to sign up with a team?
-                          dd
-                              | You don't have to sign up with a team, but it's certainly more fun!
-                              | We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event.
-                              | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
-                        .faq-box
-                          dt Are you providing food?
-                          dd
-                              | Don't worry, there will be lots of delicious food and beverages at our event, complimentary to all participants.
-                              | We'll have vegetarian options as well.
-                        .faq-box
-                          dt Are hardware hacks allowed?
-                          dd
-                              | We will be providing a dedicated hardware lab with sensors, microcontrollers, and basic components.
-                              | Some of our sponsors are bringing hardware to loan, but we still suggest that you bring your own equipment if you know that you'll absolutely need it.
-                        .faq-box
-                          dt What are the rules?
-                          dd
-                              | We want BigRed//Hacks to be fun and fair for everyone.
-                              | Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
-                              | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
-                        .faq-box
-                          dt Why is there an application?
-                          dd
-                              | We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate.
-                              | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
-                              | Even if you've never been to a hackathon before, please apply!
-                        .faq-box
-                          dt Have more questions?
-                          dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
-
+                    .container-fluid
+                        .col-sm-6
+                            .faq-box
+                                dt Who is eligible to participate?
+                                dd
+                                    | We are inviting all undergraduate and graduate students to participate in our hackathon.
+                                    | You don't need any past experience.
+                                    | You don't even need to be a computer science major!
+                                    | Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
+                            .faq-box
+                                dt What will I need to bring?
+                                dd
+                                    | Bring your school ID for registration.
+                                    | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
+                                    | You may also want to bring a sleeping bag, change of clothes, and toothbrush.
+                            .faq-box
+                                dt Do I have to sign up with a team?
+                                dd
+                                    | You don't have to sign up with a team, but it's certainly more fun!
+                                    | We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event.
+                                    | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
+                            .faq-box
+                                dt Are you providing food?
+                                dd
+                                    | Don't worry, there will be lots of delicious food and beverages at our event, complimentary to all participants.
+                                    | We'll have vegetarian options as well.
+                        .col-sm-6
+                            .faq-box
+                                dt Are hardware hacks allowed?
+                                dd
+                                    | We will be providing a dedicated hardware lab with sensors, microcontrollers, and basic components.
+                                    | Some of our sponsors are bringing hardware to loan, but we still suggest that you bring your own equipment if you know that you'll absolutely need it.
+                            .faq-box
+                                dt What are the rules?
+                                dd
+                                    | We want BigRed//Hacks to be fun and fair for everyone.
+                                    | Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
+                                    | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
+                            .faq-box
+                                dt Why is there an application?
+                                dd
+                                    | We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate.
+                                    | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
+                                    | Even if you've never been to a hackathon before, please apply!
+                            .faq-box
+                                dt Have more questions?
+                                dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
+            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
+                polygon(fill='#ffffff', points='100,0 0,100 100,100')
+                polygon(fill='#000000', points='0,100 0,95 100,0 100,5')
         div#sponsors
             div.innerContent
                 div.paddedSection
