@@ -610,21 +610,25 @@ p.text {
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
+    a {
+      display: inline-flex;
+      align-items: center;
+      flex-direction: row-reverse;
+      text-decoration: none;
+      color: @text-black;
+    }
     .nav-dialog {
       display: inline-block;
       margin-right: 10px;
       font-weight: bold;
       text-transform: lowercase;
+      visibility: hidden;
       .triangle-border {
         position:relative;
         padding:10px;
         border:4px solid @text-black;
         background:#fff;
         margin-right:30px;
-        a {
-          color:#333;
-          text-decoration: none;
-        }
         &:before {
           content:"";
           position:absolute;
@@ -671,9 +675,6 @@ p.text {
       &:hover {
         .triangle-border.right {
           background: @bg-red;
-          a {
-            color: @text-black;
-          }
           &:before {
             border-width:15px 0 15px 30px;
             border-style:solid;
@@ -691,19 +692,49 @@ p.text {
     .nav-circle {
       height: 25px;
       width: 25px;
+      border: 2px solid rgba(0,0,0,0);
       background-image: url("../img/2019/star.png");
       background-size: cover;
+      background-repeat: no-repeat;
       display: inline-block;
       cursor: pointer; 
+      &:hover {
+        height: 29px;
+        width: 29px;
+        border:  none;
+      }
+      &#home-star:hover + #home-dialog {
+        visibility: visible;
+      }
+      &#about-star:hover + #about-dialog {
+        visibility: visible;
+      }
+      &#schedule-star:hover + #schedule-dialog {
+        visibility: visible;
+      }
+      &#team-star:hover + #team-dialog {
+        visibility: visible;
+      }
+      &#faq-star:hover + #faq-dialog {
+        visibility: visible;
+      }
+      &#sponsors-star:hover + #sponsors-dialog {
+        visibility: visible;
+      }
     }
+    
+
     &.active {
+      a {
+        color: @bg-red;
+      }
       .nav-dialog {
-        a {
-          color: @bg-red;
-        }
+        visibility: visible;
       }
       .nav-circle {
-        display: hidden;
+        height: 29px;
+        width: 29px;
+        border: none;
       }
     }
   }
