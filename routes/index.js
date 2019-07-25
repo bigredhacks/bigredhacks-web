@@ -24,6 +24,10 @@ router.get("/", function (req, res) {
     });
 });
 
+router.get("/2017", function (req, res) {
+    res.render("index2017",  {});
+})
+
 /**
  * @api {GET} /subscribe subscribe a student to the mailing list
  * @apiName Subscribe

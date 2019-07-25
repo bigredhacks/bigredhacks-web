@@ -2,8 +2,22 @@
 
 @import "_global";
 @import "_fontawesome-custom";
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Bangers&display=swap');
+
+@font-face {
+  font-family: 'Futura';
+  src:  url('../fonts/futura/futura-medium.ttf') format('truetype'),
+    url('../fonts/futura/futura-medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Futura';
+  src: url('../fonts/futura/futura-heavy.ttf') format('truetype'),
+    url('../fonts/futura/futura-heavy.woff');
+  font-weight: bold;
+  font-style: normal;
+}
 
 @main-header-size: 68pt;
 @body-line-height: 1.6em;
@@ -14,6 +28,11 @@
 @text-white: #ffffff;
 
 @bg-red: #fe1736;
+@bg-blood-orange: #ff7700;
+@bg-orange: #ff872d;
+@bg-yellow: #ffaf2d;
+@bangers-spacing: 0.08em;
+@futura-spacing: 0.07em;
 
 
 html {
@@ -39,12 +58,13 @@ img {
 body {
   //width: 100%;
   //height: 100%;
-  font-family: "Nunito";
+  font-family: "Futura";
   font-weight: @weight-normal;
   background-color: @2017-background;
   padding: 0;
   margin: 0;
-  color: @2017-text-gray
+  color: @2017-text-gray;
+  letter-spacing: @futura-spacing;
 }
 @media (max-width: 768px){
   .navbar-fixed-top {
@@ -94,8 +114,10 @@ a.register-now {
 }
 
 .section-header {
+  color: @text-black;
   text-transform: uppercase;
   font-family: "Bangers", "Arial", sans-serif;
+  letter-spacing: @bangers-spacing;
   font-size: 5rem;
   text-align: center;
   display: inline-flex;
@@ -115,11 +137,13 @@ a.register-now {
 .section-subheader {
   text-transform: uppercase;
   font-family: "Bangers", "Arial", sans-serif;
+  letter-spacing: @bangers-spacing;
 }
 
 .text-title {
   text-transform: uppercase;
   font-family: "Bangers", "Arial", sans-serif;
+  letter-spacing: @bangers-spacing;
 }
 
 .text-container {
@@ -185,11 +209,11 @@ p.text {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  min-height: 100vh;
+  min-height: 125vh;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  align-content: flex-start;
   position: relative;
   svg.triangle {
     position: absolute;
@@ -211,10 +235,10 @@ p.text {
         transform: scale(1)
       }
       45% {
-        transform: scale(1.5) rotate(15deg);
+        transform: scale(1.4) rotate(15deg);
       }
       55% { 
-        transform: scale(1.5) rotate(15deg);
+        transform: scale(1.4) rotate(15deg);
       }
       100% {
         transform: scale(1)
@@ -225,6 +249,7 @@ p.text {
     animation-timing-function: ease-in-out;
   }
   .home-container {
+    height: 100vh;
     display: inline-flex;
     flex-direction: row;
     align-items: center;
@@ -235,26 +260,24 @@ p.text {
 }
 
 .home-content {
-  margin: 5vw;
-  color: #ffffff;
-  font-family: "Nunito", "Arial", sans-serif;
+  margin: 0 5vw;
+  color: @text-black;
+  font-family: "Futura", "Arial", sans-serif;
   text-transform: uppercase;
   text-align: center;
   h2 {
-    color: @text-white;
     font-weight: 700;
     font-size: 3rem;
     margin-bottom: 5px;
   }
   h3 {
-    color: @text-white;
     font-size: 2.5rem;
     margin-top: 5px;
   }
   h1 {
     color: @text-yellow;
     font-family: "Bangers";
-    // text-shadow: 2px 2px @text-black;
+    letter-spacing: @bangers-spacing;
     text-shadow:
     3px 3px 0 @text-black;
   }
@@ -287,6 +310,9 @@ p.text {
 #about {
   min-height: 100vh;
   padding-bottom: 30px;
+  #about-img {
+    border: 10px solid @text-black;
+  }
 }
 
 #schedule {
@@ -300,6 +326,13 @@ p.text {
       position: absolute;
       bottom: 0;
       margin-top: 10vw;
+    }
+  }
+  .section-header {
+    color: @text-white;
+    text-shadow: 2px 2px @text-black;
+    .rect {
+      box-shadow: 2px 2px @text-black;
     }
   }
 }
@@ -337,6 +370,10 @@ p.text {
   }
   .section-header {
     color: white;
+    text-shadow: 2px 2px @text-black;
+    .rect {
+      box-shadow: 2px 2px @text-black;
+    }
   }
   .innerContent {
     padding-bottom: 10vw;
@@ -360,7 +397,7 @@ p.text {
     text-transform: uppercase;
     border-bottom: 3px solid @text-yellow;
     margin-bottom: 5px;
-    letter-spacing: 0.08em;
+    letter-spacing: @bangers-spacing;
   }
   dd {
     font-size: 1.85rem;
@@ -368,6 +405,13 @@ p.text {
   .bold {
     color: @text-yellow;
     font-weight: bold;
+  }
+  a {
+    color:  @text-yellow;
+    font-weight: bold;
+    &:hover {
+      color: @bg-orange;
+    }
   }
 }
 
@@ -411,9 +455,9 @@ p.text {
   flex-flow: wrap;
   width: 100%;
   padding: 10px 15px 20px 15px;
-  background-color: #34495e;
+  background-image: linear-gradient(0deg,#ffaf2d 0%, #fe1736 100%);
   color: white;
-  border-radius: 5px;
+  border: 10px solid @text-black;
 
   label {
     padding: 5px 5px 0 0;
