@@ -84,16 +84,15 @@ block append content
                 div.home-content
                     h2 Cornell University's 
                     h3 Oldest and Largest Hackathon
-                    h1 September 20-22
+                    h1 September 20-22, 2019
                     
                     a(href="#interested").interest-button
                         div Subscribe for updates
-                div.spacer
                 div.logo
             svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
-                polygon(fill='white', points='0,0 0,100 100,100')
-
-        div#about    
+                polygon(fill='white', points='0,0 0,100 100,100')    
+        
+        div#about
             div.innerContent
                 div.paddedSection
                     h1.section-header#about-header.center
@@ -103,7 +102,13 @@ block append content
                     .container-fluid
                         .row
                             .col-md-6
-                                img(src="/img/home/brh_about.jpg").img-responsive
+                                img(src="/img/home/brh_about.jpg").img-responsive#about-img
+                                div.btn-social-group.text-center
+                                    p.text.bold Follow us on Facebook and Twitter!
+                                    a.btn.btn-social.facebook(href="https://facebook.com/bigredhacks" target="_blank")
+                                        span.fa.fa-facebook-square
+                                    a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
+                                        span.fa.fa-twitter
                             .col-md-6
                                 div.text-container
                                     p.text
@@ -112,12 +117,7 @@ block append content
                                         | Across three days, Cornell and non-Cornell students alike gather to build the coolest
                                         | and most innovative projects, meet amazing people, and win some prizes along
                                         | the way!
-                                div.btn-social-group
-                                    p.text.bold Follow us on Facebook and Twitter!
-                                    a.btn.btn-social.facebook(href="https://facebook.com/bigredhacks" target="_blank")
-                                        span.fa.fa-facebook-square
-                                    a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
-                                        span.fa.fa-twitter
+                                
                                 br      
                                 .interestForm
                                     h2.text-title#interested Interested?
@@ -288,24 +288,24 @@ block append content
                         div.rect
                     div#logos
                         div.logo-3.logo-group
-                            a(href="//www.wayfair.com")
+                            a(href="//www.wayfair.com" target="_blank")
                                 img#wayfair(src="/img/2019/sponsors/wayfair.png" alt="Wayfair Logo")   
                         div.logo-2.logo-group
-                            a(href="//www.ibm.com/")
+                            a(href="//www.ibm.com/" target="_blank")
                                 img#ibm(src="/img/2019/sponsors/ibm.png" alt="IBM Logo")
                             
                         div.logo-1.logo-group
-                            a(href="//www.accenture.com")
+                            a(href="//www.accenture.com" target="_blank")
                                 img#accenture(src="/img/2019/sponsors/accenture.png" alt="Accenture Logo")
-                            a(href="//www.grammatech.com")
+                            a(href="//www.grammatech.com" target="_blank")
                                 img#grammatech(src="/img/2019/sponsors/grammatech.png" alt="GrammaTech Logo")
-                            a(href="//www.jetbrains.com")
+                            a(href="//www.jetbrains.com" target="_blank")
                                 img#jetbrains(src="/img/2019/sponsors/jetbrains.png" alt="JetBrains Logo")
                         
                         div.logo-0.logo-group
-                            a(href="//www.chobani.com")
+                            a(href="//www.chobani.com" target="_blank")
                                 img#chobani(src="/img/2019/sponsors/chobani.png" alt="Chobani Logo")
-                            a(href="//hort.cals.cornell.edu/about/facilities/cornell-orchards/")
+                            a(href="//hort.cals.cornell.edu/about/facilities/cornell-orchards/" target="_blank")
                                 img#cornell-orchards(src="/img/2019/sponsors/cornellorchards.jpg" alt="Cornell Orchards Logo")
 
                     p.text.text-center More sponsors coming soon!
