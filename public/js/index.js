@@ -23,4 +23,43 @@ $(document).ready(function () {
             }
         });
     });
+    var msgContainer = $(".msgContainer");
+    var submitForm = $("#submitForm");
+    submitForm.click(function () {
+        msgContainer.removeClass("active err success");
+        msgContainer.hide();
+
+        var email = $("input#email").val();
+        var fName = $("input#firstName").val();
+        var lName = $("input#lastName").val();
+
+        if ((!(email.length > 0)) || (!(fName.length > 0) || (!(lName.length > 0)))) {
+            msgContainer.addClass("active err");
+            msgContainer.show();
+            msgContainer.text("Please fill out all fields and try again!");
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "/emailListAdd",
+                data: {
+                    email: email,
+                    fName: fName,
+                    lName: lName
+                },
+                success: function (data) {
+                    console.log(data);
+                    msgContainer.addClass("active success");
+                    msgContainer.show();
+                    msgContainer.text(data.message);
+                },
+                error: function (data) {
+                    console.log(data);
+                    msgContainer.addClass("active err");
+                    msgContainer.show();
+                    msgContainer.text(data.responseJSON.message);
+                }
+            });
+        }
+    });
 });
