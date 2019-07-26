@@ -9,14 +9,20 @@ $('document').ready(function () {
     });
 
     var lastMajor = "";
-    var lastCollege = {id: "", name: ""};
+    var lastMinor = "";
+    var lastCollege = { id: "", name: "" };
 
-    $("#yearDropdown").on("change", function(e) {
+    $("#yearDropdown").on("change", function (e) {
         const otherCollegeId = "x999999";
         var selMajor = $("#major.typeahead");
+        var selMinor = $("#minor.typeahead");
         var majorVal = selMajor.val();
         if (majorVal != "Undecided") {
             lastMajor = majorVal;
+        }
+        var minorVal = selMinor.val();
+        if (minorVal != "Undecided") {
+            lastMinor = minorVal;
         }
 
         if ($("#collegeid").val() != otherCollegeId) {
@@ -27,7 +33,8 @@ $('document').ready(function () {
         if ($(this).val() === "High School") {
             $.CollegeTypeahead.disable();
             //proper way to set value that works with typeahead
-            selMajor.typeahead("val","Undecided");
+            selMajor.typeahead("val", "Undecided");
+            selMinor.typeahead("val", "Undecided");
             $("#collegeid").val(otherCollegeId);
             $("#college").val("");
 
@@ -36,12 +43,16 @@ $('document').ready(function () {
             $("#collegeid").val(lastCollege.id);
             $("#college").val(lastCollege.name);
             $.CollegeTypeahead.enable();
-            selMajor.typeahead("val",lastMajor);
+            selMajor.typeahead("val", lastMajor);
+            selMinor.typeahead("val", lastMinor);
         }
 
         //force revalidation only if selected major is not blank
         if (selMajor.val() != "") {
             selMajor.valid();
+        }
+        if (selMinor.val() != "") {
+            selMinor.valid();
         }
     });
 
@@ -144,6 +155,10 @@ $('document').ready(function () {
                 required: true,
                 maxlength: 5000
             },
+            q3: {
+                required: true,
+                maxlength: 5000
+            },
             linkedin: {
                 linkedinURL: true
             },
@@ -207,6 +222,6 @@ $('document').ready(function () {
     });
 });
 
-$("#mlh-agree").click(function() {
-  $("#submit").attr("disabled", !this.checked);
+$("#mlh-agree").click(function () {
+    $("#submit").attr("disabled", !this.checked);
 });

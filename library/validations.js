@@ -8,7 +8,7 @@
 let validator = function () {
     let validators = {
         email: function (req) {
-            req.assert('email', 'Email address is not valid.').isEmail().len(1,500);
+            req.assert('email', 'Email address is not valid.').isEmail().len(1, 500);
         },
         password: function (req) {
             req.assert('password', "Password is not valid. 6 to 25 characters required.").len(6, 25);
@@ -17,10 +17,10 @@ let validator = function () {
             req.assert('password', "Password is not valid. 6 to 25 characters required.").optionalOrLen(6, 25);
         },
         firstname: function (req) {
-            req.assert('firstname', 'First name is required.').notEmpty().len(1,40);
+            req.assert('firstname', 'First name is required.').notEmpty().len(1, 40);
         },
         lastname: function (req) {
-            req.assert('lastname', 'Last name is required.').notEmpty().len(1,40);
+            req.assert('lastname', 'Last name is required.').notEmpty().len(1, 40);
         },
         phonenumber: function (req) {
             req.body.phonenumber = req.body.phonenumber.replace(/-/g, '');
@@ -45,10 +45,13 @@ let validator = function () {
             req.assert('collegeid', 'Please specify a school.').notEmpty();
         },
         q1: function (req) {
-            req.assert('q1', 'Question 1 must be less than 5000 characters.').len(1,5000);
+            req.assert('q1', 'Question 1 must be less than 5000 characters.').len(1, 5000);
         },
         q2: function (req) {
-            req.assert('q2', 'Question 2 must be less than 5000 characters.').len(1,5000);
+            req.assert('q2', 'Question 2 must be less than 5000 characters.').len(1, 5000);
+        },
+        q3: function (req) {
+            req.assert('q3', 'Question 3 must be less than 5000 characters.').len(1, 5000);
         }, //fixme refine this
         yearDropdown: function (req) {
             req.assert('yearDropdown', 'Please specify a graduation year.').notEmpty();
@@ -59,11 +62,11 @@ let validator = function () {
         cornellEmail: function (req) {
             req.assert('cornellEmail', 'Email address is not valid.').isEmail().len(1, 100);
         },
-        anythingelse: function(req) {
+        anythingelse: function (req) {
             req.assert('anythingelse', "Additional information must be less than 5000 characters.").optionalOrLen(0, 5000);
         },
-        hardware: function(req) {
-            req.assert('hardware', "That's a bit too much hardware for us.").len(0,500);
+        hardware: function (req) {
+            req.assert('hardware', "That's a bit too much hardware for us.").len(0, 500);
         },
         company: function (req) {
             req.assert('company', 'Please specify your company name.').notEmpty().len(1, 70);

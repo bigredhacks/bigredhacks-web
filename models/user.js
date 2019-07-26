@@ -12,25 +12,27 @@ var SALT_WORK_FACTOR = 10;
 
 //general user info
 var userSchema = new mongoose.Schema({
-    pubid: {type: String, index: {unique: true}}, //public facing userid
+    pubid: { type: String, index: { unique: true } }, //public facing userid
     name: {
-        first: {type: String, required: true},
-        last: {type: String, required: true}
+        first: { type: String, required: true },
+        last: { type: String, required: true }
     },
-    gender: {type: String, enum: en.user.gender},
-    email: {type: String, required: true, lowercase: true, trim: true, index: {unique: true}},
-    password: {type: String, required: true},
+    gender: { type: String, enum: en.user.gender },
+    ethnicity: { type: String, enum: en.user.ethnicity },
+    email: { type: String, required: true, lowercase: true, trim: true, index: { unique: true } },
+    password: { type: String, required: true },
     phone: String,
     logistics: {
-        dietary: {type: String, enum: en.user.dietary},
-        tshirt: {type: String, enum: en.user.tshirt},
+        dietary: { type: String, enum: en.user.dietary },
+        tshirt: { type: String, enum: en.user.tshirt },
         anythingelse: String
     },
     school: {
-        id: {type: String, ref: "College", index: true},
+        id: { type: String, ref: "College", index: true },
         name: String,
-        year: {type: String, enum: en.user.year},
-        major: String
+        year: { type: String, enum: en.user.year },
+        major: String,
+        minor: String
     },
     app: {
         github: String,
@@ -39,33 +41,34 @@ var userSchema = new mongoose.Schema({
         questions: {
             q1: String,//@todo fill out with identifiers for questions
             q2: String,
+            q3: String,
             hardware: [String]
         },
-        hackathonsAttended: {type: String, enum: en.user.hackathonsAttended, required: true}
+        hackathonsAttended: { type: String, enum: en.user.hackathonsAttended, required: true }
     },
     internal: {
-        teamid: {type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null},
-        teamwithcornell: {type: Boolean, default: false},
-        busid: {type: mongoose.Schema.Types.ObjectId, ref: "Bus", default: null},
-        busCaptain: {type: Boolean, default: false},
-        busOverride: {type: mongoose.Schema.Types.ObjectId, ref: "Bus", default: null},
-        status: {type: String, enum: en.user.status, default: "Pending"},
-        notificationStatus: {type: String, enum: en.user.status, default: "Pending"}, // The status that we've last informed them of
-        deadlineWarned: {type: Boolean, default: false},
-        daysToRSVP: {type: Number, default: 10},
-        previousStatus: {type: String, enum: en.user.status, default: "Pending"},
-        lastNotifiedAt: {type: Date, default: null},
-        going: {type: Boolean, default: null},
-        travel_receipt: {type: String, default: null},
-        not_interested: {type: Boolean, default: null}, //waitlisted - if true, they forfeit their spot
-        cornell_applicant: {type: Boolean, default: false},
-        checkedin: {type: Boolean, default: false},
-        reimbursement_override: {type: Number}
+        teamid: { type: mongoose.Schema.Types.ObjectId, ref: "Team", default: null },
+        teamwithcornell: { type: Boolean, default: false },
+        busid: { type: mongoose.Schema.Types.ObjectId, ref: "Bus", default: null },
+        busCaptain: { type: Boolean, default: false },
+        busOverride: { type: mongoose.Schema.Types.ObjectId, ref: "Bus", default: null },
+        status: { type: String, enum: en.user.status, default: "Pending" },
+        notificationStatus: { type: String, enum: en.user.status, default: "Pending" }, // The status that we've last informed them of
+        deadlineWarned: { type: Boolean, default: false },
+        daysToRSVP: { type: Number, default: 10 },
+        previousStatus: { type: String, enum: en.user.status, default: "Pending" },
+        lastNotifiedAt: { type: Date, default: null },
+        going: { type: Boolean, default: null },
+        travel_receipt: { type: String, default: null },
+        not_interested: { type: Boolean, default: null }, //waitlisted - if true, they forfeit their spot
+        cornell_applicant: { type: Boolean, default: false },
+        checkedin: { type: Boolean, default: false },
+        reimbursement_override: { type: Number }
     },
     passwordtoken: String,
-    created_at: {type: Date, default: Date.now},
-    modified_at: {type: Date, default: Date.now},
-    role: {type: String, enum: en.user.role, default: "user"},
+    created_at: { type: Date, default: Date.now },
+    modified_at: { type: Date, default: Date.now },
+    role: { type: String, enum: en.user.role, default: "user" },
     team: Array, //virtual property used to populate team members,]
     mentorinfo: {
         company: String,
@@ -135,7 +138,7 @@ userSchema.methods.validPassword = function (candidatePassword) {
 userSchema.methods.addToTeam = function (pubid, callback) {
     var _this = this;
     var userModel = mongoose.model("User"); //reference the static model
-    userModel.findOne({pubid: pubid}, function (err, other) {
+    userModel.findOne({ pubid: pubid }, function (err, other) {
         if (err) {
             return callback(err);
         }
@@ -210,12 +213,12 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                                 function (done) {
                                     other.save(done);
                                 }],
-                            function (err) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                                callback(err, res);
-                            });
+                                function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    callback(err, res);
+                                });
                         }
                     });
                 }
@@ -332,7 +335,7 @@ userSchema.statics.removeFromTeam = function (user_id, callback) {
  */
 userSchema.statics.validEmail = function (email, callback) {
     let sanitizedEmail = email ? email.trim().toLowerCase() : email;
-    User.findOne({email: sanitizedEmail}, function (err, user) {
+    User.findOne({ email: sanitizedEmail }, function (err, user) {
         return callback(err, user != null);
     });
 };

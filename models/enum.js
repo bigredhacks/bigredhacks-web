@@ -10,6 +10,7 @@ var en = {
         yearNoHighSchool: "Freshman/Sophomore/Junior/Senior/Graduate Student".split("/"),
         dietary: "None Vegetarian Gluten-free".split(" "),
         gender: "Female/Male/Other/Prefer Not to Disclose".split("/"),
+        ethnicity: "American Indian or Alaskan Native,Asian / Pacific Islander,Black or African American,Hispanic,White / Caucasian,Multiple ethnicity / Other,Prefer not to answer".split(","),
         tshirt: "XS/S/M/L/XL".split("/"),
         status: "Pending Accepted Waitlisted Rejected".split(" "), //take care when changing
         experience: "Yes/No".split("/"), //store boolean state as string for simplicity
@@ -32,8 +33,8 @@ var en = {
     },
     mentor: {
         companyimage: "bigredhacks.png".split("/"), // When more companies are added, separate them with /
-        companyname:  "Big Red Hacks".split("/"),
-        emailNewReq:  [true, false]
+        companyname: "Big Red Hacks".split("/"),
+        emailNewReq: [true, false]
     },
     mentorrequest: {
         status: "Unclaimed Claimed Completed".split(" ")
