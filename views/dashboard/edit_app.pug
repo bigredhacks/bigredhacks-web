@@ -48,6 +48,11 @@ block append basic-information
         select#genderDropdown.form-control(name='genderDropdown', required=true)
             option(value='') select
             +generateOptions(en.gender, {selected: user.gender})
+    .form-group
+        label(for='ethnicityDropdown') race / ethnicity
+        select#ethnicityDropdown.form-control(name='ethnicityDropdown')
+            option(value='') select
+            +generateOptions(en.ethnicity, {selected: user.ethnicity})
 
 block append school
     .form-group
@@ -62,14 +67,20 @@ block append school
     .form-group
         label(for='major') major *
         input#major.form-control(type='text', name='major', placeholder='major', value=user.school.major, readonly=true)
+    .form-group
+        label(for='minor') minor
+        input#minor.form-control(type='text', name='minor', placeholder='minor', value=user.school.minor)
 
 block append background
     .form-group
-        label tell us something interesting about yourself. *
+        label Tell us a cool fact about yourself *
         textarea#q1.form-control(name='q1', rows='4', required='') #{user.app.questions.q1}
     .form-group
-        label what's a cool project that you've worked on? *
+        label Tell us about a cool technical or non-technical project that you've worked on *
         textarea#q2.form-control(name='q2', rows='4', required='') #{user.app.questions.q2}
+    .form-group
+        label What do you want to learn and/or experience at BigRed//Hacks? Feel free to list things or ramble on. We're listening 🙂*
+        textarea#q3.form-control(name='q3', rows='4', required='') #{user.app.questions.q3}
     .form-group
         label(for='github') github profile
         .input-group

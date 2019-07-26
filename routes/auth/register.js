@@ -159,6 +159,8 @@ function registerPost(req, res) {
         },
         (college, resume, cb) => {
             // Create the user
+            console.log("Register req:")
+            console.log(req);
             let newUser = new User({
                 name: {
                     first: req.body.firstname,
@@ -167,6 +169,7 @@ function registerPost(req, res) {
                 email: req.body.email,
                 password: req.body.password,
                 gender: req.body.genderDropdown,
+                ethnicity: req.body.ethnicityDropdown,
                 phone: req.body.phonenumber,
                 logistics: {
                     dietary: req.body.dietary,
@@ -177,7 +180,8 @@ function registerPost(req, res) {
                     id: college._id,
                     name: college.display,
                     year: req.body.yearDropdown,
-                    major: req.body.major
+                    major: req.body.major,
+                    minor: req.body.minor
                 },
                 internal: {
                     cornell_applicant: authHelp._isCornellian(college)
@@ -190,6 +194,7 @@ function registerPost(req, res) {
                     questions: {
                         q1: req.body.q1,
                         q2: req.body.q2,
+                        q3: req.body.q3,
                         hardware: req.body.hardware.split(",")
                     }
                 },

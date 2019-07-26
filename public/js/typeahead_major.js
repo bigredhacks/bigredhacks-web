@@ -42,9 +42,11 @@ var engine3 = new Bloodhound({
 engine3.initialize();
 var ttadapt = engine3.ttAdapter();
 var $major = $('#major');
+var $minor = $('#minor');
 
 //general typeahead
-$major.typeahead({
+$major.typeahead(
+    {
         minLength: 1
     },
     {
@@ -53,7 +55,22 @@ $major.typeahead({
         limit: 4,
         highlight: true,
         hint: true
-    }).on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
+    }
+).on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
+});
+
+$minor.typeahead(
+    {
+        minLength: 1
+    },
+    {
+        displayKey: '',
+        source: ttadapt,
+        limit: 4,
+        highlight: true,
+        hint: true
+    }
+).on('typeahead:selected typeahead:autocomplete', function (obj, datum, name) {
 });
 
 
@@ -62,6 +79,11 @@ $("document").ready(function () {
     $major.on("focusout", function () {
         if ($(this).val().length == 0) {
             $(this).data("major", "");
+        }
+    });
+    $minor.on("focusout", function () {
+        if ($(this).val().length == 0) {
+            $(this).data("minor", "");
         }
     });
 });

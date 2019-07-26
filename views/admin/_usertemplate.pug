@@ -8,6 +8,7 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
         h4 Basic Info
         ul
             li Gender: #{user.gender}
+            li Race/Ethnicity: #{user.ethnicity}
             li Email: #{user.email}
             li Phone: #{user.phone}
             li Hackathons attended: #{user.app.hackathonsAttended}
@@ -64,11 +65,14 @@ h2 #{user.name.first} #{user.name.last} (#[i.fa.fa-user] #[span#pubid #{user.pub
         br
 
         br
-        div Tell us something interesting about yourself.
+        div Tell us a cool fact about yourself
             p= user.app.questions.q1
         br
-        div What's a cool project that you've worked on?
+        div Tell us about a cool technical or non-technical project that you've worked on
             p= user.app.questions.q2
+        br
+        div What do you want to learn and/or experience at BigRed//Hacks? Feel free to list things or ramble on. We're listening 🙂*
+            p= user.app.questions.q3
         br
         div Types of hardware hacks:
             p= user.app.questions.hardware

@@ -21,6 +21,7 @@ helper.validateAll = (req) => {
         'major',
         'q1',
         'q2',
+        'q3',
         'github',
         'linkedin',
         'hackathonsAttended',
