@@ -11,6 +11,24 @@ description: >-
 Tracy Davenport  
 email: tdd26@cornell.edu
 
+## Prize Ideas
+
+* Google Home Minis
+* Chromecasts
+* Tile Devices
+* Raspberry Pis
+* Fitbits
+* Xiaomi
+* Smart Lights
+* Battery Banks
+* Google WiFis
+* Wireless Chargers
+* Mechanical Keyboards
+* Amazon Alexas
+* Headphones
+* Waterbottles: Swell or Yeti or Hydroflask
+* cute kawaii corgi butt pillows
+
 
 
 

@@ -22,6 +22,15 @@ Phone number: 607-255-4574
 
 The current Finance Director should have the pcard. When a new Finance Director takes over, a new pcard is applied for in the new director's name and the old pcard is cancelled.
 
+## Who were the former Finance Leads?
+
+Fall 2019: Angela Lau  
+Spring 2019: Cammy Wong  
+Fall 2018: Lu Li  
+Spring 2018: Lu Li  
+  
+Note - The Finance subteam was created in Nov 2017
+
 
 
 
