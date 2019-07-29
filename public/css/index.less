@@ -220,13 +220,13 @@ p.text {
     bottom: 0;
   }
   .logo {
-    width: 60vh;
-    height: 60vh;
+    width: 50vh;
+    height: 50vh;
     z-index: 5;
-    // @media screen and (max-width: 767px) {
-    //   width: 30vh;
-    //   height: 30vh;
-    // }
+    @media screen and (max-width: 767px) {
+      width: 30vh;
+      height: 30vh;
+    }
     background-image: url("../img/2019/logo.svg");
     background-size: contain;
     background-repeat: no-repeat;
@@ -349,7 +349,12 @@ p.text {
       box-shadow: 2px 2px @text-black;
     }
   }
+  .table-title {
+    margin-bottom: 25px; 
+  }
   table {
+    overflow-x: scroll;
+    width: 100%;
     tr {
       td, th {
         padding: 5px 10px 10px 10px;
