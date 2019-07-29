@@ -220,13 +220,13 @@ p.text {
     bottom: 0;
   }
   .logo {
-    width: 50%;
-    height: 50vh;
+    width: 45vh;
+    height: 45vh;
     z-index: 5;
-    @media screen and (max-width: 767px) {
-      margin-top: 30px;
-      height: 25vh;
-    }
+    // @media screen and (max-width: 767px) {
+    //   width: 30vh;
+    //   height: 30vh;
+    // }
     background-image: url("../img/2019/logo.svg");
     background-size: contain;
     background-repeat: no-repeat;
@@ -258,15 +258,21 @@ p.text {
     justify-content: center;
     width: 100%;
     flex-wrap: wrap-reverse;
+    div {
+      margin: 0 20px 0 20px;
+    }
   }
 }
 
 .home-content {
-  margin: 0 5vw;
   color: @text-black;
   font-family: "Futura", "Arial", sans-serif;
   text-transform: uppercase;
   text-align: center;
+  z-index: 999;
+  @media screen and (max-width: 1111px) {
+    width: 400px;
+  }
   h2 {
     font-weight: 700;
     font-size: 3rem;
@@ -288,11 +294,13 @@ p.text {
     4px 4px 2px @text-black;
   }
   a.interest-button {
-    
+ 
     color: @text-white;
     text-transform: lowercase;
     font-weight: bold;
     font-size: 2rem;
+    text-align: center;
+    display: inline-block;
     
     div {
       background-color: @text-black;
@@ -349,7 +357,9 @@ p.text {
       }
     }
   }
-  
+  .paddedSection {
+    margin-bottom: 15%;
+  }
 }
 
 #team {
@@ -597,14 +607,14 @@ p.text {
   top:0;
   width:10%;
   z-index:10000;
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 767px) {
     top: 51px;
     right: 2%;
   }
 }
 
 #nav-mobile {
-  @media screen and (min-width: 992px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
   display: block;
@@ -655,7 +665,7 @@ p.text {
   }
 }
 #nav-desktop {
-  @media screen and (max-width: 991px){
+  @media screen and (max-width: 767px){
     display: none;
   }
   display:block;
@@ -789,9 +799,6 @@ p.text {
     
 
     &.active {
-      a {
-        color: @bg-red;
-      }
       .nav-dialog {
         visibility: visible;
       }

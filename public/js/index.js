@@ -14,7 +14,7 @@ $(document).ready(function () {
             var currElmt = $(this);
             var currLink = $(this).find("a");
             var refElement = $(currLink.attr("href"));
-            if (refElement.position().top <= scrollPos && refElement.position().top + refElement.height() > scrollPos) {
+            if (refElement.position().top <= scrollPos + 100 && refElement.position().top + refElement.height() > scrollPos) {
                 $('.nav-item').removeClass("active");
                 currElmt.addClass("active");
             }
