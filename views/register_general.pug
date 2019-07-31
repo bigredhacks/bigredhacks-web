@@ -114,7 +114,7 @@ block append logistics
         label is there any kind of hardware that you want to hack on?
         input#hardware.form-control.typeahead(type='text', name='hardware', placeholder='VR, Smart Home, etc...'  value=input.hardware || '', data-role="tagsinput")
     .form-group
-        label is there anything else you'd like to tell us?
+        label is there anything else you'd like to tell us?  (e.g. allergies, special needs / requests)
         textarea#anythingelse.form-control(name='anythingelse', rows='2') #{input.anythingelse || ""}
 
 block append mlh_data_provision

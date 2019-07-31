@@ -293,7 +293,7 @@ p.text {
     text-shadow:
     4px 4px 2px @text-black;
   }
-  a.interest-button {
+  a.interest-button, .action-buttons > a{
  
     color: @text-white;
     text-transform: lowercase;
@@ -304,7 +304,7 @@ p.text {
     
     div {
       background-color: @text-black;
-      padding: 5px;
+      padding: 5px 15px 5px 15px;
       width: auto;
       height: 50px;
       border: 5px solid @text-black;
@@ -318,6 +318,13 @@ p.text {
         color: @text-black;
       }
     }
+  }
+}
+
+.action-buttons {
+  margin-top: 10px;
+  a {
+    width: 50%;
   }
 }
 

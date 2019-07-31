@@ -87,8 +87,18 @@ block append content
                     h3 Oldest and Largest Hackathon
                     h1 September 20-22, 2019
                     
-                    a(href="#interested").interest-button
-                        div Subscribe for updates
+                    unless regOpen
+                        a(href="#interested").interest-button
+                            div Subscribe for updates
+                    
+                    if regOpen
+                        .action-buttons
+                            a(href="/register")
+                                div Register
+                            a(href="/login")
+                                div Login
+
+
                 div.logo
             svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
                 polygon(fill='white', points='0,0 0,101 100,101')    
@@ -119,25 +129,29 @@ block append content
                                         | and most innovative projects, meet amazing people, and win some prizes along
                                         | the way!
                                 
-                                br      
-                                .interestForm#interested 
-                                    h2.text-title Interested?
-                                    p.text Join our email list to get the first scoop when registration opens!
-                                    .field-group
-                                        .field
-                                            label(for="firstName") First Name *
-                                            input(type="text" name="firstName" id="firstName" required)
+                                br
+                                unless regOpen      
+                                    .interestForm#interested 
+                                        h2.text-title Interested?
+                                        p.text Join our email list to get the first scoop when registration opens!
+                                        .field-group
+                                            .field
+                                                label(for="firstName") First Name *
+                                                input(type="text" name="firstName" id="firstName" required)
 
-                                        .field
-                                            label(for="lastName") Last Name *
-                                            input(type="text" name="lastName" id="lastName" required)
-                                    .field-group
-                                        .field
-                                            label(for="fname") Email Address *
-                                            input(type="email" name="email" id="email" required)    
-                                    .btnContainer
-                                        button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
-                                    .msgContainer.error
+                                            .field
+                                                label(for="lastName") Last Name *
+                                                input(type="text" name="lastName" id="lastName" required)
+                                        .field-group
+                                            .field
+                                                label(for="fname") Email Address *
+                                                input(type="email" name="email" id="email" required)    
+                                        .btnContainer
+                                            button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
+                                        .msgContainer.error
+                                if regOpen
+                                    p.text.bold Registration for BigRed//Hacks 2019 is 
+                                        a(href="/register") now open!
         
         div#schedule
             svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.top
