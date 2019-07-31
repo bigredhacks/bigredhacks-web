@@ -20,12 +20,13 @@ router.get("/", function (req, res) {
     let ev = req.flash();
     res.render("index", {
         title: "Cornell's Ultimate Hackathon",
-        messages: ev
+        messages: ev,
+        regOpen: config.admin.reg_open
     });
 });
 
 router.get("/2017", function (req, res) {
-    res.render("index2017",  {});
+    res.render("index2017", {});
 })
 
 /**
