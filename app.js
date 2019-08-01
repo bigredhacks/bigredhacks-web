@@ -41,7 +41,7 @@ var middle = require("./routes/middleware");
 var passport = require("passport");
 //mongoose setup
 var mongoose = require("mongoose");
-mongoose.connect(process.env.COMPOSE_URI || "mongodb://heroku_app36727616:nf8ch1n60uj54mg58s29kntj4h@ds051851.mongolab.com:51851/heroku_app36727616" || "mongodb://localhost/bigredhacks", {
+mongoose.connect(process.env.COMPOSE_URI || process.env.MONGOLAB_URI || "mongodb://localhost/bigredhacks", {
     useMongoClient: true,
     /* other options */
 });
