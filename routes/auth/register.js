@@ -258,25 +258,32 @@ function registerPost(req, res) {
             if (newUserEmail === "cornell" || authHelp._isCornellian(college)) {
                 template_content =
                     `<p>Hi ${newUser.name.full},</p>` +
-                    `<p>Thank you for your interest in BigRed//Hacks! This email is a confirmation ` +
-                    `that we have received your registration.</p>` +
-                    `<p>You can log in to our website any time to view your status or update your resume.</p>` +
-                    `<p>We will initially have a lottery to admit Cornell students. ` +
-                    `<p>After that, Cornellians will be admitted off the waitlist in order of registration.</p>` +
+                    `<p>Thank you for your interest in BigRed//Hacks Vo. 7: Community Superheroes! This email is a confirmation ` +
+                    `that we have received your registration. We're excited to have you potentially join us this fall for a weekend of exploration, innovation, and fun 🙂
+                    </p>` +
+                    `<p>You can log in to our website (www.bigredhacks.com) at any time to view your status, update your resume, or add team members. 
+                    Company sponsors will have access to your resumes, so make sure to update it! We will also have team formation sessions, so do not feel obligated to find teammates before the hackathon.</p>` +
+                    `<p>For Cornell students, we will initially have a lottery system to admit. Decisions will be sent out late August/early September, 
+                    and students will have a grace period of a week to accept. After that, Cornellians will be admitted off the waitlist in order of registration.</p>` +
                     `<p>If you haven't already, make sure to like us on <a href='https://www.facebook.com/bigredhacks/' target='_blank'>Facebook</a> and ` +
-                    `follow us on <a href='https://twitter.com/bigredhacks'>Twitter</a>!</p>` +
-                    `<p>Cheers,</p>` +
+                    `follow us on <a href='https://twitter.com/bigredhacks'>Twitter</a>! Hope to see you soon.</p>` +
+                    `<p>With love,</p>` +
                     `<p>BigRed//Hacks Team </p>`;
             } else {
                 template_content =
                     `<p>Hi ${newUser.name.full},</p>` +
-                    `<p>Thank you for your interest in BigRed//Hacks! This email is a confirmation ` +
-                    `that we have received your registration.</p>` +
-                    `<p>You can log in to our website any time until the registration deadline ` +
-                    `to update your information or add team members.</p>` +
+                    `<p>Thank you for your interest in BigRed//Hacks Vo. 7: Community Superheroes! This email is a confirmation ` +
+                    `that we have received your registration. We're excited to have you potentially join us this fall for a weekend of exploration, innovation, and fun 🙂
+                    </p>` +
+                    `<p>You can log in to our website (www.bigredhacks.com) at any time to view your status, update your resume, or add team members. 
+                    Company sponsors will have access to your resumes, so make sure to update it! We will also have team formation sessions, so do not feel obligated to find teammates before the hackathon.</p>` +
+                    `<p>For non-Cornell students, decisions will be sent out in late August (or ASAP in September). 
+                    At the moment, we are offering bus routes to Buffalo, RIT, Princeton, Rutgers, and Binghamton. 
+                    If you'd like travel reimbursement, please send us a message at <a href="mailto:info@bigredhacks.com">info@bigredhacks.com</a> and we'll see what we can offer on a case-by-case basis. 
+                    At the moment, we are unsure how much we can offer, but have offered up to $200 per person in the past.` +
                     `<p>If you haven't already, make sure to like us on <a href='https://www.facebook.com/bigredhacks/' target='_blank'>Facebook</a> and ` +
-                    `follow us on <a href='https://twitter.com/bigredhacks'>Twitter</a>!</p>` +
-                    `<p>Cheers,</p>` +
+                    `follow us on <a href='https://twitter.com/bigredhacks'>Twitter</a>! Hope to see you soon.</p>` +
+                    `<p>With love,</p>` +
                     `<p>BigRed//Hacks Team </p>`;
             }
             const config = {
