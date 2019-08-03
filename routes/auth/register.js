@@ -159,8 +159,6 @@ function registerPost(req, res) {
         },
         (college, resume, cb) => {
             // Create the user
-            console.log("Register req:")
-            console.log(req);
             let newUser = new User({
                 name: {
                     first: req.body.firstname,
@@ -200,6 +198,7 @@ function registerPost(req, res) {
                 },
                 role: "user"
             });
+            console.log(newUser);
             newUser.save((err, user) => {
                 if (!err) {
                     return cb(null, college, user);
