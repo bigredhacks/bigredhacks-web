@@ -54,7 +54,9 @@ module.exports = function (io) {
                 /*s3.getSignedUrl('getObject', params, function(err, url) {
                  return done(err, url);
                  });*/
-                return done(null, helper.s3url() + "/resume/" + req.user.app.resume);
+                // return done(null, helper.s3url() + "/resume/" + req.user.app.resume);
+                // change back to files.bigredhacks.com at some point?
+                return done(null, "https://" + config.setup.AWS_S3_bucket + ".s3.amazonaws.com" + "/resume/" + req.user.app.resume);
             },
             members: function (done) {
                 req.user.populate("internal.teamid", function (err, user) {
