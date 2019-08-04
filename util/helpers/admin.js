@@ -68,6 +68,7 @@ helper._getUsersFromTeamId = function (teamid, callback) {
     var teamMembers = [];
     if (teamid === null) return callback(null, teamMembers);
     Team.findOne({ _id: teamid }, function (err, team) {
+        if (team === null) return callback(null, teamMembers);
         team.populate('members.id', function (err, team) {
             if (err) console.error(err);
             team.members.forEach(function (val, ind) {
