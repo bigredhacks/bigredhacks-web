@@ -163,6 +163,9 @@ userSchema.methods.addToTeam = function (pubid, callback) {
                     return callback(err);
                 }
                 else {
+                    if (team == null) {
+                        return callback(err);
+                    }
                     team.addUser(_this._id, _this.name, function (err, newteam) {
                         if (err) {
                             return callback(err);
