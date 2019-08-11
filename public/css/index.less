@@ -301,6 +301,10 @@ p.text {
     font-size: 2rem;
     text-align: center;
     display: inline-block;
+
+    @media screen and (max-width: 767px) {
+      margin-bottom: 10px;
+    }
     
     div {
       background-color: @text-black;
@@ -325,6 +329,9 @@ p.text {
   margin-top: 10px;
   a {
     width: 50%;
+    @media screen and (max-width: 767px) {
+      width: 100%;
+    }
   }
 }
 
