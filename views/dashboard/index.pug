@@ -67,7 +67,7 @@ block dashboard_content
             when "accepted"
                 p.long-text
                     | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks Fall #{new Date().getFullYear()},
-                    |  taking place on September 15-17 at Cornell University. 
+                    |  taking place on September 20-22 at Cornell University. 
                 if !user.internal.cornell_applicant
                     if (user.internal.going == null)
                         if (deadline.active)
@@ -101,7 +101,7 @@ block dashboard_content
         if status == "accepted"
             p.long-text
                 | Congratulations - you're in! We're excited to offer you a spot in BigRed//Hacks Fall #{new Date().getFullYear()},
-                |  taking place on September 15-17 at Cornell University. 
+                |  taking place on September 20-22 at Cornell University. 
             p.long-text
                 | Please RSVP to secure your spot at the event!
             p.long-text
