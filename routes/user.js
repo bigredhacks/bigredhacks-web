@@ -423,7 +423,7 @@ module.exports = function (io) {
                                     helper.updateSubscriberType(config.mailchimp.l_applicants, req.user.email, config.mailchimp.l_external_rsvpd, cb);
                                 }
                                 else {
-                                    cb();
+                                    helper.updateSubscriberType(config.mailchimp.l_applicants, req.user.email, "Cornell Attendee", cb);
                                 }
                             }
                         ], function (err, result) {
