@@ -47,6 +47,7 @@ module.exports.makeRollingAnnouncement = (req, res) => {
     const DAYS_TO_RSVP = Number(config.admin.days_to_rsvp);
     const WAITLIST_ID = config.mailchimp.l_cornell_waitlisted;
     const ACCEPTED_ID = config.mailchimp.l_cornell_accepted;
+    const APPLICANTS_ID = config.mailchimp.l_applicants;
     User.find({
         $and: [
             { $where: "this.internal.notificationStatus != this.internal.status" },
@@ -60,7 +61,7 @@ module.exports.makeRollingAnnouncement = (req, res) => {
             // Do not want to overload by doing too many requests, so this will limit the async
             const maxRequestsAtATime = 3;
             async.eachLimit(recipient, maxRequestsAtATime, (recip, callback) => {
-                let config = {
+                let emailConfig = {
                     "from_email": "info@bigredhacks.com",
                     "from_name": "BigRed//Hacks",
                     "to": {
@@ -69,7 +70,7 @@ module.exports.makeRollingAnnouncement = (req, res) => {
                     }
                 };
 
-                email.sendDecisionEmail(recip.name.first, recip.internal.notificationStatus, recip.internal.status, config, function (err) {
+                email.sendDecisionEmail(recip.name.first, recip.internal.notificationStatus, recip.internal.status, emailConfig, function (err) {
                     if (err) {
                         return callback(err);
                     }
@@ -85,7 +86,7 @@ module.exports.makeRollingAnnouncement = (req, res) => {
                             (cb) => {
                                 if (recip.internal.cornell_applicant && recip.internal.status === "Accepted") {
                                     // We can get errors for non-termination reasons, so callback will only log error
-                                    helper.updateSubscriberType(config.mailchimp.l_applicants, recip.email, "Cornell Accepted", function (err) {
+                                    helper.updateSubscriberType(APPLICANTS_ID, recip.email, "Cornell Accepted", function (err) {
                                         if (err) {
                                             console.error(err);
                                         }
