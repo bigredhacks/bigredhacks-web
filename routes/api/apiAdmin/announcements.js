@@ -84,9 +84,11 @@ module.exports.makeRollingAnnouncement = (req, res) => {
                                 recip.save(cb);
                             },
                             (cb) => {
-                                if (recip.internal.cornell_applicant && recip.internal.status === "Accepted") {
+                                if (recip.internal.status === "Accepted") {
                                     // We can get errors for non-termination reasons, so callback will only log error
-                                    helper.updateSubscriberType(APPLICANTS_ID, recip.email, "Cornell Accepted", function (err) {
+                                    // TODO: replace these string with constants
+                                    const acceptedType = (recip.internal.cornell_applicant) ? "Cornell Accepted" : "External Accepted";
+                                    helper.updateSubscriberType(APPLICANTS_ID, recip.email, acceptedType, function (err) {
                                         if (err) {
                                             console.error(err);
                                         }
