@@ -23,7 +23,7 @@
   },
   "admin": {
     "email": "info@bigredhacks.com",
-    "reg_open": true,
+    "reg_open": false,
     "cornell_reg_open": false,
     "cornell_auto_accept": 150,
     "results_released": false,
