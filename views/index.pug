@@ -88,19 +88,17 @@ block append content
                     h1 September 20-22, 2019
                     h3 Join the organizer team! Applications close February 6th 11:59pm
                     
-                    //- unless regOpen
+                    unless regOpen
                         a(href="#interested").interest-button
                             div Subscribe for updates
                     
-		    //- .action-buttons
-			a(href="/register")
+		    .action-buttons
+			//- a(href="/register")
 			    div Apply
-			a(href="/login")
+			//- a(href="/login")
 			    div Login
-
-		    a(href="https://forms.gle/eV8tZHgiTKf46wVJA" target="_blank")
-                        div Apply
-
+			a(href="#interested").interest-button
+			    div Apply
 
                 div.logo
             svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
