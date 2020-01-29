@@ -274,9 +274,6 @@ p.text {
   text-transform: uppercase;
   text-align: center;
   z-index: 999;
-  @media screen and (max-width: 1111px) {
-    width: 400px;
-  }
   h2 {
     font-weight: 700;
     font-size: 3rem;
@@ -285,6 +282,13 @@ p.text {
   h3 {
     font-size: 2.5rem;
     margin-top: 5px;
+    width: 700px;
+  }
+  @media screen and (max-width: 1111px) {
+    width: 400px;
+    h3 {
+      width: auto;
+    }
   }
   img.date  {
     margin: 20px 0;
@@ -298,7 +302,6 @@ p.text {
     4px 4px 2px @text-black;
   }
   a.interest-button, .action-buttons > a{
- 
     color: @text-white;
     text-transform: lowercase;
     font-weight: bold;
@@ -309,7 +312,7 @@ p.text {
     @media screen and (max-width: 767px) {
       margin-bottom: 10px;
     }
-    
+
     div {
       background-color: @text-black;
       padding: 5px 15px 5px 15px;
