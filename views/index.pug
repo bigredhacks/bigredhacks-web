@@ -15,7 +15,7 @@ block append content
               span.icon-bar
             a.navbar-brand(href="#")
               img(alt="Big Red Hacks" src="/img/logo/brh-horizontal-white.png" class="nav-logo")
-                
+
           #mobile-nav-links.collapse.navbar-collapse
             ul.nav.navbar-nav
               li
@@ -34,11 +34,11 @@ block append content
     a#mlh-trust-badge(href='https://mlh.io/seasons/na-2020/events?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2020-season&utm_content=white' target='_blank')
         img(src='https://s3.amazonaws.com/logged-assets/trust-badge/2020/mlh-trust-badge-2020-white.svg' alt='Major League Hacking 2020 Hackathon Season' style='width:100%')
 
-    
+
     div(id="nav-desktop")
         div#nav-home.nav-item.active
-            a(href='#home')    
-                div.nav-circle#home-star  
+            a(href='#home')
+                div.nav-circle#home-star
                 div.nav-dialog#home-dialog
                     .triangle-border.right
                         | Home
@@ -49,7 +49,7 @@ block append content
                 div.nav-dialog#about-dialog
                     .triangle-border.right
                         | About
-            
+
 
         div#nav-schedule.nav-item
             a(href='#schedule')
@@ -57,7 +57,7 @@ block append content
                 div.nav-dialog#schedule-dialog
                     .triangle-border.right
                         | Schedule
-                
+
         //- div#nav-team.nav-item
             a(href="#team")
                 div.nav-circle#team-star
@@ -69,31 +69,32 @@ block append content
             a(href='#faq')
                 div.nav-circle#faq-star
                 div.nav-dialog#faq-dialog
-                    .triangle-border.right   
+                    .triangle-border.right
                         | FAQ
 
         div#nav-sponsors.nav-item
             a(href='#sponsors')
-                div.nav-circle#sponsors-star                
+                div.nav-circle#sponsors-star
                 div.nav-dialog#sponsors-dialog
                     .triangle-border.right
-                        | Sponsors       
+                        | Sponsors
 
     div
         div#home
             .home-container
                 div.home-content
-                    h2 Cornell University's 
+                    h2 Cornell University's
                     h3 Oldest and Largest Hackathon
                     h1 September 20-22, 2020
                     //- h3 Applications are now closed
-                    
+
                     //- unless regOpen
                         a(href="#interested").interest-button
                             div Subscribe for updates
 
-                    h3 Accepting #[a(href="https://forms.gle/eV8tZHgiTKf46wVJA" target="_blank") organizer applications] until Thursday Feb 6th 11:59pm        
-            
+                    h3 Accepting #[a(href="https://forms.gle/eV8tZHgiTKf46wVJA" target="_blank") organizer applications] until
+                    h3 Thursday Feb 6th 11:59pm
+
                 //- .action-buttons
                     //- a(href="/register")
                         //- div Apply
@@ -101,8 +102,8 @@ block append content
                     //- div Login
                 div.logo
             svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
-                polygon(fill='white', points='0,0 0,101 100,101')    
-        
+                polygon(fill='white', points='0,0 0,101 100,101')
+
         div#about
             div.innerContent
                 div.paddedSection
@@ -128,10 +129,10 @@ block append content
                                         | Across three days, Cornell and non-Cornell students alike gather to build the coolest
                                         | and most innovative projects, meet amazing people, and win some prizes along
                                         | the way!
-                                
+
                                 br
-                                unless regOpen      
-                                    .interestForm#interested 
+                                unless regOpen
+                                    .interestForm#interested
                                         h2.text-title Interested?
                                         p.text Join our email list to get the first scoop on upcoming events!
                                         .field-group
@@ -152,7 +153,7 @@ block append content
                                 if regOpen
                                     p.text.bold Registration for BigRed//Hacks 2019 is 
                                         a(href="/register") now open!
-        
+
         div#schedule
             svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.top
                 polygon(fill='white', points='-1,-1 -1,101 101,-1')
@@ -165,16 +166,16 @@ block append content
                     .col-md-4.col-sm-12
                         h3.table-title September 20th
                         table
-                            tr 
+                            tr
                                 th Time
                                 th Event
-                                th 
-                            tr 
+                                th
+                            tr
                                 td 3:00pm
                                 td Check In Begins (Call Auditorium)
                                 td
-                                
-                            tr 
+
+                            tr
                                 td 4:00pm
                                 td All Buses Arrive
                                 td
@@ -186,7 +187,7 @@ block append content
                                 td 7:30pm
                                 td Dinner (PSB)
                                 td
-                            tr 
+                            tr
                                 td.bold 8:00pm
                                 td.bold Hacking Begins
                                 td Team Formation
@@ -218,7 +219,7 @@ block append content
                             tr
                                 td 9:30am
                                 td Hiking @ Beebe Lake
-                            tr 
+                            tr
                                 td 11:00am
                                 td Bloomberg Demo
                             tr
@@ -227,13 +228,13 @@ block append content
                             tr
                                 td 1:00pm
                                 td Happy 5th Birthday, BigRed//Hacks!
-                            tr 
+                            tr
                                 td 2:00pm
                                 td Wayfair Demo
-                            tr 
+                            tr
                                 td 4:00pm
                                 td Dog Petting (Arts Quad)
-                            tr 
+                            tr
                                 td 5:30pm
                                 td Shirt Giveaway
                             tr
@@ -248,20 +249,20 @@ block append content
                             tr
                                 td 11:00pm
                                 td MLH Mini Event: Werewolf
-                            
+
                     .col-md-4.col-sm-12
                         h3.table-title September 22nd
                         table
                             tr
                                 th Time
                                 th Event
-                            tr 
+                            tr
                                 td 12:00am
                                 td Stargazing
                             tr
                                 td 1:00am
                                 td Ice Cream!
-                            tr 
+                            tr
                                 td.bold 8:00am
                                 td.bold Hacking Ends
                                 td Breakfast
@@ -299,7 +300,7 @@ block append content
                     br
                     div.container-fluid
                         .row.team-row
-                            .col-md-3.col-sm-6.text-center                             
+                            .col-md-3.col-sm-6.text-center
                               img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
                               h3.text-title Co-president
                               p.text First Last
@@ -307,7 +308,7 @@ block append content
                               img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
                               h3.text-title Co-president
                               p.text First Last
-                            .col-md-3.col-sm-6.text-center 
+                            .col-md-3.col-sm-6.text-center
                               img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
                               h3.text-title Logistics
                               p.text First Last
@@ -320,7 +321,7 @@ block append content
                               img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
                               h3.text-title Sponsorship
                               p.text First Last
-                            .col-md-3.col-sm-6.text-center 
+                            .col-md-3.col-sm-6.text-center
                               img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
                               h3.text-title Finance
                               p.text First Last
@@ -329,13 +330,13 @@ block append content
                               h3.text-title Design
                               p.text First Last
                             .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false") 
+                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
                               h3.text-title Web Dev
                               p.text First Last
 
                     p.text.text-center
                         | Interested in joining the Big Red Hacks team? Check back in the fall!
-                    
+
                     h2.section-subheader.text-center Member Spotlight
                     br
                     .container-fluid
@@ -346,7 +347,7 @@ block append content
                           h3.section-subheader First Last
                           h4.section-subheader Position
                           p.text
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan finibus tortor. Ut luctus ut libero vel scelerisque. Fusce viverra arcu et libero varius, vel porta neque facilisis. Quisque faucibus maximus libero non consectetur. Nullam faucibus eros ut nunc cursus semper. Ut at rhoncus tellus. Vivamus maximus quam id finibus tincidunt. Vestibulum blandit dolor eget tincidunt sodales. Integer diam nisi, interdum sed orci sed, cursus maximus nunc. Cras sollicitudin scelerisque euismod. Pellentesque ultricies euismod rutrum. Curabitur tempus, quam sed aliquam rhoncus, leo ex eleifend turpis, vel semper eros dui quis risus. Quisque et nisl vel ipsum bibendum scelerisque. 
+                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan finibus tortor. Ut luctus ut libero vel scelerisque. Fusce viverra arcu et libero varius, vel porta neque facilisis. Quisque faucibus maximus libero non consectetur. Nullam faucibus eros ut nunc cursus semper. Ut at rhoncus tellus. Vivamus maximus quam id finibus tincidunt. Vestibulum blandit dolor eget tincidunt sodales. Integer diam nisi, interdum sed orci sed, cursus maximus nunc. Cras sollicitudin scelerisque euismod. Pellentesque ultricies euismod rutrum. Curabitur tempus, quam sed aliquam rhoncus, leo ex eleifend turpis, vel semper eros dui quis risus. Quisque et nisl vel ipsum bibendum scelerisque.
                     br
         div#faq
             div.innerContent
@@ -425,7 +426,7 @@ block append content
                     div#logos
                         div.logo-5.logo-group
                             a(href="//www.wayfair.com" target="_blank")
-                                img#wayfair(src="/img/2019/sponsors/wayfair.png" alt="Wayfair Logo")   
+                                img#wayfair(src="/img/2019/sponsors/wayfair.png" alt="Wayfair Logo")
                         div.logo-4.logo-group
                             a(href="//www.ibm.com/" target="_blank")
                                 img#ibm(src="/img/2019/sponsors/ibm.png" alt="IBM Logo")
@@ -455,10 +456,10 @@ block append content
                                 img#stickermule(src="/img/2019/sponsors/stickermule.svg" alt="StickerMule Logo")
                             a(href="//mlh.io/" target="_blank")
                                 img#mlh(src="/img/2019/sponsors/mlh.svg" alt="MLH Logo")
-                        
+
                         p.text.text-center More sponsors coming soon!
 
-                    h2.section-subheader.text-center Want to sponsor us? 
+                    h2.section-subheader.text-center Want to sponsor us?
                     p.text.text-center We are still accepting sponsors for our 2019 event!
                     p.text.text-center Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
 
@@ -484,4 +485,4 @@ block footer
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
 //-     script(src="/js/jquery.validate.options.js")
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/parallax/2.1.3/parallax.min.js")
-    
+
