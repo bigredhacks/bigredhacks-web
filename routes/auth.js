@@ -62,12 +62,12 @@ passport.deserializeUser(function (id, done) {
 module.exports = function (io) {
     let router = express.Router();
 
-    // Login
-    // router.get("/login",  login.get);
-    // router.post("/login", passport.authenticate("user_strat", {
-    //     failureRedirect: "/login",
-    //     failureFlash: true
-    // }), login.post);
+    Login
+    router.get("/login",  login.get);
+    router.post("/login", passport.authenticate("user_strat", {
+        failureRedirect: "/login",
+        failureFlash: true
+    }), login.post);
 
     // Forgot Password
     router.get("/forgotpassword",  passwordForgot.get);
@@ -77,24 +77,24 @@ module.exports = function (io) {
     router.get("/resetpassword",   passwordReset.get);
     router.post("/resetpassword",  passwordReset.post);
 
-    // Registration (General)
-    // router.get("/register/:name?", (req, res, next) => {
-    //     if (req.params.name) {
-    //         return middle.requireCornellRegistrationOpen(req, res, next);
-    //     }
-    //     else {
-    //         return next();
-    //     }
-    // }, middle.requireRegistrationOpen, middle.requireNoAuthentication, register.get);
+    Registration (General)
+    router.get("/register/:name?", (req, res, next) => {
+        if (req.params.name) {
+            return middle.requireCornellRegistrationOpen(req, res, next);
+        }
+        else {
+            return next();
+        }
+    }, middle.requireRegistrationOpen, middle.requireNoAuthentication, register.get);
 
-    // router.post("/register/:name?", (req, res, next) => {
-    //     if (req.params.name) {
-    //         return middle.requireCornellRegistrationOpen(req, res, next);
-    //     }
-    //     else {
-    //         return next();
-    //     }
-    // }, middle.requireRegistrationOpen, register.post);
+    router.post("/register/:name?", (req, res, next) => {
+        if (req.params.name) {
+            return middle.requireCornellRegistrationOpen(req, res, next);
+        }
+        else {
+            return next();
+        }
+    }, middle.requireRegistrationOpen, register.post);
 
     return router;
 };
