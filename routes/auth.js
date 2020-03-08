@@ -62,7 +62,7 @@ passport.deserializeUser(function (id, done) {
 module.exports = function (io) {
     let router = express.Router();
 
-    Login
+    // Login
     router.get("/login",  login.get);
     router.post("/login", passport.authenticate("user_strat", {
         failureRedirect: "/login",
@@ -77,7 +77,7 @@ module.exports = function (io) {
     router.get("/resetpassword",   passwordReset.get);
     router.post("/resetpassword",  passwordReset.post);
 
-    Registration (General)
+    // Registration (General)
     router.get("/register/:name?", (req, res, next) => {
         if (req.params.name) {
             return middle.requireCornellRegistrationOpen(req, res, next);
