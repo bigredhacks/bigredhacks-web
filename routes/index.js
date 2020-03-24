@@ -25,9 +25,18 @@ router.get("/", function (req, res) {
     });
 });
 
+/**
+ * @api {GET} /org Organization page.
+ * @apiName Organization
+ * @apiGroup Index
+ */
+router.get("/org", function (req, res) {
+    res.render("org");
+});
+
 router.get("/2017", function (req, res) {
     res.render("index2017", {});
-})
+});
 
 /**
  * @api {GET} /subscribe subscribe a student to the mailing list

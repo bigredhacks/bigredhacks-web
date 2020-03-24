@@ -63,11 +63,11 @@ module.exports = function (io) {
     let router = express.Router();
 
     // Login
-    // router.get("/login",  login.get);
-    // router.post("/login", passport.authenticate("user_strat", {
-    //     failureRedirect: "/login",
-    //     failureFlash: true
-    // }), login.post);
+    router.get("/login",  login.get);
+    router.post("/login", passport.authenticate("user_strat", {
+        failureRedirect: "/login",
+        failureFlash: true
+    }), login.post);
 
     // Forgot Password
     router.get("/forgotpassword",  passwordForgot.get);
