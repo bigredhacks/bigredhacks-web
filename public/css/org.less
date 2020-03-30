@@ -6,43 +6,200 @@
 @red: #FE1736;
 @yellow: #FEB617;
 @gray: #555555;
-@black: #242424;
+@black: #000000;
 
 @roboto-con: 'Roboto Condensed', sans-serif;
 @roboto: 'Roboto', sans-serif;
 @weight-normal: 400;
 @weight-bold: 700;
 
+@section-margin: 60px;
+
 body {
+    padding: 0;
+    margin: 0;
     font-family: @roboto-con;
 }
 
-p {
-    font-weight: $weight-normal;
+p, a {
+    font-weight: @weight-normal;
     font-size: 18px;
     letter-spacing: 0.39px;
 }
 
-.section__title {
-    font-weight: $weight-bold;
+.section__header {
+    font-weight: @weight-bold;
     font-size: 46px;
+    color: @black;
+    text-transform: uppercase;
+    font-size: 5rem;
+    text-align: center;
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    .rect {
+      height: 6px;
+      width: 60px;
+      background-color: @yellow;
+      display: inline-block;
+      margin: 0 17px;
+    }
+    &.center {
+        justify-content: center;
+    }
 }
 
 .section__subtitle {
-    font-weight: $weight-bold;
+    font-weight: @weight-bold;
     font-size: 32px;
+    text-align: center;
+    display: block;
 }
 
-/*org hero styles*/
-
-/*org about styles*/
-
-/*org team styles*/
-
-/*org faq styles*/
-
-.faq__question {
-    font-weight: $weight-bold;
-    font-size: 36px;
-    letter-spacing: 0.78px;
+.content-margins {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    width: 85%;
+    @media screen and (max-width: 960px){
+        width: 95%;
+    }
 }
+
+/* --- org hero styles --- */
+#hero {
+    background-image: url("../img/org/org-hero.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+}
+
+/* --- org about styles --- */
+#section__about {
+    padding: @section-margin 0;
+    background: linear-gradient(180deg, #443F4A 0%, #3A637E 100%);
+    min-height: 100vh;
+    padding-bottom: 30px;
+}
+
+/* --- org team styles --- */
+#section__team {
+    padding: @section-margin 0;
+    background: linear-gradient(180deg, #FFDA33 0%, #FEA317 100%);
+    min-height: 100vh;
+    .member__showcase {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 45px;
+    }
+
+    .member {
+        width: 25%;
+        width: 25%;
+        padding: 10px 50px;
+        text-align: center;
+        @media screen and (max-width: 960px){
+            padding: 10px 20px;
+        }
+        @media screen and (max-width: 767px) {
+            width: 33%;
+            width: 33%;
+        }
+        @media screen and (max-width: 575px) {
+            padding: 10px 10px;
+        }
+    }
+
+    .member__image {
+        max-width: 100%;
+        border-radius: 50%;
+    }
+
+    .member__team {
+        font-family: @roboto;
+        font-size: 24px;
+        letter-spacing: 1px;
+        padding-top: 20px;
+        @media screen and (max-width: 767px) {
+            font-size: 20px;
+        }
+         @media screen and (max-width: 415px) {
+            font-size: 15px;
+        }
+    }
+
+    .learn {
+        display: block;
+        text-align: center;
+        text-decoration: underline;
+        color: @black;
+        margin-bottom: 100px;
+    }
+
+    .member__spotlight {
+        display: flex;
+        align-items: center;
+        max-width: 100%;
+        margin-top: 25px;
+        @media screen and (max-width: 760px){
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .left {
+            flex: 1;
+            max-width: 25%;
+            text-align: center;
+            .spotlight__image {
+                max-width: 100%;
+            }
+            @media screen and (max-width: 960px){
+                max-width: 35%;
+            }
+            @media screen and (max-width: 760px){
+                max-width: 55%;
+                margin-bottom: 40px;
+            }
+            
+        }
+        .right {
+            flex: 1;
+            padding-left: 75px;
+            @media screen and (max-width: 960px){
+               padding-left: 45px;
+            }
+            @media screen and (max-width: 760px){
+               padding-left: 0;
+            }
+        }
+    }
+    
+}
+
+/* --- org faq styles --- */
+#section__faq {
+    padding: @section-margin 0;
+    background: linear-gradient(180deg, #373243 0%, #FE1736 100%);
+    min-height: 100vh;
+    padding-bottom: 30px;
+    .section__header {
+        color: #FFF;
+    }
+    .faq__question {
+        font-weight: @weight-bold;
+        font-size: 36px;
+        letter-spacing: 0.78px;
+    } 
+}
+
+/* --- org footer styles --- */
+#footer {
+    min-height: 230px;
+    background: @gray;
+}
+
+
