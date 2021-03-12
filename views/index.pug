@@ -3,492 +3,121 @@ extends _global/_layout
 block append header
     link(href="/css/index.css", rel="stylesheet")
 block append content
-    //- MLH Badge
-    div(id="nav-mobile")
-      nav.navbar.navbar-default
-        .container-fluid
-          .navbar-header
-            button.navbar-toggle.collapsed(type='button' data-toggle='collapse' data-target='#mobile-nav-links' aria-expanded='false')
-              span.sr-only Toggle navigation
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
-            a.navbar-brand(href="#")
-              img(alt="Big Red Hacks" src="/img/logo/brh-horizontal-white.png" class="nav-logo")
+    div#hero
+    div#section__about
+        div.content-margins
+            div.box
+                h1.section__header.center
+                    div.rect
+                    | Who Are We
+                    div.rect
+                div.about__row
+                    div.left
+                        img.spotlight__image(src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80" alt="")
+                    div.right
+                        p.about__text BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
 
-          #mobile-nav-links.collapse.navbar-collapse
-            ul.nav.navbar-nav
-              li
-                a(href='#') Home
-              li
-                a(href='#about') About
-              //- li
-                a(href='#team') Team
-              li
-                a(href='#schedule') Schedule
-              li
-                a(href='#faq') FAQ
-              li
-                a(href='#sponsors') Sponsors
+                        p.about__text Across three days, Cornell and non-Cornell students alike gather to build the coolest and most innovative projects, meet amazing people, and win some prizes along the way!
 
-    a#mlh-trust-badge(href='https://mlh.io/seasons/na-2020/events?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2020-season&utm_content=white' target='_blank')
-        img(src='https://s3.amazonaws.com/logged-assets/trust-badge/2020/mlh-trust-badge-2020-white.svg' alt='Major League Hacking 2020 Hackathon Season' style='width:100%')
+            h2.section__subtitle PREVIOUS HACKATHONS
+            div.previous__spotlight
+                a.previous__image(href="/2017")
+                    img(src="/img/f2017/header.png" alt="")
+                a.previous__image(href="#")
+                    img(src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80" alt="")
+                a.previous__image(href="/2019")
+                    img(src="/img/2019/logo.svg" alt="")
 
+    div#section__team
+        div.content-margins
+            h1.section__header.center
+                div.rect
+                | Big Red Team
+                div.rect
+            p We are organizing team behind the BigRed//Hacks hackathon! Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-    div(id="nav-desktop")
-        div#nav-home.nav-item.active
-            a(href='#home')
-                div.nav-circle#home-star
-                div.nav-dialog#home-dialog
-                    .triangle-border.right
-                        | Home
+            div.member__showcase
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team LEADS
 
-        div#nav-about.nav-item
-            a(href='#about')
-                div.nav-circle#about-star
-                div.nav-dialog#about-dialog
-                    .triangle-border.right
-                        | About
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team ADVISORS
 
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team LOGISTICS
 
-        div#nav-schedule.nav-item
-            a(href='#schedule')
-                div.nav-circle#schedule-star
-                div.nav-dialog#schedule-dialog
-                    .triangle-border.right
-                        | Schedule
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team MARKETING
 
-        //- div#nav-team.nav-item
-            a(href="#team")
-                div.nav-circle#team-star
-                div.nav-dialog#team-dialog
-                    .triangle-border.right
-                        | Team
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team SPONSORSHIP
 
-        div#nav-faq.nav-item
-            a(href='#faq')
-                div.nav-circle#faq-star
-                div.nav-dialog#faq-dialog
-                    .triangle-border.right
-                        | FAQ
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team FINANCE
 
-        div#nav-sponsors.nav-item
-            a(href='#sponsors')
-                div.nav-circle#sponsors-star
-                div.nav-dialog#sponsors-dialog
-                    .triangle-border.right
-                        | Sponsors
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team DESIGN
 
-    div
-        div#home
-            .home-container
-                div.home-content
-                    h2 Cornell University's
-                    h3 Oldest and Largest Hackathon
-                    h1 September 20-22, 2019
-                    //- h3 Applications are now closed
+                div.member
+                    img.member__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+                    p.member__team WEB DEVELOPMENT
 
-                    //- unless regOpen
-                        a(href="#interested").interest-button
-                            div Subscribe for updates
+            a.learn(href="#") Learn more about Recruitment and the Team >
+            h2.section__subtitle  MEMBER SPOTLIGHT
+            div.member__spotlight
+                div.left
+                    img.spotlight__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
 
-                    //- h3 Accepting
-                    //-     b  #[a(href="https://forms.gle/eV8tZHgiTKf46wVJA" target="_blank") organizer applications]
-                    //-     |  until
-                    //- h3 Thursday Feb 6th 11:59pm
-                    h3 BigRed//Hacks 2020 is delayed until spring.
-                    h3 Go check out
-                        b  #[a(href="https://ivyhacks.com/" target="_blank") IvyHacks]
-                        | !
-                    h3 Oct 1-4, 2020
+                div.right
+                    p.spotlight__text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut eros vitae leo tincidunt efficitur et eleifend urna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc tincidunt, nisl in consectetur lacinia, magna turpis aliquet elit, quis sagittis dui erat vitae lacus.
 
-                //- .action-buttons
-                    //- a(href="/register")
-                        //- div Apply
-                    //- a(href="/login")
-                    //- div Login
-                div.logo
-            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
-                polygon(fill='white', points='0,0 0,101 100,101')
+                    p.spotlight__text Donec tempor fermentum malesuada. Proin quis metus justo. Ut vitae mi malesuada, molestie nisl eu, malesuada arcu. Proin molestie egestas maximus. Pellentesque sagittis at tellus a interdum.
+    div#section__faq
+        div.content-margins
+            h1.section__header.center
+                div.rect
+                | Frequently Asked Questions
+                div.rect
+            div.box
+                h2.faq__question Is the Fall 2020 BigRed//Hacks still happening?
+                p.answer Our hackathon date is currently set for September 25-27. If needed, we will push it back to October/November 2020 or spring 2021. We may consider hosting a remote hackathon if it is pushed back to the spring.
+            div.box
+                h2.faq__question Who is eligible to participate?
+                p.answer We are inviting all undergraduate and graduate students to participate in our hackathon. You don't need any past experience. You don't even need to be a computer science major! Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
+            div.box
+                h2.faq__question What will I need to bring?
+                p.answer Bring your school ID for registration. You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc. You may also want to bring a sleeping bag, change of clothes, and toothbrush.
+            div.box
+                h2.faq__question What are the rules?
+                p.answer We want BigRed//Hacks to be fun and fair for everyone. Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally. Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
+            div.box
+                h2.faq__question Do I have to sign up with a team?
+                p.answer You don't have to sign up with a team, but it's certainly more fun! We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event. If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
+            div.box
+                h2.faq__question Why is there an application?
+                p.answer We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate. Furthermore, we hope that the process will encourage registrants to be committed to building something awesome. Even if you've never been to a hackathon before, please apply!
+            div.box
+                h2.faq__question Are you providing food?
+                p.answer Don't worry, there will be lots of delicious food and beverages at our event, complimentary to all participants. We'll have vegetarian options as well.
+            div.box
+                h2.faq__question How does travel reimbursement work?
+                p.answer At this time, we are unsure about how much travel reimbursement we will be able to offer. We currently have bus routes for the following schools: Buffalo, RIT, Princeton, Rutgers, and Binghamton. Depending on our budget and interest from other schools, we may be able to send out more buses! If your school is not listed, pease message us at info@bigredhacks.com about travel reimbursement, and we will see what we can do on a case-by-case basis. In the past, we have capped reimbursement at $200 per person. Thank you!
+            div.box
+                h2.faq__question Have more questions?
+                p.answer Send them to <a href="mailto:info@bigredhacks.com">info@bigredhacks.com</a>!
 
-        div#about
-            div.innerContent
-                div.paddedSection
-                    h1.section-header#about-header.center
-                        div.rect
-                        | Who we are
-                        div.rect
-                    .container-fluid
-                        .row
-                            .col-md-6
-                                img(src="/img/home/brh_about.jpg").img-responsive#about-img
-                                div.btn-social-group.text-center
-                                    p.text.bold Follow us on Facebook and Twitter!
-                                    a.btn.btn-social.facebook(href="https://facebook.com/bigredhacks" target="_blank")
-                                        span.fa.fa-facebook-square
-                                    a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
-                                        span.fa.fa-twitter
-                            .col-md-6
-                                div.text-container
-                                    p.text
-                                        | BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
-                                    p.text
-                                        | Across three days, Cornell and non-Cornell students alike gather to build the coolest
-                                        | and most innovative projects, meet amazing people, and win some prizes along
-                                        | the way!
-
-                                br
-                                unless regOpen
-                                    .interestForm#interested
-                                        h2.text-title Interested?
-                                        p.text Join our email list to get the first scoop on upcoming events!
-                                        .field-group
-                                            .field
-                                                label(for="firstName") First Name *
-                                                input(type="text" name="firstName" id="firstName" required)
-
-                                            .field
-                                                label(for="lastName") Last Name *
-                                                input(type="text" name="lastName" id="lastName" required)
-                                        .field-group
-                                            .field
-                                                label(for="fname") Email Address *
-                                                input(type="email" name="email" id="email" required)    
-                                        .btnContainer
-                                            button(class="btn btn-primary interestFormBtn" id="submitForm") Submit
-                                        .msgContainer.error
-                                if regOpen
-                                    p.text.bold Registration for BigRed//Hacks 2019 is 
-                                        a(href="/register") now open!
-
-        div#schedule
-            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.top
-                polygon(fill='white', points='-1,-1 -1,101 101,-1')
-            div.paddedSection
-                h1.section-header.center
-                    .rect
-                    | Event Schedule
-                    .rect
-                .container-fluid
-                    .col-md-4.col-sm-12
-                        h3.table-title September 20th
-                        table
-                            tr
-                                th Time
-                                th Event
-                                th
-                            tr
-                                td 3:00pm
-                                td Check In Begins (Call Auditorium)
-                                td
-
-                            tr
-                                td 4:00pm
-                                td All Buses Arrive
-                                td
-                            tr
-                                td.bold 6:00pm
-                                td.bold Opening Ceremony (Call Auditorium)
-                                td
-                            tr
-                                td 7:30pm
-                                td Dinner (PSB)
-                                td
-                            tr
-                                td.bold 8:00pm
-                                td.bold Hacking Begins
-                                td Team Formation
-                            tr
-                                td 9:00pm
-                                td Wayfair API Demo (PSB 120)
-                                td
-                            tr
-                                td 10:00pm
-                                td IBM API Demo (PSB 120)
-                                td
-                            tr
-                                td 11:00pm
-                                td Google Cloud API Demo (PSB 120)
-                                td
-
-                    .col-md-4.col-sm-12
-                        h3.table-title September 21st
-                        table
-                            tr
-                                th Time
-                                th Event
-                            tr
-                                td 12:00am
-                                td Insomnia Cookies
-                            tr 
-                                td 8:00am
-                                td Breakfast
-                            tr
-                                td 9:30am
-                                td Hiking @ Beebe Lake
-                            tr
-                                td 11:00am
-                                td Bloomberg Demo
-                            tr
-                                td 12:00pm
-                                td Lunch
-                            tr
-                                td 1:00pm
-                                td Happy 5th Birthday, BigRed//Hacks!
-                            tr
-                                td 2:00pm
-                                td Wayfair Demo
-                            tr
-                                td 4:00pm
-                                td Dog Petting (Arts Quad)
-                            tr
-                                td 5:30pm
-                                td Shirt Giveaway
-                            tr
-                                td 6:00pm
-                                td Cup Stacking
-                            tr
-                                td 7:00pm
-                                td Dinner
-                            tr
-                                td 9:00pm
-                                td Bowling (Helen Newman)
-                            tr
-                                td 11:00pm
-                                td MLH Mini Event: Werewolf
-
-                    .col-md-4.col-sm-12
-                        h3.table-title September 22nd
-                        table
-                            tr
-                                th Time
-                                th Event
-                            tr
-                                td 12:00am
-                                td Stargazing
-                            tr
-                                td 1:00am
-                                td Ice Cream!
-                            tr
-                                td.bold 8:00am
-                                td.bold Hacking Ends
-                                td Breakfast
-                            tr
-                                td 9:30am
-                                td Project Expo (Open to Public)
-                            tr
-                                td 11:30am
-                                td Lunch
-                            tr
-                                td.bold 12:30pm
-                                td.bold Closing Ceremony + Prizes (Call Auditorium)
-                            tr
-                                td 2:00pm
-                                td Pack Up + Goodbyes
-                            tr
-                                td 2:00pm
-                                td Buses Leave (Call Auditorium)
-                p.text.text-center Unless noted otherwise, all events are in the Physical Sciences Building (PSB)
-
-            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
-                polygon(fill='#fe1736', points='-1,-1 -1,101 101,101')
-                polygon(fill='#000000', points='-1,-1 -1,5 101,101 101,95')
-        //- div#team
-            div.innerContent
-                div.paddedSection
-                    h1.section-header
-                        div.rect
-                        | Big Red Team
-                        div.rect
-                    p.text.text-center
-                        | Big Red Hacks is made possible by a team of Cornell undergraduate
-                        | students passionate about hackathons, innovation, and fun!
-                    h2.text-title.text-center Team Leads
-                    br
-                    div.container-fluid
-                        .row.team-row
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Co-president
-                              p.text First Last
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Co-president
-                              p.text First Last
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Logistics
-                              p.text First Last
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Marketing
-                              p.text First Last
-                        .row.team-row
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Sponsorship
-                              p.text First Last
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Finance
-                              p.text First Last
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Design
-                              p.text First Last
-                            .col-md-3.col-sm-6.text-center
-                              img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                              h3.text-title Web Dev
-                              p.text First Last
-
-                    p.text.text-center
-                        | Interested in joining the Big Red Hacks team? Check back in the fall!
-
-                    h2.section-subheader.text-center Member Spotlight
-                    br
-                    .container-fluid
-                      .row
-                        .col-md-6.text-center
-                          img(src="/img/team/placeholder.png" class="team-photo" draggable="false")
-                        .col-md-6
-                          h3.section-subheader First Last
-                          h4.section-subheader Position
-                          p.text
-                            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan finibus tortor. Ut luctus ut libero vel scelerisque. Fusce viverra arcu et libero varius, vel porta neque facilisis. Quisque faucibus maximus libero non consectetur. Nullam faucibus eros ut nunc cursus semper. Ut at rhoncus tellus. Vivamus maximus quam id finibus tincidunt. Vestibulum blandit dolor eget tincidunt sodales. Integer diam nisi, interdum sed orci sed, cursus maximus nunc. Cras sollicitudin scelerisque euismod. Pellentesque ultricies euismod rutrum. Curabitur tempus, quam sed aliquam rhoncus, leo ex eleifend turpis, vel semper eros dui quis risus. Quisque et nisl vel ipsum bibendum scelerisque.
-                    br
-        div#faq
-            div.innerContent
-                div.paddedSection
-                    h1.section-header.center
-                        div.rect
-                        | Frequently Asked Questions
-                        div.rect
-                    .container-fluid
-                        .col-sm-6
-                            .faq-box
-                                dt Who is eligible to participate?
-                                dd
-                                    | We are inviting all undergraduate and graduate students to participate in our hackathon.
-                                    | You don't need any past experience.
-                                    | You don't even need to be a computer science major!
-                                    | Our only requirement is that you are at least 18 years old and enrolled in an accredited college or university.
-                            .faq-box
-                                dt What will I need to bring?
-                                dd
-                                    | Bring your school ID for registration.
-                                    | You are also responsible for bringing any equipment for building and demoing your hack: laptop, chargers, phones, etc.
-                                    | You may also want to bring a sleeping bag, change of clothes, and toothbrush.
-                            .faq-box
-                                dt Do I have to sign up with a team?
-                                dd
-                                    | You don't have to sign up with a team, but it's certainly more fun!
-                                    | We allow teams of up to four people (they don't have to be from the same school), and while they can be specified on the application, you won't officially create your team until the event.
-                                    | If you don't have a team yet, we'll host a social before the hacking begins for you to meet other amazing people.
-                            .faq-box
-                                dt Are you providing food?
-                                dd
-                                    | Don't worry, there will be lots of delicious food and beverages at our event, complimentary to all participants.
-                                    | We'll have vegetarian options as well.
-                        .col-sm-6
-                            .faq-box
-                                dt Are hardware hacks allowed?
-                                dd
-                                    | We will be providing a dedicated hardware lab with sensors, microcontrollers, and basic components.
-                                    | Some of our sponsors are bringing hardware to loan, but we still suggest that you bring your own equipment if you know that you'll absolutely need it.
-                            .faq-box
-                                dt What are the rules?
-                                dd
-                                    | We want BigRed//Hacks to be fun and fair for everyone.
-                                    | Your project should be started from scratch and worked on only during the 36 hours, and you may only incorporate outside resources (code, graphics, sound, etc) that are freely licensed and accessible to all participants equally.
-                                    | Of course, maintain a positive, respectful attitude toward your fellow hackers throughout the event.
-                            .faq-box
-                                dt Why is there an application?
-                                dd
-                                    | We want to guarantee that students from a wide range of schools and experiences are given an equal and fair chance to participate.
-                                    | Furthermore, we hope that the process will encourage registrants to be committed to building something awesome.
-                                    | Even if you've never been to a hackathon before, please apply!
-
-                            .faq-box
-                                dt How does travel reimbursement work?
-                                dd
-                                    | At this time, we are unsure about how much travel reimbursement we will be able to offer.
-                                    | We currently have bus routes for the following schools: Buffalo, RIT, Princeton, Rutgers, and Binghamton. 
-                                    | Depending on our budget and interest from other schools, we may be able to send out more buses! 
-                                    | If your school is not listed, pease message us at info@bigredhacks.com about travel reimbursement, and we will see what we can do on a case-by-case basis.
-                                    | In the past, we have capped reimbursement at $200 per person. Thank you!
-
-                            .faq-box
-                                dt Have more questions?
-                                dd Send them to #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
-            svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 100 100', preserveAspectRatio='none').triangle.bottom
-                polygon(fill='#ffffff', points='100,0 0,100 100,100')
-                polygon(fill='#000000', points='0,100 0,95 100,0 100,5')
-        div#sponsors
-            div.innerContent
-                div.paddedSection
-                    h1.section-header.center
-                        div.rect
-                        | Sponsors
-                        div.rect
-                    div#logos
-                        div.logo-5.logo-group
-                            a(href="//www.wayfair.com" target="_blank")
-                                img#wayfair(src="/img/2019/sponsors/wayfair.png" alt="Wayfair Logo")
-                        div.logo-4.logo-group
-                            a(href="//www.ibm.com/" target="_blank")
-                                img#ibm(src="/img/2019/sponsors/ibm.png" alt="IBM Logo")
-                        div.logo-3.logo-group
-                            a(href="//www.cloud.google.com" target="_blank")
-                                img#google(src="/img/2019/sponsors/google_cloud.png" alt="Google Cloud Logo")
-                            a(href="//www.capitalone.com/" target="_blank")
-                                img#capital-one(src="/img/2019/sponsors/cap1.png" alt="Capital One Logo")
-                            a(href="//www.bloomberg.com" target="_blank")
-                                img#bloomberg(src="/img/2019/sponsors/bloomberg.svg" alt="Bloomberg Logo")
-                        div.logo-2.logo-group
-                            a(href="//www.americanexpress.com" target="_blank")
-                                img#amex(src="/img/2019/sponsors/amex.png" alt="American Express Logo")
-                        div.logo-1.logo-group
-                            a(href="//www.accenture.com" target="_blank")
-                                img#accenture(src="/img/2019/sponsors/accenture.png" alt="Accenture Logo")
-                            a(href="//www.grammatech.com" target="_blank")
-                                img#grammatech(src="/img/2019/sponsors/grammatech.png" alt="GrammaTech Logo")
-                            a(href="//www.jetbrains.com" target="_blank")
-                                img#jetbrains(src="/img/2019/sponsors/jetbrains.png" alt="JetBrains Logo")
-                        div.logo-0.logo-group
-                            a(href="//www.chobani.com" target="_blank")
-                                img#chobani(src="/img/2019/sponsors/chobani.png" alt="Chobani Logo")
-                            a(href="//hort.cals.cornell.edu/about/facilities/cornell-orchards/" target="_blank")
-                                img#cornell-orchards(src="/img/2019/sponsors/cornellorchards.jpg" alt="Cornell Orchards Logo")
-                            a(href="//hackp.ac/mlh-stickermule-hackathons" target='_blank')
-                                img#stickermule(src="/img/2019/sponsors/stickermule.svg" alt="StickerMule Logo")
-                            a(href="//mlh.io/" target="_blank")
-                                img#mlh(src="/img/2019/sponsors/mlh.svg" alt="MLH Logo")
-
-                        //- p.text.text-center More sponsors coming soon!
-
-                    h2.section-subheader.text-center Want to sponsor us?
-                    //- p.text.text-center We are still accepting sponsors for our 2019 event!
-                    p.text.text-center Send us an email at #[a(href="mailto:info@bigredhacks.com") info@bigredhacks.com]!
-
-        div.footer
-            .footer-img
-                img(src="/img/logo/brh-horizontal-white.png")
-            .btn-social-group
-                a.btn.btn-social.facebook(href="https://facebook.com/bigredhacks" target="_blank")
-                    span.fa.fa-facebook-square
-                a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
-                    span.fa.fa-twitter
-                a.btn.btn-social.email(href="https://twitter.com/bigredhacks" target="_blank")
-                    span.fa.fa-envelope
-            p Made with ❤️ from the BigRed//Hacks team
-            p 
-                a(href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf" target="_blank")
-                    | MLH Code of Conduct
-
+    div#footer
 
 block footer
-    script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
-    script(src="/js/index.js")
+    //- script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+    //- script(src="/js/index.js")
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js")
 //-     script(src="/js/jquery.validate.options.js")
 //-     script(src="//cdnjs.cloudflare.com/ajax/libs/parallax/2.1.3/parallax.min.js")

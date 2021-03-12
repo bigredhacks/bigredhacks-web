@@ -12,22 +12,46 @@ const config = require("../config.js");
 const util = require("../util/util");
 
 /**
- * @api {GET} /index Home page.
+ * @api {GET} /index BigRed//Hacks organizers homepage.
  * @apiName Index
  * @apiGroup Index
  */
 router.get("/", function (req, res) {
-    let ev = req.flash();
-    res.render("index", {
-        title: "Cornell's Ultimate Hackathon",
-        messages: ev,
-        regOpen: config.admin.reg_open
+    res.render("index2019", {});
+});
+
+/**
+ * @api {GET} /index BigRed//Hacks organizers homepage.
+ * @apiName Index
+ * @apiGroup Index
+ */
+// router.get("/org", function (req, res) {
+//     res.render("org", {});
+// });
+
+
+/**
+ * @api {GET} /2019 BigRed//Hacks 2019 homepage
+ * @apiName Old Hackathons
+ * @apiGroup Index
+ */
+router.get("/2019", function (req, res) {
+    // let ev = req.flash();
+    res.render("index2019", {
+        // title: "Cornell's Ultimate Hackathon",
+        // messages: ev,
+        // regOpen: config.admin.reg_open
     });
 });
 
+/**
+ * @api {GET} /2017 BigRed//Hacks 2017 homepage
+ * @apiName Old Hackathons
+ * @apiGroup Index
+ */
 router.get("/2017", function (req, res) {
     res.render("index2017", {});
-})
+});
 
 /**
  * @api {GET} /subscribe subscribe a student to the mailing list
