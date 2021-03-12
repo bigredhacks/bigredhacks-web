@@ -17,8 +17,18 @@ const util = require("../util/util");
  * @apiGroup Index
  */
 router.get("/", function (req, res) {
-    res.render("index", {});
+    res.render("index2019", {});
 });
+
+/**
+ * @api {GET} /index BigRed//Hacks organizers homepage.
+ * @apiName Index
+ * @apiGroup Index
+ */
+// router.get("/org", function (req, res) {
+//     res.render("org", {});
+// });
+
 
 /**
  * @api {GET} /2019 BigRed//Hacks 2019 homepage
