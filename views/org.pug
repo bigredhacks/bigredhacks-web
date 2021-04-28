@@ -1,0 +1,112 @@
+extends _global/_layout
+
+block append header
+
+    link(href="/css/orgpage.css", rel="stylesheet")
+block append content
+    div#hero
+    div#section__about
+        div.content-margins
+            div.box
+                h1.section__header.center
+                    div.rect
+                    | Who We Are
+                    div.rect
+                div.about__row
+                    div.left
+                        img.spotlight__image(src="/img/org/org-team.jpg" alt="")
+                    div.right
+                        p.about__text BigRed//Hacks is the oldest student-run, large-scale hackathon at Cornell University.
+
+                        //p.about__text Across three days, Cornell and non-Cornell students alike gather to build the coolest and most innovative projects, meet amazing people, and win some prizes along the way!
+                        //
+                        //p.about__text Mauris nec tellus leo. Cras vehicula magna lorem, et vehicula ex blandit vitae. Nam eu tincidunt erat. Nulla aliquam eleifend finibus. Duis ut ante sit amet velit faucibus bibendum.
+
+            h2.section__subtitle PREVIOUS HACKATHONS
+            div.previous__spotlight
+                a.previous__image(href="http://bigredhacks.com")
+                    img(src="/img/org/org-2019.jpg" alt="")
+                    p 2019
+                a.previous__image(href="http://bigredhacks.com")
+                    img(src="/img/org/org-2018temp.jpg" alt="")
+                    p 2018
+                a.previous__image(href="http://bigredhacks.com/2017")
+                    img(src="/img/org/org-2017temp.jpg" alt="")
+                    p 2017
+
+    div#section__team
+        div.content-margins
+            h1.section__header.center
+                div.rect
+                | Big Red Team
+                div.rect
+            // p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut eros vitae leo tincidunt efficitur et eleifend urna. Orci varieeeus natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+
+            div.member__showcase
+                div.member
+                    img.member__image(src="/img/org/org-team.jpg" alt="Logistics Team Photo")
+                    p.member__team LOGISTICS
+                    p.member__description The logistics team deals with day-of logistics to ensure that the event runs smoothly through coordination with university staff, sponsors, students, and the others teams on BigRed//Hacks. Logistics provides the facilities and all operational requirements for BigRed//Hacks events. Whether it's food or midnight stargazing, logistics has got it covered.
+
+                div.member
+                    img.member__image(src="/img/org/org-marketing.jpg" alt="Marketing Team Photo")
+                    p.member__team MARKETING
+                    p.member__description The marketing team strengthens our brand presence by taking over our social media and engaging our community of innovators with creative marketing campaigns!
+
+                div.member
+                    img.member__image(src="/img/org/org-sponsorship.jpg" alt="Sponsorship Team Photo")
+                    p.member__team SPONSORSHIP
+                    p.member__description Sponsorship handles negotiation with companies to obtain monetary support, use of APIs/tools, and prizes. Sponsorship members must be able to negotiate with companies who are interested in sponsoring BigRed//Hacks and help handle day-of logistics for sponsor companies who are performing demos or manning booths for the event. They must also represent sponsors during any relevant PR initiatives (website, swag, etc).
+
+                div.member
+                    img.member__image(src="/img/org/org-default.jpg" alt="Finance Team Photo")
+                    p.member__team FINANCE
+                    p.member__description The finance team creates a budget for each event (Fall/Spring). Communicate with the sponsorship team for updates on incoming funds and monitor invoices with CIS, adjust the budget accordingly. Coordinate with a design for t-shirt and accessories orders. Manage food, beverage, snacks transactions and record accordingly. Help coordinate team bonding events.
+
+                div.member
+                    img.member__image(src="/img/org/org-design.jpeg" alt="Design Team Photo")
+                    p.member__team DESIGN
+                    p.member__description The design team strengthens, reinforces, and reinvents the BigRed//Hacks brand image: this includes branding all documents, designing the event T-shirt, creating advertisements, and working to ensure that the brand is cohesive across our work.
+
+                div.member
+                    img.member__image(src="/img/org/org-default.jpg" alt="Web Dev Team Photo")
+                    p.member__team WEB DEVELOPMENT
+                    p.member__description The web dev team is in charge of all tech needs such as implementing a new hackathon theme each year as well as streamlining day of event operations through the website. Everything is built in-house and the team works to ensure as flawless an experience possible!
+            //a.learn(href="#") Learn more about Recruitment and Team >
+            //h2.section__subtitle  MEMBER SPOTLIGHT
+            //div.member__spotlight
+            //    div.left
+            //        img.spotlight__image(src="https://images.unsplash.com/photo-1534119768988-c496213eff76?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1100&q=80" alt="")
+            //
+            //    div.right
+            //        p.spotlight__text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ut eros vitae leo tincidunt efficitur et eleifend urna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc tincidunt, nisl in consectetur lacinia, magna turpis aliquet elit, quis sagittis dui erat vitae lacus.
+            //
+            //        p.spotlight__text Donec tempor fermentum malesuada. Proin quis metus justo. Ut vitae mi malesuada, molestie nisl eu, malesuada arcu. Proin molestie egestas maximus. Pellentesque sagittis at tellus a interdum.
+    div#section__faq
+        div.content-margins
+            h1.section__header.center
+                div.rect
+                | Frequently Asked Questions
+                div.rect
+            div.box
+                h2.faq__question How can I join?
+                p.answer BigRed//Hacks is a team of undergraduate students from a multitude of majors and colleges at Cornell University. We work tirelessly throughout the year to plan and run our namesake event, BigRed//Hacks. With over 400 participants from colleges around the United States and the world, BigRed//Hacks prides itself on bringing people together to create awesome projects, forge lifelong friendships, and connect students to companies and technologies. If you are an undergrad at Cornell and would like to join the team, feel free to reach out to info@bigredhacks.com.
+            div.box
+                h2.faq__question Where does BRH take place?
+                p.answer BigRed//Hacks is an annual hackathon hosted at Cornell University. All undergraduate students are welcome to apply to attend, and join us to meet new people, create amazing projects, and have an unforgettable weekend.
+    //div#footer
+    div.footer
+        .footer-img
+            img(src="/img/logo/brh-horizontal-white.png")
+        .btn-social-group
+            a.btn.btn-social.facebook(href="https://facebook.com/bigredhacks" target="_blank")
+                span.fa.fa-facebook-square
+            a.btn.btn-social.twitter(href="https://twitter.com/bigredhacks" target="_blank")
+                span.fa.fa-twitter
+            a.btn.btn-social.email(href="https://twitter.com/bigredhacks" target="_blank")
+                span.fa.fa-envelope
+            p Made with ❤️ from the BigRed//Hacks team
+
+block footer
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+    //script(src="/js/org.js")
