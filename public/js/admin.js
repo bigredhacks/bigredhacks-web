@@ -51,8 +51,8 @@ $('document').ready(function () {
     liveCheckbox.bootstrapSwitch();
 
     /****************************
-    * Live Mode switch*** 
-    ***************************/
+     * Live Mode switch***
+     ***************************/
 
     var setLiveToggle = function (state) { // set api value
         $.ajax({

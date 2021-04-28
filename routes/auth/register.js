@@ -1,323 +1,291 @@
-// Node Modules and utilities
-const _ = require("underscore");
 const async = require("async");
-const authHelp = require("../../util/helpers/auth");
-const config = require('../../config.js');
-const email = require('../../util/email');
-const helper = require("../../util/routes_helper");
-const multiparty = require('multiparty');
+const _ = require("lodash");
+const helper = require("../../util/helpers/admin");
+let Mentor = require("../../models/mentor");
+let Reimbursements = require("../../models/reimbursements.js");
+let User = require("../../models/user.js");
+const util = require("../../util/util.js");
 
-// Mongo Models
-let enums = require('../../models/enum.js');
-let User = require("../../models/user");
-
-// Variables
-const ALWAYS_OMIT = 'password confirmpassword'.split('');
-const MAX_FILE_SIZE = 1024 * 1024 * 15;
+const USER_FILTER = { role: "user" };
 
 /**
- * @api {GET} /register Get registration page based on current server configuration
- * @apiName Register
- * @apiGroup Auth
+ * @api {GET} /admin/dashboard Get dashboard page.
+ * @apiName Dashboard
+ * @apiGroup AdminAuth
  */
-function registerGet(req, res) {
-    // return res.redirect("/");
-    async.series({
-        college: (cb) => {
-            if (req.params && req.params.name) {
-                //get full college object
-                authHelp._findCollegeFromFilteredParam(req.params.name, function (err, college) {
-                    if (college === null || err) {
-                        //college does not exist, or not allowed
-                        return cb(err || "College does not exist.");
+module.exports = (req, res, next) => {
+    async.parallel({
+        applicants: helper.aggregate.applicants.byMatch(USER_FILTER),
+        applicantsCornell: helper.aggregate.applicants.applicantsCornell(),
+        gender: helper.aggregate.applicants.gender(),
+        schools: (done) => {
+            User.aggregate([
+                {
+                    $match: USER_FILTER
+                },
+                {
+                    $group: {
+                        _id: { name: "$school.name", collegeid: "$school.id", status: "$internal.status", going: "$internal.going" },
+                        total: { $sum: 1 }
                     }
-                    else {
-                        return cb(null, college);
+                },
+                {
+                    $project: {
+                        going: { $cond: [{ $eq: ["$_id.going", true] }, "$total", 0] },
+                        notGoing: { $cond: [{ $eq: ["$_id.going", false] }, "$total", 0] },
+                        accepted: { $cond: [{ $eq: ["$_id.status", "Accepted"] }, "$total", 0] },
+                        waitlisted: { $cond: [{ $eq: ["$_id.status", "Waitlisted"] }, "$total", 0] },
+                        rejected: { $cond: [{ $eq: ["$_id.status", "Rejected"] }, "$total", 0] },
+                        //$ifnull returns first argument if not null, which is truthy in this case
+                        //therefore, need a conditional to check whether the second argument is returned.
+                        //todo the $ifnull conditional is for backwards compatibility: consider removing in 2016 deployment
+                        pending: { $cond: [{ $or: [{ $eq: ["$_id.status", "Pending"] }, { $cond: [{ $eq: [{ $ifNull: ["$_id.status", null] }, null] }, true, false] }] }, "$total", 0] }
                     }
-                });
-            }
-            else {
-                return cb(null, null);
-            }
-        }
-    }, (err, result) => {
-        if (!err) {
-            let college = null, collegeName = null, collegeParam = null;
-            if (req.params && req.params.name && result.college) {
-                college = result.college;
-                collegeName = result.college.name;
-                collegeParam = req.params.name;
-            }
-            return res.render("register_general", {
-                college: college,
-                enums: enums,
-                error: req.flash('error'),
-                limit: config.admin.cornell_auto_accept,
-                title: collegeName || "BigRed//Hacks | Register",
-                urlparam: collegeParam,
-                cornellOpen: config.admin.cornell_reg_open
-            });
-        }
-        else {
-            console.log(err);
-            req.flash("error", "An error occurred while trying to register!");
-            return res.redirect("/");
-        }
-    });
-}
+                },
+                {
+                    $group: {
+                        _id: { name: "$_id.name", collegeid: "$_id.collegeid" },
+                        going: { $sum: "$going" },
+                        notGoing: { $sum: "$notGoing" },
+                        accepted: { $sum: "$accepted" },
+                        waitlisted: { $sum: "$waitlisted" },
+                        rejected: { $sum: "$rejected" },
+                        pending: { $sum: "$pending" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        name: "$_id.name",
+                        collegeid: "$_id.collegeid",
+                        going: "$going",
+                        notGoing: "$notGoing",
+                        accepted: "$accepted",
+                        waitlisted: "$waitlisted",
+                        rejected: "$rejected",
+                        pending: "$pending",
+                        total: { $add: ["$accepted", "$pending", "$waitlisted", "$rejected"] }
+                    }
+                },
+                { $sort: { total: -1, name: 1 } }
 
-/**
- * @api {PUT} /register Register a new user
- * @apiName Register
- * @apiGroup Auth
- */
-function registerPost(req, res) {
-    async.waterfall([
-        (cb) => {
-            let sanitizedEmail = req.body.email ? req.body.email.trim().toLowerCase() : req.body.email;
-            User.findOne({ email: sanitizedEmail }).exec((err, user) => {
-                if (!err) {
-                    if (typeof user !== "undefined" && user) {
-                        return cb("A user with this email address has already registered!");
-                    }
-                    else {
-                        return cb(null);
-                    }
-                }
-                else {
-                    return cb(err);
-                }
+            ], (err, res) => {
+                return done(err, res);
             });
         },
-        (cb) => {
-            // Parse the resume
-            const form = new multiparty.Form({ maxFilesSize: MAX_FILE_SIZE });
-            form.parse(req, function (err, fields, files) {
-                if (err) {
-                    return cb(err);
-                }
-                else {
-                    req.body = helper.reformatFields(fields);
-                    req.files = files;
-                    let resume = files.resume[0];
-                    req = authHelp.validateAll(req);
-                    let errors = req.validationErrors();
-                    if (errors) {
-                        let errorParams = errors.map(function (x) {
-                            return x.param;
-                        });
-                        req.body = _.omit(req.body, errorParams.concat(ALWAYS_OMIT));
-                        let returnErr = [req.body, errors];
-                        return cb(returnErr);
-                    }
-                    else {
-                        helper.uploadFile(resume, { type: "resume" }, (err, file) => {
-                            if (!err && typeof file !== "string") {
-                                return cb(null, file);
-                            }
-                            else {
-                                return cb(err || file || "An unknown error occurred while uploading your resume.");
-                            }
-                        });
-                    }
-                }
-            });
-        },
-        (resume, cb) => {
-            // Get the user's college if exists as a parameter
-            if (req.params && req.params.name) {
-                //get full college object
-                authHelp._findCollegeFromFilteredParam(req.params.name, function (err, college) {
-                    if (college === null || err) {
-                        //college does not exist, or not allowed
-                        return cb(err || "College does not exist.");
-                    }
-                    else {
-                        if (config.admin.cornell_reg_open !== true &&
-                            (authHelp._isCornellian(college) || req.body.email.split("@")[1].split(".")[0] === "cornell")) {
-                            return cb("We aren't accepting applications from Cornell University students right now. Subscribe to our email list for more info.");
-                        }
-                        else {
-                            return cb(null, college, resume);
-                        }
-                    }
-                });
-            }
-            else {
-                if (config.admin.cornell_reg_open !== true &&
-                    (req.body.email.split("@")[1].split(".")[0] === "cornell" || req.body.college.indexOf("Cornell University") !== -1)) {
-                    return cb("We aren't accepting applications from Cornell University students right now. Subscribe to our email list for more info.");
-                }
-                else {
-                    let college = {
-                        _id: req.body.collegeid,
-                        display: req.body.college
-                    };
-                    return cb(null, college, resume);
-                }
-            }
-        },
-        (college, resume, cb) => {
-            // Create the user
-            let newUser = new User({
-                name: {
-                    first: req.body.firstname,
-                    last: req.body.lastname
-                },
-                email: req.body.email,
-                password: req.body.password,
-                gender: req.body.genderDropdown,
-                ethnicity: req.body.ethnicityDropdown,
-                phone: req.body.phonenumber,
-                logistics: {
-                    dietary: req.body.dietary,
-                    tshirt: req.body.tshirt,
-                    anythingelse: req.body.anythingelse
-                },
-                school: {
-                    id: college._id,
-                    name: college.display,
-                    year: req.body.yearDropdown,
-                    major: req.body.major,
-                    minor: req.body.minor
-                },
-                internal: {
-                    cornell_applicant: authHelp._isCornellian(college)
-                },
-                app: {
-                    github: req.body.github,
-                    linkedin: req.body.linkedin,
-                    resume: resume.filename,
-                    hackathonsAttended: req.body.hackathonsAttended,
-                    questions: {
-                        q1: req.body.q1,
-                        q2: req.body.q2,
-                        q3: req.body.q3,
-                        hardware: req.body.hardware.split(",")
-                    }
-                },
-                role: "user"
-            });
-            console.log(newUser);
-            newUser.save((err, user) => {
-                if (!err) {
-                    return cb(null, college, user);
-                }
-                else {
-                    return cb(err);
-                }
-            });
-        },
-        (college, newUser, cb) => {
-            // Add to email lists
-            async.parallel([
-                (cb2) => {
-                    // All Cornell students are on the waitlist when registering. The pending status
-                    // means that nobody has been accepted yet, since once we run a lottery,
-                    // all non-winners are moved onto waitlist.
-                    if (newUser.internal.cornell_applicant === true) {
-                        helper.addSubscriber(
-                            config.mailchimp.l_applicants, newUser.email, newUser.name.first, newUser.name.last,
-                            config.mailchimp.l_cornell_applicants, (err, result) => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                                return cb2(null);
-                            });
-                    } else {
-                        helper.addSubscriber(config.mailchimp.l_applicants, req.body.email, req.body.firstname, req.body.lastname, "", (err, result) => {
-                            if (err) {
-                                console.log(err);
-                            }
-                            return cb2(null);
-                        });
-                    }
-                }
-            ], (err) => {
-                if (!err) {
-                    req.login(newUser, (err) => {
-                        if (!err) {
-                            return cb(null, college, newUser);
-                        }
-                        else {
-                            return cb(err);
-                        }
+        ages: (done) => {
+            User.aggregate(
+                [
+                    { $match: { $and: [USER_FILTER, { "internal.status": "Accepted" }] } },
+                    { $group: { _id: "$school.year", count: { $sum: 1 } } }
+                ],
+                (err, res) => {
+                    console.log(res);
+                    res = helper.objectAndDefault(res, {
+                        freshman: 0,
+                        sophomore: 0,
+                        junior: 0,
+                        senior: 0,
+                        "high school": 0,
+                        "graduate student": 0
                     });
+                    res.highSchool = res["high school"];
+                    res.graduateStudent = res["graduate student"];
+                    delete res["high school"];
+                    delete res["graduate student"];
+                    return done(err, res);
                 }
-                else {
-                    return cb(err);
+            );
+        },
+        rsvps: (done) => {
+            User.aggregate(
+                [
+                    { $match: { $and: [USER_FILTER, { "internal.status": "Accepted" }] } },
+                    { $group: { _id: "$internal.going", count: { $sum: 1 } } }
+                ],
+                (err, res) => {
+                    res = helper.objectAndDefault(res, {
+                        true: 0,
+                        false: 0,
+                        null: 0
+                    });
+                    return done(err, res);
+                }
+            );
+        },
+        rsvpsCornell: (done) => {
+            User.aggregate(
+                [
+                    { $match: { $and: [USER_FILTER, { "internal.status": "Accepted" }, { "school.id": "190415" }] } },
+                    { $group: { _id: "$internal.going", count: { $sum: 1 } } }
+                ],
+                (err, res) => {
+                    res = helper.objectAndDefault(res, {
+                        true: 0,
+                        false: 0,
+                        null: 0
+                    });
+                    return done(err, res);
+                }
+            );
+        },
+        // { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
+        logisticsDietary: (done) => {
+            User.aggregate([
+                    { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
+                    { $group: { _id: "$logistics.dietary", total: { $sum: 1 } } },
+                ],
+                (err, res) => {
+                    if (err) {
+                        done(err);
+                    } else {
+                        result = helper.objectAndDefault(res, {
+                            none: 0,
+                            vegetarian: 0,
+                            "gluten-free": 0
+                        });
+                        done(null, result);
+                    }
+                }
+            );
+        },
+        logisticsTshirt: (done) => {
+            User.aggregate([
+                { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
+                { $group: { _id: "$logistics.tshirt", total: { $sum: 1 } } },
+            ], (err, res) => {
+                if (err) {
+                    done(err);
+                } else {
+                    result = helper.objectAndDefault(res, {
+                        xs: 0,
+                        s: 0,
+                        m: 0,
+                        l: 0,
+                        xl: 0
+                    });
+
+                    done(null, result);
                 }
             });
         },
-        (college, newUser, cb) => {
-            // Send confirmation email
-            const email_subject = "BigRed//Hacks Registration Confirmation";
-            let template_content;
-            let newUserEmail = newUser.email.split("@")[1].split(".")[0];
-            if (newUserEmail === "cornell" || authHelp._isCornellian(college)) {
-                template_content =
-                    `<p>Hi ${newUser.name.full},</p>` +
-                    `<p>Thank you for your interest in BigRed//Hacks Vo. 7: Community Superheroes! This email is a confirmation ` +
-                    `that we have received your registration. We're excited to have you potentially join us this fall for a weekend of exploration, innovation, and fun 🙂
-                    </p>` +
-                    `<p>You can log in to our website (www.bigredhacks.com) at any time to view your status, update your resume, or add team members. 
-                    Company sponsors will have access to your resumes, so make sure to update it! We will also have team formation sessions, so do not feel obligated to find teammates before the hackathon.</p>` +
-                    `<p>For Cornell students, we will initially have a lottery system to admit. Decisions will be sent out late August/early September, 
-                    and students will have a grace period of a week to accept. After that, Cornellians will be admitted off the waitlist in order of registration.</p>` +
-                    `<p>If you haven't already, make sure to like us on <a href='https://www.facebook.com/bigredhacks/' target='_blank'>Facebook</a> and ` +
-                    `follow us on <a href='https://twitter.com/bigredhacks'>Twitter</a>! Hope to see you soon.</p>` +
-                    `<p>With love,</p>` +
-                    `<p>BigRed//Hacks Team </p>`;
-            } else {
-                template_content =
-                    `<p>Hi ${newUser.name.full},</p>` +
-                    `<p>Thank you for your interest in BigRed//Hacks Vo. 7: Community Superheroes! This email is a confirmation ` +
-                    `that we have received your registration. We're excited to have you potentially join us this fall for a weekend of exploration, innovation, and fun 🙂
-                    </p>` +
-                    `<p>You can log in to our website (www.bigredhacks.com) at any time to view your status, update your resume, or add team members. 
-                    Company sponsors will have access to your resumes, so make sure to update it! We will also have team formation sessions, so do not feel obligated to find teammates before the hackathon.</p>` +
-                    `<p>For non-Cornell students, decisions will be sent out in late August (or ASAP in September). 
-                    At the moment, we are offering bus routes to Buffalo, RIT, Princeton, Rutgers, and Binghamton. 
-                    If you'd like travel reimbursement, please send us a message at <a href="mailto:info@bigredhacks.com">info@bigredhacks.com</a> and we'll see what we can offer on a case-by-case basis. 
-                    At the moment, we are unsure how much we can offer, but have offered up to $200 per person in the past.` +
-                    `<p>If you haven't already, make sure to like us on <a href='https://www.facebook.com/bigredhacks/' target='_blank'>Facebook</a> and ` +
-                    `follow us on <a href='https://twitter.com/bigredhacks'>Twitter</a>! Hope to see you soon.</p>` +
-                    `<p>With love,</p>` +
-                    `<p>BigRed//Hacks Team </p>`;
-            }
-            const config = {
-                "subject": email_subject,
-                "from_email": "info@bigredhacks.com",
-                "from_name": "BigRed//Hacks",
-                "to": {
-                    "email": newUser.email,
-                    "name": newUser.name.full
-                }
-            };
-            email.sendCustomEmail(template_content, config);
-            return cb(null);
-        }
-    ], (err) => {
-        if (!err) {
-            req.flash("success", "Successfully registered!");
-            return res.redirect('/user/dashboard');
-        }
-        else {
-            console.error(err);
-            req.flash("error", err);
-            return res.render('register_general', {
-                enums: enums,
-                error: req.flash('error'),
-                errors: err,
-                input: req.body,
-                title: "BigRed//Hacks | Register",
-                cornellOpen: config.admin.cornell_reg_open
-            });
-        }
-    });
-}
+        logisticsHardware: (done) => {
+            User.aggregate([
+                { $unwind: "$app.questions.hardware" },
+                { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
+                { $group: { _id: "$app.questions.hardware", total: { $sum: 1 } } }
+            ], (err, res) => {
+                if (err) {
+                    done(err);
+                } else {
 
-module.exports = {
-    get: registerGet,
-    post: registerPost
+                    result = helper.objectAndDefault(res, {
+                        "smart home": 0,
+                        "vr": 0,
+                        "robotics": 0,
+                        "wearables": 0
+                    })
+
+                    result.total = _.reduce(result, function (a, b) {
+                        return a + b;
+                    });
+                    result.smartHome = result["smart home"];
+                    delete result["smart home"];
+
+                    done(null, result);
+                }
+            });
+        },
+        decisionAnnounces: (done) => {
+            User.aggregate([
+                {
+                    $project: {
+                        notified: { $strcasecmp: ["$internal.notificationStatus", "$internal.status"] },
+                        school: {
+                            name: 1,
+                            id: 1
+                        },
+                        "internal.status": 1
+                    }
+                },
+                { $match: { $and: [{ "notified": { $ne: 0 } }, { "internal.status": { $ne: "Pending" } }] } },
+                {
+                    $group: {
+                        _id: { name: "$school.name", collegeid: "$school.id", status: "$internal.status" },
+                        total: { $sum: 1 }
+                    }
+                },
+                {
+                    $project: {
+                        accepted: { $cond: [{ $eq: ["$_id.status", "Accepted"] }, "$total", 0] },
+                        waitlisted: { $cond: [{ $eq: ["$_id.status", "Waitlisted"] }, "$total", 0] },
+                        rejected: { $cond: [{ $eq: ["$_id.status", "Rejected"] }, "$total", 0] }
+                    }
+                },
+                {
+                    $group: {
+                        _id: { name: "$_id.name", collegeid: "$_id.collegeid" },
+                        accepted: { $sum: "$accepted" },
+                        waitlisted: { $sum: "$waitlisted" },
+                        rejected: { $sum: "$rejected" },
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        name: "$_id.name",
+                        collegeid: "$_id.collegeid",
+                        accepted: "$accepted",
+                        waitlisted: "$waitlisted",
+                        rejected: "$rejected",
+                        total: { $add: ["$accepted", "$waitlisted", "$rejected"] }
+                    }
+                },
+                { $sort: { total: -1, name: 1 } }
+            ], done);
+        },
+        reimbursements: (done) => {
+            Reimbursements.find({}, done);
+        },
+        accepted: (done) => {
+            User.find({ "internal.status": "Accepted" })
+                .select("pubid name email school.name school.id internal.reimbursement_override internal.status internal.going")
+                .exec(done);
+        },
+        mentors: (done) => {
+            Mentor.find({}, done);
+        }
+
+    }, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        let currentMax = 0, potentialMax = 0, reimburse = 0;
+        if (result) {
+            // Assumes charterbus reimbursements have been set
+            currentMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, true), 0);
+            potentialMax = result.accepted.reduce((acc, user) => acc + util.calculateReimbursement(result.reimbursements, user, false), 0);
+            reimburse = { currentMax, potentialMax };
+        }
+        return res.render("admin/index", {
+            title: "Admin Dashboard",
+            applicants: result.applicants,
+            applicantsCornell: result.applicantsCornell,
+            gender: result.gender,
+            ages: result.ages,
+            schools: result.schools,
+            rsvps: result.rsvps,
+            rsvpsCornell: result.rsvpsCornell,
+            logistics: {
+                dietary: result.logisticsDietary,
+                tshirt: result.logisticsTshirt,
+                hardware: result.logisticsHardware
+            },
+            decisionAnnounces: result.decisionAnnounces,
+            reimburse,
+            mentors: result.mentors
+        });
+
+
+    });
 };

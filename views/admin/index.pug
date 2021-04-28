@@ -123,17 +123,17 @@ block append admin_content
                     h2 Reimbursements
                     span Our maximum reimbursement costs are:
                     ul
-                        li 
+                        li
                             span.bold RSVP'd: 
                             | $#{reimburse.currentMax}
                         li
                             span.bold All Accepted (including RSVP'd): 
                             | $#{reimburse.potentialMax}
-                
+
                 .col-sm-6.col-lg-4
                     h2 Logistics
                     span Dietary restrictions and shirt sizes collected for the #{rsvps.true} RSVP'd students we have:
-                    
+
                     h4 Dietary Preferences 🍽
                     ul
                         li 🍖 
@@ -145,22 +145,22 @@ block append admin_content
                         li 🍞 
                             span.bold Gluten-Free
                             | : #{logistics.dietary["gluten-free"]}
-                    
+
                     h4 T-Shirt Sizes 👕
                     ul
-                        li 
+                        li
                             span.bold XS
                             | : #{logistics.tshirt.xs}
-                        li 
+                        li
                             span.bold S
                             | : #{logistics.tshirt.s}
                         li
                             span.bold M
                             | : #{logistics.tshirt.m}
-                        li 
+                        li
                             span.bold L
                             | : #{logistics.tshirt.l}
-                        li 
+                        li
                             span.bold XL
                             | : #{logistics.tshirt.xl}
 
@@ -181,7 +181,7 @@ block append admin_content
                         li
                             span.bold Wearables
                             | : #{logistics.hardware.wearables} requests
-                        
+
 
         #top-schools.tab-pane(role='tabpanel')
             table.table.table-striped

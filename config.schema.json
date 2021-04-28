@@ -106,6 +106,9 @@
       "type": "String"
     }
   },
+  "slack": {
+    "webhook_url": {"type": "String"}
+  },
   "yearly": {
     "facebook": {
       "type": "String"

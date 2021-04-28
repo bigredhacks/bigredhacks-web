@@ -20,14 +20,6 @@ router.get("/", function (req, res) {
     res.render("index2019", {});
 });
 
-/**
- * @api {GET} /index BigRed//Hacks organizers homepage.
- * @apiName Index
- * @apiGroup Index
- */
-// router.get("/org", function (req, res) {
-//     res.render("org", {});
-// });
 
 
 /**
@@ -43,6 +35,18 @@ router.get("/2019", function (req, res) {
         // regOpen: config.admin.reg_open
     });
 });
+
+/**
+ * @api {GET} /index BigRed//Hacks organizers homepage.
+ * @apiName Index
+ * @apiGroup Index
+ */
+router.get("/org", function (req, res) {
+    res.render("org", {});
+});
+
+
+
 
 /**
  * @api {GET} /2017 BigRed//Hacks 2017 homepage
@@ -154,17 +158,17 @@ router.get("/live", function (req, res, next) {
     var toggle = toggleVar.toggle();
     if (toggle == "true") {
         async.parallel({
-            announcements: (callback) => {
-                const PROJECTION = "message time";
-                Announcement.find({}, PROJECTION, callback);
+                announcements: (callback) => {
+                    const PROJECTION = "message time";
+                    Announcement.find({}, PROJECTION, callback);
+                },
+                calendar: (callback) => {
+                    util.grabCalendar(callback);
+                },
+                inventory: (cb) => {
+                    Inventory.find({}, null, { sort: { name: "asc" } }, cb);
+                }
             },
-            calendar: (callback) => {
-                util.grabCalendar(callback);
-            },
-            inventory: (cb) => {
-                Inventory.find({}, null, { sort: { name: "asc" } }, cb);
-            }
-        },
             (err, result) => {
                 if (err) {
                     console.error(err);
