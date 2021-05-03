@@ -1,8 +1,5 @@
 const async = require("async");
-<<<<<<< HEAD
 const _ = require("lodash");
-=======
->>>>>>> rc
 const helper = require("../../util/helpers/admin");
 let Mentor = require("../../models/mentor");
 let Reimbursements = require("../../models/reimbursements.js");
@@ -116,7 +113,6 @@ module.exports = (req, res, next) => {
                 }
             );
         },
-<<<<<<< HEAD
         rsvpsCornell: (done) => {
             User.aggregate(
                 [
@@ -133,14 +129,12 @@ module.exports = (req, res, next) => {
                 }
             );
         },
-=======
->>>>>>> rc
         // { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
         logisticsDietary: (done) => {
             User.aggregate([
-                { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
-                { $group: { _id: "$logistics.dietary", total: { $sum: 1 } } },
-            ],
+                    { $match: { $and: [USER_FILTER, { "internal.going": true }] } },
+                    { $group: { _id: "$logistics.dietary", total: { $sum: 1 } } },
+                ],
                 (err, res) => {
                     if (err) {
                         done(err);
@@ -170,7 +164,6 @@ module.exports = (req, res, next) => {
                         l: 0,
                         xl: 0
                     });
-<<<<<<< HEAD
 
                     done(null, result);
                 }
@@ -199,8 +192,6 @@ module.exports = (req, res, next) => {
                     result.smartHome = result["smart home"];
                     delete result["smart home"];
 
-=======
->>>>>>> rc
                     done(null, result);
                 }
             });
@@ -284,17 +275,11 @@ module.exports = (req, res, next) => {
             ages: result.ages,
             schools: result.schools,
             rsvps: result.rsvps,
-<<<<<<< HEAD
             rsvpsCornell: result.rsvpsCornell,
             logistics: {
                 dietary: result.logisticsDietary,
                 tshirt: result.logisticsTshirt,
                 hardware: result.logisticsHardware
-=======
-            logistics: {
-                dietary: result.logisticsDietary,
-                tshirt: result.logisticsTshirt
->>>>>>> rc
             },
             decisionAnnounces: result.decisionAnnounces,
             reimburse,
