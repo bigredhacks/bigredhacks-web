@@ -17,7 +17,7 @@ const util = require("../util/util");
  * @apiGroup Index
  */
 router.get("/", function (req, res) {
-    res.render("index2019", {});
+    res.render("org", {});
 });
 
 
