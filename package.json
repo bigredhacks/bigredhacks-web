@@ -53,7 +53,7 @@
     "subdomain": "^1.2.0",
     "twitter": "^1.7.1",
     "uid2": "0.0.3",
-    "underscore": "^1.8.3",
+    "underscore": "^1.12.1",
     "validator": "^8.1.0"
   },
   "devDependencies": {
