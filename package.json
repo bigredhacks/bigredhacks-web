@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "async": "^2.5.0",
-    "aws-sdk": "^2.81.0",
+    "aws-sdk": "^2.814.0",
     "babel-preset-env": "^1.6.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
