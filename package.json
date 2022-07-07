@@ -35,7 +35,7 @@
     "icalendar": "^0.7.1",
     "less-middleware": "2.0.x",
     "mailchimp-api": "^2.0.7",
-    "moment": "^2.18.1",
+    "moment": "^2.29.4",
     "mongoose": "^4.11.1",
     "morgan": "^1.9.1",
     "multiparty": "^4.1.2",
