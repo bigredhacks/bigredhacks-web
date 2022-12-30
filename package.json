@@ -29,7 +29,7 @@
     "express-flash": "0.0.2",
     "express-validator": "^4.1.0",
     "grunt": "^1.1.0",
-    "grunt-babel": "^6.0.0",
+    "grunt-babel": "^8.0.0",
     "grunt-cli": "^1.2.0",
     "grunt-contrib-uglify": "^3.0.1",
     "icalendar": "^0.7.1",
